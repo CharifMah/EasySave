@@ -90,6 +90,7 @@ namespace Models.Backup
         }
 
         #region Serialization
+
         /// <summary>
         /// Sauvegarde le JobManager
         /// </summary>

@@ -23,7 +23,7 @@ namespace Stockage
         /// </summary>
         /// <param name="pData">Data a sauvgarde</param>
         /// <param name="pFileName">Name of the file</param>
-        /// <param name="pExtention">Extention du fichier</param>
+        /// <param name="pExtention">Extention of the file can be null</param>
         /// <Author>Mahmoud Charif - 31/12/2022 - Création</Author>
         public void Sauver<T>(T pData, string pFileName, string pExtention = "json")
         {

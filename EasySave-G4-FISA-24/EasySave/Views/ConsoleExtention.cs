@@ -51,6 +51,12 @@ namespace EasySave.Views
             Console.ForegroundColor = ConsoleColor.White;
         }
 
+        /// <summary>
+        /// Read user input
+        /// </summary>
+        /// <param name="pMessage">Message to loop through if the user makes an input error</param>
+        /// <returns>user input</returns>
+        /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
         public static string ReadResponse(string pMessage)
         {
             ConsoleKeyInfo lsInput;
@@ -64,34 +70,37 @@ namespace EasySave.Views
                     Console.Write(pMessage);
 
                 while (Console.KeyAvailable)
-                    Console.ReadKey(false); // skips previous inputs
+                    Console.ReadKey(false); // cm - skips previous inputs
 
-                lsInput = Console.ReadKey(); // reads a new char
+                lsInput = Console.ReadKey(); // cm - wait to read a new character
 
+                // cm - If the user enters CTRL+C cancel the loop and clear the console
                 if ((lsInput.Modifiers & ConsoleModifiers.Control) != 0 && lsInput.Key == ConsoleKey.C)
                 {
                     Clear();
                     break;
                 }
 
+                // cm - Concatenate inputs to obtain the final output
                 if (lsInput.Key != ConsoleKey.Enter && lsInput.Key != ConsoleKey.Backspace && lsInput.Modifiers == 0)
                     _Input += lsInput.KeyChar;
-
-                if (lsInput.Key == ConsoleKey.Backspace)
+              
+                if (lsInput.Key == ConsoleKey.Backspace)   // cm - If user press Backspace delete 1 caratere in the console
                 {
                     RemoveLastChar();
                     if (_Input.Length > 0)
                         _Input = _Input[0..^1].ToString();
-                }
-                else if (lsInput.Key == ConsoleKey.Delete)
+                }   
+                else if (lsInput.Key == ConsoleKey.Delete)  // cm - If user press Delete delete 1 caratere in the console
                 {
                     RemoveLastChar();
                     if (_Input.Length > 0)
                         _Input = _Input[0..^1];
                 }
 
-            } while (lsInput.KeyChar != (char)ConsoleKey.Enter);
+            } while (lsInput.KeyChar != (char)ConsoleKey.Enter); // cm - Until the user presses the Enter key, the console waits to read a new character.
 
+            // cm - Don't show Succes message if the user cancel the action
             if (_Input != "-1")
                 Console.WriteLine($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + _Input + '\n');
 

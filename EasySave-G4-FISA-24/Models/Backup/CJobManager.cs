@@ -58,12 +58,15 @@ namespace Models.Backup
         /// <param name="targetDir">chemin cible</param>
         /// <param name="type">type de job</param>
         /// <returns>true si reussi</returns>
+        /// <remarks>Mehmeti faik - 06/02/2024 - fixbug</remarks>
         public bool CreateBackupJob(string pName, string pSourceDir, string pTargetDir, ETypeBackup pType)
         {
             bool lResult = true;
 
             if (_Jobs.Count <= _MaxJobs)
                 _Jobs.Add(new CJob(pName, pSourceDir, pTargetDir, pType));
+            else
+                lResult = false;
 
             return lResult;
         }

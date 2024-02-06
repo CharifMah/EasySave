@@ -51,24 +51,6 @@ namespace EasySave.Views
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        private static string GetMenu()
-        {
-            return $"\n0 - {Strings.ResourceManager.GetObject("ChooseLang")} \n" +
-                   $"1 - {Strings.ResourceManager.GetObject("ListJobs")}\n" +
-                   $"2 - {Strings.ResourceManager.GetObject("LoadJobs")}\n" +
-                   $"3 - {Strings.ResourceManager.GetObject("CreateJob")}\n" +
-                   $"4 - {Strings.ResourceManager.GetObject("RunJobs")}\n";
-        }
-
-        public static string ShowMenu()
-        {
-            WriteTitle("Menu");
-
-            string lInput = ReadResponse(GetMenu() + $"\n{Strings.ResourceManager.GetObject("SelectChoice")} ");
-
-            return lInput;
-        }
-
         public static string ReadResponse(string pMessage)
         {
             ConsoleKeyInfo lsInput;

@@ -210,7 +210,7 @@ namespace EasySave.Views
                     _JobVm.LoadJobs();
                     break;
                 case "1":
-                    _JobVm.LoadJobs(true, ConsoleExtention.ReadFile("Choisir le fichier de configuration"));
+                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration"));
 
                     if (_JobVm.JobManager != null)
                         ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");

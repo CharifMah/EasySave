@@ -117,8 +117,9 @@ namespace EasySave.Views
             ETypeBackup lBackupType = (ETypeBackup)Enum.Parse(typeof(ETypeBackup), lInput);
 
 
-            if (_JobVm.CreateBackupJob(lName, lSourceDir, lTargetDir, lBackupType))
+            if ((lInput == "0" || lInput == "1") && _JobVm.CreateBackupJob(lName, lSourceDir, lTargetDir, lBackupType))
             {
+                SaveJobs();
                 // Afficher confirmation
                 ConsoleExtention.WriteLineSucces(Strings.ResourceManager.GetObject("JobCreated").ToString());
             }
@@ -126,7 +127,6 @@ namespace EasySave.Views
             {
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
             }
-            SaveJobs();
         }
         #endregion
 

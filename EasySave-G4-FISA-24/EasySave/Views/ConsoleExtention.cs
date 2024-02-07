@@ -58,7 +58,7 @@ namespace EasySave.Views
         /// <param name="pMessage">Message to loop through if the user makes an input error</param>
         /// <returns>user input</returns>
         /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
-        public static string ReadResponse(string pMessage,Regex? pRegex = null)
+        public static string ReadResponse(string pMessage, Regex? pRegex = null)
         {
             ConsoleKeyInfo lsInput;
             _Input = string.Empty;
@@ -88,13 +88,13 @@ namespace EasySave.Views
                 // cm - Concatenate inputs to obtain the final output
                 if (lsInput.Key != ConsoleKey.Enter && lsInput.Key != ConsoleKey.Backspace && lsInput.Modifiers == 0)
                     _Input += lsInput.KeyChar;
-              
+
                 if (lsInput.Key == ConsoleKey.Backspace)   // cm - If user press Backspace delete 1 caratere in the console
                 {
                     RemoveLastChar();
                     if (_Input.Length > 0)
                         _Input = _Input[0..^1].ToString();
-                }   
+                }
                 else if (lsInput.Key == ConsoleKey.Delete)  // cm - If user press Delete delete 1 caratere in the console
                 {
                     RemoveLastChar();
@@ -130,6 +130,9 @@ namespace EasySave.Views
 
         public static string ReadFolder(string pDescription)
         {
+
+            string lSelectedFolder = null;
+
             try
             {
                 Console.WriteLine(pDescription);
@@ -146,16 +149,17 @@ namespace EasySave.Views
 
                 lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
 
-                string lSelectedFolder = null;
-
                 if (lDialog.Run() == (int)ResponseType.Ok)
                 {
                     lSelectedFolder = lDialog.Filename;
                 }
+                else
+                    lSelectedFolder = "-1";
 
                 lDialog.Destroy();
 
                 Console.WriteLine($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + lSelectedFolder + '\n');
+
                 return lSelectedFolder;
             }
             catch (Exception ex)
@@ -166,32 +170,34 @@ namespace EasySave.Views
 
         public static string ReadFile(string pDescription)
         {
+            string lSelectedFile = null;
+
             try
             {
                 Console.WriteLine(pDescription);
 
                 Application.Init();
 
-                var dialog = new FileChooserDialog(
+                var lDialog = new FileChooserDialog(
                     title: pDescription,
                     parent: null,
                     action: FileChooserAction.Open);
 
-                dialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
-                dialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
+                lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
+                lDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
 
-                dialog.SetCurrentFolder(Directory.GetCurrentDirectory());
+                lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
 
-                string selectedFile = null;
-
-                if (dialog.Run() == (int)ResponseType.Ok)
+                if (lDialog.Run() == (int)ResponseType.Ok)
                 {
-                    selectedFile = dialog.Filename;
+                    lSelectedFile = lDialog.Filename;
                 }
+                else
+                    lSelectedFile = "-1";
 
-                dialog.Destroy();
+                lDialog.Destroy();
 
-                return selectedFile;
+                return lSelectedFile;
             }
             catch (Exception ex)
             {

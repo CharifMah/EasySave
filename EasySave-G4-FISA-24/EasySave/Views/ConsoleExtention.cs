@@ -29,6 +29,13 @@ namespace EasySave.Views
             Console.ForegroundColor = ConsoleColor.White;
         }
 
+        public static void WriteLinePath(string pPath)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine('\n' + pPath.Replace(@"\", @"\\"));
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         /// <summary>
         /// Write a personalized Title with separator
         /// </summary>
@@ -158,7 +165,7 @@ namespace EasySave.Views
 
                 lDialog.Destroy();
 
-                Console.WriteLine($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + lSelectedFolder + '\n');
+                WriteLinePath($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + lSelectedFolder + '\n');
 
                 return lSelectedFolder;
             }
@@ -196,6 +203,8 @@ namespace EasySave.Views
                     lSelectedFile = "-1";
 
                 lDialog.Destroy();
+
+                WriteLinePath($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + lSelectedFile + '\n');
 
                 return lSelectedFile;
             }

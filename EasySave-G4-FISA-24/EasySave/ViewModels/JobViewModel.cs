@@ -19,7 +19,6 @@ namespace EasySave.ViewModels
         }
 
         #endregion
-
         public List<CJob> RunJobs(Tuple<int, int> pRange = null)
         {
             return _jobManager.RunJobs(pRange);

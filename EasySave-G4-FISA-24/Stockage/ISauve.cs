@@ -13,7 +13,7 @@
         /// <param name="pFileName">File name</param>
         /// <param name="pExtention">Extention</param>
         /// <remarks>Mahmoud Charif - 31/12/2022 - Création</remarks>
-        void Sauver<T>(T pData, string pFileName, string pExtention = "json");
+        void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json");
 
         /// <summary>
         /// Copy files and directory from the soruce path to the destinationPath

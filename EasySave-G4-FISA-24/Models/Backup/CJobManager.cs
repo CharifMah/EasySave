@@ -1,4 +1,5 @@
-﻿using Stockage;
+﻿using Models.Logs;
+using Stockage;
 using System.Runtime.Serialization;
 
 namespace Models.Backup
@@ -35,15 +36,12 @@ namespace Models.Backup
 
             string lPath = Path.Combine(Environment.CurrentDirectory, "Jobs");
 
-            if (Directory.Exists(lPath))
-            {
-                _SauveCollection = new SauveCollection(lPath);
-            }
-            else
+            if (!Directory.Exists(lPath))
             {
                 Directory.CreateDirectory(lPath);
             }
 
+            _SauveCollection = new SauveCollection(lPath);
         }
 
         #endregion

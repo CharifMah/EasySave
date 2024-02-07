@@ -25,7 +25,7 @@ namespace Stockage
         /// <param name="pFileName">Name of the file</param>
         /// <param name="pExtention">Extention of the file can be null</param>
         /// <Author>Mahmoud Charif - 31/12/2022 - Création</Author>
-        public void Sauver<T>(T pData, string pFileName, string pExtention = "json")
+        public void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json")
         {
             try
             {
@@ -37,8 +37,12 @@ namespace Stockage
                         File.Delete(Path.Combine(_path, $"{pFileName}.{pExtention}"));
                     // cm - Serialize data to json
                     string jsonString = JsonConvert.SerializeObject(pData, _options);
-                    // cm - Write json data into the file
-                    File.WriteAllText(Path.Combine(_path, $"{pFileName}.{pExtention}"), jsonString);
+
+                    if (!pAppend)
+                        // cm - Write json data into the file
+                        File.WriteAllText(Path.Combine(_path, $"{pFileName}.{pExtention}"), jsonString);
+                    else
+                        File.AppendAllText(Path.Combine(_path, $"{pFileName}.{pExtention}"), jsonString);
                 }
             }
             catch (Exception ex)

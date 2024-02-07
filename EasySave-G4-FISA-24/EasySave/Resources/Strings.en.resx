@@ -123,8 +123,8 @@
   <data name="SelectedLanguage" xml:space="preserve">
     <value>You have selected English.</value>
   </data>
-  <data name="InvalidLangSelection" xml:space="preserve">
-    <value>Invalid selection. Defaulting to English.</value>
+  <data name="InvalideSelection" xml:space="preserve">
+    <value>Invalid selection.</value>
   </data>
   <data name="ChooseLang" xml:space="preserve">
     <value>Select language</value>

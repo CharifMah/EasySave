@@ -116,7 +116,7 @@ namespace EasySave.Views
 
             if (lsInput.KeyChar == (char)ConsoleKey.Enter && !pRegex.IsMatch(_Input))
             {
-                WriteLineError("Wrong input");
+                WriteLineError(Strings.ResourceManager.GetObject("InvalideSelection").ToString());
                 ReadResponse(pMessage, pRegex);
             }
 

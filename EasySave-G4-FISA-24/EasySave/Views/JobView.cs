@@ -1,6 +1,7 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
 using Models.Backup;
+using System.Text.RegularExpressions;
 
 namespace EasySave.Views
 {
@@ -92,7 +93,7 @@ namespace EasySave.Views
             ConsoleExtention.WriteTitle("Création d'un job");
 
             // cm - Demande a l'utilisateur de saisir les info du job  
-            string lName = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Name")}: ");
+            string lName = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Name")}: ", new Regex("^[a-zA-Z0-9]+$"));
             if (lName == "-1")
                 return;
             string lSourceDir = ConsoleExtention.ReadFolder($"\n{Strings.ResourceManager.GetObject("SourceDir")} ");

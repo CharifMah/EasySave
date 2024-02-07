@@ -1,5 +1,6 @@
 ﻿using EasySaveDraft.Resources;
 using Gtk;
+using System.Text.RegularExpressions;
 
 namespace EasySave.Views
 {
@@ -57,12 +58,15 @@ namespace EasySave.Views
         /// <param name="pMessage">Message to loop through if the user makes an input error</param>
         /// <returns>user input</returns>
         /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
-        public static string ReadResponse(string pMessage)
+        public static string ReadResponse(string pMessage,Regex? pRegex = null)
         {
             ConsoleKeyInfo lsInput;
             _Input = string.Empty;
             // cm - Allow Control detection
             Console.TreatControlCAsInput = true;
+
+            if (pRegex == null)
+                pRegex = new Regex("");
 
             do
             {
@@ -97,12 +101,17 @@ namespace EasySave.Views
                     if (_Input.Length > 0)
                         _Input = _Input[0..^1];
                 }
-
             } while (lsInput.KeyChar != (char)ConsoleKey.Enter); // cm - Until the user presses the Enter key, the console waits to read a new character.
 
             // cm - Don't show Succes message if the user cancel the action
-            if (_Input != "-1")
+            if (_Input != "-1" || String.IsNullOrEmpty(_Input))
                 Console.WriteLine($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + _Input + '\n');
+
+            if (lsInput.KeyChar == (char)ConsoleKey.Enter && !pRegex.IsMatch(_Input))
+            {
+                WriteLineError("Wrong input");
+                ReadResponse(pMessage, pRegex);
+            }
 
             return _Input;
         }

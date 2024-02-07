@@ -36,11 +36,6 @@ namespace Models.Backup
 
             string lPath = Path.Combine(Environment.CurrentDirectory, "Jobs");
 
-            if (!Directory.Exists(lPath))
-            {
-                Directory.CreateDirectory(lPath);
-            }
-
             _SauveCollection = new SauveCollection(lPath);
         }
 

@@ -9,6 +9,9 @@ namespace EasySave.Views
         private LangueView _LangView;
         private JobView _JobView;
         private string _Menu;
+
+        public override string Title => "Menu";
+
         #region CTOR
 
         public View()
@@ -66,7 +69,7 @@ namespace EasySave.Views
 
         public string ShowMenu()
         {
-            ConsoleExtention.WriteTitle("Menu");
+            ConsoleExtention.WriteTitle(Title);
 
             string lInput = ConsoleExtention.ReadResponse(_Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")} ");
 

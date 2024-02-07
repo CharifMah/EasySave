@@ -8,6 +8,7 @@ namespace EasySave.Views
     {
         #region Attributes
         private JobViewModel _JobVm;
+        public override string Title => "JobView";
         #endregion
 
         #region CTOR

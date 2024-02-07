@@ -7,6 +7,8 @@ namespace EasySave.Views
     {
         private LangueViewModel _LangueVm;
 
+        public override string Title => Strings.ResourceManager.GetObject("Lang").ToString();
+
         public LangueView(LangueViewModel pJobVm)
         {
             _LangueVm = pJobVm;
@@ -32,7 +34,7 @@ namespace EasySave.Views
         /// </summary>
         public void ListLanguage()
         {
-            ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("Lang").ToString());
+            ConsoleExtention.WriteTitle(Title);
             Console.WriteLine("Saisir 1 pour la langue française");
             Console.WriteLine("Select 2 for English");
         }

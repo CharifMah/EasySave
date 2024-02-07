@@ -6,6 +6,7 @@ namespace Stockage
     public class SauveCollection : ISauve
     {
         private string _path;
+        private static readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
 
         /// <summary>
         /// Sauvgarde
@@ -13,10 +14,11 @@ namespace Stockage
         /// <param name="pPath">Directory Path</param>
         public SauveCollection(string pPath)
         {
+            if (!Directory.Exists(pPath))
+                Directory.CreateDirectory(pPath);
+
             _path = pPath;
         }
-
-        private static readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
 
         /// <summary>
         /// Crée un fichier Json par default avec les Settings

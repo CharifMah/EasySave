@@ -76,9 +76,6 @@ namespace Stockage
         {
             try
             {
-                Stopwatch lSw = Stopwatch.StartNew();
-                lSw.Start();
-
                 // cm - Check if the source directory exists
                 if (!pSourceDir.Exists)
                     throw new DirectoryNotFoundException($"Source directory not found: {pSourceDir.FullName}");
@@ -87,13 +84,6 @@ namespace Stockage
                 FileInfo[] lFiles = pSourceDir.GetFiles();
 
                 CLogFileState lLogFilestate = new CLogFileState();
-                CLogState lLogState = new CLogState
-                {
-                    Name = pSourceDir.Name,
-                    SourceDirectory = pSourceDir.FullName,
-                    TargetDirectory = pTargetDir.FullName,
-                    TotalSize = GetDirSize(pSourceDir.FullName),
-                };
 
                 // cm - Get files in the source directory and copy to the destination directory
                 for (int i = 0; i < lFiles.Length; i++)
@@ -125,11 +115,6 @@ namespace Stockage
                         CopyDirectory(lSubDir, lNewDestinationDir, true, pForce, pLogger);
                     }
                 }
-                lSw.Stop();
-
-                lLogState.Date = DateTime.Now;
-                lLogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
-                pLogger.GenericLogger.Log(lLogState);
             }
             catch (Exception ex)
             {
@@ -137,7 +122,7 @@ namespace Stockage
             }
         }
 
-        private long GetDirSize(string pPath)
+        public long GetDirSize(string pPath)
         {
             try
             {

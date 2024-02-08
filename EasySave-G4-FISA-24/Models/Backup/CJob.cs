@@ -1,6 +1,7 @@
 ﻿using Logs;
 using Stockage;
 using Stockage.Logs;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace Models.Backup
@@ -69,10 +70,29 @@ namespace Models.Backup
         {
             try
             {
-                ISauve sauveCollection = new SauveCollection(_SourceDirectory);
+                DirectoryInfo lSourceDir = new DirectoryInfo(SourceDirectory);
+                DirectoryInfo lTargetDir = new DirectoryInfo(TargetDirectory);
+                SauveCollection lSauveCollection = new SauveCollection(_SourceDirectory);
+
+                CLogState lLogState = new CLogState
+                {
+                    Name = lSourceDir.Name,
+                    SourceDirectory = lSourceDir.FullName,
+                    TargetDirectory = lTargetDir.FullName,
+                    TotalSize = lSauveCollection.GetDirSize(lSourceDir.FullName),
+                };
+
+                Stopwatch lSw = Stopwatch.StartNew();
+                lSw.Start();
+
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    sauveCollection.CopyDirectory(new DirectoryInfo(_SourceDirectory), new DirectoryInfo(_TargetDirectory), true, pForceCopy, pLogger);
+                    lSauveCollection.CopyDirectory(new DirectoryInfo(_SourceDirectory), new DirectoryInfo(_TargetDirectory), true, pForceCopy, pLogger);
+
+                    lSw.Stop();
+                    lLogState.Date = DateTime.Now;
+                    lLogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
+                    pLogger.GenericLogger.Log(lLogState);
                 }
                 else
                 {

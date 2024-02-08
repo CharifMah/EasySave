@@ -233,36 +233,79 @@ namespace EasySave.Views
         {
             if (e.NewItems.Count >= 1)
             {
-                CLogBase lLogState = (sender as ObservableCollection<CLogBase>).Last();
+                CLogBase lLogFileState = (sender as ObservableCollection<CLogBase>).Last();
 
-                ConsoleExtention.WriteTitle(lLogState.Name);
+                if (!lLogFileState.IsSummary)
+                {               
+                    ConsoleExtention.WriteTitle(lLogFileState.Name);
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Date: ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Date: ");
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(lLogState.Date.Date);
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(lLogFileState.Date.Date);
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Source Directory: ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Source Directory: ");
 
-                ConsoleExtention.WriteLinePath(lLogState.SourceDirectory);
+                    ConsoleExtention.WriteLinePath(lLogFileState.SourceDirectory);
 
-                Console.ResetColor();
-                Console.WriteLine("=>");
+                    Console.ResetColor();
+                    Console.WriteLine("=>");
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Target Directory: ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Target Directory: ");
 
-                ConsoleExtention.WriteLinePath(lLogState.TargetDirectory);
+                    ConsoleExtention.WriteLinePath(lLogFileState.TargetDirectory);
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Total Size: ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Total Size: ");
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(lLogState.TotalSize);
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(lLogFileState.TotalSize);
 
-                Console.ResetColor();
+                    Console.ResetColor();
+                }
+                else
+                {
+                    CLogState lLogState = (CLogState)(sender as ObservableCollection<CLogBase>).Last();
+
+                    ConsoleExtention.WriteTitle(lLogState.Name,ConsoleColor.Red);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Date: ");
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(lLogState.Date.Date);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Temps elapsed: ");
+
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(lLogState.ElapsedMilisecond + "ms");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Source Directory: ");
+
+                    ConsoleExtention.WriteLinePath(lLogState.SourceDirectory);
+
+                    Console.ResetColor();
+                    Console.WriteLine("=>");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Target Directory: ");
+
+                    ConsoleExtention.WriteLinePath(lLogState.TargetDirectory);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Total Size: ");
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(lLogState.TotalSize);
+
+                    Console.ResetColor();
+                }
+                
             }
         }
 

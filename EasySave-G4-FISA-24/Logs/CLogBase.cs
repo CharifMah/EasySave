@@ -17,6 +17,7 @@ namespace Logs
         [DataMember]
         private string _TargetDirectory;
 
+        private bool _IsSummary;
 
 
         public DateTime Date { get => _Date; set => _Date = value; }
@@ -24,5 +25,6 @@ namespace Logs
         public double TotalSize { get => _TotalSize; set => _TotalSize = value; }
         public string SourceDirectory { get => _SourceDirectory; set => _SourceDirectory = value; }
         public string TargetDirectory { get => _TargetDirectory; set => _TargetDirectory = value; }
+        public bool IsSummary { get => _IsSummary; set => _IsSummary = value; }
     }
 }

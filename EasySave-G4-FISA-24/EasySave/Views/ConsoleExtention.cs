@@ -45,7 +45,7 @@ namespace EasySave.Views
         /// Write a personalized Title with separator
         /// </summary>
         /// <param name="pTitle">Title to write</param>
-        public static void WriteTitle(string pTitle)
+        public static void WriteTitle(string pTitle,ConsoleColor pColor = ConsoleColor.White)
         {
             int consoleWidth = Console.WindowWidth;
             // cm - Create a separator with dynamic width
@@ -57,7 +57,7 @@ namespace EasySave.Views
             string lTitleFormatted = lTitle.PadLeft((consoleWidth + lTitle.Length) / 2).PadRight(consoleWidth);
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine(lSeparator);
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = pColor;
             Console.WriteLine(lTitleFormatted);
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine(lSeparator);

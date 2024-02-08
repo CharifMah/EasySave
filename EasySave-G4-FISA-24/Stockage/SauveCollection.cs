@@ -2,11 +2,14 @@
 using Logs;
 using Newtonsoft.Json;
 using Stockage.Logs;
+using System.Diagnostics;
 
 namespace Stockage
 {
     public class SauveCollection : ISauve
     {
+        private int _FilesTransfered;
+
         private string _path;
 
         private static readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
@@ -21,6 +24,7 @@ namespace Stockage
                 Directory.CreateDirectory(pPath);
 
             _path = pPath;
+            _FilesTransfered = 0;
         }
 
         /// <summary>
@@ -38,7 +42,7 @@ namespace Stockage
                 if (Directory.Exists(_path))
                 {
                     // cm - Serialize data to json
-                    string jsonString = JsonConvert.SerializeObject(pData, _options);
+                    string jsonString = JsonConvert.SerializeObject(pData, Formatting.Indented, _options);
                     string lPath = Path.Combine(_path, $"{pFileName}.{pExtention}");
 
                     // cm - delete the file if exist
@@ -66,40 +70,50 @@ namespace Stockage
         /// <param name="pTargetDir">Path of the target directory</param>
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pForce">true if overwrite</param>
+        /// <param name="pLogger">Logger</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
         public void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false, CLogger<CLogBase> pLogger = null)
         {
             try
             {
+                Stopwatch lSw = Stopwatch.StartNew();
+                lSw.Start();
+
                 // cm - Check if the source directory exists
                 if (!pSourceDir.Exists)
                     throw new DirectoryNotFoundException($"Source directory not found: {pSourceDir.FullName}");
 
                 Directory.CreateDirectory(pTargetDir.FullName);
-
-                CLogState lLogState = new CLogState();
-
                 FileInfo[] lFiles = pSourceDir.GetFiles();
 
-                // cm - Get files in the source directory and copy to the destination directory
-                foreach (FileInfo file in lFiles)
+                CLogFileState lLogFilestate = new CLogFileState();
+                CLogState lLogState = new CLogState
                 {
-                    string lTargetFilePath = Path.Combine(pTargetDir.FullName, file.Name);
+                    Name = pSourceDir.Name,
+                    SourceDirectory = pSourceDir.FullName,
+                    TargetDirectory = pTargetDir.FullName,
+                    TotalSize = GetDirSize(pSourceDir.FullName),
+                };
 
-                    file.CopyTo(lTargetFilePath, pForce);
+                // cm - Get files in the source directory and copy to the destination directory
+                for (int i = 0; i < lFiles.Length; i++)
+                {
+                    string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
 
+                    lFiles[i].CopyTo(lTargetFilePath, pForce);
+                    _FilesTransfered++;
                     if (pForce)
                         pLogger.StringLogger.Log("Force Delete : " + lTargetFilePath);
 
-                    lLogState.Name = file.Name;
-                    lLogState.SourceDirectory = file.FullName;
-                    lLogState.TargetDirectory = lTargetFilePath;
-                    lLogState.EligibleFileCount = lFiles.Length;
-                    lLogState.TimeStamp = DateTime.Now;
-                    lLogState.TotalSize = file.Length;
-                    lLogState.RemainingSize = lLogState.TotalSize - 0;
+                    pLogger.StringLogger.Log("Files Transfered : " + _FilesTransfered);
 
-                    pLogger.GenericLogger.Log(lLogState);
+                    lLogFilestate.Name = lFiles[i].Name;
+                    lLogFilestate.SourceDirectory = lFiles[i].FullName;
+                    lLogFilestate.TargetDirectory = lTargetFilePath;
+                    lLogFilestate.Date = DateTime.Now;
+                    lLogFilestate.TotalSize = lFiles[i].Length;
+
+                    pLogger.GenericLogger.Log(lLogFilestate);
                 }
 
                 // cm - If recursive and copying subdirectories, recursively call this method
@@ -111,10 +125,29 @@ namespace Stockage
                         CopyDirectory(lSubDir, lNewDestinationDir, true, pForce, pLogger);
                     }
                 }
+                lSw.Stop();
+
+                lLogState.Date = DateTime.Now;
+                lLogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
+                pLogger.GenericLogger.Log(lLogState);
             }
             catch (Exception ex)
             {
                 pLogger.StringLogger.Log(ex.Message);
+            }
+        }
+
+        private long GetDirSize(string pPath)
+        {
+            try
+            {
+                return Directory.EnumerateFiles(pPath).Sum(x => new FileInfo(x).Length)
+                    +
+                       Directory.EnumerateDirectories(pPath).Sum(x => GetDirSize(x));
+            }
+            catch
+            {
+                return 0L;
             }
         }
     }

@@ -19,7 +19,7 @@ namespace EasySave.Views
         {
             _JobVm = pJobVm;
             _JobVm.JobManager.Logger.GenericLogger.Datas.CollectionChanged += LogGenericData_CollectionChanged;
-            _JobVm.JobManager.Logger.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged; ;
+            _JobVm.JobManager.Logger.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged;
         }
 
 
@@ -241,7 +241,7 @@ namespace EasySave.Views
                 Console.Write("Date: ");
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(lLogState.TimeStamp.Date);
+                Console.WriteLine(lLogState.Date.Date);
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Source Directory: ");

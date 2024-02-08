@@ -7,7 +7,7 @@ namespace Logs
     public class CLogBase : IPath
     {
         [DataMember]
-        private DateTime _TimeStamp;
+        private DateTime _Date;
         [DataMember]
         private string _Name;
         [DataMember]
@@ -18,7 +18,8 @@ namespace Logs
         private string _TargetDirectory;
 
 
-        public DateTime TimeStamp { get => _TimeStamp; set => _TimeStamp = value; }
+
+        public DateTime Date { get => _Date; set => _Date = value; }
         public string Name { get => _Name; set => _Name = value; }
         public double TotalSize { get => _TotalSize; set => _TotalSize = value; }
         public string SourceDirectory { get => _SourceDirectory; set => _SourceDirectory = value; }

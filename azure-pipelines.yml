@@ -4,7 +4,7 @@ trigger:
     - livrable-1
 
 pool:
-  vmImage: 'my-pool-agent' # Assurez-vous que ceci correspond à votre configuration d'agent personnalisée
+  name: 'my-pool-agent'
 
 variables:
   BuildPlatform: 'Any CPU'
@@ -48,7 +48,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    # Utilisez la variable PublishProjects pour exclure les tests de la publication
+    # variable PublishProjects pour exclure les tests de la publication
     projects: '$(PublishProjects)'
     arguments: '--configuration $(BuildConfiguration) --output $(PublishFolder)'
     zipAfterPublish: false

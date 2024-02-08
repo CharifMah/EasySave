@@ -24,16 +24,21 @@ namespace EasySave.Views
 
         public static void WriteLineWarning(string pMessage)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine('\n' + pMessage);
             Console.ForegroundColor = ConsoleColor.White;
         }
 
         public static void WriteLinePath(string pPath)
         {
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.WriteLine('\n' + pPath.Replace(@"\", @"\\"));
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(pPath.Replace(@"\", @"\\") + '\n');
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void WriteLineSelected(string pInput)
+        {
+            Console.WriteLine($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + pInput + '\n');
         }
 
         /// <summary>
@@ -112,7 +117,7 @@ namespace EasySave.Views
 
             // cm - Don't show Succes message if the user cancel the action
             if (_Input != "-1" || String.IsNullOrEmpty(_Input))
-                Console.WriteLine($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + _Input + '\n');
+                WriteLineSelected(_Input);
 
             if (lsInput.KeyChar == (char)ConsoleKey.Enter && !pRegex.IsMatch(_Input))
             {
@@ -165,7 +170,7 @@ namespace EasySave.Views
 
                 lDialog.Destroy();
 
-                WriteLinePath($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + lSelectedFolder + '\n');
+                WriteLineSelected(lSelectedFolder);
 
                 return lSelectedFolder;
             }
@@ -204,7 +209,7 @@ namespace EasySave.Views
 
                 lDialog.Destroy();
 
-                WriteLinePath($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + lSelectedFile + '\n');
+                WriteLineSelected(lSelectedFile);
 
                 return lSelectedFile;
             }

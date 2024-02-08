@@ -1,9 +1,11 @@
-﻿namespace Stockage.Log
+﻿using System.Collections.ObjectModel;
+
+namespace Stockage.Logs
 {
     public class CLogger<T> : BaseLogger<T>
     {
-        private List<T> _Datas;
-        public override List<T> Datas
+        private ObservableCollection<T> _Datas;
+        public override ObservableCollection<T> Datas
         {
             get
             {
@@ -13,7 +15,7 @@
 
         public CLogger()
         {
-            _Datas = new List<T>();
+            _Datas = new ObservableCollection<T>();
         }
 
         public override void Log(T pData)

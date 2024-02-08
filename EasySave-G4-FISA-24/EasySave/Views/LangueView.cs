@@ -1,6 +1,5 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
-using Models;
 using System.Text.RegularExpressions;
 
 namespace EasySave.Views
@@ -35,7 +34,7 @@ namespace EasySave.Views
         public void ListLanguage()
         {
             ConsoleExtention.WriteTitle(Title);
-            foreach (KeyValuePair<int,string> lLangue in _LangueVm.Langue.Languages)
+            foreach (KeyValuePair<int, string> lLangue in _LangueVm.Langue.Languages)
             {
                 Console.WriteLine($"{lLangue.Key} - {lLangue.Value} ");
             }

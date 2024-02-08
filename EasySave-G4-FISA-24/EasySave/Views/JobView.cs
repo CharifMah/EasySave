@@ -1,6 +1,8 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
+using Logs;
 using Models.Backup;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 namespace EasySave.Views
@@ -16,7 +18,9 @@ namespace EasySave.Views
         public JobView(JobViewModel pJobVm)
         {
             _JobVm = pJobVm;
+            _JobVm.JobManager.Logger.Datas.CollectionChanged += Datas_CollectionChanged;
         }
+
         #endregion
 
         #region Methods
@@ -31,7 +35,7 @@ namespace EasySave.Views
 
             if (_JobVm.JobManager.Jobs.Any())
             {
-                Tuple<int, int> lRange = SelectJobs();
+                Tuple<int, int> lRange = SelectJobs(_JobVm.JobManager.Jobs);
                 if (lRange == null)
                     return;
 
@@ -156,19 +160,19 @@ namespace EasySave.Views
         /// Print the range selection to run jobs
         /// </summary>
         /// <returns>Tuple of index where the first item is lower or equal than item2</returns>
-        private Tuple<int, int> SelectJobs()
+        private Tuple<int, int> SelectJobs(List<CJob> pJobs)
         {
             int lStartIndex = 0;
             int lEndIndex = 0;
             Console.WriteLine("Sélectionnez la plage de jobs à exécuter");
 
-            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-9]+$")));
+            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-"+ (pJobs.Count - 1) + "]+$")));
             if (lStartIndex == -1)
                 return null;
 
             Console.WriteLine();
 
-            lEndIndex = int.Parse(ConsoleExtention.ReadResponse("Index de fin : ", new Regex("^[0-9]+$")));
+            lEndIndex = int.Parse(ConsoleExtention.ReadResponse("Index de fin : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
             if (lEndIndex == -1)
                 return null;
 
@@ -177,7 +181,7 @@ namespace EasySave.Views
             {
                 Console.WriteLine($"Plage d'indices invalide le nombre de job disponible est de {_JobVm.JobManager.Jobs.Count}");
                 //Restart SelectJobs if the range is not correct
-                return SelectJobs();
+                return SelectJobs(pJobs);
             }
 
             return Tuple.Create(lStartIndex, lEndIndex);
@@ -203,7 +207,7 @@ namespace EasySave.Views
         public void LoadJobs()
         {
             ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("LoadJobs").ToString());
-            
+
             string lInput = ConsoleExtention.ReadResponse("0 - Fichier par defaut\n" +
                                                           "1 - Autre fichier\n");
             switch (lInput)
@@ -219,6 +223,47 @@ namespace EasySave.Views
                     break;
             }
         }
+        #endregion
+
+        #region Events
+
+        private void Datas_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems.Count >= 1)
+            {
+                CLogBase cLogState = (sender as ObservableCollection<CLogBase>).Last();
+
+                ConsoleExtention.WriteTitle(cLogState.Name);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Date: ");
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(cLogState.TimeStamp.Date);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Source Directory: ");
+
+                ConsoleExtention.WriteLinePath(cLogState.SourceDirectory);
+
+                Console.ResetColor();
+                Console.WriteLine("=>");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Target Directory: ");
+
+                ConsoleExtention.WriteLinePath(cLogState.TargetDirectory);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Total Size: ");
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(cLogState.TotalSize);
+
+                Console.ResetColor();
+            }
+        }
+
         #endregion
     }
 }

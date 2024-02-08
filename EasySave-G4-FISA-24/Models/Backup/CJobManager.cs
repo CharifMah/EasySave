@@ -1,6 +1,6 @@
 ﻿using Logs;
 using Stockage;
-using Stockage.Log;
+using Stockage.Logs;
 using System.Runtime.Serialization;
 
 namespace Models.Backup
@@ -24,6 +24,7 @@ namespace Models.Backup
 
         public List<CJob> Jobs { get => _Jobs; }
         public string Name { get => _Name; set => _Name = value; }
+        public ILogger<CLogBase> Logger { get => _Logger; set => _Logger = value; }
 
 
         #endregion

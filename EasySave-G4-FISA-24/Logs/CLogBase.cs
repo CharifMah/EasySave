@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text;
 
 namespace Logs
 {
@@ -22,10 +23,5 @@ namespace Logs
         public double TotalSize { get => _TotalSize; set => _TotalSize = value; }
         public string SourceDirectory { get => _SourceDirectory; set => _SourceDirectory = value; }
         public string TargetDirectory { get => _TargetDirectory; set => _TargetDirectory = value; }
-
-        public override string? ToString()
-        {
-            return $" - {_TimeStamp.Date} - {_Name} - {_TotalSize}";
-        }
     }
 }

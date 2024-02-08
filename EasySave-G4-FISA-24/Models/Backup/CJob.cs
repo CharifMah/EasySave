@@ -1,6 +1,6 @@
 ﻿using Logs;
 using Stockage;
-using Stockage.Log;
+using Stockage.Logs;
 using System.Runtime.Serialization;
 
 namespace Models.Backup

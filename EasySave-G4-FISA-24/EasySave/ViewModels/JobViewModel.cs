@@ -6,7 +6,7 @@ namespace EasySave.ViewModels
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
-        
+
         private CJobManager _jobManager;
         public CJobManager JobManager { get => _jobManager; set => _jobManager = value; }
 
@@ -20,6 +20,7 @@ namespace EasySave.ViewModels
         }
 
         #endregion
+
         public List<CJob> RunJobs(Tuple<int, int> pRange = null)
         {
             return _jobManager.RunJobs(pRange);

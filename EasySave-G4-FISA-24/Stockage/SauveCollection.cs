@@ -1,7 +1,7 @@
 ﻿
 using Logs;
 using Newtonsoft.Json;
-using Stockage.Log;
+using Stockage.Logs;
 
 namespace Stockage
 {
@@ -60,11 +60,11 @@ namespace Stockage
         /// Copy files and directory from the soruce path to the destinationPath
         /// </summary>
         /// <param name="pSourceDir">Path of the directory you want tot copy</param>
-        /// <param name="pDestinationDir">Path of the target directory</param>
+        /// <param name="pTargetDir">Path of the target directory</param>
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pForce">true if overwrite</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public void CopyDirectory(string pSourceDir, string pDestinationDir, bool pRecursive, bool pForce = false, ILogger<CLogBase> pLogger = null)
+        public void CopyDirectory(string pSourceDir, string pTargetDir, bool pRecursive, bool pForce = false, ILogger<CLogBase> pLogger = null)
         {
             var lDir = new DirectoryInfo(pSourceDir);
 
@@ -80,14 +80,16 @@ namespace Stockage
             // cm - Get files in the source directory and copy to the destination directory
             foreach (FileInfo file in lFiles)
             {
-                string lTargetFilePath = Path.Combine(pDestinationDir, file.Name);
+                string lTargetFilePath = Path.Combine(pTargetDir, file.Name);
 
                 if (File.Exists(lTargetFilePath))
                     if (pForce)
                         File.Delete(lTargetFilePath);
 
                 file.CopyTo(lTargetFilePath);
-
+                lLogState.Name = file.Name;
+                lLogState.SourceDirectory = file.FullName;
+                lLogState.TargetDirectory = lTargetFilePath;
                 lLogState.EligibleFileCount = lFiles.Length;
                 lLogState.TimeStamp = DateTime.Now;
                 lLogState.TotalSize = 0;
@@ -99,7 +101,7 @@ namespace Stockage
             {
                 foreach (DirectoryInfo lSubDir in lDirs)
                 {
-                    string lNewDestinationDir = Path.Combine(pDestinationDir, lSubDir.Name);
+                    string lNewDestinationDir = Path.Combine(pTargetDir, lSubDir.Name);
                     CopyDirectory(lSubDir.FullName, lNewDestinationDir, true, pForce, pLogger);
                 }
             }

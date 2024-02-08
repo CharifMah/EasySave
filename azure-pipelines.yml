@@ -1,0 +1,56 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  name: 'my-agent-pool'
+
+variables:
+    BuildPlatform: 'Any CPU'
+    BuildConfiguration: 'Release'
+    BasePath: 'EasySave-G4-FISA-24/' # Chemin de base vers le dossier du code
+    Solution: '$(BasePath)**/*.sln'
+    RestoreBuildProjects: '$(BasePath)**/*.csproj'
+    TestProjects: '$(BasePath)**/*UnitTestStorage/*.csproj'
+
+steps:
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '$(RestoreBuildProjects)'
+    feedsToUse: 'select'
+    noCache: true
+    verbosityRestore: 'Diagnostic'
+  
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: 'build'
+    projects: '$(RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+  
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+    projects: '$(TestProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: False
+    projects: '$(RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+    zipAfterPublish: True
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'

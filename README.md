@@ -64,9 +64,11 @@ Pour contribuer à cette branche, voici le processus à suivre et les nommages �
 
 5. Une fois la PR mergée sur Azure Devops, mettre à jour la branche livrable-1 si tout fonctionne
 
+En local :
     * git checkout develop-livrable-1
     * git pull origin develop-livrable-1 (Pour récup les PR mergées)
     * Tester sur l'application si tout marche
-    * git checkout livrable-1
-    * git merge develop-livrable-1
-    * git push origin livrable-1
+Sur azure devops :
+    * Créer une nouvelle PR (onglet Pull requests) avec cette fois into livrable-1
+    * Attente du merge conflicts + Pipeline Build & Test & Push Release
+    * !!! Atention lors du merge validé décocher supprimer cette branche !!!

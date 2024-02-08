@@ -1,4 +1,5 @@
 ﻿using EasySaveDraft.Resources;
+using GLib;
 using Gtk;
 using System.Text.RegularExpressions;
 
@@ -157,41 +158,39 @@ namespace EasySave.Views
             {
                 Console.WriteLine(pDescription);
 
-                try
-                {
-                    Application.Init();
+                string[] argrs = new string[] { };
 
+                if (!Gtk.Application.InitCheck("", ref argrs))
+                {
                     lDialog = new FileChooserDialog(
-                           title: pDescription,
-                           parent: null,
-                           action: FileChooserAction.SelectFolder);
+                   title: pDescription,
+                   parent: null,
+                   action: FileChooserAction.SelectFolder);
 
-                    lDialog.Show();
-                }
-                catch (Exception)
-                {
-                    return ReadFolderConsole();
-                }
+                    lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
+                    lDialog.AddButton(Strings.ResourceManager.GetObject("Select").ToString(), ResponseType.Ok);
 
-                lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
-                lDialog.AddButton(Strings.ResourceManager.GetObject("Select").ToString(), ResponseType.Ok);
+                    lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
 
-                lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
+                    if (lDialog.Run() == (int)ResponseType.Ok)
+                    {
+                        lSelectedFolder = lDialog.Filename;
+                    }
+                    else
+                        lSelectedFolder = "-1";
 
-                if (lDialog.Run() == (int)ResponseType.Ok)
-                {
-                    lSelectedFolder = lDialog.Filename;
+                    lDialog.Destroy();            
                 }
                 else
-                    lSelectedFolder = "-1";
-
-                lDialog.Destroy();
+                {
+                    lSelectedFolder = ReadFolderConsole();
+                }
 
                 WriteLineSelected(lSelectedFolder);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                WriteLineError(ex.Message);
             }
 
             return lSelectedFolder;
@@ -203,47 +202,42 @@ namespace EasySave.Views
             FileChooserDialog lDialog = null;
             try
             {
-                
+
                 Console.WriteLine(pDescription);
 
-                try
+                string[] argrs = new string[] { };
+
+                if (!Gtk.Application.InitCheck("", ref argrs))
                 {
-                    Application.Init();
-         
                     lDialog = new FileChooserDialog(
-                                title: pDescription,
-                                parent: null,
-                                action: FileChooserAction.Open);
+                           title: pDescription,
+                           parent: null,
+                           action: FileChooserAction.Open);
 
-                    lDialog.Show();
+                    lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
+                    lDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
 
-                }
-                catch (Exception)
-                {
-                    return ReadFileConsole();
-                }
+                    lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
 
+                    if (lDialog.Run() == (int)ResponseType.Ok)
+                    {
+                        lSelectedFile = lDialog.Filename;
+                    }
+                    else
+                        lSelectedFile = "-1";
 
-
-                lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
-                lDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
-
-                lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
-
-                if (lDialog.Run() == (int)ResponseType.Ok)
-                {
-                    lSelectedFile = lDialog.Filename;
+                    lDialog.Destroy();
                 }
                 else
-                    lSelectedFile = "-1";
-
-                lDialog.Destroy();
+                {
+                    lSelectedFile = ReadFileConsole();
+                }
 
                 WriteLineSelected(lSelectedFile);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                WriteLineError(ex.Message);
             }
 
             return lSelectedFile;

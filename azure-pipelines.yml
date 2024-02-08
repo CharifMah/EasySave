@@ -4,7 +4,7 @@ trigger:
     - livrable-1
 
 pool:
-  name: 'my-pool-agent'
+  name: 'my-agent-pool'
 
 variables:
   BuildPlatform: 'Any CPU'

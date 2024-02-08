@@ -67,51 +67,54 @@ namespace Stockage
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pForce">true if overwrite</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public void CopyDirectory(string pSourceDir, string pTargetDir, bool pRecursive, bool pForce = false, CLogger<CLogBase> pLogger = null)
+        public void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false, CLogger<CLogBase> pLogger = null)
         {
-            var lDir = new DirectoryInfo(pSourceDir);
-
-            // cm - Check if the source directory exists
-            if (!lDir.Exists)
-                throw new DirectoryNotFoundException($"Source directory not found: {lDir.FullName}");
-
-            DirectoryInfo[] lDirs = lDir.GetDirectories();
-            FileInfo[] lFiles = lDir.GetFiles();
-
-            CLogState lLogState = new CLogState();
-
-            // cm - Get files in the source directory and copy to the destination directory
-            foreach (FileInfo file in lFiles)
+            try
             {
-                string lTargetFilePath = Path.Combine(pTargetDir, file.Name);
+                // cm - Check if the source directory exists
+                if (!pSourceDir.Exists)
+                    throw new DirectoryNotFoundException($"Source directory not found: {pSourceDir.FullName}");
 
-                if (File.Exists(lTargetFilePath) && pForce)
+                Directory.CreateDirectory(pTargetDir.FullName);
+
+                CLogState lLogState = new CLogState();
+
+                FileInfo[] lFiles = pSourceDir.GetFiles();
+
+                // cm - Get files in the source directory and copy to the destination directory
+                foreach (FileInfo file in lFiles)
                 {
-                    File.Delete(lTargetFilePath);
-                    pLogger.StringLogger.Log("Force Delete : " + lTargetFilePath);
+                    string lTargetFilePath = Path.Combine(pTargetDir.FullName, file.Name);
+
+                    file.CopyTo(lTargetFilePath, pForce);
+
+                    if (pForce)
+                        pLogger.StringLogger.Log("Force Delete : " + lTargetFilePath);
+
+                    lLogState.Name = file.Name;
+                    lLogState.SourceDirectory = file.FullName;
+                    lLogState.TargetDirectory = lTargetFilePath;
+                    lLogState.EligibleFileCount = lFiles.Length;
+                    lLogState.TimeStamp = DateTime.Now;
+                    lLogState.TotalSize = file.Length;
+                    lLogState.RemainingSize = lLogState.TotalSize - 0;
+
+                    pLogger.GenericLogger.Log(lLogState);
                 }
 
-                file.CopyTo(lTargetFilePath);
-
-                lLogState.Name = file.Name;
-                lLogState.SourceDirectory = file.FullName;
-                lLogState.TargetDirectory = lTargetFilePath;
-                lLogState.EligibleFileCount = lFiles.Length;
-                lLogState.TimeStamp = DateTime.Now;
-                lLogState.TotalSize = file.Length;
-                lLogState.RemainingSize = lLogState.TotalSize - 0;
-
-                pLogger.GenericLogger.Log(lLogState);
+                // cm - If recursive and copying subdirectories, recursively call this method
+                if (pRecursive)
+                {
+                    foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
+                    {
+                        DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
+                        CopyDirectory(lSubDir, lNewDestinationDir, true, pForce, pLogger);
+                    }
+                }
             }
-
-            // cm - If recursive and copying subdirectories, recursively call this method
-            if (pRecursive)
+            catch (Exception ex)
             {
-                foreach (DirectoryInfo lSubDir in lDirs)
-                {
-                    string lNewDestinationDir = Path.Combine(pTargetDir, lSubDir.Name);
-                    CopyDirectory(lSubDir.FullName, lNewDestinationDir, true, pForce, pLogger);
-                }
+                pLogger.StringLogger.Log(ex.Message);
             }
         }
     }

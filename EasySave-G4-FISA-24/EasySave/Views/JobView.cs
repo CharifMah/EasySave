@@ -44,7 +44,7 @@ namespace EasySave.Views
                 List<CJob> lJobsRunning = _JobVm.RunJobs(lRange);
 
                 foreach (CJob lJobRunning in lJobsRunning)
-                    ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} is running");
+                    ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} copy is finished");
             }
             else
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());

@@ -72,7 +72,7 @@ namespace Models.Backup
                 ISauve sauveCollection = new SauveCollection(_SourceDirectory);
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    sauveCollection.CopyDirectory(_SourceDirectory, _TargetDirectory, true, pForceCopy, pLogger);
+                    sauveCollection.CopyDirectory(new DirectoryInfo(_SourceDirectory), new DirectoryInfo(_TargetDirectory), true, pForceCopy, pLogger);
                 }
                 else
                 {

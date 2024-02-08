@@ -17,7 +17,6 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Models\Models.csproj" />

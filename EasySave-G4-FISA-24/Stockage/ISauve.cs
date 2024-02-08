@@ -1,4 +1,7 @@
-﻿namespace Stockage
+﻿using Logs;
+using Stockage.Log;
+
+namespace Stockage
 {
     /// <summary>
     /// Interface ISauve
@@ -22,7 +25,8 @@
         /// <param name="pDestinationDir">Path of the target directory</param>
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pForce">true if overwrite</param>
+        /// <param name="pLogger">Class de logger</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        void CopyDirectory(string pSourceDir, string pDestinationDir, bool pRecursive, bool pForce = false);
+        void CopyDirectory(string pSourceDir, string pDestinationDir, bool pRecursive, bool pForce = false, ILogger<CLogBase> pLogger = null);
     }
 }

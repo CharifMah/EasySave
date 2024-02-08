@@ -203,7 +203,7 @@ namespace EasySave.Views
         public void LoadJobs()
         {
             ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("LoadJobs").ToString());
-
+            
             string lInput = ConsoleExtention.ReadResponse("0 - Fichier par defaut\n" +
                                                           "1 - Autre fichier\n");
             switch (lInput)

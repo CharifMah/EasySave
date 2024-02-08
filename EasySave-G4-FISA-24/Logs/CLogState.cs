@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Models.Logs
+namespace Logs
 {
     [DataContract]
     public class CLogState : CLogBase

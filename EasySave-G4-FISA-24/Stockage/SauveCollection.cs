@@ -1,11 +1,14 @@
 ﻿
+using Logs;
 using Newtonsoft.Json;
+using Stockage.Log;
 
 namespace Stockage
 {
     public class SauveCollection : ISauve
     {
         private string _path;
+
         private static readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
 
         /// <summary>
@@ -61,7 +64,7 @@ namespace Stockage
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pForce">true if overwrite</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public void CopyDirectory(string pSourceDir, string pDestinationDir, bool pRecursive, bool pForce = false)
+        public void CopyDirectory(string pSourceDir, string pDestinationDir, bool pRecursive, bool pForce = false, ILogger<CLogBase> pLogger = null)
         {
             var lDir = new DirectoryInfo(pSourceDir);
 
@@ -70,9 +73,12 @@ namespace Stockage
                 throw new DirectoryNotFoundException($"Source directory not found: {lDir.FullName}");
 
             DirectoryInfo[] lDirs = lDir.GetDirectories();
+            FileInfo[] lFiles = lDir.GetFiles();
+
+            CLogState lLogState = new CLogState();
 
             // cm - Get files in the source directory and copy to the destination directory
-            foreach (FileInfo file in lDir.GetFiles())
+            foreach (FileInfo file in lFiles)
             {
                 string lTargetFilePath = Path.Combine(pDestinationDir, file.Name);
 
@@ -81,6 +87,11 @@ namespace Stockage
                         File.Delete(lTargetFilePath);
 
                 file.CopyTo(lTargetFilePath);
+
+                lLogState.EligibleFileCount = lFiles.Length;
+                lLogState.TimeStamp = DateTime.Now;
+                lLogState.TotalSize = 0;
+                pLogger.Log(lLogState);
             }
 
             // cm - If recursive and copying subdirectories, recursively call this method
@@ -89,7 +100,7 @@ namespace Stockage
                 foreach (DirectoryInfo lSubDir in lDirs)
                 {
                     string lNewDestinationDir = Path.Combine(pDestinationDir, lSubDir.Name);
-                    CopyDirectory(lSubDir.FullName, lNewDestinationDir, true, pForce);
+                    CopyDirectory(lSubDir.FullName, lNewDestinationDir, true, pForce, pLogger);
                 }
             }
         }

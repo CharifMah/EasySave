@@ -1,10 +1,12 @@
-﻿using Stockage;
+﻿using Logs;
+using Stockage;
+using Stockage.Log;
 using System.Runtime.Serialization;
 
 namespace Models.Backup
 {
     [DataContract]
-    public class CJob
+    public class CJob : IPath
     {
         #region Attribute
 
@@ -50,27 +52,27 @@ namespace Models.Backup
 
         #region Methods
 
-        public void Run()
+        public void Run(ILogger<CLogBase> pLogger = null)
         {
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:
-                    Backup(true);
+                    Backup(true, pLogger);
                     break;
                 case ETypeBackup.DIFFERENTIEL:
-                    Backup(false);
+                    Backup(false, pLogger);
                     break;
             }
         }
 
-        private void Backup(bool pForceCopy)
+        private void Backup(bool pForceCopy, ILogger<CLogBase> pLogger = null)
         {
             try
             {
                 ISauve sauveCollection = new SauveCollection(_SourceDirectory);
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    sauveCollection.CopyDirectory(_SourceDirectory, _TargetDirectory, true, pForceCopy);
+                    sauveCollection.CopyDirectory(_SourceDirectory, _TargetDirectory, true, pForceCopy, pLogger);
                 }
                 else
                 {

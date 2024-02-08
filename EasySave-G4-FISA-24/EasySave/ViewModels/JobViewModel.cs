@@ -1,11 +1,12 @@
 ﻿using Models.Backup;
 
+
 namespace EasySave.ViewModels
 {
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
-
+        
         private CJobManager _jobManager;
         public CJobManager JobManager { get => _jobManager; set => _jobManager = value; }
 

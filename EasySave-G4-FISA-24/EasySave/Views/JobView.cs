@@ -272,7 +272,7 @@ namespace EasySave.Views
             if (e.NewItems.Count >= 1)
             {
                 string lLog = (sender as ObservableCollection<string>).Last();
-                ConsoleExtention.WriteLineWarning(lLog);
+                ConsoleExtention.WriteLineWarning(DateTime.Now + " " + lLog);
             }
         }
 

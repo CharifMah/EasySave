@@ -4,7 +4,15 @@ namespace Stockage.Logs
 {
     public abstract class BaseLogger<T> : ILogger<T>
     {
-        public abstract ObservableCollection<T> Datas { get; }
-        public abstract void Log(T pData);
+        protected ObservableCollection<T> _Datas = new ObservableCollection<T>();
+
+        public ObservableCollection<T> Datas => _Datas;
+
+        public void Log(T pData,string pFileName = "Logs")
+        {
+            ISauve lSave = new SauveCollection(Environment.CurrentDirectory);
+            lSave.Sauver(pData, pFileName, true);
+            _Datas.Add(pData);
+        }
     }
 }

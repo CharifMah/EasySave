@@ -1,5 +1,6 @@
-﻿using Models.Logs;
+﻿using Logs;
 using Stockage;
+using Stockage.Logs;
 using System.Runtime.Serialization;
 
 namespace Models.Backup
@@ -15,6 +16,7 @@ namespace Models.Backup
         [DataMember]
         private string _Name;
         private ISauve _SauveCollection;
+
         #endregion
 
         #region Property

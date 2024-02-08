@@ -27,6 +27,6 @@ namespace Stockage
         /// <param name="pForce">true if overwrite</param>
         /// <param name="pLogger">Class de logger</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false, CLogger<CLogBase> pLogger = null);
+        void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false);
     }
 }

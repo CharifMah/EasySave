@@ -6,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace Stockage.Logs
 {
-    public class CLogger<T>
+    public static class CLogger<T>
     {
-        private CGenericLogger<T> _GenericLogger;
-        private CStringLogger _StringLogger;
+        private static CGenericLogger<T> _GenericLogger = new CGenericLogger<T>();
+        private static CStringLogger _StringLogger = new CStringLogger();
 
-        public CGenericLogger<T> GenericLogger { get => _GenericLogger; set => _GenericLogger = value; }
-        public CStringLogger StringLogger { get => _StringLogger; set => _StringLogger = value; }
-
-        public CLogger()
-        {
-            _GenericLogger = new CGenericLogger<T>();
-            _StringLogger = new CStringLogger();
-        }
+        public static CGenericLogger<T> GenericLogger { get => _GenericLogger; }
+        public static CStringLogger StringLogger { get => _StringLogger; }
     }
 }

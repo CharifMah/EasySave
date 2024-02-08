@@ -72,7 +72,7 @@ namespace Stockage
         /// <param name="pForce">true if overwrite</param>
         /// <param name="pLogger">Logger</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false, CLogger<CLogBase> pLogger = null)
+        public void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false)
         {
             try
             {
@@ -93,9 +93,9 @@ namespace Stockage
                     lFiles[i].CopyTo(lTargetFilePath, pForce);
                     _FilesTransfered++;
                     if (pForce)
-                        pLogger.StringLogger.Log("Force Delete : " + lTargetFilePath);
+                        CLogger<CLogBase>.StringLogger.Log("Force Delete : " + lTargetFilePath);
 
-                    pLogger.StringLogger.Log("Files Transfered : " + _FilesTransfered);
+                    CLogger<CLogBase>.StringLogger.Log("Files Transfered : " + _FilesTransfered);
 
                     lLogFilestate.Name = lFiles[i].Name;
                     lLogFilestate.SourceDirectory = lFiles[i].FullName;
@@ -103,7 +103,7 @@ namespace Stockage
                     lLogFilestate.Date = DateTime.Now;
                     lLogFilestate.TotalSize = lFiles[i].Length;
 
-                    pLogger.GenericLogger.Log(lLogFilestate);
+                    CLogger<CLogBase>.GenericLogger.Log(lLogFilestate);
                 }
 
                 // cm - If recursive and copying subdirectories, recursively call this method
@@ -112,13 +112,13 @@ namespace Stockage
                     foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
                     {
                         DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
-                        CopyDirectory(lSubDir, lNewDestinationDir, true, pForce, pLogger);
+                        CopyDirectory(lSubDir, lNewDestinationDir, true, pForce);
                     }
                 }
             }
             catch (Exception ex)
             {
-                pLogger.StringLogger.Log(ex.Message);
+                CLogger<CLogBase>.StringLogger.Log(ex.Message);
             }
         }
 

@@ -88,7 +88,7 @@ namespace EasySave.Views
                 // cm - CTRL+V for past
                 if ((lsInput.Key == ConsoleKey.V && lsInput.Modifiers == ConsoleModifiers.Control))
                 {
-                    _Input = TextCopy.ClipboardService.GetText();
+                    _Input += TextCopy.ClipboardService.GetText();
                     Console.Write(_Input);
                 }
           
@@ -158,7 +158,6 @@ namespace EasySave.Views
 
                 try
                 {
-                    throw new Exception("sqd");
                     Application.Init();
                 }
                 catch (Exception)
@@ -205,7 +204,6 @@ namespace EasySave.Views
 
                 try
                 {
-                    throw new Exception("sqd");
                     Application.Init();
 
                 }
@@ -250,7 +248,7 @@ namespace EasySave.Views
             do
             {
                 lFilePath = ReadResponse("Enter file path: ");
-            } while (!Directory.Exists(lFilePath));
+            } while (!File.Exists(lFilePath));
 
             return lFilePath;
         }

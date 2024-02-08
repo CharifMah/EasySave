@@ -53,20 +53,20 @@ namespace Models.Backup
 
         #region Methods
 
-        public void Run(CLogger<CLogBase> pLogger = null)
+        public void Run()
         {
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:
-                    Backup(true, pLogger);
+                    Backup(true);
                     break;
                 case ETypeBackup.DIFFERENTIEL:
-                    Backup(false, pLogger);
+                    Backup(false);
                     break;
             }
         }
 
-        private void Backup(bool pForceCopy, CLogger<CLogBase> pLogger = null)
+        private void Backup(bool pForceCopy)
         {
             try
             {
@@ -87,12 +87,12 @@ namespace Models.Backup
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    lSauveCollection.CopyDirectory(new DirectoryInfo(_SourceDirectory), new DirectoryInfo(_TargetDirectory), true, pForceCopy, pLogger);
+                    lSauveCollection.CopyDirectory(new DirectoryInfo(_SourceDirectory), new DirectoryInfo(_TargetDirectory), true, pForceCopy);
 
                     lSw.Stop();
                     lLogState.Date = DateTime.Now;
                     lLogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
-                    pLogger.GenericLogger.Log(lLogState);
+                    CLogger<CLogBase>.GenericLogger.Log(lLogState);
                 }
                 else
                 {

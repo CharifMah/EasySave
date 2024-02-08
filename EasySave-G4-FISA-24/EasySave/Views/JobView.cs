@@ -2,6 +2,7 @@
 using EasySaveDraft.Resources;
 using Logs;
 using Models.Backup;
+using Stockage.Logs;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
@@ -18,8 +19,8 @@ namespace EasySave.Views
         public JobView(JobViewModel pJobVm)
         {
             _JobVm = pJobVm;
-            _JobVm.JobManager.Logger.GenericLogger.Datas.CollectionChanged += LogGenericData_CollectionChanged;
-            _JobVm.JobManager.Logger.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged;
+            CLogger<CLogBase>.GenericLogger.Datas.CollectionChanged += LogGenericData_CollectionChanged;
+            CLogger<CLogBase>.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged;
         }
 
 

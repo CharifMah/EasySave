@@ -37,17 +37,20 @@ namespace Stockage
                 // cm - Check if the directory exist
                 if (Directory.Exists(_path))
                 {
-                    // cm - delete the file if exist
-                    if (File.Exists(Path.Combine(_path, $"{pFileName}.{pExtention}")))
-                        File.Delete(Path.Combine(_path, $"{pFileName}.{pExtention}"));
                     // cm - Serialize data to json
                     string jsonString = JsonConvert.SerializeObject(pData, _options);
+                    string lPath = Path.Combine(_path, $"{pFileName}.{pExtention}");
 
-                    if (!pAppend)
+                    // cm - delete the file if exist
+                    if (!pAppend && File.Exists(lPath))
+                    {
+                        File.Delete(Path.Combine(_path, $"{pFileName}.{pExtention}"));
+
                         // cm - Write json data into the file
-                        File.WriteAllText(Path.Combine(_path, $"{pFileName}.{pExtention}"), jsonString);
+                        File.WriteAllText(lPath, jsonString);
+                    }
                     else
-                        File.AppendAllText(Path.Combine(_path, $"{pFileName}.{pExtention}"), jsonString);
+                        File.AppendAllText(lPath, jsonString);                        
                 }
             }
             catch (Exception ex)

@@ -82,16 +82,17 @@ namespace EasySave.Views
 
             do
             {
-                if (string.IsNullOrEmpty(_Input) && (lsInput.Key != ConsoleKey.V && lsInput.Modifiers != ConsoleModifiers.Control))
+                if (string.IsNullOrEmpty(_Input) && lsInput.Key != ConsoleKey.V && lsInput.Modifiers != ConsoleModifiers.Control)
                     Console.Write(pMessage);
 
                 // cm - CTRL+V for past
-                if ((lsInput.Key == ConsoleKey.V && lsInput.Modifiers == ConsoleModifiers.Control))
+                if (lsInput.Key == ConsoleKey.V && lsInput.Modifiers == ConsoleModifiers.Control)
                 {
-                    _Input += TextCopy.ClipboardService.GetText();
-                    Console.Write(_Input);
+                    string lText = TextCopy.ClipboardService.GetText();
+                    _Input += lText;
+                    Console.Write(lText);
                 }
-          
+
                 while (Console.KeyAvailable)
                     Console.ReadKey(false); // cm - skips previous inputs
 
@@ -151,7 +152,7 @@ namespace EasySave.Views
         public static string ReadFolder(string pDescription)
         {
             string lSelectedFolder = null;
-
+            FileChooserDialog lDialog = null;
             try
             {
                 Console.WriteLine(pDescription);
@@ -159,16 +160,18 @@ namespace EasySave.Views
                 try
                 {
                     Application.Init();
+
+                    lDialog = new FileChooserDialog(
+                           title: pDescription,
+                           parent: null,
+                           action: FileChooserAction.SelectFolder);
+
+                    lDialog.Show();
                 }
                 catch (Exception)
                 {
                     return ReadFolderConsole();
                 }
-
-                var lDialog = new FileChooserDialog(
-                    title: pDescription,
-                    parent: null,
-                    action: FileChooserAction.SelectFolder);
 
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Select").ToString(), ResponseType.Ok);
@@ -197,14 +200,22 @@ namespace EasySave.Views
         public static string ReadFile(string pDescription)
         {
             string lSelectedFile = null;
-
+            FileChooserDialog lDialog = null;
             try
             {
+                
                 Console.WriteLine(pDescription);
 
                 try
                 {
                     Application.Init();
+         
+                    lDialog = new FileChooserDialog(
+                                title: pDescription,
+                                parent: null,
+                                action: FileChooserAction.Open);
+
+                    lDialog.Show();
 
                 }
                 catch (Exception)
@@ -212,10 +223,7 @@ namespace EasySave.Views
                     return ReadFileConsole();
                 }
 
-                var lDialog = new FileChooserDialog(
-                    title: pDescription,
-                    parent: null,
-                    action: FileChooserAction.Open);
+
 
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);

@@ -1,4 +1,4 @@
-﻿namespace Models.Logs
+﻿namespace Logs
 {
     public class CLogDaily : CLogBase
     {

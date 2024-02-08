@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stockage
+namespace Stockage.Logs
 {
-    public abstract class BaseLogger
+    public class CStringLogger : BaseLogger<string>
     {
-        public abstract void Log<T>(T pData);
+       
     }
 }

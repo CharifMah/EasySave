@@ -1,11 +1,17 @@
 ﻿
+using Logs;
 using Newtonsoft.Json;
+using Stockage.Logs;
+using System.Diagnostics;
 
 namespace Stockage
 {
     public class SauveCollection : ISauve
     {
+        private int _FilesTransfered;
+
         private string _path;
+
         private static readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
 
         /// <summary>
@@ -18,6 +24,7 @@ namespace Stockage
                 Directory.CreateDirectory(pPath);
 
             _path = pPath;
+            _FilesTransfered = 0;
         }
 
         /// <summary>
@@ -34,17 +41,20 @@ namespace Stockage
                 // cm - Check if the directory exist
                 if (Directory.Exists(_path))
                 {
-                    // cm - delete the file if exist
-                    if (File.Exists(Path.Combine(_path, $"{pFileName}.{pExtention}")))
-                        File.Delete(Path.Combine(_path, $"{pFileName}.{pExtention}"));
                     // cm - Serialize data to json
-                    string jsonString = JsonConvert.SerializeObject(pData, _options);
+                    string jsonString = JsonConvert.SerializeObject(pData, Formatting.Indented, _options);
+                    string lPath = Path.Combine(_path, $"{pFileName}.{pExtention}");
 
-                    if (!pAppend)
+                    // cm - delete the file if exist
+                    if (!pAppend && File.Exists(lPath))
+                    {
+                        File.Delete(Path.Combine(_path, $"{pFileName}.{pExtention}"));
+
                         // cm - Write json data into the file
-                        File.WriteAllText(Path.Combine(_path, $"{pFileName}.{pExtention}"), jsonString);
+                        File.WriteAllText(lPath, jsonString);
+                    }
                     else
-                        File.AppendAllText(Path.Combine(_path, $"{pFileName}.{pExtention}"), jsonString);
+                        File.AppendAllText(lPath, jsonString);
                 }
             }
             catch (Exception ex)
@@ -57,40 +67,72 @@ namespace Stockage
         /// Copy files and directory from the soruce path to the destinationPath
         /// </summary>
         /// <param name="pSourceDir">Path of the directory you want tot copy</param>
-        /// <param name="pDestinationDir">Path of the target directory</param>
+        /// <param name="pTargetDir">Path of the target directory</param>
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pForce">true if overwrite</param>
+        /// <param name="pLogger">Logger</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public void CopyDirectory(string pSourceDir, string pDestinationDir, bool pRecursive, bool pForce = false)
+        public void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false, CLogger<CLogBase> pLogger = null)
         {
-            var lDir = new DirectoryInfo(pSourceDir);
-
-            // cm - Check if the source directory exists
-            if (!lDir.Exists)
-                throw new DirectoryNotFoundException($"Source directory not found: {lDir.FullName}");
-
-            DirectoryInfo[] lDirs = lDir.GetDirectories();
-
-            // cm - Get files in the source directory and copy to the destination directory
-            foreach (FileInfo file in lDir.GetFiles())
+            try
             {
-                string lTargetFilePath = Path.Combine(pDestinationDir, file.Name);
+                // cm - Check if the source directory exists
+                if (!pSourceDir.Exists)
+                    throw new DirectoryNotFoundException($"Source directory not found: {pSourceDir.FullName}");
 
-                if (File.Exists(lTargetFilePath))
-                    if (pForce)
-                        File.Delete(lTargetFilePath);
+                Directory.CreateDirectory(pTargetDir.FullName);
+                FileInfo[] lFiles = pSourceDir.GetFiles();
 
-                file.CopyTo(lTargetFilePath);
-            }
+                CLogFileState lLogFilestate = new CLogFileState();
 
-            // cm - If recursive and copying subdirectories, recursively call this method
-            if (pRecursive)
-            {
-                foreach (DirectoryInfo lSubDir in lDirs)
+                // cm - Get files in the source directory and copy to the destination directory
+                for (int i = 0; i < lFiles.Length; i++)
                 {
-                    string lNewDestinationDir = Path.Combine(pDestinationDir, lSubDir.Name);
-                    CopyDirectory(lSubDir.FullName, lNewDestinationDir, true, pForce);
+                    string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
+
+                    lFiles[i].CopyTo(lTargetFilePath, pForce);
+                    _FilesTransfered++;
+                    if (pForce)
+                        pLogger.StringLogger.Log("Force Delete : " + lTargetFilePath);
+
+                    pLogger.StringLogger.Log("Files Transfered : " + _FilesTransfered);
+
+                    lLogFilestate.Name = lFiles[i].Name;
+                    lLogFilestate.SourceDirectory = lFiles[i].FullName;
+                    lLogFilestate.TargetDirectory = lTargetFilePath;
+                    lLogFilestate.Date = DateTime.Now;
+                    lLogFilestate.TotalSize = lFiles[i].Length;
+
+                    pLogger.GenericLogger.Log(lLogFilestate);
                 }
+
+                // cm - If recursive and copying subdirectories, recursively call this method
+                if (pRecursive)
+                {
+                    foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
+                    {
+                        DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
+                        CopyDirectory(lSubDir, lNewDestinationDir, true, pForce, pLogger);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                pLogger.StringLogger.Log(ex.Message);
+            }
+        }
+
+        public long GetDirSize(string pPath)
+        {
+            try
+            {
+                return Directory.EnumerateFiles(pPath).Sum(x => new FileInfo(x).Length)
+                    +
+                       Directory.EnumerateDirectories(pPath).Sum(x => GetDirSize(x));
+            }
+            catch
+            {
+                return 0L;
             }
         }
     }

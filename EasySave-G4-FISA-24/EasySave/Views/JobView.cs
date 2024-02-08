@@ -1,6 +1,9 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
+using Logs;
 using Models.Backup;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace EasySave.Views
 {
@@ -15,7 +18,11 @@ namespace EasySave.Views
         public JobView(JobViewModel pJobVm)
         {
             _JobVm = pJobVm;
+            _JobVm.JobManager.Logger.GenericLogger.Datas.CollectionChanged += LogGenericData_CollectionChanged;
+            _JobVm.JobManager.Logger.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged;
         }
+
+
         #endregion
 
         #region Methods
@@ -30,14 +37,14 @@ namespace EasySave.Views
 
             if (_JobVm.JobManager.Jobs.Any())
             {
-                Tuple<int, int> lRange = SelectJobs();
+                Tuple<int, int> lRange = SelectJobs(_JobVm.JobManager.Jobs);
                 if (lRange == null)
                     return;
 
                 List<CJob> lJobsRunning = _JobVm.RunJobs(lRange);
 
                 foreach (CJob lJobRunning in lJobsRunning)
-                    ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} is running");
+                    ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} copy is finished");
             }
             else
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
@@ -73,8 +80,8 @@ namespace EasySave.Views
                 // cm - Affiche les ligne du tableau
                 for (int i = 0; i < _JobVm.JobManager.Jobs.Count; i++)
                 {
-                    string? lTruncatedSource = TruncateMiddle(_JobVm.JobManager.Jobs[i].SourceDirectory, lPathSourceColumnWidth);
-                    string? lTruncatedTarget = TruncateMiddle(_JobVm.JobManager.Jobs[i].TargetDirectory, lPathTargetColumnWidth);
+                    string? lTruncatedSource = TruncateMiddle(_JobVm.JobManager.Jobs[i].SourceDirectory.Replace(@"\", @"\\"), lPathSourceColumnWidth);
+                    string? lTruncatedTarget = TruncateMiddle(_JobVm.JobManager.Jobs[i].TargetDirectory.Replace(@"\", @"\\"), lPathTargetColumnWidth);
 
                     Console.WriteLine("{0,-30} {1,-" + lPathSourceColumnWidth + "} {2,-" + lPathTargetColumnWidth + "}", i + " - " + _JobVm.JobManager.Jobs[i].Name, lTruncatedSource, lTruncatedTarget);
                 }
@@ -92,7 +99,7 @@ namespace EasySave.Views
             ConsoleExtention.WriteTitle("Création d'un job");
 
             // cm - Demande a l'utilisateur de saisir les info du job  
-            string lName = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Name")}: ");
+            string lName = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Name")}: ", new Regex("^[a-zA-Z0-9]+$"));
             if (lName == "-1")
                 return;
             string lSourceDir = ConsoleExtention.ReadFolder($"\n{Strings.ResourceManager.GetObject("SourceDir")} ");
@@ -155,19 +162,19 @@ namespace EasySave.Views
         /// Print the range selection to run jobs
         /// </summary>
         /// <returns>Tuple of index where the first item is lower or equal than item2</returns>
-        private Tuple<int, int> SelectJobs()
+        private Tuple<int, int> SelectJobs(List<CJob> pJobs)
         {
             int lStartIndex = 0;
             int lEndIndex = 0;
             Console.WriteLine("Sélectionnez la plage de jobs à exécuter");
 
-            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : "));
+            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-"+ (pJobs.Count - 1) + "]+$")));
             if (lStartIndex == -1)
                 return null;
 
             Console.WriteLine();
 
-            lEndIndex = int.Parse(ConsoleExtention.ReadResponse("Index de fin : "));
+            lEndIndex = int.Parse(ConsoleExtention.ReadResponse("Index de fin : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
             if (lEndIndex == -1)
                 return null;
 
@@ -176,7 +183,7 @@ namespace EasySave.Views
             {
                 Console.WriteLine($"Plage d'indices invalide le nombre de job disponible est de {_JobVm.JobManager.Jobs.Count}");
                 //Restart SelectJobs if the range is not correct
-                return SelectJobs();
+                return SelectJobs(pJobs);
             }
 
             return Tuple.Create(lStartIndex, lEndIndex);
@@ -218,6 +225,100 @@ namespace EasySave.Views
                     break;
             }
         }
+        #endregion
+
+        #region Events
+
+        private void LogGenericData_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems.Count >= 1)
+            {
+                CLogBase lLogFileState = (sender as ObservableCollection<CLogBase>).Last();
+
+                if (!lLogFileState.IsSummary)
+                {               
+                    ConsoleExtention.WriteTitle(lLogFileState.Name);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Date: ");
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(lLogFileState.Date.Date);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Source Directory: ");
+
+                    ConsoleExtention.WriteLinePath(lLogFileState.SourceDirectory);
+
+                    Console.ResetColor();
+                    Console.WriteLine("=>");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Target Directory: ");
+
+                    ConsoleExtention.WriteLinePath(lLogFileState.TargetDirectory);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Total Size: ");
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(lLogFileState.TotalSize);
+
+                    Console.ResetColor();
+                }
+                else
+                {
+                    CLogState lLogState = (CLogState)(sender as ObservableCollection<CLogBase>).Last();
+
+                    ConsoleExtention.WriteTitle(lLogState.Name,ConsoleColor.Red);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Date: ");
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(lLogState.Date.Date);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Temps elapsed: ");
+
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(lLogState.ElapsedMilisecond + "ms");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Source Directory: ");
+
+                    ConsoleExtention.WriteLinePath(lLogState.SourceDirectory);
+
+                    Console.ResetColor();
+                    Console.WriteLine("=>");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Target Directory: ");
+
+                    ConsoleExtention.WriteLinePath(lLogState.TargetDirectory);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Total Size: ");
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(lLogState.TotalSize);
+
+                    Console.ResetColor();
+                }
+                
+            }
+        }
+
+
+        private void LogStringData_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems.Count >= 1)
+            {
+                string lLog = (sender as ObservableCollection<string>).Last();
+                ConsoleExtention.WriteLineWarning(DateTime.Now + " " + lLog);
+            }
+        }
+
         #endregion
     }
 }

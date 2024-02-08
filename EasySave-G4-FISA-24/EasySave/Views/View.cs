@@ -1,5 +1,6 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
+using System.Text.RegularExpressions;
 
 namespace EasySave.Views
 {
@@ -8,9 +9,17 @@ namespace EasySave.Views
         private MainViewModel _MainVm;
         private LangueView _LangView;
         private JobView _JobView;
-        private string _Menu;
 
         public override string Title => "Menu";
+
+        public string Menu
+        {
+            get => $"\n0 - {Strings.ResourceManager.GetObject("ChooseLang")} \n" +
+                    $"1 - {Strings.ResourceManager.GetObject("ListJobs")}\n" +
+                    $"2 - {Strings.ResourceManager.GetObject("LoadJobs")}\n" +
+                    $"3 - {Strings.ResourceManager.GetObject("CreateJob")}\n" +
+                    $"4 - {Strings.ResourceManager.GetObject("RunJobs")}\n";
+        }
 
         #region CTOR
 
@@ -19,11 +28,6 @@ namespace EasySave.Views
             _MainVm = new MainViewModel();
             _LangView = new LangueView(_MainVm.LangueVm);
             _JobView = new JobView(_MainVm.JobVm);
-            _Menu = $"\n0 - {Strings.ResourceManager.GetObject("ChooseLang")} \n" +
-                    $"1 - {Strings.ResourceManager.GetObject("ListJobs")}\n" +
-                    $"2 - {Strings.ResourceManager.GetObject("LoadJobs")}\n" +
-                    $"3 - {Strings.ResourceManager.GetObject("CreateJob")}\n" +
-                    $"4 - {Strings.ResourceManager.GetObject("RunJobs")}\n";
 
             Console.CancelKeyPress += Console_CancelKeyPress;
         }
@@ -71,7 +75,7 @@ namespace EasySave.Views
         {
             ConsoleExtention.WriteTitle(Title);
 
-            string lInput = ConsoleExtention.ReadResponse(_Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")} ");
+            string lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")} ", new Regex("^[0-4]$"));
 
             return lInput;
         }

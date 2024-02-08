@@ -1,5 +1,6 @@
-﻿using Models.Logs;
+﻿using Logs;
 using Stockage;
+using Stockage.Logs;
 using System.Runtime.Serialization;
 
 namespace Models.Backup
@@ -15,12 +16,17 @@ namespace Models.Backup
         [DataMember]
         private string _Name;
         private ISauve _SauveCollection;
+
+        private CLogger<CLogBase> _Logger;
+
         #endregion
 
         #region Property
 
         public List<CJob> Jobs { get => _Jobs; }
         public string Name { get => _Name; set => _Name = value; }
+        public CLogger<CLogBase> Logger { get => _Logger; set => _Logger = value; }
+
 
         #endregion
 
@@ -37,6 +43,8 @@ namespace Models.Backup
             string lPath = Path.Combine(Environment.CurrentDirectory, "Jobs");
 
             _SauveCollection = new SauveCollection(lPath);
+
+            _Logger = new CLogger<CLogBase>();
         }
 
         #endregion
@@ -79,7 +87,7 @@ namespace Models.Backup
                 for (int i = pRange.Item1; i <= pRange.Item2; i++)
                 {
                     lRunningJobs.Add(_Jobs[i]);
-                    _Jobs[i].Run();
+                    _Jobs[i].Run(_Logger);
                 }
 
             return lRunningJobs;

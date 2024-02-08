@@ -1,10 +1,13 @@
-﻿using Stockage;
+﻿using Logs;
+using Stockage;
+using Stockage.Logs;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace Models.Backup
 {
     [DataContract]
-    public class CJob
+    public class CJob : IPath
     {
         #region Attribute
 
@@ -50,27 +53,46 @@ namespace Models.Backup
 
         #region Methods
 
-        public void Run()
+        public void Run(CLogger<CLogBase> pLogger = null)
         {
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:
-                    Backup(true);
+                    Backup(true, pLogger);
                     break;
                 case ETypeBackup.DIFFERENTIEL:
-                    Backup(false);
+                    Backup(false, pLogger);
                     break;
             }
         }
 
-        private void Backup(bool pForceCopy)
+        private void Backup(bool pForceCopy, CLogger<CLogBase> pLogger = null)
         {
             try
             {
-                ISauve sauveCollection = new SauveCollection(_SourceDirectory);
+                DirectoryInfo lSourceDir = new DirectoryInfo(SourceDirectory);
+                DirectoryInfo lTargetDir = new DirectoryInfo(TargetDirectory);
+                SauveCollection lSauveCollection = new SauveCollection(_SourceDirectory);
+
+                CLogState lLogState = new CLogState
+                {
+                    Name = lSourceDir.Name,
+                    SourceDirectory = lSourceDir.FullName,
+                    TargetDirectory = lTargetDir.FullName,
+                    TotalSize = lSauveCollection.GetDirSize(lSourceDir.FullName),
+                };
+
+                Stopwatch lSw = Stopwatch.StartNew();
+                lSw.Start();
+
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    sauveCollection.CopyDirectory(_SourceDirectory, _TargetDirectory, true, pForceCopy);
+                    lSauveCollection.CopyDirectory(new DirectoryInfo(_SourceDirectory), new DirectoryInfo(_TargetDirectory), true, pForceCopy, pLogger);
+
+                    lSw.Stop();
+                    lLogState.Date = DateTime.Now;
+                    lLogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
+                    pLogger.GenericLogger.Log(lLogState);
                 }
                 else
                 {

@@ -1,5 +1,9 @@
 trigger: none
 
+pr:
+  branches:
+    include:
+    - livrable-1
 pool:
   name: 'my-agent-pool'
 

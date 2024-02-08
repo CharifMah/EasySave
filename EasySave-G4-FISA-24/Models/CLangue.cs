@@ -37,10 +37,10 @@ namespace Models
             switch (pLanguageChoice)
             {
                 case "1":
-                    System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr");
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr");
                     break;
                 case "2":
-                    System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
                     break;
                 default:
                     lIsLangChanged = false;

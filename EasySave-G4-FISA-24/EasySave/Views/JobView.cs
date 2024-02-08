@@ -162,13 +162,13 @@ namespace EasySave.Views
             int lEndIndex = 0;
             Console.WriteLine("Sélectionnez la plage de jobs à exécuter");
 
-            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : "));
+            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-9]+$")));
             if (lStartIndex == -1)
                 return null;
 
             Console.WriteLine();
 
-            lEndIndex = int.Parse(ConsoleExtention.ReadResponse("Index de fin : "));
+            lEndIndex = int.Parse(ConsoleExtention.ReadResponse("Index de fin : ", new Regex("^[0-9]+$")));
             if (lEndIndex == -1)
                 return null;
 

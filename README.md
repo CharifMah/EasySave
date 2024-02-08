@@ -72,6 +72,8 @@ Pour contribuer à cette branche, voici le processus à suivre et les nommages �
     * git pull origin develop-livrable-1 (Pour récup les PR mergées)
     * Tester sur l'application si tout marche
 
+## Depuis Repos (Menu latéral)
+
 * Sur azure devops :
 
     * Créer une nouvelle PR (onglet Pull requests) avec cette fois into livrable-1

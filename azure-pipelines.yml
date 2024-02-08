@@ -4,63 +4,66 @@ trigger:
     - livrable-1
 
 pool:
-  name: 'my-agent-pool'
+  vmImage: 'my-pool-agent' # Assurez-vous que ceci correspond à votre configuration d'agent personnalisée
 
 variables:
-    BuildPlatform: 'Any CPU'
-    BuildConfiguration: 'Release'
-    BasePath: 'EasySave-G4-FISA-24/' # Chemin de base vers le dossier du code
-    Solution: '$(BasePath)**/*.sln'
-    RestoreBuildProjects: '$(BasePath)**/*.csproj'
-    # Exclure explicitement les projets de test de cette variable pour éviter leur publication
-    PublishProjects: '$(BasePath)**/*.csproj;-:**/*UnitTestStorage/**/*.csproj'
-    TestProjects: '$(BasePath)**/*UnitTestStorage/*.csproj'
-    PublishFolder: '$(build.artifactstagingdirectory)/publish'
+  BuildPlatform: 'Any CPU'
+  BuildConfiguration: 'Release'
+  BasePath: 'EasySave-G4-FISA-24/'
+  # Inclut BasePath dans les chemins de solution et de projet
+  Solution: '$(BasePath)**/*.sln'
+  RestoreBuildProjects: '$(BasePath)**/*.csproj'
+  PublishProjects: '$(BasePath)**/*.csproj;-:**/*UnitTestStorage/**/*.csproj'
+  TestProjects: '$(BasePath)**/*UnitTestStorage/*.csproj'
+  PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
 
 steps:
+- task: UseDotNet@2
+  inputs:
+    version: '6.x'
+    includePreviewVersions: false
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
     projects: '$(RestoreBuildProjects)'
-    feedsToUse: 'select'
     noCache: true
-    verbosityRestore: 'Diagnostic'
-  
+
 - task: DotNetCoreCLI@2
-  displayName: Build
+  displayName: 'Build Solution'
   inputs:
     command: 'build'
-    projects: '$(RestoreBuildProjects)'
+    projects: '$(Solution)'
     arguments: '--configuration $(BuildConfiguration)'
-  
+
 - task: DotNetCoreCLI@2
-  displayName: Test
+  displayName: 'Run Unit Tests'
   inputs:
-    command: test
+    command: 'test'
     projects: '$(TestProjects)'
     arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: Publish
+  displayName: 'Publish Projects'
   inputs:
-    command: publish
-    publishWebProjects: False
+    command: 'publish'
+    publishWebProjects: false
+    # Utilisez la variable PublishProjects pour exclure les tests de la publication
     projects: '$(PublishProjects)'
     arguments: '--configuration $(BuildConfiguration) --output $(PublishFolder)'
-    zipAfterPublish: False # Changez ceci pour éviter le zip individuel
+    zipAfterPublish: false
 
-# Utilisez une tâche personnalisée pour zipper tout le contenu de PublishFolder en un seul fichier ZIP
 - task: ArchiveFiles@2
-  displayName: 'Zip Publish Folder'
+  displayName: 'Archive Published Projects'
   inputs:
     rootFolderOrFile: '$(PublishFolder)'
-    includeRootFolder: False
+    includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(build.artifactstagingdirectory)/EasySave.zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/EasySaveComplete.zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
+  displayName: 'Publish Artifact: EasySaveComplete'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/EasySave.zip'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/EasySaveComplete.zip'
+    ArtifactName: 'EasySaveComplete'

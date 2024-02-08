@@ -27,7 +27,6 @@ steps:
   inputs:
     command: 'restore'
     projects: '$(RestoreBuildProjects)'
-    noCache: true
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'

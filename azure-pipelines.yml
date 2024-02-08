@@ -7,7 +7,6 @@ variables:
   BuildPlatform: 'Any CPU'
   BuildConfiguration: 'Release'
   BasePath: 'EasySave-G4-FISA-24/'
-  # Inclut BasePath dans les chemins de solution et de projet
   Solution: '$(BasePath)**/*.sln'
   RestoreBuildProjects: '$(BasePath)**/*.csproj'
   PublishProjects: '$(BasePath)**/*.csproj'

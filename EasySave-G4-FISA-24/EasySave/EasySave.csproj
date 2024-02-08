@@ -16,7 +16,8 @@
 	  <Deterministic>True</Deterministic>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
+		<PackageReference Include="GtkSharp.Win32" Version="3.1.2" />
+		<PackageReference Include="TextCopy" Version="6.2.1" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Models\Models.csproj" />

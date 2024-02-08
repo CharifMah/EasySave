@@ -45,7 +45,7 @@ namespace EasySave.Views
         /// Write a personalized Title with separator
         /// </summary>
         /// <param name="pTitle">Title to write</param>
-        public static void WriteTitle(string pTitle,ConsoleColor pColor = ConsoleColor.White)
+        public static void WriteTitle(string pTitle, ConsoleColor pColor = ConsoleColor.White)
         {
             int consoleWidth = Console.WindowWidth;
             // cm - Create a separator with dynamic width
@@ -72,7 +72,7 @@ namespace EasySave.Views
         /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
         public static string ReadResponse(string pMessage, Regex? pRegex = null)
         {
-            ConsoleKeyInfo lsInput;
+            ConsoleKeyInfo lsInput = default;
             _Input = string.Empty;
             // cm - Allow Control detection
             Console.TreatControlCAsInput = true;
@@ -82,9 +82,16 @@ namespace EasySave.Views
 
             do
             {
-                if (string.IsNullOrEmpty(_Input))
+                if (string.IsNullOrEmpty(_Input) && (lsInput.Key != ConsoleKey.V && lsInput.Modifiers != ConsoleModifiers.Control))
                     Console.Write(pMessage);
 
+                // cm - CTRL+V for past
+                if ((lsInput.Key == ConsoleKey.V && lsInput.Modifiers == ConsoleModifiers.Control))
+                {
+                    _Input = TextCopy.ClipboardService.GetText();
+                    Console.Write(_Input);
+                }
+          
                 while (Console.KeyAvailable)
                     Console.ReadKey(false); // cm - skips previous inputs
 
@@ -113,6 +120,7 @@ namespace EasySave.Views
                     if (_Input.Length > 0)
                         _Input = _Input[0..^1];
                 }
+
             } while (lsInput.KeyChar != (char)ConsoleKey.Enter); // cm - Until the user presses the Enter key, the console waits to read a new character.
 
             // cm - Don't show Succes message if the user cancel the action
@@ -142,14 +150,21 @@ namespace EasySave.Views
 
         public static string ReadFolder(string pDescription)
         {
-
             string lSelectedFolder = null;
 
             try
             {
                 Console.WriteLine(pDescription);
 
-                Application.Init();
+                try
+                {
+                    throw new Exception("sqd");
+                    Application.Init();
+                }
+                catch (Exception)
+                {
+                    return ReadFolderConsole();
+                }
 
                 var lDialog = new FileChooserDialog(
                     title: pDescription,
@@ -171,13 +186,13 @@ namespace EasySave.Views
                 lDialog.Destroy();
 
                 WriteLineSelected(lSelectedFolder);
-
-                return lSelectedFolder;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+
+            return lSelectedFolder;
         }
 
         public static string ReadFile(string pDescription)
@@ -188,7 +203,16 @@ namespace EasySave.Views
             {
                 Console.WriteLine(pDescription);
 
-                Application.Init();
+                try
+                {
+                    throw new Exception("sqd");
+                    Application.Init();
+
+                }
+                catch (Exception)
+                {
+                    return ReadFileConsole();
+                }
 
                 var lDialog = new FileChooserDialog(
                     title: pDescription,
@@ -210,13 +234,39 @@ namespace EasySave.Views
                 lDialog.Destroy();
 
                 WriteLineSelected(lSelectedFile);
-
-                return lSelectedFile;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+
+            return lSelectedFile;
+        }
+
+        private static string ReadFileConsole()
+        {
+            string lFilePath = String.Empty;
+
+            do
+            {
+                lFilePath = ReadResponse("Enter file path: ");
+            } while (!Directory.Exists(lFilePath));
+
+            return lFilePath;
+        }
+
+        private static string ReadFolderConsole()
+        {
+
+            string lFolderPath = String.Empty;
+
+            do
+            {
+                lFolderPath = ReadResponse("Enter folder path: ");
+            } while (!Directory.Exists(lFolderPath));
+
+
+            return lFolderPath;
         }
     }
 }

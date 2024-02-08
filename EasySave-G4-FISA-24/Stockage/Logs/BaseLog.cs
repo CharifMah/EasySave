@@ -4,7 +4,7 @@ namespace Stockage.Logs
 {
     public abstract class BaseLogger<T> : ILogger<T>
     {
-        protected ObservableCollection<T> _Datas = new ObservableCollection<T>();
+        private ObservableCollection<T> _Datas = new ObservableCollection<T>();
 
         public ObservableCollection<T> Datas => _Datas;
 

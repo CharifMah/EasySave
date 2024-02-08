@@ -50,7 +50,7 @@ namespace Stockage
                         File.WriteAllText(lPath, jsonString);
                     }
                     else
-                        File.AppendAllText(lPath, jsonString);                        
+                        File.AppendAllText(lPath, jsonString);
                 }
             }
             catch (Exception ex)
@@ -67,7 +67,7 @@ namespace Stockage
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pForce">true if overwrite</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public void CopyDirectory(string pSourceDir, string pTargetDir, bool pRecursive, bool pForce = false, ILogger<CLogBase> pLogger = null)
+        public void CopyDirectory(string pSourceDir, string pTargetDir, bool pRecursive, bool pForce = false, CLogger<CLogBase> pLogger = null)
         {
             var lDir = new DirectoryInfo(pSourceDir);
 
@@ -85,18 +85,23 @@ namespace Stockage
             {
                 string lTargetFilePath = Path.Combine(pTargetDir, file.Name);
 
-                if (File.Exists(lTargetFilePath))
-                    if (pForce)
-                        File.Delete(lTargetFilePath);
+                if (File.Exists(lTargetFilePath) && pForce)
+                {
+                    File.Delete(lTargetFilePath);
+                    pLogger.StringLogger.Log("Force Delete : " + lTargetFilePath);
+                }
 
                 file.CopyTo(lTargetFilePath);
+
                 lLogState.Name = file.Name;
                 lLogState.SourceDirectory = file.FullName;
                 lLogState.TargetDirectory = lTargetFilePath;
                 lLogState.EligibleFileCount = lFiles.Length;
                 lLogState.TimeStamp = DateTime.Now;
-                lLogState.TotalSize = 0;
-                pLogger.Log(lLogState);
+                lLogState.TotalSize = file.Length;
+                lLogState.RemainingSize = lLogState.TotalSize - 0;
+
+                pLogger.GenericLogger.Log(lLogState);
             }
 
             // cm - If recursive and copying subdirectories, recursively call this method

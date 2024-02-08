@@ -18,8 +18,10 @@ namespace EasySave.Views
         public JobView(JobViewModel pJobVm)
         {
             _JobVm = pJobVm;
-            _JobVm.JobManager.Logger.Datas.CollectionChanged += Datas_CollectionChanged;
+            _JobVm.JobManager.Logger.GenericLogger.Datas.CollectionChanged += LogGenericData_CollectionChanged;
+            _JobVm.JobManager.Logger.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged; ;
         }
+
 
         #endregion
 
@@ -227,24 +229,24 @@ namespace EasySave.Views
 
         #region Events
 
-        private void Datas_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void LogGenericData_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems.Count >= 1)
             {
-                CLogBase cLogState = (sender as ObservableCollection<CLogBase>).Last();
+                CLogBase lLogState = (sender as ObservableCollection<CLogBase>).Last();
 
-                ConsoleExtention.WriteTitle(cLogState.Name);
+                ConsoleExtention.WriteTitle(lLogState.Name);
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Date: ");
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(cLogState.TimeStamp.Date);
+                Console.WriteLine(lLogState.TimeStamp.Date);
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Source Directory: ");
 
-                ConsoleExtention.WriteLinePath(cLogState.SourceDirectory);
+                ConsoleExtention.WriteLinePath(lLogState.SourceDirectory);
 
                 Console.ResetColor();
                 Console.WriteLine("=>");
@@ -252,15 +254,25 @@ namespace EasySave.Views
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Target Directory: ");
 
-                ConsoleExtention.WriteLinePath(cLogState.TargetDirectory);
+                ConsoleExtention.WriteLinePath(lLogState.TargetDirectory);
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Total Size: ");
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(cLogState.TotalSize);
+                Console.WriteLine(lLogState.TotalSize);
 
                 Console.ResetColor();
+            }
+        }
+
+
+        private void LogStringData_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems.Count >= 1)
+            {
+                string lLog = (sender as ObservableCollection<string>).Last();
+                ConsoleExtention.WriteLineWarning(lLog);
             }
         }
 

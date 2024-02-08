@@ -17,14 +17,15 @@ namespace Models.Backup
         private string _Name;
         private ISauve _SauveCollection;
 
-        private ILogger<CLogBase> _Logger;
+        private CLogger<CLogBase> _Logger;
+
         #endregion
 
         #region Property
 
         public List<CJob> Jobs { get => _Jobs; }
         public string Name { get => _Name; set => _Name = value; }
-        public ILogger<CLogBase> Logger { get => _Logger; set => _Logger = value; }
+        public CLogger<CLogBase> Logger { get => _Logger; set => _Logger = value; }
 
 
         #endregion

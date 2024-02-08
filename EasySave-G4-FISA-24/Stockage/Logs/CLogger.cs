@@ -1,28 +1,23 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Stockage.Logs
 {
-    public class CLogger<T> : BaseLogger<T>
+    public class CLogger<T>
     {
-        private ObservableCollection<T> _Datas;
-        public override ObservableCollection<T> Datas
-        {
-            get
-            {
-                return _Datas;
-            }
-        }
+        private CGenericLogger<T> _GenericLogger;
+        private CStringLogger _StringLogger;
+
+        public CGenericLogger<T> GenericLogger { get => _GenericLogger; set => _GenericLogger = value; }
+        public CStringLogger StringLogger { get => _StringLogger; set => _StringLogger = value; }
 
         public CLogger()
         {
-            _Datas = new ObservableCollection<T>();
-        }
-
-        public override void Log(T pData)
-        {
-            ISauve lSave = new SauveCollection(Environment.CurrentDirectory);
-            lSave.Sauver(pData, "Logs", true);
-            _Datas.Add(pData);
+            _GenericLogger = new CGenericLogger<T>();
+            _StringLogger = new CStringLogger();
         }
     }
 }

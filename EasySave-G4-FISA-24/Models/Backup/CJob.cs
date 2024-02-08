@@ -52,7 +52,7 @@ namespace Models.Backup
 
         #region Methods
 
-        public void Run(ILogger<CLogBase> pLogger = null)
+        public void Run(CLogger<CLogBase> pLogger = null)
         {
             switch (BackupType)
             {
@@ -65,7 +65,7 @@ namespace Models.Backup
             }
         }
 
-        private void Backup(bool pForceCopy, ILogger<CLogBase> pLogger = null)
+        private void Backup(bool pForceCopy, CLogger<CLogBase> pLogger = null)
         {
             try
             {

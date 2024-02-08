@@ -13,7 +13,7 @@ variables:
   # Inclut BasePath dans les chemins de solution et de projet
   Solution: '$(BasePath)**/*.sln'
   RestoreBuildProjects: '$(BasePath)**/*.csproj'
-  PublishProjects: '$(BasePath)**/*.csproj;-:**/*UnitTestStorage/**/*.csproj'
+  PublishProjects: '$(BasePath)**/*.csproj'
   TestProjects: '$(BasePath)**/*UnitTestStorage/*.csproj'
   PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
 

@@ -8,7 +8,8 @@ Cette version initie le développement d'une application console en .NET Core po
 
 1.	Installation process
 
-Clonez la branche livrable-1 et ouvrez le projet avec Visual Studio 2022. Veillez à avoir .NET Core 6.X installé.
+* Clonez la branche livrable-1 et ouvrez le projet avec Visual Studio 2022. 
+* Veillez à avoir .NET Core 6.X installé.
 
 2.	Software dependencies
 
@@ -70,6 +71,8 @@ Pour contribuer à cette branche, voici le processus à suivre et les nommages �
     * git checkout develop-livrable-1
     * git pull origin develop-livrable-1 (Pour récup les PR mergées)
     * Tester sur l'application si tout marche
+
+## Depuis Repos (Menu latéral)
 
 * Sur azure devops :
 

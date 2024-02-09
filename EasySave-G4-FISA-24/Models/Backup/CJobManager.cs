@@ -27,7 +27,7 @@ namespace Models.Backup
         #region CTOR
 
         /// <summary>
-        /// Contructeur de CJobManager
+        /// Contructeur de CJobManager initialise le chemin de sauvegarde
         /// </summary>
         public CJobManager()
         {
@@ -56,6 +56,7 @@ namespace Models.Backup
         {
             bool lResult = true;
 
+            // cm - Verifie que on n'a pas atteint la maximum de job
             if (_Jobs.Count <= _MaxJobs)
                 _Jobs.Add(new CJob(pName, pSourceDir, pTargetDir, pType));
             else
@@ -74,7 +75,8 @@ namespace Models.Backup
 
             if (pRange == null)
                 pRange = new Tuple<int, int>(0, _Jobs.Count - 1);
-
+            
+            // cm - Lance les jobs
             if (pRange.Item1 >= 0 && pRange.Item2 <= _Jobs.Count())
                 for (int i = pRange.Item1; i <= pRange.Item2; i++)
                 {
@@ -104,11 +106,14 @@ namespace Models.Backup
         {
             ICharge lChargerCollection = new ChargerCollection();
 
+            // cm - Si le path est null on init le path par default
             if (pPath == null)
                 pPath = Path.Combine(Environment.CurrentDirectory, "Jobs", "JobManager.json");
 
+            // cm - Charge le job manager
             CJobManager lJobManager = lChargerCollection.Charger<CJobManager>(pPath);
 
+            // cm - Si aucun fichier n'a été charger on crée un nouveau JobManager
             if (lJobManager == null)
                 lJobManager = new CJobManager();
 

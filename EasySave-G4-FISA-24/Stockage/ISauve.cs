@@ -7,10 +7,11 @@
     public interface ISauve
     {
         /// <summary>
-        /// Sauvagarde le dictionnaire
+        /// Sauvagarde les data dans un fichier
         /// </summary>
         /// <param name="pData">Data to serialize</param>
         /// <param name="pFileName">File name</param>
+        /// <param name="pAppend">True si on veux append sur le fichier</param>
         /// <param name="pExtention">Extention</param>
         /// <remarks>Mahmoud Charif - 31/12/2022 - Création</remarks>
         void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json");

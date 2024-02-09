@@ -1,6 +1,6 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
-using Logs;
+using LogsModels;
 using Models.Backup;
 using Stockage.Logs;
 using System.Collections.ObjectModel;

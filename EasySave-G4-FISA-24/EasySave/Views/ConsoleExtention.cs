@@ -159,7 +159,7 @@ namespace EasySave.Views
 
                 string[] argrs = new string[] { };
 
-                if (!Gtk.Application.InitCheck("", ref argrs))
+                if (Gtk.Application.InitCheck("", ref argrs))
                 {
                     lDialog = new FileChooserDialog(
                    title: pDescription,

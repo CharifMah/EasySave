@@ -65,12 +65,14 @@ namespace EasySave.Views
         }
 
         /// <summary>
-        /// Read user input
+        /// Read user input char by char
         /// </summary>
         /// <param name="pMessage">Message to loop through if the user makes an input error</param>
-        /// <param name="pRegex">Regex permettant de filtrer la reponse donnée</param>
+        /// <param name="pRegex">Regex permettant de validée l'entrée utilisateur</param>
+        /// <param name="pIsValid">Fonction qui prend un string en parametre et valide l'entrée utilisateur</param>
         /// <returns>user input</returns>
         /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
+        /// <remarks>Mahmoud Charif - 09/02/2024 - Ajout d'une fonction anonyme de validation en paramètre</remarks>
         public static string ReadResponse(string pMessage, Regex? pRegex = null, Func<string, bool> pIsValid = null)
         {
             ConsoleKeyInfo lsInput = default;
@@ -85,6 +87,7 @@ namespace EasySave.Views
 
             do
             {
+                // cm - Displays a message if certain shortcuts are not pressed.
                 if (string.IsNullOrEmpty(_Input) && lsInput.Key != ConsoleKey.V && lsInput.Modifiers != ConsoleModifiers.Control)
                     Console.Write(pMessage);
 
@@ -103,7 +106,7 @@ namespace EasySave.Views
                 // cm - CTRL+V for past
                 if (lsInput.Key == ConsoleKey.V && lsInput.Modifiers == ConsoleModifiers.Control)
                 {
-                    string lText = TextCopy.ClipboardService.GetText();
+                    string lText = TextCopy.ClipboardService.GetText(); // cm - Get the text from clipboard
                     _Input += lText;
                     Console.Write(lText);
                 }
@@ -132,6 +135,7 @@ namespace EasySave.Views
             if (lsInput.KeyChar == (char)ConsoleKey.Enter && (!pRegex.IsMatch(_Input) || !pIsValid(_Input)))
             {
                 WriteLineError(Strings.ResourceManager.GetObject("InvalideSelection").ToString());
+
                 ReadResponse(pMessage, pRegex, pIsValid);
             }
 

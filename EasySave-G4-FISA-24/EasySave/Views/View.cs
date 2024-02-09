@@ -44,7 +44,10 @@ namespace EasySave.Views
             string lInput = string.Empty;
             while (true)
             {
-                lInput = ShowMenu();
+                ConsoleExtention.WriteTitle(Title);
+
+                lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")} ", new Regex("^[0-4]$"));
+
                 switch (lInput)
                 {
                     case "-1": // cm - Restart the program if the user press CTRL+C
@@ -70,15 +73,6 @@ namespace EasySave.Views
         }
 
         #endregion
-
-        public string ShowMenu()
-        {
-            ConsoleExtention.WriteTitle(Title);
-
-            string lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")} ", new Regex("^[0-4]$"));
-
-            return lInput;
-        }
 
         private void Console_CancelKeyPress(object? sender, ConsoleCancelEventArgs e)
         {

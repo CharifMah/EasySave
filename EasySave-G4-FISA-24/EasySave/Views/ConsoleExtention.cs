@@ -65,12 +65,15 @@ namespace EasySave.Views
         }
 
         /// <summary>
-        /// Read user input
+        /// Read user input char by char
         /// </summary>
         /// <param name="pMessage">Message to loop through if the user makes an input error</param>
+        /// <param name="pRegex">Regex permettant de validée l'entrée utilisateur</param>
+        /// <param name="pIsValid">Fonction qui prend un string en parametre et valide l'entrée utilisateur</param>
         /// <returns>user input</returns>
         /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
-        public static string ReadResponse(string pMessage, Regex? pRegex = null)
+        /// <remarks>Mahmoud Charif - 09/02/2024 - Ajout d'une fonction anonyme de validation en paramètre</remarks>
+        public static string ReadResponse(string pMessage, Regex? pRegex = null, Func<string, bool> pIsValid = null)
         {
             ConsoleKeyInfo lsInput = default;
             _Input = string.Empty;
@@ -79,19 +82,14 @@ namespace EasySave.Views
 
             if (pRegex == null)
                 pRegex = new Regex("");
+            if (pIsValid == null)
+                pIsValid = lValidTxt => { return true; };
 
             do
             {
+                // cm - Displays a message if certain shortcuts are not pressed.
                 if (string.IsNullOrEmpty(_Input) && lsInput.Key != ConsoleKey.V && lsInput.Modifiers != ConsoleModifiers.Control)
                     Console.Write(pMessage);
-
-                // cm - CTRL+V for past
-                if (lsInput.Key == ConsoleKey.V && lsInput.Modifiers == ConsoleModifiers.Control)
-                {
-                    string lText = TextCopy.ClipboardService.GetText();
-                    _Input += lText;
-                    Console.Write(lText);
-                }
 
                 while (Console.KeyAvailable)
                     Console.ReadKey(false); // cm - skips previous inputs
@@ -105,8 +103,14 @@ namespace EasySave.Views
                     break;
                 }
 
-                // cm - Concatenate inputs to obtain the final output
-                if (lsInput.Key != ConsoleKey.Enter && lsInput.Key != ConsoleKey.Backspace && lsInput.Modifiers == 0)
+                // cm - CTRL+V for past
+                if (lsInput.Key == ConsoleKey.V && lsInput.Modifiers == ConsoleModifiers.Control)
+                {
+                    string lText = TextCopy.ClipboardService.GetText(); // cm - Get the text from clipboard
+                    _Input += lText;
+                    Console.Write(lText);
+                }
+                else if (lsInput.Key != ConsoleKey.Enter && lsInput.Key != ConsoleKey.Backspace) // cm - Concatenate inputs to obtain the final output
                     _Input += lsInput.KeyChar;
 
                 if (lsInput.Key == ConsoleKey.Backspace)   // cm - If user press Backspace delete 1 caratere in the console
@@ -128,10 +132,11 @@ namespace EasySave.Views
             if (_Input != "-1" || String.IsNullOrEmpty(_Input))
                 WriteLineSelected(_Input);
 
-            if (lsInput.KeyChar == (char)ConsoleKey.Enter && !pRegex.IsMatch(_Input))
+            if (lsInput.KeyChar == (char)ConsoleKey.Enter && (!pRegex.IsMatch(_Input) || !pIsValid(_Input)))
             {
                 WriteLineError(Strings.ResourceManager.GetObject("InvalideSelection").ToString());
-                ReadResponse(pMessage, pRegex);
+
+                ReadResponse(pMessage, pRegex, pIsValid);
             }
 
             return _Input;
@@ -190,12 +195,13 @@ namespace EasySave.Views
             catch (Exception ex)
             {
                 WriteLineError(ex.Message);
+                lSelectedFolder = ReadFolderConsole();
             }
 
             return lSelectedFolder;
         }
 
-        public static string ReadFile(string pDescription)
+        public static string ReadFile(string pDescription,Regex pRegexExtentions = null)
         {
             string lSelectedFile = null;
             FileChooserDialog lDialog = null;
@@ -229,7 +235,7 @@ namespace EasySave.Views
                 }
                 else
                 {
-                    lSelectedFile = ReadFileConsole();
+                    lSelectedFile = ReadFileConsole(pRegexExtentions);
                 }
 
                 WriteLineSelected(lSelectedFile);
@@ -237,18 +243,21 @@ namespace EasySave.Views
             catch (Exception ex)
             {
                 WriteLineError(ex.Message);
+                lSelectedFile = ReadFileConsole(pRegexExtentions);
             }
 
             return lSelectedFile;
         }
 
-        private static string ReadFileConsole()
+        private static string ReadFileConsole(Regex pRegex = null)
         {
             string lFilePath = String.Empty;
 
+            Func<string, bool> pValidator = lPath => File.Exists(lPath);
+
             do
             {
-                lFilePath = ReadResponse("Enter file path: ");
+                lFilePath = ReadResponse("\nEnter file path: ", pRegex, pValidator);
             } while (!File.Exists(lFilePath));
 
             return lFilePath;
@@ -256,16 +265,17 @@ namespace EasySave.Views
 
         private static string ReadFolderConsole()
         {
-
             string lFolderPath = String.Empty;
+
+            Func<string, bool> pValidator = lPath => Directory.Exists(lPath);
 
             do
             {
-                lFolderPath = ReadResponse("Enter folder path: ");
+                lFolderPath = ReadResponse("\nEnter folder path: ", null, pValidator);
             } while (!Directory.Exists(lFolderPath));
 
 
             return lFolderPath;
-        }
+        }      
     }
 }

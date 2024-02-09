@@ -22,7 +22,7 @@ namespace EasySave.Views
         {
             ListLanguage();
 
-            string? lInput = ConsoleExtention.ReadResponse(Strings.ResourceManager.GetObject("SelectChoice").ToString(), new Regex("^["+ _LangueVm.Langue.Languages.First().Key + "-"+ _LangueVm.Langue.Languages.Last().Key + "]$"));
+            string? lInput = ConsoleExtention.ReadResponse(Strings.ResourceManager.GetObject("SelectChoice").ToString(), new Regex("^[" + _LangueVm.Langue.Languages.First().Key + "-" + _LangueVm.Langue.Languages.Last().Key + "]$"));
             // cm - if the input is correct printe 
             if (_LangueVm.SetLanguage(lInput))
                 ConsoleExtention.WriteLineSucces(Strings.ResourceManager.GetObject("SelectedLanguage").ToString());

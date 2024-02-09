@@ -1,7 +1,4 @@
-﻿using Logs;
-using Stockage.Logs;
-
-namespace Stockage
+﻿namespace Stockage
 {
     /// <summary>
     /// Interface ISauve

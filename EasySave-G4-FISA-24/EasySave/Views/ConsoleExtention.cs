@@ -1,5 +1,4 @@
 ﻿using EasySaveDraft.Resources;
-using GLib;
 using Gtk;
 using System.Text.RegularExpressions;
 
@@ -179,7 +178,7 @@ namespace EasySave.Views
                     else
                         lSelectedFolder = "-1";
 
-                    lDialog.Destroy();            
+                    lDialog.Destroy();
                 }
                 else
                 {

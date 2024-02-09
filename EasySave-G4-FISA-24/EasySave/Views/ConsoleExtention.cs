@@ -163,7 +163,7 @@ namespace EasySave.Views
                 Console.WriteLine(pDescription);
 
                 string[] argrs = new string[] { };
-                throw new Exception(" qs");
+
                 if (Gtk.Application.InitCheck("", ref argrs))
                 {
                     lDialog = new FileChooserDialog(
@@ -211,7 +211,7 @@ namespace EasySave.Views
                 Console.WriteLine(pDescription);
 
                 string[] argrs = new string[] { };
-                throw new Exception(" qs");
+
                 if (Gtk.Application.InitCheck("", ref argrs))
                 {
                     lDialog = new FileChooserDialog(

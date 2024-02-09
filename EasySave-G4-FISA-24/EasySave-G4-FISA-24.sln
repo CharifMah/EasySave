@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestStorage", "UnitTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasySave", "EasySave\EasySave.csproj", "{A20C3CA1-6726-4820-B8FD-C4D74833C3B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logs", "Logs\Logs.csproj", "{334B09B1-F615-46CE-868C-678E1E2CA01A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogsModels", "Logs\LogsModels.csproj", "{334B09B1-F615-46CE-868C-678E1E2CA01A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

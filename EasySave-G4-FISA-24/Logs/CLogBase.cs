@@ -1,7 +1,6 @@
 ﻿using System.Runtime.Serialization;
-using System.Text;
 
-namespace Logs
+namespace LogsModels
 {
     [DataContract]
     public class CLogBase : IPath

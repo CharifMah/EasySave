@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Logs
+namespace LogsModels
 {
     [DataContract]
     public class CLogState : CLogBase
@@ -17,7 +17,7 @@ namespace Logs
         public int EligibleFileCount { get => _EligibleFileCount; set => _EligibleFileCount = value; }
         public long ElapsedMilisecond { get => _ElapsedMilisecond; set => _ElapsedMilisecond = value; }
 
-        public CLogState() 
+        public CLogState()
         {
             IsSummary = true;
         }

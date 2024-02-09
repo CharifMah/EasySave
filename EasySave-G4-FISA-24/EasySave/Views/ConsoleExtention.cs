@@ -1,5 +1,4 @@
 ﻿using EasySaveDraft.Resources;
-using GLib;
 using Gtk;
 using System.Text.RegularExpressions;
 
@@ -160,7 +159,7 @@ namespace EasySave.Views
 
                 string[] argrs = new string[] { };
 
-                if (!Gtk.Application.InitCheck("", ref argrs))
+                if (Gtk.Application.InitCheck("", ref argrs))
                 {
                     lDialog = new FileChooserDialog(
                    title: pDescription,
@@ -179,7 +178,7 @@ namespace EasySave.Views
                     else
                         lSelectedFolder = "-1";
 
-                    lDialog.Destroy();            
+                    lDialog.Destroy();
                 }
                 else
                 {
@@ -207,7 +206,7 @@ namespace EasySave.Views
 
                 string[] argrs = new string[] { };
 
-                if (!Gtk.Application.InitCheck("", ref argrs))
+                if (Gtk.Application.InitCheck("", ref argrs))
                 {
                     lDialog = new FileChooserDialog(
                            title: pDescription,

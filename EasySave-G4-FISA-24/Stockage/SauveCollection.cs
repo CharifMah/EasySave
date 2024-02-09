@@ -1,8 +1,6 @@
-﻿
-using Logs;
+﻿using LogsModels;
 using Newtonsoft.Json;
 using Stockage.Logs;
-using System.Diagnostics;
 
 namespace Stockage
 {

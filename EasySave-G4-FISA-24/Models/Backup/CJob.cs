@@ -1,4 +1,4 @@
-﻿using Logs;
+﻿using LogsModels;
 using Stockage;
 using Stockage.Logs;
 using System.Diagnostics;

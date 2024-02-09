@@ -1,6 +1,6 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
-using Logs;
+using LogsModels;
 using Models.Backup;
 using Stockage.Logs;
 using System.Collections.ObjectModel;
@@ -169,7 +169,7 @@ namespace EasySave.Views
             int lEndIndex = 0;
             Console.WriteLine("Sélectionnez la plage de jobs à exécuter");
 
-            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-"+ (pJobs.Count - 1) + "]+$")));
+            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
             if (lStartIndex == -1)
                 return null;
 
@@ -237,7 +237,7 @@ namespace EasySave.Views
                 CLogBase lLogFileState = (sender as ObservableCollection<CLogBase>).Last();
 
                 if (!lLogFileState.IsSummary)
-                {               
+                {
                     ConsoleExtention.WriteTitle(lLogFileState.Name);
 
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -271,7 +271,7 @@ namespace EasySave.Views
                 {
                     CLogState lLogState = (CLogState)(sender as ObservableCollection<CLogBase>).Last();
 
-                    ConsoleExtention.WriteTitle(lLogState.Name,ConsoleColor.Red);
+                    ConsoleExtention.WriteTitle(lLogState.Name, ConsoleColor.Red);
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Date: ");
@@ -306,7 +306,7 @@ namespace EasySave.Views
 
                     Console.ResetColor();
                 }
-                
+
             }
         }
 

@@ -3,17 +3,25 @@
 
 namespace EasySave.ViewModels
 {
+    /// <summary>
+    /// Classe JobViewModel
+    /// </summary>
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
 
         private CJobManager _jobManager;
+        /// <summary>
+        /// JobManager
+        /// </summary>
         public CJobManager JobManager { get => _jobManager; set => _jobManager = value; }
 
         #endregion
 
         #region CTOR
-
+        /// <summary>
+        /// Initialise le JobManager
+        /// </summary>
         public JobViewModel()
         {
             _jobManager = CJobManager.LoadJobs();
@@ -21,11 +29,24 @@ namespace EasySave.ViewModels
 
         #endregion
 
+        /// <summary>
+        /// Lance les jobs selectionnée
+        /// </summary>
+        /// <param name="pRange">L'interval de séléction</param>
+        /// <returns>List de Job</returns>
         public List<CJob> RunJobs(Tuple<int, int> pRange = null)
         {
             return _jobManager.RunJobs(pRange);
         }
 
+        /// <summary>
+        /// Crée un job
+        /// </summary>
+        /// <param name="pName">Nom du job</param>
+        /// <param name="pSourceDir">chemin source</param>
+        /// <param name="pTargetDir">chemin cible</param>
+        /// <param name="pType">Type de backup</param>
+        /// <returns>Vrai si le job a été crée</returns>
         public bool CreateBackupJob(string pName, string pSourceDir, string pTargetDir, ETypeBackup pType)
         {
             return _jobManager.CreateBackupJob(pName, pSourceDir, pTargetDir, pType);

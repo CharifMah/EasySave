@@ -1,4 +1,4 @@
-﻿namespace Logs
+﻿namespace LogsModels
 {
     public interface IPath
     {

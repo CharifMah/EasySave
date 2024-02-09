@@ -3,6 +3,9 @@ using System.Runtime.CompilerServices;
 
 namespace EasySave.ViewModels
 {
+    /// <summary>
+    /// Classe abstraite BaseViewModel
+    /// </summary>
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
         /// <summary> Evénement de modification d'une property </summary>

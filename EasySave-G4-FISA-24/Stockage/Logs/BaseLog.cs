@@ -8,7 +8,7 @@ namespace Stockage.Logs
 
         public ObservableCollection<T> Datas => _Datas;
 
-        public void Log(T pData,string pFileName = "Logs")
+        public void Log(T pData, string pFileName = "Logs")
         {
             ISauve lSave = new SauveCollection(Environment.CurrentDirectory);
             lSave.Sauver(pData, pFileName, true);

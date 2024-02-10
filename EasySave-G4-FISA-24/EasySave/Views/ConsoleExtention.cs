@@ -237,7 +237,6 @@ namespace EasySave.Views
             FileChooserDialog lDialog = null;
             try
             {
-
                 Console.WriteLine(pDescription);
 
                 string[] argrs = new string[] { };
@@ -292,6 +291,8 @@ namespace EasySave.Views
             do
             {
                 lFilePath = ReadResponse("\nEnter file path: ", pRegex, pValidator);
+                if (lFilePath == "-1")
+                    return lFilePath;
             } while (!File.Exists(lFilePath));
 
             return lFilePath;
@@ -309,6 +310,8 @@ namespace EasySave.Views
             do
             {
                 lFolderPath = ReadResponse("\nEnter folder path: ", null, pValidator);
+                if (lFolderPath == "-1")
+                    return lFolderPath;
             } while (!Directory.Exists(lFolderPath));
 
 

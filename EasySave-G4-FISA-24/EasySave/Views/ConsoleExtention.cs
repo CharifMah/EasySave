@@ -7,40 +7,54 @@ namespace EasySave.Views
     public static class ConsoleExtention
     {
         private static string _Input = string.Empty;
-
+        /// <summary>
+        /// Write line a error in red
+        /// </summary>
+        /// <param name="pMessage">message to write</param>
         public static void WriteLineError(string pMessage)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine('\n' + pMessage);
             Console.ForegroundColor = ConsoleColor.White;
         }
-
+        /// <summary>
+        /// Write line a succes in green
+        /// </summary>
+        /// <param name="pMessage">message to write</param>
         public static void WriteLineSucces(string pMessage)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine('\n' + pMessage);
             Console.ForegroundColor = ConsoleColor.White;
         }
-
+        /// <summary>
+        /// WriteLine the message Warning in DarkYellow
+        /// </summary>
+        /// <param name="pMessage">message to write</param>
         public static void WriteLineWarning(string pMessage)
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine('\n' + pMessage);
             Console.ForegroundColor = ConsoleColor.White;
         }
-
-        public static void WriteLinePath(string pPath)
+        /// <summary>
+        /// Write Path with UNC Format in yellow
+        /// </summary>
+        /// <param name="pPath">path to write</param>
+        public static void WritePath(string pPath)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write(pPath.Replace(@"\", @"\\") + '\n');
             Console.ForegroundColor = ConsoleColor.White;
         }
-
+        /// <summary>
+        /// Write a default message + input
+        /// </summary>
+        /// <param name="pInput"></param>
         public static void WriteLineSelected(string pInput)
         {
             Console.WriteLine($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + pInput + '\n');
         }
-
         /// <summary>
         /// Write a personalized Title with separator
         /// </summary>
@@ -63,14 +77,16 @@ namespace EasySave.Views
             Console.WriteLine(lSeparator);
             Console.ForegroundColor = ConsoleColor.White;
         }
-
         /// <summary>
-        /// Read user input
+        /// Read user input char by char
         /// </summary>
         /// <param name="pMessage">Message to loop through if the user makes an input error</param>
+        /// <param name="pRegex">Regex permettant de validée l'entrée utilisateur</param>
+        /// <param name="pIsValid">Fonction qui prend un string en parametre et valide l'entrée utilisateur</param>
         /// <returns>user input</returns>
         /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
-        public static string ReadResponse(string pMessage, Regex? pRegex = null)
+        /// <remarks>Mahmoud Charif - 09/02/2024 - Ajout d'une fonction anonyme de validation en paramètre</remarks>
+        public static string ReadResponse(string pMessage, Regex? pRegex = null, Func<string, bool> pIsValid = null)
         {
             ConsoleKeyInfo lsInput = default;
             _Input = string.Empty;
@@ -79,19 +95,14 @@ namespace EasySave.Views
 
             if (pRegex == null)
                 pRegex = new Regex("");
+            if (pIsValid == null)
+                pIsValid = lValidTxt => { return true; };
 
             do
             {
+                // cm - Displays a message if certain shortcuts are not pressed.
                 if (string.IsNullOrEmpty(_Input) && lsInput.Key != ConsoleKey.V && lsInput.Modifiers != ConsoleModifiers.Control)
                     Console.Write(pMessage);
-
-                // cm - CTRL+V for past
-                if (lsInput.Key == ConsoleKey.V && lsInput.Modifiers == ConsoleModifiers.Control)
-                {
-                    string lText = TextCopy.ClipboardService.GetText();
-                    _Input += lText;
-                    Console.Write(lText);
-                }
 
                 while (Console.KeyAvailable)
                     Console.ReadKey(false); // cm - skips previous inputs
@@ -105,8 +116,14 @@ namespace EasySave.Views
                     break;
                 }
 
-                // cm - Concatenate inputs to obtain the final output
-                if (lsInput.Key != ConsoleKey.Enter && lsInput.Key != ConsoleKey.Backspace && lsInput.Modifiers == 0)
+                // cm - CTRL+V for past
+                if (lsInput.Key == ConsoleKey.V && lsInput.Modifiers == ConsoleModifiers.Control)
+                {
+                    string lText = TextCopy.ClipboardService.GetText(); // cm - Get the text from clipboard
+                    _Input += lText;
+                    Console.Write(lText);
+                }
+                else if (lsInput.Key != ConsoleKey.Enter && lsInput.Key != ConsoleKey.Backspace) // cm - Concatenate inputs to obtain the final output
                     _Input += lsInput.KeyChar;
 
                 if (lsInput.Key == ConsoleKey.Backspace)   // cm - If user press Backspace delete 1 caratere in the console
@@ -128,27 +145,36 @@ namespace EasySave.Views
             if (_Input != "-1" || String.IsNullOrEmpty(_Input))
                 WriteLineSelected(_Input);
 
-            if (lsInput.KeyChar == (char)ConsoleKey.Enter && !pRegex.IsMatch(_Input))
+            if (lsInput.KeyChar == (char)ConsoleKey.Enter && (!pRegex.IsMatch(_Input) || !pIsValid(_Input)))
             {
                 WriteLineError(Strings.ResourceManager.GetObject("InvalideSelection").ToString());
-                ReadResponse(pMessage, pRegex);
+
+                ReadResponse(pMessage, pRegex, pIsValid);
             }
 
             return _Input;
         }
-
+        /// <summary>
+        /// Clear the console and set the input to -1
+        /// </summary>
         public static void Clear()
         {
             Console.Clear();
             _Input = "-1";
         }
-
+        /// <summary>
+        /// Remove the last input in the console
+        /// </summary>
         private static void RemoveLastChar()
         {
             Console.SetCursorPosition(Console.GetCursorPosition().Left + 1, Console.GetCursorPosition().Top);
             Console.Write("\b \b");
         }
-
+        /// <summary>
+        /// Read a folder with GTK CrossPlatform interface if it fail open classic Console Interface
+        /// </summary>
+        /// <param name="pDescription">Description for the interface</param>
+        /// <returns>return the selected folder full path</returns>
         public static string ReadFolder(string pDescription)
         {
             string lSelectedFolder = null;
@@ -190,12 +216,17 @@ namespace EasySave.Views
             catch (Exception ex)
             {
                 WriteLineError(ex.Message);
+                lSelectedFolder = ReadFolderConsole();
             }
 
             return lSelectedFolder;
         }
-
-        public static string ReadFile(string pDescription)
+        /// <summary>
+        /// Read a file with GTK CrossPlatform interface if it fail open classic Console Interface
+        /// </summary>
+        /// <param name="pDescription">Description for the interface</param>
+        /// <returns>return the selected file full path</returns>
+        public static string ReadFile(string pDescription,Regex pRegexExtentions = null)
         {
             string lSelectedFile = null;
             FileChooserDialog lDialog = null;
@@ -229,7 +260,7 @@ namespace EasySave.Views
                 }
                 else
                 {
-                    lSelectedFile = ReadFileConsole();
+                    lSelectedFile = ReadFileConsole(pRegexExtentions);
                 }
 
                 WriteLineSelected(lSelectedFile);
@@ -237,35 +268,46 @@ namespace EasySave.Views
             catch (Exception ex)
             {
                 WriteLineError(ex.Message);
+                lSelectedFile = ReadFileConsole(pRegexExtentions);
             }
 
             return lSelectedFile;
         }
-
-        private static string ReadFileConsole()
+        /// <summary>
+        /// Wait path from the console input
+        /// </summary>
+        /// <param name="pRegex">filter the file or the extention</param>
+        /// <returns>file fullpath</returns>
+        private static string ReadFileConsole(Regex pRegex = null)
         {
             string lFilePath = String.Empty;
 
+            Func<string, bool> pValidator = lPath => File.Exists(lPath);
+
             do
             {
-                lFilePath = ReadResponse("Enter file path: ");
+                lFilePath = ReadResponse("\nEnter file path: ", pRegex, pValidator);
             } while (!File.Exists(lFilePath));
 
             return lFilePath;
         }
-
+        /// <summary>
+        /// Wait path from the console input
+        /// </summary>
+        /// <returns>folder fullpath</returns>
         private static string ReadFolderConsole()
         {
-
             string lFolderPath = String.Empty;
+
+            Func<string, bool> pValidator = lPath => Directory.Exists(lPath);
 
             do
             {
-                lFolderPath = ReadResponse("Enter folder path: ");
+                lFolderPath = ReadResponse("\nEnter folder path: ", null, pValidator);
             } while (!Directory.Exists(lFolderPath));
 
 
             return lFolderPath;
-        }
+        }      
     }
 }

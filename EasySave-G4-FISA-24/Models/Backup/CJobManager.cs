@@ -13,6 +13,7 @@ namespace Models.Backup
         private List<CJob> _Jobs;
         [DataMember]
         private string _Name;
+
         private ISauve _SauveCollection;
 
         #endregion
@@ -69,22 +70,15 @@ namespace Models.Backup
         /// Lance les jobs dans un interval d'index
         /// </summary>
         /// <param name="pRange">Tuple d'index</param>
-        public List<CJob> RunJobs(Tuple<int, int> pRange = null)
-        {
-            List<CJob> lRunningJobs = new List<CJob>();
-
-            if (pRange == null)
-                pRange = new Tuple<int, int>(0, _Jobs.Count - 1);
-            
+        public List<CJob> RunJobs(List<CJob> pJobs)
+        {          
             // cm - Lance les jobs
-            if (pRange.Item1 >= 0 && pRange.Item2 <= _Jobs.Count())
-                for (int i = pRange.Item1; i <= pRange.Item2; i++)
-                {
-                    lRunningJobs.Add(_Jobs[i]);
-                    _Jobs[i].Run();
-                }
+            foreach (CJob lJob in pJobs)
+            {
+                lJob.Run();
+            }
 
-            return lRunningJobs;
+            return pJobs;
         }
 
         #region Serialization

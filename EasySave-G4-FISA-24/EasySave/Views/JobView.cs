@@ -38,11 +38,7 @@ namespace EasySave.Views
 
             if (_JobVm.JobManager.Jobs.Any())
             {
-                Tuple<int, int> lRange = SelectJobs(_JobVm.JobManager.Jobs);
-                if (lRange == null)
-                    return;
-
-                List<CJob> lJobsRunning = _JobVm.RunJobs(lRange);
+                List<CJob> lJobsRunning = _JobVm.RunJobs(SelectJobs(_JobVm.JobManager.Jobs));
 
                 foreach (CJob lJobRunning in lJobsRunning)
                     ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} copy is finished");
@@ -137,62 +133,6 @@ namespace EasySave.Views
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
             }
         }
-        #endregion
-
-        #region private
-        /// <summary>
-        /// Truncate the middle of a string if the string is greater than maxLenght
-        /// </summary>
-        /// <param name="pMessage">string to truncate</param>
-        /// <param name="pMaxLength">max lenght of the message</param>
-        /// <returns>truncated string</returns>
-        /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
-        public string TruncateMiddle(string pMessage, int pMaxLength)
-        {
-            if (string.IsNullOrEmpty(pMessage) || pMaxLength < 5 || pMessage.Length <= pMaxLength)
-                return pMessage;
-
-            int leftCharacters = (pMaxLength / 2) - 2;
-            int rightCharacters = pMaxLength - leftCharacters - 3;
-            int startIndex = pMessage.Length - rightCharacters;
-
-            return pMessage.Substring(0, leftCharacters) + "..." + pMessage.Substring(startIndex);
-        }
-
-        /// <summary>
-        /// Print the range selection to run jobs
-        /// </summary>
-        /// <returns>Tuple of index where the first item is lower or equal than item2</returns>
-        private Tuple<int, int> SelectJobs(List<CJob> pJobs)
-        {
-            int lStartIndex = 0;
-            int lEndIndex = 0;
-            Console.WriteLine("Sélectionnez la plage de jobs à exécuter");
-
-            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
-            if (lStartIndex == -1)
-                return null;
-
-            Console.WriteLine();
-
-            lEndIndex = int.Parse(ConsoleExtention.ReadResponse("Index de fin : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
-            if (lEndIndex == -1)
-                return null;
-
-            // Check indexs
-            if (lStartIndex < 0 || lEndIndex > _JobVm.JobManager.Jobs.Count || lStartIndex > lEndIndex)
-            {
-                Console.WriteLine($"Plage d'indices invalide le nombre de job disponible est de {_JobVm.JobManager.Jobs.Count}");
-                //Restart SelectJobs if the range is not correct
-                return SelectJobs(pJobs);
-            }
-
-            return Tuple.Create(lStartIndex, lEndIndex);
-        }
-
-        #endregion
-
-        #endregion
 
         #region Serialization
         /// <summary>
@@ -219,7 +159,7 @@ namespace EasySave.Views
                     _JobVm.LoadJobs();
                     break;
                 case "1":
-                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration"));
+                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$")));
 
                     if (_JobVm.JobManager != null)
                         ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
@@ -227,6 +167,89 @@ namespace EasySave.Views
             }
         }
         #endregion
+
+        #endregion
+
+        #region private
+        /// <summary>
+        /// Truncate the middle of a string if the string is greater than maxLenght
+        /// </summary>
+        /// <param name="pMessage">string to truncate</param>
+        /// <param name="pMaxLength">max lenght of the message</param>
+        /// <returns>truncated string</returns>
+        /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
+        public string TruncateMiddle(string pMessage, int pMaxLength)
+        {
+            if (string.IsNullOrEmpty(pMessage) || pMaxLength < 5 || pMessage.Length <= pMaxLength)
+                return pMessage;
+
+            int leftCharacters = (pMaxLength / 2) - 2;
+            int rightCharacters = pMaxLength - leftCharacters - 3;
+            int startIndex = pMessage.Length - rightCharacters;
+
+            return pMessage.Substring(0, leftCharacters) + "..." + pMessage.Substring(startIndex);
+        }
+
+        /// <summary>
+        /// Print the range selection to run jobs
+        /// </summary>
+        /// <returns>Tuple of index where the first item is lower or equal than item2</returns>
+        private List<CJob> SelectJobs(List<CJob> pJobs)
+        {
+            List<CJob> lSelectedJobs = new List<CJob>();
+
+            int lStartIndex = 0;
+            int lEndIndex = 0;
+            List<int> lListIndex = new List<int>();
+
+            Console.WriteLine("Sélectionnez la plage de jobs à exécuter");
+
+            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
+            if (lStartIndex == -1)
+                return null;
+
+            Console.WriteLine();
+
+            lEndIndex = int.Parse(ConsoleExtention.ReadResponse("Index de fin : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
+            if (lEndIndex == -1)
+                return null;
+
+            string lIndividualIndex = ConsoleExtention.ReadResponse("Voulez vous choisir des job supplementaire de manière individuel Y/N : ", new Regex("^[YyNn]$"));
+
+            if (lIndividualIndex.ToLower() == "y")
+            {
+                string lResponse = String.Empty;
+                do
+                {
+                    lResponse = ConsoleExtention.ReadResponse("Index de individuel ('q' pour terminer la saisie) : ", new Regex("^((0-" + (pJobs.Count - 1) + ")|[^" + lStartIndex + "-" + lEndIndex + "])$"));
+
+                    if (lResponse == "-1")
+                        return null;
+                    if (lResponse != "q")
+                    lListIndex.Add(int.Parse(lResponse));
+                } while (lResponse != "q");
+            }
+
+            foreach (int lIndex in lListIndex)
+            {
+                lSelectedJobs.Add(pJobs[lIndex]);
+            }
+
+            for (int i = lStartIndex; i <= lEndIndex; i++)
+            {
+                lSelectedJobs.Add(pJobs[i]);
+            }
+
+            // Check indexs
+            if (lStartIndex > lEndIndex)
+            {
+                Console.WriteLine($"Plage d'indices invalide le nombre de job disponible est de {_JobVm.JobManager.Jobs.Count}");
+                //Restart SelectJobs if the range is not correct
+                return SelectJobs(pJobs);
+            }
+
+            return lSelectedJobs;
+        }
 
         #region Events
 
@@ -249,7 +272,7 @@ namespace EasySave.Views
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Source Directory: ");
 
-                    ConsoleExtention.WriteLinePath(lLogFileState.SourceDirectory);
+                    ConsoleExtention.WritePath(lLogFileState.SourceDirectory);
 
                     Console.ResetColor();
                     Console.WriteLine("=>");
@@ -257,7 +280,7 @@ namespace EasySave.Views
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Target Directory: ");
 
-                    ConsoleExtention.WriteLinePath(lLogFileState.TargetDirectory);
+                    ConsoleExtention.WritePath(lLogFileState.TargetDirectory);
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Total Size: ");
@@ -288,7 +311,7 @@ namespace EasySave.Views
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Source Directory: ");
 
-                    ConsoleExtention.WriteLinePath(lLogState.SourceDirectory);
+                    ConsoleExtention.WritePath(lLogState.SourceDirectory);
 
                     Console.ResetColor();
                     Console.WriteLine("=>");
@@ -296,7 +319,7 @@ namespace EasySave.Views
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Target Directory: ");
 
-                    ConsoleExtention.WriteLinePath(lLogState.TargetDirectory);
+                    ConsoleExtention.WritePath(lLogState.TargetDirectory);
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Total Size: ");
@@ -310,7 +333,6 @@ namespace EasySave.Views
             }
         }
 
-
         private void LogStringData_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems.Count >= 1)
@@ -319,6 +341,10 @@ namespace EasySave.Views
                 ConsoleExtention.WriteLineWarning(DateTime.Now + " " + lLog);
             }
         }
+
+        #endregion
+
+        #endregion
 
         #endregion
     }

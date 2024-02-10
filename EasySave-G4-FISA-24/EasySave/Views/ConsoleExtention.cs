@@ -1,5 +1,6 @@
 ﻿using EasySaveDraft.Resources;
 using Gtk;
+using System;
 using System.Text.RegularExpressions;
 
 namespace EasySave.Views
@@ -158,18 +159,22 @@ namespace EasySave.Views
         {
             string lSelectedFolder = null;
             FileChooserDialog lDialog = null;
+
             try
             {
+                throw new Exception("l165 Readfolder exception gtk application initcheck");
                 Console.WriteLine(pDescription);
 
                 string[] argrs = new string[] { };
 
+              
                 if (Gtk.Application.InitCheck("", ref argrs))
                 {
                     lDialog = new FileChooserDialog(
-                   title: pDescription,
-                   parent: null,
-                   action: FileChooserAction.SelectFolder);
+                       title: pDescription,
+                       parent: null,
+                       action: FileChooserAction.SelectFolder
+                    );
 
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Select").ToString(), ResponseType.Ok);

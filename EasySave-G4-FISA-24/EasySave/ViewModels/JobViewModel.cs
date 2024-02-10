@@ -1,4 +1,5 @@
-﻿using Models.Backup;
+﻿using Gtk;
+using Models.Backup;
 
 
 namespace EasySave.ViewModels
@@ -34,9 +35,9 @@ namespace EasySave.ViewModels
         /// </summary>
         /// <param name="pRange">L'interval de séléction</param>
         /// <returns>List de Job</returns>
-        public List<CJob> RunJobs(Tuple<int, int> pRange = null)
+        public List<CJob> RunJobs(List<CJob> pJobs)
         {
-            return _jobManager.RunJobs(pRange);
+            return _jobManager.RunJobs(pJobs);
         }
 
         /// <summary>

@@ -186,8 +186,7 @@ namespace EasySave.Views
                 Console.WriteLine(pDescription);
 
                 string[] argrs = new string[] { };
-
-              
+     
                 if (Gtk.Application.InitCheck("", ref argrs))
                 {
                     lDialog = new FileChooserDialog(
@@ -214,14 +213,13 @@ namespace EasySave.Views
                 {
                     lSelectedFolder = ReadFolderConsole();
                 }
-
-
             }
             catch (Exception ex)
             {
                 WriteLineError(ex.Message);
                 lSelectedFolder = ReadFolderConsole();
             }
+
             WriteLineSelected(lSelectedFolder);
             return lSelectedFolder;
         }

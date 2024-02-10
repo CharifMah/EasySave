@@ -129,9 +129,7 @@ namespace EasySave.Views
                 ConsoleExtention.WriteLineSucces(Strings.ResourceManager.GetObject("JobCreated").ToString());
             }
             else
-            {
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
-            }
         }
 
         #region Serialization

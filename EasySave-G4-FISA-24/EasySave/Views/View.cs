@@ -16,7 +16,7 @@ namespace EasySave.Views
         {
             get => $"\n0 - {Strings.ResourceManager.GetObject("ChooseLang")} \n" +
                     $"1 - {Strings.ResourceManager.GetObject("ListJobs")}\n" +
-                    $"2 - {Strings.ResourceManager.GetObject("LoadJobs")}\n" +
+                    $"2 - {Strings.ResourceManager.GetObject("LoadJobConfig")}\n" +
                     $"3 - {Strings.ResourceManager.GetObject("CreateJob")}\n" +
                     $"4 - {Strings.ResourceManager.GetObject("RunJobs")}\n";
         }

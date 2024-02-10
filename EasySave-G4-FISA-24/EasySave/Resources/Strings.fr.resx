@@ -177,4 +177,7 @@
   <data name="Lang" xml:space="preserve">
     <value>Langue</value>
   </data>
+  <data name="LoadJobConfig" xml:space="preserve">
+    <value>Charger une configuration de Jobs</value>
+  </data>
 </root>

@@ -36,9 +36,11 @@ namespace EasySave.Views
             ListJobs();
             Console.WriteLine();
 
-            if (_JobVm.JobManager.Jobs.Any())
+            List<CJob> lJobs = SelectJobs(_JobVm.JobManager.Jobs);
+
+            if (_JobVm.JobManager.Jobs.Any() && lJobs != null)
             {
-                List<CJob> lJobsRunning = _JobVm.RunJobs(SelectJobs(_JobVm.JobManager.Jobs));
+                List<CJob> lJobsRunning = _JobVm.RunJobs(lJobs);
 
                 foreach (CJob lJobRunning in lJobsRunning)
                     ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} copy is finished");
@@ -265,7 +267,7 @@ namespace EasySave.Views
                     Console.Write("Date: ");
 
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(lLogFileState.Date.Date);
+                    Console.WriteLine(lLogFileState.Date);
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Source Directory: ");
@@ -298,7 +300,7 @@ namespace EasySave.Views
                     Console.Write("Date: ");
 
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(lLogState.Date.Date);
+                    Console.WriteLine(lLogState.Date);
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Temps elapsed: ");

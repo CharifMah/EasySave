@@ -4,15 +4,31 @@ namespace Stockage.Logs
 {
     public abstract class BaseLogger<T> : ILogger<T>
     {
-        private ObservableCollection<T> _Datas = new ObservableCollection<T>();
+        private ObservableCollection<T> _Datas;
 
         public ObservableCollection<T> Datas => _Datas;
 
-        public void Log(T pData, string pFileName = "Logs")
+        protected BaseLogger()
         {
-            ISauve lSave = new SauveCollection(Environment.CurrentDirectory);
-            lSave.Sauver(pData, pFileName, true);
+            _Datas = new ObservableCollection<T>();
+        }
+
+        public virtual void Log(T pData, bool pSerialize = true, bool pAppend = true, string pFileName = "Logs")
+        {
+            if (pSerialize)
+            {
+                string lFolderName = "Logs";
+                string lPath = Path.Combine(Environment.CurrentDirectory, lFolderName);
+                ISauve lSave = new SauveCollection(lPath);
+                lSave.Sauver(pData, pFileName, pAppend);
+            }
+
             _Datas.Add(pData);
+        }
+
+        public virtual void Clear()
+        {
+            _Datas.Clear();
         }
     }
 }

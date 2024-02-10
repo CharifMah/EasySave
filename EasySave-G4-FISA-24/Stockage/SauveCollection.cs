@@ -46,13 +46,14 @@ namespace Stockage
                     // cm - delete the file if exist
                     if (!pAppend && File.Exists(lPath))
                     {
-                        File.Delete(Path.Combine(_path, $"{pFileName}.{pExtention}"));
+                        File.Delete(lPath);
 
                         // cm - Write json data into the file
                         File.WriteAllText(lPath, jsonString);
                     }
-                    else
+                    if (pAppend)
                         File.AppendAllText(lPath, jsonString);
+
                 }
             }
             catch (Exception ex)
@@ -91,9 +92,15 @@ namespace Stockage
                     lFiles[i].CopyTo(lTargetFilePath, pForce);
                     _FilesTransfered++;
                     if (pForce)
-                        CLogger<CLogBase>.StringLogger.Log("Force Delete : " + lTargetFilePath);
+                    {
+                        CLogger<object>.GenericLogger.Log(new { XXXXXXXXXXXXXXXXXX = "XXXXXXXXXXXXXXXXXX" }, false);
+                        CLogger<CLogBase>.StringLogger.Log("Force Delete : " + lTargetFilePath, false);
+                        CLogger<object>.GenericLogger.Log(new { XXXXXXXXXXXXXXXXXX = "XXXXXXXXXXXXXXXXXX" }, false);
+                    }
 
-                    CLogger<CLogBase>.StringLogger.Log("Files Transfered : " + _FilesTransfered);
+                    CLogger<object>.GenericLogger.Log(new { XXXXXXXXXXXXXXXXXX = "XXXXXXXXXXXXXXXXXX" }, false);
+                    CLogger<CLogBase>.StringLogger.Log("Files Transfered : " + _FilesTransfered, false);
+                    CLogger<object>.GenericLogger.Log(new { XXXXXXXXXXXXXXXXXX = "XXXXXXXXXXXXXXXXXX" }, false);
 
                     lLogFilestate.Name = lFiles[i].Name;
                     lLogFilestate.SourceDirectory = lFiles[i].FullName;
@@ -101,7 +108,7 @@ namespace Stockage
                     lLogFilestate.Date = DateTime.Now;
                     lLogFilestate.TotalSize = lFiles[i].Length;
 
-                    CLogger<CLogBase>.GenericLogger.Log(lLogFilestate);
+                    CLogger<CLogBase>.GenericLogger.Log(lLogFilestate, false);
                 }
 
                 // cm - If recursive and copying subdirectories, recursively call this method
@@ -116,7 +123,7 @@ namespace Stockage
             }
             catch (Exception ex)
             {
-                CLogger<CLogBase>.StringLogger.Log(ex.Message);
+                CLogger<CLogBase>.StringLogger.Log(ex.Message, false);
             }
         }
 

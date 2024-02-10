@@ -183,7 +183,6 @@ namespace EasySave.Views
 
             try
             {
-                throw new Exception("l165 Readfolder exception gtk application initcheck");
                 Console.WriteLine(pDescription);
 
                 string[] argrs = new string[] { };
@@ -216,14 +215,14 @@ namespace EasySave.Views
                     lSelectedFolder = ReadFolderConsole();
                 }
 
-                WriteLineSelected(lSelectedFolder);
+
             }
             catch (Exception ex)
             {
                 WriteLineError(ex.Message);
                 lSelectedFolder = ReadFolderConsole();
             }
-
+            WriteLineSelected(lSelectedFolder);
             return lSelectedFolder;
         }
         /// <summary>
@@ -266,14 +265,14 @@ namespace EasySave.Views
                 {
                     lSelectedFile = ReadFileConsole(pRegexExtentions);
                 }
-
-                WriteLineSelected(lSelectedFile);
             }
             catch (Exception ex)
             {
                 WriteLineError(ex.Message);
                 lSelectedFile = ReadFileConsole(pRegexExtentions);
             }
+
+            WriteLineSelected(lSelectedFile);
 
             return lSelectedFile;
         }

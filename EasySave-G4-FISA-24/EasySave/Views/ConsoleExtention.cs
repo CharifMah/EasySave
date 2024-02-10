@@ -7,40 +7,54 @@ namespace EasySave.Views
     public static class ConsoleExtention
     {
         private static string _Input = string.Empty;
-
+        /// <summary>
+        /// Write line a error in red
+        /// </summary>
+        /// <param name="pMessage">message to write</param>
         public static void WriteLineError(string pMessage)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine('\n' + pMessage);
             Console.ForegroundColor = ConsoleColor.White;
         }
-
+        /// <summary>
+        /// Write line a succes in green
+        /// </summary>
+        /// <param name="pMessage">message to write</param>
         public static void WriteLineSucces(string pMessage)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine('\n' + pMessage);
             Console.ForegroundColor = ConsoleColor.White;
         }
-
+        /// <summary>
+        /// WriteLine the message Warning in DarkYellow
+        /// </summary>
+        /// <param name="pMessage">message to write</param>
         public static void WriteLineWarning(string pMessage)
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine('\n' + pMessage);
             Console.ForegroundColor = ConsoleColor.White;
         }
-
-        public static void WriteLinePath(string pPath)
+        /// <summary>
+        /// Write Path with UNC Format in yellow
+        /// </summary>
+        /// <param name="pPath">path to write</param>
+        public static void WritePath(string pPath)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write(pPath.Replace(@"\", @"\\") + '\n');
             Console.ForegroundColor = ConsoleColor.White;
         }
-
+        /// <summary>
+        /// Write a default message + input
+        /// </summary>
+        /// <param name="pInput"></param>
         public static void WriteLineSelected(string pInput)
         {
             Console.WriteLine($"\n{Strings.ResourceManager.GetObject("YouSelected")} " + pInput + '\n');
         }
-
         /// <summary>
         /// Write a personalized Title with separator
         /// </summary>
@@ -63,7 +77,6 @@ namespace EasySave.Views
             Console.WriteLine(lSeparator);
             Console.ForegroundColor = ConsoleColor.White;
         }
-
         /// <summary>
         /// Read user input char by char
         /// </summary>
@@ -141,19 +154,27 @@ namespace EasySave.Views
 
             return _Input;
         }
-
+        /// <summary>
+        /// Clear the console and set the input to -1
+        /// </summary>
         public static void Clear()
         {
             Console.Clear();
             _Input = "-1";
         }
-
+        /// <summary>
+        /// Remove the last input in the console
+        /// </summary>
         private static void RemoveLastChar()
         {
             Console.SetCursorPosition(Console.GetCursorPosition().Left + 1, Console.GetCursorPosition().Top);
             Console.Write("\b \b");
         }
-
+        /// <summary>
+        /// Read a folder with GTK CrossPlatform interface if it fail open classic Console Interface
+        /// </summary>
+        /// <param name="pDescription">Description for the interface</param>
+        /// <returns>return the selected folder full path</returns>
         public static string ReadFolder(string pDescription)
         {
             string lSelectedFolder = null;
@@ -200,7 +221,11 @@ namespace EasySave.Views
 
             return lSelectedFolder;
         }
-
+        /// <summary>
+        /// Read a file with GTK CrossPlatform interface if it fail open classic Console Interface
+        /// </summary>
+        /// <param name="pDescription">Description for the interface</param>
+        /// <returns>return the selected file full path</returns>
         public static string ReadFile(string pDescription,Regex pRegexExtentions = null)
         {
             string lSelectedFile = null;
@@ -248,7 +273,11 @@ namespace EasySave.Views
 
             return lSelectedFile;
         }
-
+        /// <summary>
+        /// Wait path from the console input
+        /// </summary>
+        /// <param name="pRegex">filter the file or the extention</param>
+        /// <returns>file fullpath</returns>
         private static string ReadFileConsole(Regex pRegex = null)
         {
             string lFilePath = String.Empty;
@@ -262,7 +291,10 @@ namespace EasySave.Views
 
             return lFilePath;
         }
-
+        /// <summary>
+        /// Wait path from the console input
+        /// </summary>
+        /// <returns>folder fullpath</returns>
         private static string ReadFolderConsole()
         {
             string lFolderPath = String.Empty;

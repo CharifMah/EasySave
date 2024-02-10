@@ -272,7 +272,7 @@ namespace EasySave.Views
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Source Directory: ");
 
-                    ConsoleExtention.WriteLinePath(lLogFileState.SourceDirectory);
+                    ConsoleExtention.WritePath(lLogFileState.SourceDirectory);
 
                     Console.ResetColor();
                     Console.WriteLine("=>");
@@ -280,7 +280,7 @@ namespace EasySave.Views
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Target Directory: ");
 
-                    ConsoleExtention.WriteLinePath(lLogFileState.TargetDirectory);
+                    ConsoleExtention.WritePath(lLogFileState.TargetDirectory);
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Total Size: ");
@@ -311,7 +311,7 @@ namespace EasySave.Views
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Source Directory: ");
 
-                    ConsoleExtention.WriteLinePath(lLogState.SourceDirectory);
+                    ConsoleExtention.WritePath(lLogState.SourceDirectory);
 
                     Console.ResetColor();
                     Console.WriteLine("=>");
@@ -319,7 +319,7 @@ namespace EasySave.Views
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Target Directory: ");
 
-                    ConsoleExtention.WriteLinePath(lLogState.TargetDirectory);
+                    ConsoleExtention.WritePath(lLogState.TargetDirectory);
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("Total Size: ");

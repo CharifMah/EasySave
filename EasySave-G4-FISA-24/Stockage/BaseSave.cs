@@ -1,9 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LogsModels;
+using Newtonsoft.Json;
 
 namespace Stockage
 {
@@ -65,6 +61,11 @@ namespace Stockage
         }
 
         public virtual void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, ref CLogState pLogState, bool pForce = false)
         {
             throw new NotImplementedException();
         }

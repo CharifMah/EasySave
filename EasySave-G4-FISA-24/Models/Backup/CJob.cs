@@ -56,30 +56,28 @@ namespace Models.Backup
 
         #region Methods
 
-        public void Run()
+        public void Run(SauveJobs pSauveJobs)
         {
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:
-                    Backup(true);
+                    Backup(true, pSauveJobs);
                     break;
                 case ETypeBackup.DIFFERENTIEL:
-                    Backup(false);
+                    Backup(false, pSauveJobs);
                     break;
             }
         }
 
-        private void Backup(bool pForceCopy)
+        private void Backup(bool pForceCopy, SauveJobs pSauveJobs)
         {
             try
             {
                 DirectoryInfo lSourceDir = new DirectoryInfo(_SourceDirectory);
                 DirectoryInfo lTargetDir = new DirectoryInfo(_TargetDirectory);
 
-                SauveJobs lSauveJob = new SauveJobs(_SourceDirectory);
-
-                _LogState.TotalSize = lSauveJob.GetDirSize(lSourceDir.FullName);
-                _LogState.Name = this.Name + " - "+ lSourceDir.Name;
+                _LogState.TotalSize = pSauveJobs.GetDirSize(lSourceDir.FullName);
+                _LogState.Name = Name + " - " + lSourceDir.Name;
                 _LogState.SourceDirectory = lSourceDir.FullName;
                 _LogState.TargetDirectory = lTargetDir.FullName;
                 _LogState.EligibleFileCount = lSourceDir.GetFiles("*", SearchOption.AllDirectories).Length;
@@ -91,18 +89,18 @@ namespace Models.Backup
                 _LogState.Date = DateTime.Now;
                 _LogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
                 _LogState.IsActive = true;
-                CLogger<CLogBase>.GenericLogger.Log(_LogState, true, false);
+                pSauveJobs.UpdateLog(_LogState);
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    lSauveJob.CopyDirectory(lSourceDir, lTargetDir, true, pForceCopy);
+                    pSauveJobs.CopyDirectory(lSourceDir, lTargetDir, true,ref _LogState, pForceCopy);
 
                     lSw.Stop();
                     _LogState.Date = DateTime.Now;
                     _LogState.RemainingFiles = 0;
                     _LogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
                     _LogState.IsActive = false;
-                    CLogger<CLogBase>.GenericLogger.Log(_LogState, true, true);
+                    pSauveJobs.UpdateLog(_LogState);
                 }
                 else
                 {

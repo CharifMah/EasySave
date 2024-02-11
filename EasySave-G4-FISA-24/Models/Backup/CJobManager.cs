@@ -71,12 +71,13 @@ namespace Models.Backup
         /// </summary>
         /// <param name="pRange">Tuple d'index</param>
         public List<CJob> RunJobs(List<CJob> pJobs)
-        {          
-
+        {
+            SauveJobs lSauveJobs = new SauveJobs(Path.Combine(Environment.CurrentDirectory, "Jobs"));
             // cm - Lance les jobs
             foreach (CJob lJob in pJobs)
             {
-                lJob.Run();
+                lSauveJobs.TransferedFiles = 0;
+                lJob.Run(lSauveJobs);
             }
 
             return pJobs;

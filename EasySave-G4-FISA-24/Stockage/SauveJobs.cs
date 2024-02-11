@@ -1,21 +1,29 @@
 ﻿using LogsModels;
 using Stockage.Logs;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Stockage
 {
     public class SauveJobs : BaseSave
     {
-        private CLogState _logState;
+        private int _TransferedFiles;
+        private List<CLogState> _LogStates;
+
+        public int TransferedFiles { get => _TransferedFiles; set => _TransferedFiles = value; }
 
         public SauveJobs(string pPath) : base(pPath)
         {
+            _LogStates = new List<CLogState>();
+            _TransferedFiles = 0;
+        }
 
+        public void UpdateLog(CLogState logState)
+        {
+            if (_LogStates.Contains(logState))
+                _LogStates.Remove(logState);
+
+            _LogStates.Add(logState);
+            CLogger<List<CLogState>>.GenericLogger.Log(_LogStates, true, false);
         }
 
         /// <summary>
@@ -27,7 +35,7 @@ namespace Stockage
         /// <param name="pForce">true if overwrite</param>
         /// <param name="pLogger">Logger</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public override void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false)
+        public override void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, ref CLogState pLogState, bool pForce = false)
         {
             string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
 
@@ -48,10 +56,13 @@ namespace Stockage
                     Stopwatch lSw = Stopwatch.StartNew();
                     lSw.Start();
                     string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
-
+                    _TransferedFiles++;
                     lFiles[i].CopyTo(lTargetFilePath, pForce);
                     lSw.Stop();
-
+                    pLogState.SourceDirectory = lFiles[i].FullName;
+                    pLogState.TargetDirectory = lTargetFilePath;
+                    pLogState.RemainingFiles = pLogState.EligibleFileCount - _TransferedFiles;
+                    UpdateLog(pLogState);
                     lLogFilesDaily.Name = lFiles[i].Name;
                     lLogFilesDaily.SourceDirectory = lFiles[i].FullName;
                     lLogFilesDaily.TargetDirectory = lTargetFilePath;
@@ -67,7 +78,7 @@ namespace Stockage
                     foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
                     {
                         DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
-                        CopyDirectory(lSubDir, lNewDestinationDir, true, pForce);
+                        CopyDirectory(lSubDir, lNewDestinationDir, true, ref pLogState, pForce);
                     }
                 }
             }

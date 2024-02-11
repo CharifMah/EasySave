@@ -1,5 +1,4 @@
-﻿using Gtk;
-using Models.Backup;
+﻿using Models.Backup;
 
 
 namespace EasySave.ViewModels

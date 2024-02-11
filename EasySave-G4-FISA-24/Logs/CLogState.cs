@@ -32,7 +32,7 @@ namespace LogsModels
 
         public CLogState()
         {
-            Name = "Summary - " + Name ;
+            Name = "Summary - " + Name;
             IsSummary = true;
         }
     }

@@ -117,7 +117,7 @@ namespace EasySave.Views
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
                 return;
             }
-          
+
 
             Console.WriteLine($"\n{Strings.ResourceManager.GetObject("PossibleTypeBackup")}:");
 
@@ -308,7 +308,7 @@ namespace EasySave.Views
         }
 
         #region Events
-       
+
         private void LogGenericData_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems.Count >= 1)

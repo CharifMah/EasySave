@@ -1,6 +1,5 @@
 ﻿using EasySaveDraft.Resources;
 using Gtk;
-using System;
 using System.Text.RegularExpressions;
 
 namespace EasySave.Views
@@ -186,7 +185,7 @@ namespace EasySave.Views
                 Console.WriteLine(pDescription);
 
                 string[] argrs = new string[] { };
-     
+
                 if (Gtk.Application.InitCheck("", ref argrs))
                 {
                     lDialog = new FileChooserDialog(
@@ -228,7 +227,7 @@ namespace EasySave.Views
         /// </summary>
         /// <param name="pDescription">Description for the interface</param>
         /// <returns>return the selected file full path</returns>
-        public static string ReadFile(string pDescription,Regex pRegexExtentions = null)
+        public static string ReadFile(string pDescription, Regex pRegexExtentions = null)
         {
             string lSelectedFile = null;
             FileChooserDialog lDialog = null;
@@ -313,6 +312,6 @@ namespace EasySave.Views
 
 
             return lFolderPath;
-        }      
+        }
     }
 }

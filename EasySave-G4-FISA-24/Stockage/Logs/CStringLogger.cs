@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Stockage.Logs
+﻿namespace Stockage.Logs
 {
     public class CStringLogger : BaseLogger<string>
     {

@@ -78,6 +78,28 @@ namespace EasySave.Views
             Console.WriteLine(lSeparator);
             Console.ForegroundColor = ConsoleColor.White;
         }
+
+        public static void WriteSubtitle(string pSubtitle, ConsoleColor pColor = ConsoleColor.DarkGray)
+        {
+            int lWidth = Console.WindowWidth;
+
+            // Séparation
+            string lSeparator = new string('=', lWidth);
+
+            // Centrer le sous-titre 
+            string lFormattedSubtitle =
+              pSubtitle.PadLeft((lWidth + pSubtitle.Length) / 2)
+                     .PadRight(lWidth);
+
+            Console.ForegroundColor = pColor;
+            Console.WriteLine(lFormattedSubtitle);
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine(lSeparator);
+
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         /// <summary>
         /// Read user input char by char
         /// </summary>

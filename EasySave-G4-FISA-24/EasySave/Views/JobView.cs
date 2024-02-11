@@ -283,7 +283,7 @@ namespace EasySave.Views
                 Console.Write("Temps elapsed: ");
 
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(lLog.ElapsedMilisecond + "ms");
+                Console.WriteLine(lLog.ElapsedMilisecond + " ms");
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Source Directory: ");
@@ -302,7 +302,7 @@ namespace EasySave.Views
                 Console.Write("Total Size: ");
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(lLog.TotalSize);
+                Console.WriteLine(lLog.TotalSize + " bytes");
 
                 Console.ResetColor();
             }
@@ -335,7 +335,7 @@ namespace EasySave.Views
                 Console.Write("Total Size: ");
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(lLogFileState.TotalSize);
+                Console.WriteLine(lLogFileState.TotalSize + " bytes");
 
                 Console.ResetColor();
             }

@@ -23,7 +23,6 @@ namespace EasySave.Views
             CLogger<CLogBase>.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged;
         }
 
-
         #endregion
 
         #region Methods
@@ -44,6 +43,8 @@ namespace EasySave.Views
 
                 foreach (CJob lJobRunning in lJobsRunning)
                     ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} copy is finished");
+
+                ShowSummary(CLogger<List<CLogState>>.GenericLogger.Datas.Last());
             }
             else
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
@@ -228,7 +229,7 @@ namespace EasySave.Views
                     if (lResponse == "-1")
                         return null;
                     if (lResponse != "q")
-                    lListIndex.Add(int.Parse(lResponse));
+                        lListIndex.Add(int.Parse(lResponse));
                 } while (lResponse != "q");
             }
 
@@ -252,8 +253,48 @@ namespace EasySave.Views
 
             return lSelectedJobs;
         }
+        private void ShowSummary(List<CLogState> pLogStates)
+        {
+            foreach (CLogState lLog in pLogStates)
+            {
+                ConsoleExtention.WriteTitle(lLog.Name, ConsoleColor.Red);
 
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Date: ");
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(lLog.Date);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Temps elapsed: ");
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(lLog.ElapsedMilisecond + "ms");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Source Directory: ");
+
+                ConsoleExtention.WritePath(lLog.SourceDirectory);
+
+                Console.ResetColor();
+                Console.WriteLine("=>");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Target Directory: ");
+
+                ConsoleExtention.WritePath(lLog.TargetDirectory);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Total Size: ");
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(lLog.TotalSize);
+
+                Console.ResetColor();
+            }
+        }
         #region Events
+       
 
         private void LogGenericData_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -261,77 +302,34 @@ namespace EasySave.Views
             {
                 CLogBase lLogFileState = (sender as ObservableCollection<CLogBase>).Last();
 
-                if (!lLogFileState.IsSummary)
-                {
-                    ConsoleExtention.WriteTitle(lLogFileState.Name);
+                ConsoleExtention.WriteTitle(lLogFileState.Name);
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Date: ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Date: ");
 
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(lLogFileState.Date);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(lLogFileState.Date);
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Source Directory: ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Source Directory: ");
 
-                    ConsoleExtention.WritePath(lLogFileState.SourceDirectory);
+                ConsoleExtention.WritePath(lLogFileState.SourceDirectory);
 
-                    Console.ResetColor();
-                    Console.WriteLine("=>");
+                Console.ResetColor();
+                Console.WriteLine("=>");
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Target Directory: ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Target Directory: ");
 
-                    ConsoleExtention.WritePath(lLogFileState.TargetDirectory);
+                ConsoleExtention.WritePath(lLogFileState.TargetDirectory);
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Total Size: ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Total Size: ");
 
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(lLogFileState.TotalSize);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(lLogFileState.TotalSize);
 
-                    Console.ResetColor();
-                }
-                else
-                {
-                    CLogState lLogState = (CLogState)(sender as ObservableCollection<CLogBase>).Last();
-
-                    ConsoleExtention.WriteTitle(lLogState.Name, ConsoleColor.Red);
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Date: ");
-
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(lLogState.Date);
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Temps elapsed: ");
-
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(lLogState.ElapsedMilisecond + "ms");
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Source Directory: ");
-
-                    ConsoleExtention.WritePath(lLogState.SourceDirectory);
-
-                    Console.ResetColor();
-                    Console.WriteLine("=>");
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Target Directory: ");
-
-                    ConsoleExtention.WritePath(lLogState.TargetDirectory);
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Total Size: ");
-
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(lLogState.TotalSize);
-
-                    Console.ResetColor();
-                }
-
+                Console.ResetColor();
             }
         }
 

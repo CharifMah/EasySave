@@ -1,6 +1,5 @@
 ﻿using LogsModels;
 using Stockage;
-using Stockage.Logs;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
@@ -93,7 +92,7 @@ namespace Models.Backup
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    pSauveJobs.CopyDirectory(lSourceDir, lTargetDir, true,ref _LogState, pForceCopy);
+                    pSauveJobs.CopyDirectory(lSourceDir, lTargetDir, true, ref _LogState, pForceCopy);
 
                     lSw.Stop();
                     _LogState.Date = DateTime.Now;

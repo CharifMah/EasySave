@@ -1,4 +1,5 @@
 ﻿using EasySaveDraft.Resources;
+using GLib;
 using Gtk;
 using System.Text.RegularExpressions;
 
@@ -184,9 +185,7 @@ namespace EasySave.Views
             {
                 Console.WriteLine(pDescription);
 
-                string[] argrs = new string[] { };
-
-                if (Gtk.Application.InitCheck("", ref argrs))
+                if (CheckIfGuiExist())
                 {
                     lDialog = new FileChooserDialog(
                        title: pDescription,
@@ -223,6 +222,17 @@ namespace EasySave.Views
             return lSelectedFolder;
         }
         /// <summary>
+        /// Check if GTK can init GUI or not
+        /// </summary>
+        /// <returns>true if GTK can init the GUI</returns>
+        private static bool CheckIfGuiExist()
+        {
+            string[] argrs = new string[] { };
+
+            return Gtk.Application.InitCheck("", ref argrs);
+        }
+
+        /// <summary>
         /// Read a file with GTK CrossPlatform interface if it fail open classic Console Interface
         /// </summary>
         /// <param name="pDescription">Description for the interface</param>
@@ -235,9 +245,7 @@ namespace EasySave.Views
             {
                 Console.WriteLine(pDescription);
 
-                string[] argrs = new string[] { };
-
-                if (Gtk.Application.InitCheck("", ref argrs))
+                if (CheckIfGuiExist())
                 {
                     lDialog = new FileChooserDialog(
                            title: pDescription,

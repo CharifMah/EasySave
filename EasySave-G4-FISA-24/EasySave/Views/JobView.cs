@@ -266,6 +266,7 @@ namespace EasySave.Views
 
             return lSelectedJobs;
         }
+
         private void ShowSummary(List<CLogState> pLogStates)
         {
             foreach (CLogState lLog in pLogStates)

@@ -5,22 +5,22 @@ namespace LogsModels
     [DataContract]
     public class CLogState : CLogBase
     {
+
         [DataMember]
-        private bool _IsActive;
-        [DataMember]
-        private int _RemainingFiles;
+        private double _RemainingSize;
         [DataMember]
         private int _EligibleFileCount;
         [DataMember]
         private long _ElapsedMilisecond;
 
-        public int RemainingFiles { get => _RemainingFiles; set => _RemainingFiles = value; }
+        public double RemainingSize { get => _RemainingSize; set => _RemainingSize = value; }
         public int EligibleFileCount { get => _EligibleFileCount; set => _EligibleFileCount = value; }
         public long ElapsedMilisecond { get => _ElapsedMilisecond; set => _ElapsedMilisecond = value; }
-        public bool IsActive { get => _IsActive; set => _IsActive = value; }
+        public override string Name { get => base.Name; set => base.Name = "Summary - " + value; }
 
         public CLogState()
         {
+            Name = "Summary - " + Name ;
             IsSummary = true;
         }
     }

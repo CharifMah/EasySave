@@ -46,9 +46,6 @@ namespace Stockage
                     // cm - delete the file if exist
                     if (!pAppend)
                     {
-                        if (File.Exists(lPath))
-                            File.Delete(lPath);
-
                         // cm - Write json data into the file
                         File.WriteAllText(lPath, jsonString);
                     }

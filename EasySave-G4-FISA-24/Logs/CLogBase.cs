@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace LogsModels
 {
@@ -6,9 +7,9 @@ namespace LogsModels
     public abstract class CLogBase : IPath
     {
         [DataMember]
-        private DateTime _Date;
-        [DataMember]
         private string _Name;
+        [DataMember]
+        private DateTime _Date;
         [DataMember]
         private double _TotalSize;
         [DataMember]
@@ -18,9 +19,8 @@ namespace LogsModels
 
         private bool _IsSummary;
 
-
-        public virtual DateTime Date { get => _Date; set => _Date = value; }
         public virtual string Name { get => _Name; set => _Name = value; }
+        public virtual DateTime Date { get => _Date; set => _Date = value; }
         public virtual double TotalSize { get => _TotalSize; set => _TotalSize = value; }
         public virtual string SourceDirectory { get => _SourceDirectory; set => _SourceDirectory = value; }
         public virtual string TargetDirectory { get => _TargetDirectory; set => _TargetDirectory = value; }

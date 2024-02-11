@@ -23,7 +23,6 @@
         /// <param name="pTargetDir">Path of the target directory</param>
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pForce">true if overwrite</param>
-        /// <param name="pLogger">Class de logger</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
         void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false);
     }

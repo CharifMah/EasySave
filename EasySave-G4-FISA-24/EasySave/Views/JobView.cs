@@ -215,6 +215,8 @@ namespace EasySave.Views
                 return null;
 
             string lIndividualIndex = ConsoleExtention.ReadResponse("Voulez vous choisir des job supplementaire de manière individuel Y/N : ", new Regex("^[YyNn]$"));
+            if (lIndividualIndex == "-1")
+                return null;
 
             if (lIndividualIndex.ToLower() == "y")
             {

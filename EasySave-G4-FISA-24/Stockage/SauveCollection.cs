@@ -1,13 +1,13 @@
 ﻿using LogsModels;
 using Newtonsoft.Json;
 using Stockage.Logs;
+using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace Stockage
 {
     public class SauveCollection : ISauve
     {
-        private int _FilesTransfered;
-
         private string _path;
 
         private static readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
@@ -22,7 +22,6 @@ namespace Stockage
                 Directory.CreateDirectory(pPath);
 
             _path = pPath;
-            _FilesTransfered = 0;
         }
 
         /// <summary>
@@ -71,6 +70,8 @@ namespace Stockage
         /// <exception cref="DirectoryNotFoundException"></exception>
         public void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false)
         {
+            string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
+
             try
             {
                 // cm - Check if the source directory exists
@@ -80,28 +81,25 @@ namespace Stockage
                 Directory.CreateDirectory(pTargetDir.FullName);
                 FileInfo[] lFiles = pSourceDir.GetFiles();
 
-                CLogFileState lLogFilestate = new CLogFileState();
-
+                CLogDaily lLogFilesDaily = new CLogDaily();
+                lLogFilesDaily.IsSummary = false;
                 // cm - Get files in the source directory and copy to the destination directory
                 for (int i = 0; i < lFiles.Length; i++)
                 {
+                    Stopwatch lSw = Stopwatch.StartNew();
+                    lSw.Start();
                     string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
 
                     lFiles[i].CopyTo(lTargetFilePath, pForce);
-                    _FilesTransfered++;
+                    lSw.Stop();
 
-                    if (pForce)
-                        CLogger<CLogBase>.StringLogger.Log("Force Delete : " + lTargetFilePath, false);
-
-                    CLogger<CLogBase>.StringLogger.Log("Files Transfered : " + _FilesTransfered, false);
-
-                    lLogFilestate.Name = lFiles[i].Name;
-                    lLogFilestate.SourceDirectory = lFiles[i].FullName;
-                    lLogFilestate.TargetDirectory = lTargetFilePath;
-                    lLogFilestate.Date = DateTime.Now;
-                    lLogFilestate.TotalSize = lFiles[i].Length;
-
-                    CLogger<CLogBase>.GenericLogger.Log(lLogFilestate, false);
+                    lLogFilesDaily.Name = lFiles[i].Name;
+                    lLogFilesDaily.SourceDirectory = lFiles[i].FullName;
+                    lLogFilesDaily.TargetDirectory = lTargetFilePath;
+                    lLogFilesDaily.Date = DateTime.Now;
+                    lLogFilesDaily.TotalSize = lFiles[i].Length;
+                    lLogFilesDaily.TransfertTimeSecond = lSw.Elapsed.TotalSeconds;
+                    CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
                 }
 
                 // cm - If recursive and copying subdirectories, recursively call this method
@@ -116,7 +114,7 @@ namespace Stockage
             }
             catch (Exception ex)
             {
-                CLogger<CLogBase>.StringLogger.Log(ex.Message, false);
+                CLogger<CLogBase>.StringLogger.Log(ex.Message, false, true, lName);
             }
         }
 

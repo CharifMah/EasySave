@@ -20,6 +20,7 @@ namespace Models.Backup
         [DataMember]
         private ETypeBackup _BackupType;
 
+        private CLogState _LogState;
         #endregion
 
         #region Property
@@ -37,16 +38,18 @@ namespace Models.Backup
         /// Constructeur de job
         /// </summary>
         /// <param name="pName">Nom du job</param>
-        /// <param name="pSourceDestination">Chemin source</param>
-        /// <param name="pDesitnationDirectory">Chemin destination</param>
+        /// <param name="pSourceDirectory">Chemin source</param>
+        /// <param name="pTargetDirectory">Chemin destination</param>
         /// <param name="pTypeBackup">Type de sauvegarde</param>
         /// <remarks>Mahmoud Charif - 30/01/2024 - Création</remarks>
-        public CJob(string pName, string pSourceDestination, string pDesitnationDirectory, ETypeBackup pTypeBackup)
+        public CJob(string pName, string pSourceDirectory, string pTargetDirectory, ETypeBackup pTypeBackup)
         {
             _Name = pName;
-            _SourceDirectory = pSourceDestination;
-            _TargetDirectory = pDesitnationDirectory;
+            _SourceDirectory = pSourceDirectory;
+            _TargetDirectory = pTargetDirectory;
             _BackupType = pTypeBackup;
+
+            _LogState = new CLogState();
         }
 
         #endregion
@@ -70,39 +73,38 @@ namespace Models.Backup
         {
             try
             {
-                DirectoryInfo lSourceDir = new DirectoryInfo(SourceDirectory);
-                DirectoryInfo lTargetDir = new DirectoryInfo(TargetDirectory);
+                DirectoryInfo lSourceDir = new DirectoryInfo(_SourceDirectory);
+                DirectoryInfo lTargetDir = new DirectoryInfo(_TargetDirectory);
+
+                string lLogName = "Log - " + this.Name;
+
                 SauveCollection lSauveCollection = new SauveCollection(_SourceDirectory);
 
-                CLogState lLogState = new CLogState
-                {
-                    Name = lSourceDir.Name,
-                    SourceDirectory = lSourceDir.FullName,
-                    TargetDirectory = lTargetDir.FullName,
-                    TotalSize = lSauveCollection.GetDirSize(lSourceDir.FullName),
-                    EligibleFileCount = lSourceDir.GetFiles("*", SearchOption.AllDirectories).Length,
-
-                };
+                _LogState.TotalSize = lSauveCollection.GetDirSize(lSourceDir.FullName);
+                _LogState.Name = lLogName + " - "+ lSourceDir.Name;
+                _LogState.SourceDirectory = lSourceDir.FullName;
+                _LogState.TargetDirectory = lTargetDir.FullName;
+                _LogState.EligibleFileCount = lSourceDir.GetFiles("*", SearchOption.AllDirectories).Length;
 
                 Stopwatch lSw = Stopwatch.StartNew();
                 lSw.Start();
 
-                lLogState.RemainingFiles = lLogState.EligibleFileCount;
-                lLogState.Date = DateTime.Now;
-                lLogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
-                lLogState.IsActive = true;
-                CLogger<CLogBase>.GenericLogger.Log(lLogState, true, false);
+                _LogState.RemainingFiles = _LogState.EligibleFileCount;
+                _LogState.Date = DateTime.Now;
+                _LogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
+                _LogState.IsActive = true;
+                CLogger<CLogBase>.GenericLogger.Log(_LogState, true, false, lLogName);
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
                     lSauveCollection.CopyDirectory(lSourceDir, lTargetDir, true, pForceCopy);
 
                     lSw.Stop();
-                    lLogState.Date = DateTime.Now;
-                    lLogState.RemainingFiles = 0;
-                    lLogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
-                    lLogState.IsActive = false;
-                    CLogger<CLogBase>.GenericLogger.Log(lLogState, true, false);
+                    _LogState.Date = DateTime.Now;
+                    _LogState.RemainingFiles = 0;
+                    _LogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
+                    _LogState.IsActive = false;
+                    CLogger<CLogBase>.GenericLogger.Log(_LogState, true, true, lLogName);
                 }
                 else
                 {

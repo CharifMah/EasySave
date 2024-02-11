@@ -80,19 +80,29 @@ namespace Models.Backup
                     SourceDirectory = lSourceDir.FullName,
                     TargetDirectory = lTargetDir.FullName,
                     TotalSize = lSauveCollection.GetDirSize(lSourceDir.FullName),
+                    EligibleFileCount = lSourceDir.GetFiles("*", SearchOption.AllDirectories).Length,
+
                 };
 
                 Stopwatch lSw = Stopwatch.StartNew();
                 lSw.Start();
 
+                lLogState.RemainingFiles = lLogState.EligibleFileCount;
+                lLogState.Date = DateTime.Now;
+                lLogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
+                lLogState.IsActive = true;
+                CLogger<CLogBase>.GenericLogger.Log(lLogState, true, false);
+
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    lSauveCollection.CopyDirectory(new DirectoryInfo(_SourceDirectory), new DirectoryInfo(_TargetDirectory), true, pForceCopy);
+                    lSauveCollection.CopyDirectory(lSourceDir, lTargetDir, true, pForceCopy);
 
                     lSw.Stop();
                     lLogState.Date = DateTime.Now;
+                    lLogState.RemainingFiles = 0;
                     lLogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
-                    CLogger<CLogBase>.GenericLogger.Log(lLogState);
+                    lLogState.IsActive = false;
+                    CLogger<CLogBase>.GenericLogger.Log(lLogState, true, false);
                 }
                 else
                 {

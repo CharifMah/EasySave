@@ -5,17 +5,19 @@ namespace LogsModels
     [DataContract]
     public class CLogState : CLogBase
     {
-
         [DataMember]
-        private double _RemainingSize;
+        private bool _IsActive;
+        [DataMember]
+        private int _RemainingFiles;
         [DataMember]
         private int _EligibleFileCount;
         [DataMember]
         private long _ElapsedMilisecond;
 
-        public double RemainingSize { get => _RemainingSize; set => _RemainingSize = value; }
+        public int RemainingFiles { get => _RemainingFiles; set => _RemainingFiles = value; }
         public int EligibleFileCount { get => _EligibleFileCount; set => _EligibleFileCount = value; }
         public long ElapsedMilisecond { get => _ElapsedMilisecond; set => _ElapsedMilisecond = value; }
+        public bool IsActive { get => _IsActive; set => _IsActive = value; }
 
         public CLogState()
         {

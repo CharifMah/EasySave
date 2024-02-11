@@ -44,9 +44,10 @@ namespace Stockage
                     string lPath = Path.Combine(_path, $"{pFileName}.{pExtention}");
 
                     // cm - delete the file if exist
-                    if (!pAppend && File.Exists(lPath))
+                    if (!pAppend)
                     {
-                        File.Delete(lPath);
+                        if (File.Exists(lPath))
+                            File.Delete(lPath);
 
                         // cm - Write json data into the file
                         File.WriteAllText(lPath, jsonString);
@@ -91,16 +92,11 @@ namespace Stockage
 
                     lFiles[i].CopyTo(lTargetFilePath, pForce);
                     _FilesTransfered++;
-                    if (pForce)
-                    {
-                        CLogger<object>.GenericLogger.Log(new { XXXXXXXXXXXXXXXXXX = "XXXXXXXXXXXXXXXXXX" }, false);
-                        CLogger<CLogBase>.StringLogger.Log("Force Delete : " + lTargetFilePath, false);
-                        CLogger<object>.GenericLogger.Log(new { XXXXXXXXXXXXXXXXXX = "XXXXXXXXXXXXXXXXXX" }, false);
-                    }
 
-                    CLogger<object>.GenericLogger.Log(new { XXXXXXXXXXXXXXXXXX = "XXXXXXXXXXXXXXXXXX" }, false);
+                    if (pForce)
+                        CLogger<CLogBase>.StringLogger.Log("Force Delete : " + lTargetFilePath, false);
+
                     CLogger<CLogBase>.StringLogger.Log("Files Transfered : " + _FilesTransfered, false);
-                    CLogger<object>.GenericLogger.Log(new { XXXXXXXXXXXXXXXXXX = "XXXXXXXXXXXXXXXXXX" }, false);
 
                     lLogFilestate.Name = lFiles[i].Name;
                     lLogFilestate.SourceDirectory = lFiles[i].FullName;

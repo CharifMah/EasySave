@@ -72,6 +72,7 @@ namespace Models.Backup
         /// <param name="pRange">Tuple d'index</param>
         public List<CJob> RunJobs(List<CJob> pJobs)
         {          
+
             // cm - Lance les jobs
             foreach (CJob lJob in pJobs)
             {

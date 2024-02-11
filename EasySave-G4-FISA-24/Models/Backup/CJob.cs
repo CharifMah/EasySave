@@ -76,12 +76,10 @@ namespace Models.Backup
                 DirectoryInfo lSourceDir = new DirectoryInfo(_SourceDirectory);
                 DirectoryInfo lTargetDir = new DirectoryInfo(_TargetDirectory);
 
-                string lLogName = "Log - " + this.Name;
+                SauveJobs lSauveJob = new SauveJobs(_SourceDirectory);
 
-                SauveCollection lSauveCollection = new SauveCollection(_SourceDirectory);
-
-                _LogState.TotalSize = lSauveCollection.GetDirSize(lSourceDir.FullName);
-                _LogState.Name = lLogName + " - "+ lSourceDir.Name;
+                _LogState.TotalSize = lSauveJob.GetDirSize(lSourceDir.FullName);
+                _LogState.Name = this.Name + " - "+ lSourceDir.Name;
                 _LogState.SourceDirectory = lSourceDir.FullName;
                 _LogState.TargetDirectory = lTargetDir.FullName;
                 _LogState.EligibleFileCount = lSourceDir.GetFiles("*", SearchOption.AllDirectories).Length;
@@ -93,18 +91,18 @@ namespace Models.Backup
                 _LogState.Date = DateTime.Now;
                 _LogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
                 _LogState.IsActive = true;
-                CLogger<CLogBase>.GenericLogger.Log(_LogState, true, false, lLogName);
+                CLogger<CLogBase>.GenericLogger.Log(_LogState, true, false);
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    lSauveCollection.CopyDirectory(lSourceDir, lTargetDir, true, pForceCopy);
+                    lSauveJob.CopyDirectory(lSourceDir, lTargetDir, true, pForceCopy);
 
                     lSw.Stop();
                     _LogState.Date = DateTime.Now;
                     _LogState.RemainingFiles = 0;
                     _LogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
                     _LogState.IsActive = false;
-                    CLogger<CLogBase>.GenericLogger.Log(_LogState, true, true, lLogName);
+                    CLogger<CLogBase>.GenericLogger.Log(_LogState, true, true);
                 }
                 else
                 {

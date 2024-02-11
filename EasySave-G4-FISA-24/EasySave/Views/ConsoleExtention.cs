@@ -274,6 +274,14 @@ namespace EasySave.Views
                            parent: null,
                            action: FileChooserAction.Open);
 
+                    if (pRegexExtentions != null && pRegexExtentions.ToString().Contains("json"))
+                    {
+                        FileFilter lFilter = new FileFilter();
+                        lFilter.Name = pDescription;
+                        lFilter.AddPattern("*.json");
+                        lDialog.AddFilter(lFilter);
+                    }
+                   
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
 

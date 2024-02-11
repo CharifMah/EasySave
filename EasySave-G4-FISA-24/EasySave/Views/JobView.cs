@@ -172,8 +172,10 @@ namespace EasySave.Views
                 case "1":
                     _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$")));
 
-                    if (_JobVm.JobManager != null)
+                    if (_JobVm.JobManager.Jobs.Count > 0)
                         ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
+                    else
+                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name} Loaded without Jobs");
                     break;
             }
         }

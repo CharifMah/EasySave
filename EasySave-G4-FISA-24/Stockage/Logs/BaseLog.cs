@@ -2,6 +2,10 @@
 
 namespace Stockage.Logs
 {
+    /// <summary>
+    /// BaseLogger
+    /// </summary>
+    /// <typeparam name="T">Type du Logger</typeparam>
     public abstract class BaseLogger<T> : ILogger<T>
     {
         private ObservableCollection<T> _Datas;
@@ -12,7 +16,13 @@ namespace Stockage.Logs
         {
             _Datas = new ObservableCollection<T>();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pData"></param>
+        /// <param name="pSerialize"></param>
+        /// <param name="pAppend"></param>
+        /// <param name="pFileName"></param>
         public virtual void Log(T pData, bool pSerialize = true, bool pAppend = true, string pFileName = "Logs")
         {
             if (pSerialize)
@@ -25,7 +35,9 @@ namespace Stockage.Logs
 
             _Datas.Add(pData);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void Clear()
         {
             _Datas.Clear();

@@ -101,13 +101,23 @@ namespace EasySave.Views
             // cm - Demande a l'utilisateur de saisir les info du job  
             string lName = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Name")}: ", new Regex("^[a-zA-Z0-9]+$"));
             if (lName == "-1")
+            {
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
                 return;
+            }
             string lSourceDir = ConsoleExtention.ReadFolder($"\n{Strings.ResourceManager.GetObject("SourceDir")} ");
             if (lSourceDir == "-1")
+            {
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
                 return;
+            }
             string lTargetDir = ConsoleExtention.ReadFolder($"\n{Strings.ResourceManager.GetObject("TargetDir")} ");
-            if (lTargetDir == "-1")
+            if (lTargetDir == "-1" || lTargetDir == lSourceDir)
+            {
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
                 return;
+            }
+          
 
             Console.WriteLine($"\n{Strings.ResourceManager.GetObject("PossibleTypeBackup")}:");
 
@@ -215,22 +225,25 @@ namespace EasySave.Views
             if (lEndIndex == -1)
                 return null;
 
-            string lIndividualIndex = ConsoleExtention.ReadResponse("Voulez vous choisir des job supplementaire de manière individuel Y/N : ", new Regex("^[YyNn]$"));
-            if (lIndividualIndex == "-1")
-                return null;
-
-            if (lIndividualIndex.ToLower() == "y")
+            if (lEndIndex < pJobs.Count - 1)
             {
-                string lResponse = String.Empty;
-                do
-                {
-                    lResponse = ConsoleExtention.ReadResponse("Index de individuel ('q' pour terminer la saisie) : ", new Regex("^((0-" + (pJobs.Count - 1) + ")|[^" + lStartIndex + "-" + lEndIndex + "])$"));
+                string lIndividualIndex = ConsoleExtention.ReadResponse("Voulez vous choisir des job supplementaire de manière individuel Y/N : ", new Regex("^[YyNn]$"));
+                if (lIndividualIndex == "-1")
+                    return null;
 
-                    if (lResponse == "-1")
-                        return null;
-                    if (lResponse != "q")
-                        lListIndex.Add(int.Parse(lResponse));
-                } while (lResponse != "q");
+                if (lIndividualIndex.ToLower() == "y")
+                {
+                    string lResponse = String.Empty;
+                    do
+                    {
+                        lResponse = ConsoleExtention.ReadResponse("Index de individuel ('q' pour terminer la saisie) : ", new Regex("^((0-" + (pJobs.Count - 1) + ")|[^" + lStartIndex + "-" + lEndIndex + "])$"));
+
+                        if (lResponse == "-1")
+                            return null;
+                        if (lResponse != "q")
+                            lListIndex.Add(int.Parse(lResponse));
+                    } while (lResponse != "q");
+                }
             }
 
             foreach (int lIndex in lListIndex)
@@ -293,9 +306,9 @@ namespace EasySave.Views
                 Console.ResetColor();
             }
         }
+
         #region Events
        
-
         private void LogGenericData_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems.Count >= 1)
@@ -303,12 +316,6 @@ namespace EasySave.Views
                 CLogBase lLogFileState = (sender as ObservableCollection<CLogBase>).Last();
 
                 ConsoleExtention.WriteTitle(lLogFileState.Name);
-
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Date: ");
-
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(lLogFileState.Date);
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("Source Directory: ");

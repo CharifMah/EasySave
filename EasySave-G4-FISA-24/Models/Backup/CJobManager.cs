@@ -14,6 +14,7 @@ namespace Models.Backup
         private string _Name;
         private ISauve _SauveCollection;
         #endregion
+
         #region Property
         public List<CJob> Jobs { get => _Jobs; }
         public string Name { get => _Name; set => _Name = value; }

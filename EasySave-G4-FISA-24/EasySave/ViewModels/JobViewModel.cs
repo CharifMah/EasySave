@@ -13,6 +13,7 @@ namespace EasySave.ViewModels
         /// </summary>
         public CJobManager JobManager { get => _jobManager; set => _jobManager = value; }
         #endregion
+
         #region CTOR
         /// <summary>
         /// Initialise le JobManager
@@ -22,6 +23,7 @@ namespace EasySave.ViewModels
             _jobManager = CJobManager.LoadJobs();
         }
         #endregion
+
         /// <summary>
         /// Lance les jobs selectionnée
         /// </summary>

@@ -15,7 +15,7 @@ namespace UnitTestJobs
             Assert.Equal(lJobManager.Jobs.Count, 1);
             CJob lJob2 = new CJob("Job2", "", "", ETypeBackup.COMPLET);
             lJobManager.CreateBackupJob(lJob2);
-            Assert.(lJobManager.Jobs.Count, 2);
+            Assert.Equal(lJobManager.Jobs.Count, 2);
         }
 
         [Fact]
@@ -28,13 +28,13 @@ namespace UnitTestJobs
             lJobManager.SaveJobs();
             lJobManager = CJobManager.LoadJobs();
             Assert.Equal(lJobManager.Jobs.First(), lJob);
+
             CJob lJob1 = new CJob("Job11", "", "", ETypeBackup.COMPLET);
-            lJobManager.CreateBackupJob(lJob);
+            lJobManager.CreateBackupJob(lJob1);
             lJobManager = CJobManager.LoadJobs();
+
             Assert.Equal(lJobManager.Jobs.First(), lJob);
             Assert.Equal(lJobManager.Jobs.Count, 1);
         }
-
-
     }
 }

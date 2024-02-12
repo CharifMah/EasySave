@@ -16,6 +16,7 @@ namespace Models.Backup
         private string _TargetDirectory;
         [DataMember]
         private ETypeBackup _BackupType;
+
         private CLogState _LogState;
         #endregion
         #region Property

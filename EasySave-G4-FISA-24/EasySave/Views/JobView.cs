@@ -5,6 +5,7 @@ using Models.Backup;
 using Stockage.Logs;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace EasySave.Views
 {
@@ -118,10 +119,9 @@ namespace EasySave.Views
                 return;
             }
 
-
             Console.WriteLine($"\n{Strings.ResourceManager.GetObject("PossibleTypeBackup")}:");
 
-            // Gget enum values
+            // Get enum values
             foreach (ETypeBackup type in Enum.GetValues(typeof(ETypeBackup)))
             {
                 Console.WriteLine((int)type + " - " + type);
@@ -129,11 +129,13 @@ namespace EasySave.Views
 
             string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex("^[0-1]$"));
             if (lInput == "-1")
+            {
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
                 return;
+            }
 
             // Parse la valeur saisie
             ETypeBackup lBackupType = (ETypeBackup)Enum.Parse(typeof(ETypeBackup), lInput);
-
 
             if (_JobVm.CreateBackupJob(lName, lSourceDir, lTargetDir, lBackupType))
             {
@@ -168,6 +170,10 @@ namespace EasySave.Views
             if (lInput == "-1")
                 return;
 
+            string lIndividualIndex = ConsoleExtention.ReadResponse($"Etes vous sur de supprimer le Job xxxx Y/N : ", new Regex("^[YyNn]$"));
+            if (lIndividualIndex == "-1" || lIndividualIndex.ToLower() == "n")
+                return;
+
             // Appellez la méthode DeleteJobs du ViewModel
             if (_JobVm.DeleteJobs(lInput))
                 ConsoleExtention.WriteLineSucces("Les jobs sélectionnés ont été supprimés.");
@@ -176,42 +182,6 @@ namespace EasySave.Views
                 return;
             
         }
-
-        #region Serialization
-        /// <summary>
-        /// Save Jobs and print
-        /// </summary>
-        public void SaveJobs()
-        {
-            _JobVm.SaveJobs();
-            ConsoleExtention.WriteLineSucces($"Job {_JobVm.JobManager.Name} saved");
-        }
-
-        /// <summary>
-        /// Load jobs and print
-        /// </summary>
-        public void LoadJobs()
-        {
-            ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("LoadJobs").ToString());
-
-            string lInput = ConsoleExtention.ReadResponse("0 - Fichier par defaut\n" +
-                                                          "1 - Autre fichier\n");
-            switch (lInput)
-            {
-                case "0":
-                    _JobVm.LoadJobs();
-                    break;
-                case "1":
-                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$")));
-
-                    if (_JobVm.JobManager.Jobs.Count > 0)
-                        ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
-                    else
-                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name} Loaded without Jobs");
-                    break;
-            }
-        }
-        #endregion
 
         #endregion
 
@@ -384,6 +354,43 @@ namespace EasySave.Views
             }
         }
 
+        #endregion
+
+
+        #region Serialization
+        /// <summary>
+        /// Save Jobs and print
+        /// </summary>
+        public void SaveJobs()
+        {
+            _JobVm.SaveJobs();
+            ConsoleExtention.WriteLineSucces($"Job {_JobVm.JobManager.Name} saved");
+        }
+
+        /// <summary>
+        /// Load jobs and print
+        /// </summary>
+        public void LoadJobs()
+        {
+            ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("LoadJobs").ToString());
+
+            string lInput = ConsoleExtention.ReadResponse("0 - Fichier par defaut\n" +
+                                                          "1 - Autre fichier\n");
+            switch (lInput)
+            {
+                case "0":
+                    _JobVm.LoadJobs();
+                    break;
+                case "1":
+                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$")));
+
+                    if (_JobVm.JobManager.Jobs.Count > 0)
+                        ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
+                    else
+                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name} Loaded without Jobs");
+                    break;
+            }
+        }
         #endregion
 
         #endregion

@@ -180,4 +180,7 @@
   <data name="LoadJobConfig" xml:space="preserve">
     <value>Load a Jobs configuration</value>
   </data>
+  <data name="DeleteJob" xml:space="preserve">
+    <value>Delete a job</value>
+  </data>
 </root>

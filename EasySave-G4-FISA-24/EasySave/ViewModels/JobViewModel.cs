@@ -1,5 +1,4 @@
-﻿using Gtk;
-using Models.Backup;
+﻿using Models.Backup;
 
 
 namespace EasySave.ViewModels
@@ -51,6 +50,53 @@ namespace EasySave.ViewModels
         public bool CreateBackupJob(string pName, string pSourceDir, string pTargetDir, ETypeBackup pType)
         {
             return _jobManager.CreateBackupJob(pName, pSourceDir, pTargetDir, pType);
+        }
+
+
+        public bool DeleteJobs(string input)
+        {
+            var indices = ParseUserInput(input);
+            var sortedIndices = indices.OrderByDescending(x => x).Distinct();
+            bool jobDeleted = false;
+
+            foreach (var index in sortedIndices)
+            {
+                if (index >= 0 && index < _jobManager.Jobs.Count)
+                {
+                    bool result = _jobManager.DeleteJobByIndex(index);
+                    jobDeleted = result;
+                }
+            }
+
+            SaveJobs();
+            return jobDeleted;
+        }
+
+        private HashSet<int> ParseUserInput(string input)
+        {
+            HashSet<int> indices = new HashSet<int>();
+            string[] parts = input.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string part in parts)
+            {
+                if (part.Contains('-'))
+                {
+                    string[] rangeParts = part.Split('-');
+                    int start = int.Parse(rangeParts[0]);
+                    int end = int.Parse(rangeParts[1]);
+
+                    for (int i = start; i <= end; i++)
+                    {
+                        indices.Add(i);
+                    }
+                }
+                else
+                {
+                    indices.Add(int.Parse(part));
+                }
+            }
+
+            return indices;
         }
 
         #region Serialization

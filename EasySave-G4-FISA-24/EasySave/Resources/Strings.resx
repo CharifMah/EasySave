@@ -160,4 +160,7 @@
   <data name="LoadJobConfig" xml:space="preserve">
     <value></value>
   </data>
+  <data name="DeleteJob" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

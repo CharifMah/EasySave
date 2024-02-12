@@ -18,7 +18,8 @@ namespace EasySave.Views
                     $"1 - {Strings.ResourceManager.GetObject("ListJobs")}\n" +
                     $"2 - {Strings.ResourceManager.GetObject("LoadJobConfig")}\n" +
                     $"3 - {Strings.ResourceManager.GetObject("CreateJob")}\n" +
-                    $"4 - {Strings.ResourceManager.GetObject("RunJobs")}\n";
+                    $"4 - {Strings.ResourceManager.GetObject("DeleteJob")}\n" +
+                    $"5 - {Strings.ResourceManager.GetObject("RunJobs")}\n";
         }
 
         #region CTOR
@@ -46,7 +47,7 @@ namespace EasySave.Views
             {
                 ConsoleExtention.WriteTitle(Title);
 
-                lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")} ", new Regex("^[0-4]$"));
+                lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")} ", new Regex("^[0-5]$"));
 
                 switch (lInput)
                 {
@@ -66,6 +67,9 @@ namespace EasySave.Views
                         _JobView.CreateJob();
                         break;
                     case "4":
+                        _JobView.DeleteJob();
+                        break;
+                    case "5":
                         _JobView.Run();
                         break;
                 }

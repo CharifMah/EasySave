@@ -132,6 +132,38 @@ namespace EasySave.Views
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
         }
 
+        /// <summary>
+        ///  Delete a job from the JobManager
+        /// </summary>
+        public void DeleteJob()
+        {
+            ConsoleExtention.WriteTitle("Suppression d'un job");
+
+            if (!_JobVm.JobManager.Jobs.Any())
+            {
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
+                return;
+            }
+
+            // Listez les jobs
+            ListJobs();
+
+            // Demandez à l'utilisateur de saisir les indices des jobs à supprimer
+            string pattern = @"^(\d+(-\d+)?)(,\d+(-\d+)?)*$";
+            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex(pattern));
+
+            if (lInput == "-1")
+                return;
+
+            // Appellez la méthode DeleteJobs du ViewModel
+            if (_JobVm.DeleteJobs(lInput))
+                ConsoleExtention.WriteLineSucces("Les jobs sélectionnés ont été supprimés.");
+            else
+                ConsoleExtention.WriteLineError("Erreur de suppression des jobs");
+                return;
+            
+        }
+
         #region Serialization
         /// <summary>
         /// Save Jobs and print

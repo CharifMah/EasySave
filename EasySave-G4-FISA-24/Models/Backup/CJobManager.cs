@@ -67,6 +67,23 @@ namespace Models.Backup
         }
 
         /// <summary>
+        /// Supprimé un job par son index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>true si reussi</returns>
+        /// <remarks>Mehmeti faik</remarks>
+        public bool DeleteJobByIndex(int index)
+        {
+            bool lResult = false;
+
+            if (index >= 0 && index < Jobs.Count)
+            {
+                _Jobs.RemoveAt(index);
+                lResult = true;
+            }
+            return lResult;
+        }
+        /// <summary>
         /// Lance les jobs dans un interval d'index
         /// </summary>
         /// <param name="pRange">Tuple d'index</param>

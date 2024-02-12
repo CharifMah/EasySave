@@ -104,6 +104,13 @@ namespace EasySave.Views
                 ConsoleExtention.WriteLineError("La path source et le path terget est le meme");
                 return;
             }
+
+            if (!Directory.Exists(lSourceDir) || !Directory.Exists(lTargetDir))
+            {
+                ConsoleExtention.WriteLineError("The Source Path or Target Path doesn't exist or is not reacheable " + " " + Strings.ResourceManager.GetObject("JobNotCreated").ToString());
+                return;
+            }
+
             Console.WriteLine($"\n{Strings.ResourceManager.GetObject("PossibleTypeBackup")}:");
             // Get enum values
             foreach (ETypeBackup type in Enum.GetValues(typeof(ETypeBackup)))
@@ -118,6 +125,7 @@ namespace EasySave.Views
             }
             // Parse la valeur saisie
             ETypeBackup lBackupType = (ETypeBackup)Enum.Parse(typeof(ETypeBackup), lInput);
+
             if (_JobVm.CreateBackupJob(new CJob(lName, lSourceDir, lTargetDir, lBackupType)))
             {
                 SaveJobs();

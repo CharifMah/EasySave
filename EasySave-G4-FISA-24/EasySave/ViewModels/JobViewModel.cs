@@ -50,7 +50,7 @@ namespace EasySave.ViewModels
         /// <returns></returns>
         public bool DeleteJobs(List<CJob> pJobs)
         {
-            return _jobManager.DeleteJobs(pJobs);    
+            return _jobManager.DeleteJobs(pJobs);
         }
         #region Serialization
         public void SaveJobs()

@@ -53,6 +53,11 @@ namespace EasySave.ViewModels
         }
 
 
+        /// <summary>
+        /// Supprimer un ou plusieurs jobs
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public bool DeleteJobs(string input)
         {
             var indices = ParseUserInput(input);
@@ -72,6 +77,11 @@ namespace EasySave.ViewModels
             return jobDeleted;
         }
 
+        /// <summary>
+        /// Récupère tout les indices de selections de job
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private HashSet<int> ParseUserInput(string input)
         {
             HashSet<int> indices = new HashSet<int>();

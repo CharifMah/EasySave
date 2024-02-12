@@ -6,6 +6,6 @@ namespace Stockage.Logs
     {
         ObservableCollection<T> Datas { get; }
 
-        void Log(T pData, string pFileName = "Logs");
+        void Log(T pData, bool pSerialize, bool pAppend = true, string pFileName = "Logs");
     }
 }

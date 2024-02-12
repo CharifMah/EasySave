@@ -23,7 +23,6 @@ namespace EasySave.Views
             CLogger<CLogBase>.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged;
         }
 
-
         #endregion
 
         #region Methods
@@ -36,12 +35,16 @@ namespace EasySave.Views
             ListJobs();
             Console.WriteLine();
 
-            if (_JobVm.JobManager.Jobs.Any())
+            List<CJob> lJobs = SelectJobs(_JobVm.JobManager.Jobs);
+
+            if (_JobVm.JobManager.Jobs.Any() && lJobs != null)
             {
-                List<CJob> lJobsRunning = _JobVm.RunJobs(SelectJobs(_JobVm.JobManager.Jobs));
+                List<CJob> lJobsRunning = _JobVm.RunJobs(lJobs);
 
                 foreach (CJob lJobRunning in lJobsRunning)
                     ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} copy is finished");
+
+                ShowSummary(CLogger<List<CLogState>>.GenericLogger.Datas.Last());
             }
             else
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
@@ -98,13 +101,23 @@ namespace EasySave.Views
             // cm - Demande a l'utilisateur de saisir les info du job  
             string lName = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Name")}: ", new Regex("^[a-zA-Z0-9]+$"));
             if (lName == "-1")
+            {
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
                 return;
+            }
             string lSourceDir = ConsoleExtention.ReadFolder($"\n{Strings.ResourceManager.GetObject("SourceDir")} ");
             if (lSourceDir == "-1")
+            {
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
                 return;
+            }
             string lTargetDir = ConsoleExtention.ReadFolder($"\n{Strings.ResourceManager.GetObject("TargetDir")} ");
-            if (lTargetDir == "-1")
+            if (lTargetDir == "-1" || lTargetDir == lSourceDir)
+            {
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
                 return;
+            }
+
 
             Console.WriteLine($"\n{Strings.ResourceManager.GetObject("PossibleTypeBackup")}:");
 
@@ -191,8 +204,10 @@ namespace EasySave.Views
                 case "1":
                     _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$")));
 
-                    if (_JobVm.JobManager != null)
+                    if (_JobVm.JobManager.Jobs.Count > 0)
                         ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
+                    else
+                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name} Loaded without Jobs");
                     break;
             }
         }
@@ -244,20 +259,25 @@ namespace EasySave.Views
             if (lEndIndex == -1)
                 return null;
 
-            string lIndividualIndex = ConsoleExtention.ReadResponse("Voulez vous choisir des job supplementaire de manière individuel Y/N : ", new Regex("^[YyNn]$"));
-
-            if (lIndividualIndex.ToLower() == "y")
+            if (lEndIndex < pJobs.Count - 1)
             {
-                string lResponse = String.Empty;
-                do
-                {
-                    lResponse = ConsoleExtention.ReadResponse("Index de individuel ('q' pour terminer la saisie) : ", new Regex("^((0-" + (pJobs.Count - 1) + ")|[^" + lStartIndex + "-" + lEndIndex + "])$"));
+                string lIndividualIndex = ConsoleExtention.ReadResponse("Voulez vous choisir des job supplementaire de manière individuel Y/N : ", new Regex("^[YyNn]$"));
+                if (lIndividualIndex == "-1")
+                    return null;
 
-                    if (lResponse == "-1")
-                        return null;
-                    if (lResponse != "q")
-                    lListIndex.Add(int.Parse(lResponse));
-                } while (lResponse != "q");
+                if (lIndividualIndex.ToLower() == "y")
+                {
+                    string lResponse = String.Empty;
+                    do
+                    {
+                        lResponse = ConsoleExtention.ReadResponse("Index de individuel ('q' pour terminer la saisie) : ", new Regex("^((0-" + (pJobs.Count - 1) + ")|[^" + lStartIndex + "-" + lEndIndex + "])$"));
+
+                        if (lResponse == "-1")
+                            return null;
+                        if (lResponse != "q")
+                            lListIndex.Add(int.Parse(lResponse));
+                    } while (lResponse != "q");
+                }
             }
 
             foreach (int lIndex in lListIndex)
@@ -281,6 +301,47 @@ namespace EasySave.Views
             return lSelectedJobs;
         }
 
+        private void ShowSummary(List<CLogState> pLogStates)
+        {
+            foreach (CLogState lLog in pLogStates)
+            {
+                ConsoleExtention.WriteTitle(lLog.Name, ConsoleColor.Red);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Date: ");
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(lLog.Date);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Temps elapsed: ");
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(lLog.ElapsedMilisecond + " ms");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Source Directory: ");
+
+                ConsoleExtention.WritePath(lLog.SourceDirectory);
+
+                Console.ResetColor();
+                Console.WriteLine("=>");
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Target Directory: ");
+
+                ConsoleExtention.WritePath(lLog.TargetDirectory);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Total Size: ");
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(lLog.TotalSize + " bytes");
+
+                Console.ResetColor();
+            }
+        }
+
         #region Events
 
         private void LogGenericData_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -289,77 +350,28 @@ namespace EasySave.Views
             {
                 CLogBase lLogFileState = (sender as ObservableCollection<CLogBase>).Last();
 
-                if (!lLogFileState.IsSummary)
-                {
-                    ConsoleExtention.WriteTitle(lLogFileState.Name);
+                ConsoleExtention.WriteTitle(lLogFileState.Name);
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Date: ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Source Directory: ");
 
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(lLogFileState.Date.Date);
+                ConsoleExtention.WritePath(lLogFileState.SourceDirectory);
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Source Directory: ");
+                Console.ResetColor();
+                Console.WriteLine("=>");
 
-                    ConsoleExtention.WritePath(lLogFileState.SourceDirectory);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Target Directory: ");
 
-                    Console.ResetColor();
-                    Console.WriteLine("=>");
+                ConsoleExtention.WritePath(lLogFileState.TargetDirectory);
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Target Directory: ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Total Size: ");
 
-                    ConsoleExtention.WritePath(lLogFileState.TargetDirectory);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(lLogFileState.TotalSize + " bytes");
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Total Size: ");
-
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(lLogFileState.TotalSize);
-
-                    Console.ResetColor();
-                }
-                else
-                {
-                    CLogState lLogState = (CLogState)(sender as ObservableCollection<CLogBase>).Last();
-
-                    ConsoleExtention.WriteTitle(lLogState.Name, ConsoleColor.Red);
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Date: ");
-
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(lLogState.Date.Date);
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Temps elapsed: ");
-
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(lLogState.ElapsedMilisecond + "ms");
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Source Directory: ");
-
-                    ConsoleExtention.WritePath(lLogState.SourceDirectory);
-
-                    Console.ResetColor();
-                    Console.WriteLine("=>");
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Target Directory: ");
-
-                    ConsoleExtention.WritePath(lLogState.TargetDirectory);
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Total Size: ");
-
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(lLogState.TotalSize);
-
-                    Console.ResetColor();
-                }
-
+                Console.ResetColor();
             }
         }
 

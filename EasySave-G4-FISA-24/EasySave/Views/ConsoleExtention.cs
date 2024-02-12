@@ -1,6 +1,6 @@
 ﻿using EasySaveDraft.Resources;
+using GLib;
 using Gtk;
-using System;
 using System.Text.RegularExpressions;
 
 namespace EasySave.Views
@@ -78,6 +78,28 @@ namespace EasySave.Views
             Console.WriteLine(lSeparator);
             Console.ForegroundColor = ConsoleColor.White;
         }
+
+        public static void WriteSubtitle(string pSubtitle, ConsoleColor pColor = ConsoleColor.DarkGray)
+        {
+            int lWidth = Console.WindowWidth;
+
+            // Séparation
+            string lSeparator = new string('=', lWidth);
+
+            // Centrer le sous-titre 
+            string lFormattedSubtitle =
+              pSubtitle.PadLeft((lWidth + pSubtitle.Length) / 2)
+                     .PadRight(lWidth);
+
+            Console.ForegroundColor = pColor;
+            Console.WriteLine(lFormattedSubtitle);
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine(lSeparator);
+
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         /// <summary>
         /// Read user input char by char
         /// </summary>
@@ -185,9 +207,7 @@ namespace EasySave.Views
             {
                 Console.WriteLine(pDescription);
 
-                string[] argrs = new string[] { };
-     
-                if (Gtk.Application.InitCheck("", ref argrs))
+                if (CheckIfGuiExist())
                 {
                     lDialog = new FileChooserDialog(
                        title: pDescription,
@@ -224,11 +244,22 @@ namespace EasySave.Views
             return lSelectedFolder;
         }
         /// <summary>
+        /// Check if GTK can init GUI or not
+        /// </summary>
+        /// <returns>true if GTK can init the GUI</returns>
+        private static bool CheckIfGuiExist()
+        {
+            string[] argrs = new string[] { };
+
+            return Gtk.Application.InitCheck("", ref argrs);
+        }
+
+        /// <summary>
         /// Read a file with GTK CrossPlatform interface if it fail open classic Console Interface
         /// </summary>
         /// <param name="pDescription">Description for the interface</param>
         /// <returns>return the selected file full path</returns>
-        public static string ReadFile(string pDescription,Regex pRegexExtentions = null)
+        public static string ReadFile(string pDescription, Regex pRegexExtentions = null)
         {
             string lSelectedFile = null;
             FileChooserDialog lDialog = null;
@@ -236,15 +267,21 @@ namespace EasySave.Views
             {
                 Console.WriteLine(pDescription);
 
-                string[] argrs = new string[] { };
-
-                if (Gtk.Application.InitCheck("", ref argrs))
+                if (CheckIfGuiExist())
                 {
                     lDialog = new FileChooserDialog(
                            title: pDescription,
                            parent: null,
                            action: FileChooserAction.Open);
 
+                    if (pRegexExtentions != null && pRegexExtentions.ToString().Contains("json"))
+                    {
+                        FileFilter lFilter = new FileFilter();
+                        lFilter.Name = pDescription;
+                        lFilter.AddPattern("*.json");
+                        lDialog.AddFilter(lFilter);
+                    }
+                   
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
 
@@ -313,6 +350,6 @@ namespace EasySave.Views
 
 
             return lFolderPath;
-        }      
+        }
     }
 }

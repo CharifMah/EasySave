@@ -10,7 +10,7 @@ namespace EasySave.Views
         private LangueView _LangView;
         private JobView _JobView;
 
-        public override string Title => "Menu";
+        public override string Title => "--- EasySave ---";
 
         public string Menu
         {
@@ -46,7 +46,7 @@ namespace EasySave.Views
             while (true)
             {
                 ConsoleExtention.WriteTitle(Title);
-
+                ConsoleExtention.WriteSubtitle("CTRL+C => Clear the console | CTRL+V => Past the current clipboard text");
                 lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")} ", new Regex("^[0-5]$"));
 
                 switch (lInput)

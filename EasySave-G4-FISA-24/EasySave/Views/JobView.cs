@@ -137,7 +137,7 @@ namespace EasySave.Views
             // Parse la valeur saisie
             ETypeBackup lBackupType = (ETypeBackup)Enum.Parse(typeof(ETypeBackup), lInput);
 
-            if (_JobVm.CreateBackupJob(lName, lSourceDir, lTargetDir, lBackupType))
+            if (_JobVm.CreateBackupJob(new CJob(lName, lSourceDir, lTargetDir, lBackupType)))
             {
                 SaveJobs();
                 // Afficher confirmation
@@ -179,8 +179,8 @@ namespace EasySave.Views
                 ConsoleExtention.WriteLineSucces("Les jobs sélectionnés ont été supprimés.");
             else
                 ConsoleExtention.WriteLineError("Erreur de suppression des jobs");
-                return;
-            
+            return;
+
         }
 
         #endregion

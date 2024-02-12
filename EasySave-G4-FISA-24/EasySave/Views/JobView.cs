@@ -1,5 +1,6 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
+using Gtk;
 using LogsModels;
 using Models.Backup;
 using Stockage.Logs;
@@ -170,17 +171,58 @@ namespace EasySave.Views
             if (lInput == "-1")
                 return;
 
-            string lIndividualIndex = ConsoleExtention.ReadResponse($"Etes vous sur de supprimer le Job xxxx Y/N : ", new Regex("^[YyNn]$"));
-            if (lIndividualIndex == "-1" || lIndividualIndex.ToLower() == "n")
+            string lConfirmation = ConsoleExtention.ReadResponse($"Etes vous sur de supprimer les Jobs : ", new Regex("^[YyNn]$"));
+            if (lConfirmation == "-1" || lConfirmation.ToLower() == "n")
                 return;
 
+            List<CJob> lJobs = ParseUserInput(lInput);
+
             // Appellez la méthode DeleteJobs du ViewModel
-            if (_JobVm.DeleteJobs(lInput))
+            if (_JobVm.DeleteJobs(lJobs))
                 ConsoleExtention.WriteLineSucces("Les jobs sélectionnés ont été supprimés.");
             else
                 ConsoleExtention.WriteLineError("Erreur de suppression des jobs");
                 return;
             
+        }
+
+        /// <summary>
+        /// Récupère tout les indices de selections de job
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private List<CJob> ParseUserInput(string input)
+        {
+            List<CJob> lSelectedJobs = new List<CJob>();
+            HashSet<int> indices = new HashSet<int>();
+            string[] parts = input.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string part in parts)
+            {
+                if (part.Contains('-'))
+                {
+                    string[] rangeParts = part.Split('-');
+                    int start = int.Parse(rangeParts[0]);
+                    int end = int.Parse(rangeParts[1]);
+
+                    for (int i = start; i <= end; i++)
+                    {
+                        indices.Add(i);
+                    }
+                }
+                else
+                {
+                    indices.Add(int.Parse(part));
+                }
+            }
+            indices.OrderByDescending(x => x).Distinct();
+
+            foreach (int lIndex in indices)
+            {
+                lSelectedJobs.Add(_JobVm.JobManager.Jobs[lIndex]);
+            }
+
+            return lSelectedJobs;
         }
 
         #endregion

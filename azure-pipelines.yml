@@ -9,7 +9,7 @@ variables:
   BasePath: 'EasySave-G4-FISA-24/'
   Solution: '$(BasePath)**/*.sln'
   RestoreBuildProjects: '$(BasePath)**/*.csproj'
-  PublishProjects: '$(BasePath)**/*.csproj'
+  PublishProjects: '$(BasePath)**/!(*UnitTest*)/*.csproj'
   TestProjects: '$(BasePath)**/UnitTest*/*.csproj'
   PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
 

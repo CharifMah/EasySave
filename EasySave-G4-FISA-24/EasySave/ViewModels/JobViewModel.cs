@@ -52,7 +52,6 @@ namespace EasySave.ViewModels
             return _jobManager.CreateBackupJob(lJob);
         }
 
-
         /// <summary>
         /// Supprimer un ou plusieurs jobs
         /// </summary>

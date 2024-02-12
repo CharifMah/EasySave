@@ -1,4 +1,5 @@
 ﻿using Models;
+
 namespace EasySave.ViewModels
 {
     public class LangueViewModel : BaseViewModel
@@ -8,16 +9,18 @@ namespace EasySave.ViewModels
         // Constructor
         public LangueViewModel()
         {
-            _Langue = new CLangue();
+            _Langue = Settings.Instance.Langue;
         }
         /// <summary>
         /// Set the current language
         /// </summary>
         /// <param name="pLanguageChoice">give a number</param>
         /// <returns>true if the language was changed</returns>
-        public bool SetLanguage(string pLanguageChoice)
+        public bool SetLanguage(string pInput)
         {
-            return _Langue.SetLanguage(pLanguageChoice);
+            bool result = _Langue.SetLanguage(_Langue.Languages[int.Parse(pInput)]);
+            Settings.Instance.SaveSettings();
+            return result;
         }
     }
 }

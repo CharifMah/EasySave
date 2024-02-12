@@ -1,5 +1,6 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
+using GLib;
 using LogsModels;
 using Models.Backup;
 using Stockage.Logs;
@@ -331,7 +332,7 @@ namespace EasySave.Views
             if (e.NewItems.Count >= 1)
             {
                 string lLog = (sender as ObservableCollection<string>).Last();
-                ConsoleExtention.WriteLineWarning(DateTime.Now + " " + lLog);
+                ConsoleExtention.WriteLineWarning(System.DateTime.Now + " " + lLog);
             }
         }
         #endregion
@@ -358,7 +359,7 @@ namespace EasySave.Views
                     _JobVm.LoadJobs();
                     break;
                 case "1":
-                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$")));
+                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$"),Path.GetDirectoryName(Models.Settings.Instance.JobConfigPath)));
                     if (_JobVm.JobManager.Jobs.Count > 0)
                         ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
                     else

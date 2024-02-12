@@ -1,4 +1,5 @@
-﻿using Models.Backup;
+﻿using GLib;
+using Models.Backup;
 namespace EasySave.ViewModels
 {
     /// <summary>
@@ -20,7 +21,7 @@ namespace EasySave.ViewModels
         /// </summary>
         public JobViewModel()
         {
-            _jobManager = CJobManager.LoadJobs();
+            _jobManager = CJobManager.LoadJobs(Models.Settings.Instance.JobConfigPath);
         }
         #endregion
 

@@ -4,6 +4,9 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 namespace Models.Backup
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [DataContract]
     public class CJob : IPath
     {
@@ -25,6 +28,7 @@ namespace Models.Backup
         public string TargetDirectory { get => _TargetDirectory; set => _TargetDirectory = value; }
         public ETypeBackup BackupType { get => _BackupType; set => _BackupType = value; }
         #endregion
+
         #region CTOR
         /// <summary>
         /// Constructeur de job

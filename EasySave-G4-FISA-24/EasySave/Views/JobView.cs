@@ -3,6 +3,7 @@ using EasySaveDraft.Resources;
 using LogsModels;
 using Models.Backup;
 using Stockage.Logs;
+using System;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 namespace EasySave.Views
@@ -23,21 +24,30 @@ namespace EasySave.Views
         #endregion
         #region Methods
         #region public
+        /// <summary>
+        /// Lance
+        /// </summary>
         public override void Run()
         {
-            Console.WriteLine();
-            ListJobs();
-            Console.WriteLine();
-            List<CJob> lJobs = SelectJobs(_JobVm.JobManager.Jobs);
-            if (_JobVm.JobManager.Jobs.Any() && lJobs != null)
+            if (!_JobVm.JobManager.Jobs.Any())
             {
-                List<CJob> lJobsRunning = _JobVm.RunJobs(lJobs);
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
+                return;
+            }
+            // Liste les jobs
+            ListJobs();
+
+            // Invite l'utilisateur à sélectionner les jobs
+            List<CJob> lJobsToRun = SelectJobs();
+
+            // Run les jobs si il en existe
+            if (_JobVm.JobManager.Jobs.Any() && lJobsToRun != null)
+            {
+                List<CJob> lJobsRunning = _JobVm.RunJobs(lJobsToRun);
                 foreach (CJob lJobRunning in lJobsRunning)
                     ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} copy is finished");
                 ShowSummary(CLogger<List<CLogState>>.GenericLogger.Datas.Last());
             }
-            else
-                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
         }
         /// <summary>
         /// Print all jobs
@@ -135,6 +145,7 @@ namespace EasySave.Views
             else
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
         }
+
         /// <summary>
         ///  Delete a job from the JobManager
         /// </summary>
@@ -148,62 +159,149 @@ namespace EasySave.Views
             }
             // Listez les jobs
             ListJobs();
-            // Demandez à l'utilisateur de saisir les indices des jobs à supprimer
-            string pattern = @"^(\d+(-\d+)?)(,\d+(-\d+)?)*$";
-            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex(pattern));
-            if (lInput == "-1")
-                return;
-            string lConfirmation = ConsoleExtention.ReadResponse($"Etes vous sur de supprimer les Jobs : ", new Regex("^[YyNn]$"));
-            if (lConfirmation == "-1" || lConfirmation.ToLower() == "n")
-                return;
 
-            List<CJob> lJobs = ParseUserInput(lInput);
-            // Appellez la méthode DeleteJobs du ViewModel
-            if (_JobVm.DeleteJobs(lJobs))
-                ConsoleExtention.WriteLineSucces("Les jobs sélectionnés ont été supprimés.");
-            else
-                ConsoleExtention.WriteLineError("Erreur de suppression des jobs");
-            return;
+            //Invite l'utilisateur à sélectionner les jobs
+            List<CJob> lJobsToDelete = SelectJobs();
+
+            // Appellez la méthode DeleteJobs si il existe des jobs à supprimer            
+            if (_JobVm.JobManager.Jobs.Any() && lJobsToDelete != null)
+            {
+                if(_JobVm.DeleteJobs(lJobsToDelete))
+                {
+                    SaveJobs();
+                    ConsoleExtention.WriteLineSucces("Les jobs sélectionnés ont été supprimés.");
+                } else {
+                    ConsoleExtention.WriteLineError("Erreur de suppression des jobs");
+                }
+              
+            }      
         }
 
         /// <summary>
-        /// Récupère tout les indices de selections de job
+        ///  Invite l'utilisateur à sélectionner des jobs à partir
+        ///  d'une saisie spécifique et retourne une liste des jobs sélectionnés.
+        /// </summary>
+        /// <returns>List<CJob> ou null</returns>
+        private List<CJob> SelectJobs()
+        {
+            // Instructions pour l'utilisateur sur le format de saisie
+            Console.WriteLine(
+              "\nFormat de saisie :\n" +
+              "- Pour un indice unique, (ex : 2).\n" +
+              "- Pour plusieurs indices, (ex : 2,4,6).\n" +
+              "- Pour un intervalle d'indices, (ex : 1-3).\n" +
+              "- Pour combiner des indices et des intervalles, (ex : 1-3,5).");
+
+            // Demande à l'utilisateur de saisir les indices des jobs à supprimer
+            string pattern = @"^(\d+(-\d+)?)(,\d+(-\d+)?)*$";
+            Func<string, bool> pValidator = lInput => CheckSelectJobs(lInput);
+            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex(pattern), pValidator);
+            
+            if (lInput == "-1")
+                return null; // L'utilisateur a choisi de sortir
+
+            // Demande la confirmation avant de procéder
+            string lConfirmation = ConsoleExtention.ReadResponse($"Veuillez confirmer (y/n) : ", new Regex("^[YyNn]$"));
+            if (lConfirmation.ToLower() == "n" || lConfirmation == "-1")
+                return null; // L'utilisateur a annulé la suppression
+
+            // Récupére et retourne la liste des jobs basée sur l'entrée de l'utilisateur
+            List<CJob> lSelectedJobs = SelectJobsFromInput(lInput);
+
+            return lSelectedJobs.Count > 0 ? lSelectedJobs : null;
+        }
+
+        /// <summary>
+        /// Gère et vérifie les indices entrées par l'utilisateur
         /// </summary>
         /// <param name="input"></param>
-        /// <returns></returns>
-        private List<CJob> ParseUserInput(string input)
+        /// <returns>Collection unique indice ou -1 si erreur</returns>
+        private HashSet<int> GetIndicesFromInput(string input)
         {
-            List<CJob> lSelectedJobs = new List<CJob>();
             HashSet<int> indices = new HashSet<int>();
             string[] parts = input.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
+            int jobCount = _JobVm.JobManager.Jobs.Count;
+
             foreach (string part in parts)
             {
-                if (part.Contains('-'))
+                try
                 {
-                    string[] rangeParts = part.Split('-');
-                    int start = int.Parse(rangeParts[0]);
-                    int end = int.Parse(rangeParts[1]);
-
-                    for (int i = start; i <= end; i++)
+                    if (part.Contains('-'))
                     {
-                        indices.Add(i);
+                        string[] rangeParts = part.Split('-');
+                        int start = int.Parse(rangeParts[0]);
+                        int end = int.Parse(rangeParts[1]);
+                        if (start > end || start < 0 || end >= jobCount)
+                        {
+                            // Retourne une erreur si l'intervalle est invalide
+                            return new HashSet<int> { -1 };
+                        }
+                        for (int i = start; i <= end; i++)
+                        {
+                            indices.Add(i);
+                        }
+                    }
+                    else
+                    {
+                        int index = int.Parse(part);
+                        if (index < 0 || index >= jobCount)
+                        {
+                            // Retourne une erreur si l'indice est invalide
+                            return new HashSet<int> { -1 };
+                        }
+                        indices.Add(index);
                     }
                 }
-                else
+                catch
                 {
-                    indices.Add(int.Parse(part));
+                    // Retourne une erreur si le parse échoue
+                    return new HashSet<int> { -1 };
                 }
             }
-            indices.OrderByDescending(x => x).Distinct();
+            return indices;
+        }
 
-            foreach (int lIndex in indices)
+        /// <summary>
+        /// Gère un état booléen indiquant le résultat de la vérification des indices fournis en entrée
+        /// </summary>
+        /// <param name="pInput"></param>
+        private bool CheckSelectJobs(string pInput)
+        {
+            HashSet<int> indices = GetIndicesFromInput(pInput);
+
+            if (indices.Contains(-1))
             {
-                lSelectedJobs.Add(_JobVm.JobManager.Jobs[lIndex]);
+                ConsoleExtention.WriteLineError("Indice invalide détecté");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Sélectionne et retourne une liste de jobs basée sur les indices spécifiés dans l'entrée utilisateur
+        /// </summary>
+        /// <param name="pInput"></param>
+        /// <returns>List<CJob></returns>
+        private List<CJob> SelectJobsFromInput(string pInput)
+        {
+            HashSet<int> indices = GetIndicesFromInput(pInput);
+            int jobCount = _JobVm.JobManager.Jobs.Count;
+
+            List<CJob> selectedJobs = new List<CJob>();
+
+            foreach (int index in indices)
+            {
+                if (index >= 0 && index < jobCount)
+                {
+                    selectedJobs.Add(_JobVm.JobManager.Jobs[index]);
+                }
             }
 
-            return lSelectedJobs;
+            return selectedJobs;
         }
+
+
 
         #endregion
         #region private

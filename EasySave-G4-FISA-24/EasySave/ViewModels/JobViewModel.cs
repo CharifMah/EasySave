@@ -1,6 +1,4 @@
 ﻿using Models.Backup;
-
-
 namespace EasySave.ViewModels
 {
     /// <summary>
@@ -9,15 +7,12 @@ namespace EasySave.ViewModels
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
-
         private CJobManager _jobManager;
         /// <summary>
         /// JobManager
         /// </summary>
         public CJobManager JobManager { get => _jobManager; set => _jobManager = value; }
-
         #endregion
-
         #region CTOR
         /// <summary>
         /// Initialise le JobManager
@@ -26,9 +21,7 @@ namespace EasySave.ViewModels
         {
             _jobManager = CJobManager.LoadJobs();
         }
-
         #endregion
-
         /// <summary>
         /// Lance les jobs selectionnée
         /// </summary>
@@ -38,7 +31,6 @@ namespace EasySave.ViewModels
         {
             return _jobManager.RunJobs(pJobs);
         }
-
         /// <summary>
         /// Crée un job
         /// </summary>
@@ -51,7 +43,6 @@ namespace EasySave.ViewModels
         {
             return _jobManager.CreateBackupJob(lJob);
         }
-
         /// <summary>
         /// Supprimer un ou plusieurs jobs
         /// </summary>
@@ -62,7 +53,6 @@ namespace EasySave.ViewModels
             var indices = ParseUserInput(input);
             var sortedIndices = indices.OrderByDescending(x => x).Distinct();
             bool jobDeleted = false;
-
             foreach (var index in sortedIndices)
             {
                 if (index >= 0 && index < _jobManager.Jobs.Count)
@@ -71,11 +61,9 @@ namespace EasySave.ViewModels
                     jobDeleted = result;
                 }
             }
-
             SaveJobs();
             return jobDeleted;
         }
-
         /// <summary>
         /// Récupère tout les indices de selections de job
         /// </summary>
@@ -85,7 +73,6 @@ namespace EasySave.ViewModels
         {
             HashSet<int> indices = new HashSet<int>();
             string[] parts = input.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
             foreach (string part in parts)
             {
                 if (part.Contains('-'))
@@ -93,7 +80,6 @@ namespace EasySave.ViewModels
                     string[] rangeParts = part.Split('-');
                     int start = int.Parse(rangeParts[0]);
                     int end = int.Parse(rangeParts[1]);
-
                     for (int i = start; i <= end; i++)
                     {
                         indices.Add(i);
@@ -104,16 +90,13 @@ namespace EasySave.ViewModels
                     indices.Add(int.Parse(part));
                 }
             }
-
             return indices;
         }
-
         #region Serialization
         public void SaveJobs()
         {
             _jobManager.SaveJobs();
         }
-
         public void LoadJobs(bool IsDefaultFile = true, string pPath = "")
         {
             if (IsDefaultFile)

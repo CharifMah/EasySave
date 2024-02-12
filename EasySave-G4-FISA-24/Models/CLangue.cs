@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-
 namespace Models
 {
     /// <summary>
@@ -8,9 +7,7 @@ namespace Models
     public class CLangue
     {
         private Dictionary<int, string> _Languages;
-
         public Dictionary<int, string> Languages { get => _Languages; set => _Languages = value; }
-
         /// <summary>
         /// Constructeur de la classe Clangue Init the language with the installed culture of the operating system
         /// </summary>
@@ -21,11 +18,9 @@ namespace Models
               {1, "Français"},
               {2, "English"}
             };
-
             // cm - set le culture a la culture de l'OS
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InstalledUICulture;
         }
-
         /// <summary>
         /// Set the language
         /// </summary>
@@ -34,7 +29,6 @@ namespace Models
         public bool SetLanguage(string pLanguageChoice)
         {
             bool lIsLangChanged = true;
-
             switch (pLanguageChoice)
             {
                 case "1":
@@ -47,7 +41,6 @@ namespace Models
                     lIsLangChanged = false;
                     break;
             }
-
             return lIsLangChanged;
         }
     }

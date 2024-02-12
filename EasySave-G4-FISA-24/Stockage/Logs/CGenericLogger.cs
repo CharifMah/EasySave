@@ -2,6 +2,5 @@
 {
     public class CGenericLogger<T> : BaseLogger<T>
     {
-
     }
 }

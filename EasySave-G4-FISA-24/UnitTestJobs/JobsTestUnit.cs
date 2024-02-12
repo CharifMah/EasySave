@@ -1,5 +1,4 @@
 using Models.Backup;
-
 namespace UnitTestJobs
 {
     public class JobsTestUnit
@@ -17,7 +16,6 @@ namespace UnitTestJobs
             lJobManager.CreateBackupJob(lJob2);
             Assert.Equal(lJobManager.Jobs.Count, 2);
         }
-
         [Fact]
         public void SaveJobManager()
         {
@@ -28,11 +26,9 @@ namespace UnitTestJobs
             lJobManager.SaveJobs();
             lJobManager = CJobManager.LoadJobs();
             Assert.Equal(lJobManager.Jobs.First(), lJob);
-
             CJob lJob1 = new CJob("Job11", "", "", ETypeBackup.COMPLET);
             lJobManager.CreateBackupJob(lJob1);
             lJobManager = CJobManager.LoadJobs();
-
             Assert.Equal(lJobManager.Jobs.First(), lJob);
             Assert.Equal(lJobManager.Jobs.Count, 1);
         }

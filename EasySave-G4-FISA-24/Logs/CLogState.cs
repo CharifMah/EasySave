@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-
 namespace LogsModels
 {
     [DataContract]
@@ -13,7 +12,6 @@ namespace LogsModels
         private long _ElapsedMilisecond;
         [DataMember]
         private bool _IsActive;
-
         public override string Name
         {
             get => base.Name;
@@ -29,7 +27,6 @@ namespace LogsModels
         public int EligibleFileCount { get => _EligibleFileCount; set => _EligibleFileCount = value; }
         public long ElapsedMilisecond { get => _ElapsedMilisecond; set => _ElapsedMilisecond = value; }
         public bool IsActive { get => _IsActive; set => _IsActive = value; }
-
         public CLogState()
         {
             Name = "Summary - " + Name;

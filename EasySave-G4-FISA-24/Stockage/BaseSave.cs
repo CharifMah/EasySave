@@ -1,18 +1,13 @@
 ﻿using LogsModels;
 using Newtonsoft.Json;
-
 namespace Stockage
 {
     public abstract class BaseSave : ISauve
     {
         private string _path;
-
         private readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
-
         public string FullPath { get => _path; set => _path = value; }
-
         public JsonSerializerSettings Options => _options;
-
         /// <summary>
         /// Sauvgarde
         /// </summary>
@@ -21,10 +16,8 @@ namespace Stockage
         {
             if (!Directory.Exists(pPath))
                 Directory.CreateDirectory(pPath);
-
             _path = pPath;
         }
-
         /// <summary>
         /// Crée un fichier Json par default avec les Settings
         /// </summary>
@@ -42,7 +35,6 @@ namespace Stockage
                     // cm - Serialize data to json
                     string jsonString = JsonConvert.SerializeObject(pData, Formatting.Indented, Options);
                     string lPath = Path.Combine(FullPath, $"{pFileName}.{pExtention}");
-
                     // cm - delete the file if exist
                     if (!pAppend)
                     {
@@ -51,7 +43,6 @@ namespace Stockage
                     }
                     if (pAppend)
                         File.AppendAllText(lPath, jsonString);
-
                 }
             }
             catch (Exception ex)
@@ -59,12 +50,10 @@ namespace Stockage
                 throw new Exception(ex.Message);
             }
         }
-
         public virtual void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false)
         {
             throw new NotImplementedException();
         }
-
         public virtual void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, ref CLogState pLogState, bool pForce = false)
         {
             throw new NotImplementedException();

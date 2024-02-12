@@ -2,7 +2,6 @@
 using GLib;
 using Gtk;
 using System.Text.RegularExpressions;
-
 namespace EasySave.Views
 {
     public static class ConsoleExtention
@@ -67,7 +66,6 @@ namespace EasySave.Views
             string lSeparator = new string('-', consoleWidth);
             // cm - Title
             string lTitle = pTitle;
-
             // Centrer le titre
             string lTitleFormatted = lTitle.PadLeft((consoleWidth + lTitle.Length) / 2).PadRight(consoleWidth);
             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -86,21 +84,16 @@ namespace EasySave.Views
         public static void WriteSubtitle(string pSubtitle, ConsoleColor pColor = ConsoleColor.DarkGray)
         {
             int lWidth = Console.WindowWidth;
-
             // Séparation
             string lSeparator = new string('=', lWidth);
-
             // Centrer le sous-titre 
             string lFormattedSubtitle =
               pSubtitle.PadLeft((lWidth + pSubtitle.Length) / 2)
                      .PadRight(lWidth);
-
             Console.ForegroundColor = pColor;
             Console.WriteLine(lFormattedSubtitle);
-
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine(lSeparator);
-
             Console.ForegroundColor = ConsoleColor.White;
         }
         /// <summary>
@@ -118,30 +111,24 @@ namespace EasySave.Views
             _Input = string.Empty;
             // cm - Allow Control detection
             Console.TreatControlCAsInput = true;
-
             if (pRegex == null)
                 pRegex = new Regex("");
             if (pIsValid == null)
                 pIsValid = lValidTxt => { return true; };
-
             do
             {
                 // cm - Displays a message if certain shortcuts are not pressed.
                 if (string.IsNullOrEmpty(_Input) && lsInput.Key != ConsoleKey.V && lsInput.Modifiers != ConsoleModifiers.Control)
                     Console.Write(pMessage);
-
                 while (Console.KeyAvailable)
                     Console.ReadKey(false); // cm - skips previous inputs
-
                 lsInput = Console.ReadKey(); // cm - wait to read a new character
-
                 // cm - If the user enters CTRL+C cancel the loop and clear the console
                 if ((lsInput.Modifiers & ConsoleModifiers.Control) != 0 && lsInput.Key == ConsoleKey.C)
                 {
                     Clear();
                     break;
                 }
-
                 // cm - CTRL+V for past
                 if (lsInput.Key == ConsoleKey.V && lsInput.Modifiers == ConsoleModifiers.Control)
                 {
@@ -151,7 +138,6 @@ namespace EasySave.Views
                 }
                 else if (lsInput.Key != ConsoleKey.Enter && lsInput.Key != ConsoleKey.Backspace) // cm - Concatenate inputs to obtain the final output
                     _Input += lsInput.KeyChar;
-
                 if (lsInput.Key == ConsoleKey.Backspace)   // cm - If user press Backspace delete 1 caratere in the console
                 {
                     RemoveLastChar();
@@ -164,20 +150,15 @@ namespace EasySave.Views
                     if (_Input.Length > 0)
                         _Input = _Input[0..^1];
                 }
-
             } while (lsInput.KeyChar != (char)ConsoleKey.Enter); // cm - Until the user presses the Enter key, the console waits to read a new character.
-
             // cm - Don't show Succes message if the user cancel the action
             if (_Input != "-1" || String.IsNullOrEmpty(_Input))
                 WriteLineSelected(_Input);
-
             if (lsInput.KeyChar == (char)ConsoleKey.Enter && (!pRegex.IsMatch(_Input) || !pIsValid(_Input)))
             {
                 WriteLineError(Strings.ResourceManager.GetObject("InvalideSelection").ToString());
-
                 ReadResponse(pMessage, pRegex, pIsValid);
             }
-
             return _Input;
         }
         /// <summary>
@@ -205,11 +186,9 @@ namespace EasySave.Views
         {
             string lSelectedFolder = null;
             FileChooserDialog lDialog = null;
-
             try
             {
                 Console.WriteLine(pDescription);
-
                 if (CheckIfGuiExist())
                 {
                     lDialog = new FileChooserDialog(
@@ -217,19 +196,15 @@ namespace EasySave.Views
                        parent: null,
                        action: FileChooserAction.SelectFolder
                     );
-
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Select").ToString(), ResponseType.Ok);
-
                     lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
-
                     if (lDialog.Run() == (int)ResponseType.Ok)
                     {
                         lSelectedFolder = lDialog.Filename;
                     }
                     else
                         lSelectedFolder = "-1";
-
                     lDialog.Destroy();
                 }
                 else
@@ -242,7 +217,6 @@ namespace EasySave.Views
                 WriteLineError(ex.Message);
                 lSelectedFolder = ReadFolderConsole();
             }
-
             WriteLineSelected(lSelectedFolder);
             return lSelectedFolder;
         }
@@ -258,14 +232,12 @@ namespace EasySave.Views
             try
             {
                 Console.WriteLine(pDescription);
-
                 if (CheckIfGuiExist())
                 {
                     lDialog = new FileChooserDialog(
                            title: pDescription,
                            parent: null,
                            action: FileChooserAction.Open);
-
                     if (pRegexExtentions != null && pRegexExtentions.ToString().Contains("json"))
                     {
                         FileFilter lFilter = new FileFilter();
@@ -273,19 +245,15 @@ namespace EasySave.Views
                         lFilter.AddPattern("*.json");
                         lDialog.AddFilter(lFilter);
                     }
-
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
-
                     lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
-
                     if (lDialog.Run() == (int)ResponseType.Ok)
                     {
                         lSelectedFile = lDialog.Filename;
                     }
                     else
                         lSelectedFile = "-1";
-
                     lDialog.Destroy();
                 }
                 else
@@ -298,12 +266,9 @@ namespace EasySave.Views
                 WriteLineError(ex.Message);
                 lSelectedFile = ReadFileConsole(pRegexExtentions);
             }
-
             WriteLineSelected(lSelectedFile);
-
             return lSelectedFile;
         }
-
         /// <summary>
         /// Check if GTK can init GUI or not
         /// </summary>
@@ -311,10 +276,8 @@ namespace EasySave.Views
         private static bool CheckIfGuiExist()
         {
             string[] argrs = new string[] { };
-
             return Gtk.Application.InitCheck("", ref argrs);
         }
-
         /// <summary>
         /// Wait path from the console input
         /// </summary>
@@ -323,16 +286,13 @@ namespace EasySave.Views
         private static string ReadFileConsole(Regex pRegex = null)
         {
             string lFilePath = String.Empty;
-
             Func<string, bool> pValidator = lPath => File.Exists(lPath);
-
             do
             {
                 lFilePath = ReadResponse("\nEnter file path: ", pRegex, pValidator);
                 if (lFilePath == "-1")
                     return lFilePath;
             } while (!File.Exists(lFilePath));
-
             return lFilePath;
         }
         /// <summary>
@@ -342,17 +302,13 @@ namespace EasySave.Views
         private static string ReadFolderConsole()
         {
             string lFolderPath = String.Empty;
-
             Func<string, bool> pValidator = lPath => Directory.Exists(lPath);
-
             do
             {
                 lFolderPath = ReadResponse("\nEnter folder path: ", null, pValidator);
                 if (lFolderPath == "-1")
                     return lFolderPath;
             } while (!Directory.Exists(lFolderPath));
-
-
             return lFolderPath;
         }
     }

@@ -1,7 +1,6 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
 using System.Text.RegularExpressions;
-
 namespace EasySave.Views
 {
     public class View : BaseView
@@ -9,9 +8,7 @@ namespace EasySave.Views
         private MainViewModel _MainVm;
         private LangueView _LangView;
         private JobView _JobView;
-
         public override string Title => "--- EasySave ---";
-
         public string Menu
         {
             get => $"\n0 - {Strings.ResourceManager.GetObject("ChooseLang")} \n" +
@@ -21,22 +18,16 @@ namespace EasySave.Views
                     $"4 - {Strings.ResourceManager.GetObject("DeleteJob")}\n" +
                     $"5 - {Strings.ResourceManager.GetObject("RunJobs")}\n";
         }
-
         #region CTOR
-
         public View()
         {
             _MainVm = new MainViewModel();
             _LangView = new LangueView(_MainVm.LangueVm);
             _JobView = new JobView(_MainVm.JobVm);
-
             Console.CancelKeyPress += Console_CancelKeyPress;
         }
-
         #endregion
-
         #region METHODES
-
         /// <summary>
         /// Start the main program
         /// </summary>
@@ -48,7 +39,6 @@ namespace EasySave.Views
                 ConsoleExtention.WriteTitle(Title);
                 ConsoleExtention.WriteSubtitle("CTRL+C => Clear the console | CTRL+V => Past the current clipboard text");
                 lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")} ", new Regex("^[0-5]$"));
-
                 switch (lInput)
                 {
                     case "-1": // cm - Restart the program if the user press CTRL+C
@@ -75,9 +65,7 @@ namespace EasySave.Views
                 }
             }
         }
-
         #endregion
-
         private void Console_CancelKeyPress(object? sender, ConsoleCancelEventArgs e)
         {
             ConsoleExtention.Clear();

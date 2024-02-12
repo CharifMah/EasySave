@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-
 namespace Stockage.Logs
 {
     /// <summary>
@@ -9,9 +8,7 @@ namespace Stockage.Logs
     public abstract class BaseLogger<T> : ILogger<T>
     {
         private ObservableCollection<T> _Datas;
-
         public ObservableCollection<T> Datas => _Datas;
-
         protected BaseLogger()
         {
             _Datas = new ObservableCollection<T>();
@@ -32,7 +29,6 @@ namespace Stockage.Logs
                 ISauve lSave = new SauveCollection(lPath);
                 lSave.Sauver(pData, pFileName, pAppend);
             }
-
             _Datas.Add(pData);
         }
         /// <summary>

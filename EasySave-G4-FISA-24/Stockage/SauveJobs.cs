@@ -1,31 +1,25 @@
 ﻿using LogsModels;
 using Stockage.Logs;
 using System.Diagnostics;
-
 namespace Stockage
 {
     public class SauveJobs : BaseSave
     {
         private int _TransferedFiles;
         private List<CLogState> _LogStates;
-
         public int TransferedFiles { get => _TransferedFiles; set => _TransferedFiles = value; }
-
         public SauveJobs(string pPath) : base(pPath)
         {
             _LogStates = new List<CLogState>();
             _TransferedFiles = 0;
         }
-
         public void UpdateLog(CLogState logState)
         {
             if (_LogStates.Contains(logState))
                 _LogStates.Remove(logState);
-
             _LogStates.Add(logState);
             CLogger<List<CLogState>>.GenericLogger.Log(_LogStates, true, false);
         }
-
         /// <summary>
         /// Copy files and directory from the soruce path to the destinationPath
         /// </summary>
@@ -38,16 +32,13 @@ namespace Stockage
         public override void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, ref CLogState pLogState, bool pForce = false)
         {
             string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
-
             try
             {
                 // cm - Check if the source directory exists
                 if (!pSourceDir.Exists)
                     throw new DirectoryNotFoundException($"Source directory not found: {pSourceDir.FullName}");
-
                 Directory.CreateDirectory(pTargetDir.FullName);
                 FileInfo[] lFiles = pSourceDir.GetFiles();
-
                 CLogDaily lLogFilesDaily = new CLogDaily();
                 lLogFilesDaily.IsSummary = false;
                 // cm - Get files in the source directory and copy to the destination directory
@@ -71,7 +62,6 @@ namespace Stockage
                     lLogFilesDaily.TransfertTimeSecond = lSw.Elapsed.TotalSeconds;
                     CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
                 }
-
                 // cm - If recursive and copying subdirectories, recursively call this method
                 if (pRecursive)
                 {
@@ -87,7 +77,6 @@ namespace Stockage
                 CLogger<CLogBase>.StringLogger.Log(ex.Message, false, true, lName);
             }
         }
-
         public long GetDirSize(string pPath)
         {
             try

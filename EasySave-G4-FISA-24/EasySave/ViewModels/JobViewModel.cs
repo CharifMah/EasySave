@@ -47,11 +47,10 @@ namespace EasySave.ViewModels
         /// <param name="pTargetDir">chemin cible</param>
         /// <param name="pType">Type de backup</param>
         /// <returns>Vrai si le job a été crée</returns>
-        public bool CreateBackupJob(string pName, string pSourceDir, string pTargetDir, ETypeBackup pType)
+        public bool CreateBackupJob(CJob lJob)
         {
-            return _jobManager.CreateBackupJob(pName, pSourceDir, pTargetDir, pType);
+            return _jobManager.CreateBackupJob(lJob);
         }
-
 
         /// <summary>
         /// Supprimer un ou plusieurs jobs

@@ -1,6 +1,7 @@
 ﻿using LogsModels;
 using Stockage;
 using System.Diagnostics;
+using System.Reflection.Metadata;
 using System.Runtime.Serialization;
 
 namespace Models.Backup
@@ -111,6 +112,12 @@ namespace Models.Backup
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            CJob lJob = (obj as CJob);
+            return lJob.Name == this._Name && lJob.SourceDirectory == this._SourceDirectory && lJob.TargetDirectory == this.TargetDirectory;
         }
 
         #endregion

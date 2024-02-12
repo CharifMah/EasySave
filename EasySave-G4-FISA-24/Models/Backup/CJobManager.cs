@@ -22,6 +22,7 @@ namespace Models.Backup
 
         public List<CJob> Jobs { get => _Jobs; }
         public string Name { get => _Name; set => _Name = value; }
+        public ISauve SauveCollection { get => _SauveCollection; set => _SauveCollection = value; }
 
         #endregion
 
@@ -53,16 +54,15 @@ namespace Models.Backup
         /// <param name="type">type de job</param>
         /// <returns>true si reussi</returns>
         /// <remarks>Mehmeti faik - 06/02/2024 - fixbug</remarks>
-        public bool CreateBackupJob(string pName, string pSourceDir, string pTargetDir, ETypeBackup pType)
+        public bool CreateBackupJob(CJob lJob)
         {
             bool lResult = true;
 
             // cm - Verifie que on n'a pas atteint la maximum de job
-            if (_Jobs.Count <= _MaxJobs)
-                _Jobs.Add(new CJob(pName, pSourceDir, pTargetDir, pType));
+            if (_Jobs.Count <= _MaxJobs && !_Jobs.Contains(lJob))
+                _Jobs.Add(lJob);
             else
                 lResult = false;
-
             return lResult;
         }
 

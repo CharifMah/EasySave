@@ -127,7 +127,7 @@ namespace EasySave.Views
                 Console.WriteLine((int)type + " - " + type);
             }
 
-            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ");
+            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex("^[0-1]$"));
             if (lInput == "-1")
                 return;
 
@@ -135,7 +135,7 @@ namespace EasySave.Views
             ETypeBackup lBackupType = (ETypeBackup)Enum.Parse(typeof(ETypeBackup), lInput);
 
 
-            if ((lInput == "0" || lInput == "1") && _JobVm.CreateBackupJob(lName, lSourceDir, lTargetDir, lBackupType))
+            if (_JobVm.CreateBackupJob(lName, lSourceDir, lTargetDir, lBackupType))
             {
                 SaveJobs();
                 // Afficher confirmation

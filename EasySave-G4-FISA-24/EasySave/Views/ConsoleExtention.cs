@@ -78,7 +78,11 @@ namespace EasySave.Views
             Console.WriteLine(lSeparator);
             Console.ForegroundColor = ConsoleColor.White;
         }
-
+        /// <summary>
+        /// WriteSubTitle
+        /// </summary>
+        /// <param name="pSubtitle">subvtitle</param>
+        /// <param name="pColor">couleur du subtitle</param>
         public static void WriteSubtitle(string pSubtitle, ConsoleColor pColor = ConsoleColor.DarkGray)
         {
             int lWidth = Console.WindowWidth;
@@ -99,7 +103,6 @@ namespace EasySave.Views
 
             Console.ForegroundColor = ConsoleColor.White;
         }
-
         /// <summary>
         /// Read user input char by char
         /// </summary>
@@ -253,7 +256,6 @@ namespace EasySave.Views
 
             return Gtk.Application.InitCheck("", ref argrs);
         }
-
         /// <summary>
         /// Read a file with GTK CrossPlatform interface if it fail open classic Console Interface
         /// </summary>

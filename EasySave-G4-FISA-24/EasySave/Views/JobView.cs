@@ -3,6 +3,7 @@ using EasySaveDraft.Resources;
 using LogsModels;
 using Models.Backup;
 using Stockage.Logs;
+using System;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 namespace EasySave.Views
@@ -23,6 +24,9 @@ namespace EasySave.Views
         #endregion
         #region Methods
         #region public
+        /// <summary>
+        /// Lance
+        /// </summary>
         public override void Run()
         {
             if (!_JobVm.JobManager.Jobs.Any())
@@ -30,11 +34,13 @@ namespace EasySave.Views
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
                 return;
             }
-            // Listez les jobs
+            // Liste les jobs
             ListJobs();
 
+            // Invite l'utilisateur à sélectionner les jobs
             List<CJob> lJobsToRun = SelectJobs();
 
+            // Run les jobs si il en existe
             if (_JobVm.JobManager.Jobs.Any() && lJobsToRun != null)
             {
                 List<CJob> lJobsRunning = _JobVm.RunJobs(lJobsToRun);
@@ -139,6 +145,7 @@ namespace EasySave.Views
             else
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
         }
+
         /// <summary>
         ///  Delete a job from the JobManager
         /// </summary>
@@ -153,10 +160,10 @@ namespace EasySave.Views
             // Listez les jobs
             ListJobs();
 
+            //Invite l'utilisateur à sélectionner les jobs
             List<CJob> lJobsToDelete = SelectJobs();
 
-            // Appellez la méthode DeleteJobs du ViewModel
-            
+            // Appellez la méthode DeleteJobs si il existe des jobs à supprimer            
             if (_JobVm.JobManager.Jobs.Any() && lJobsToDelete != null)
             {
                 if(_JobVm.DeleteJobs(lJobsToDelete))
@@ -170,6 +177,11 @@ namespace EasySave.Views
             }      
         }
 
+        /// <summary>
+        ///  Invite l'utilisateur à sélectionner des jobs à partir
+        ///  d'une saisie spécifique et retourne une liste des jobs sélectionnés.
+        /// </summary>
+        /// <returns>List<CJob> ou null</returns>
         private List<CJob> SelectJobs()
         {
             // Instructions pour l'utilisateur sur le format de saisie
@@ -180,75 +192,115 @@ namespace EasySave.Views
               "- Pour un intervalle d'indices, (ex : 1-3).\n" +
               "- Pour combiner des indices et des intervalles, (ex : 1-3,5).");
 
-            // Demandez à l'utilisateur de saisir les indices des jobs à supprimer
+            // Demande à l'utilisateur de saisir les indices des jobs à supprimer
             string pattern = @"^(\d+(-\d+)?)(,\d+(-\d+)?)*$";
             Func<string, bool> pValidator = lInput => CheckSelectJobs(lInput);
-            
             string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex(pattern), pValidator);
+            
             if (lInput == "-1")
                 return null; // L'utilisateur a choisi de sortir
 
-            // Demandez confirmation avant de procéder
+            // Demande la confirmation avant de procéder
             string lConfirmation = ConsoleExtention.ReadResponse($"Veuillez confirmer (y/n) : ", new Regex("^[YyNn]$"));
             if (lConfirmation.ToLower() == "n" || lConfirmation == "-1")
                 return null; // L'utilisateur a annulé la suppression
 
-            // Récupérer et retourner la liste des jobs basée sur l'entrée de l'utilisateur
-            // Si l'utilisateur confirme, récupérer la liste des jobs basée sur l'entrée de l'utilisateur
+            // Récupére et retourne la liste des jobs basée sur l'entrée de l'utilisateur
             List<CJob> lSelectedJobs = SelectJobsFromInput(lInput);
 
-            // Retourner la liste des jobs sélectionnés, ou null si aucun job n'a été sélectionné
             return lSelectedJobs.Count > 0 ? lSelectedJobs : null;
         }
 
+        /// <summary>
+        /// Gère et vérifie les indices entrées par l'utilisateur
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>Collection unique indice ou -1 si erreur</returns>
         private HashSet<int> GetIndicesFromInput(string input)
         {
             HashSet<int> indices = new HashSet<int>();
             string[] parts = input.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
+            int jobCount = _JobVm.JobManager.Jobs.Count;
+
             foreach (string part in parts)
             {
-                if (part.Contains('-'))
+                try
                 {
-                    string[] rangeParts = part.Split('-');
-                    int start = int.Parse(rangeParts[0]);
-                    int end = int.Parse(rangeParts[1]);
-                    for (int i = start; i <= end; i++)
+                    if (part.Contains('-'))
                     {
-                        indices.Add(i);
+                        string[] rangeParts = part.Split('-');
+                        int start = int.Parse(rangeParts[0]);
+                        int end = int.Parse(rangeParts[1]);
+                        if (start > end || start < 0 || end >= jobCount)
+                        {
+                            // Retourne une erreur si l'intervalle est invalide
+                            return new HashSet<int> { -1 };
+                        }
+                        for (int i = start; i <= end; i++)
+                        {
+                            indices.Add(i);
+                        }
+                    }
+                    else
+                    {
+                        int index = int.Parse(part);
+                        if (index < 0 || index >= jobCount)
+                        {
+                            // Retourne une erreur si l'indice est invalide
+                            return new HashSet<int> { -1 };
+                        }
+                        indices.Add(index);
                     }
                 }
-                else
+                catch
                 {
-                    indices.Add(int.Parse(part));
+                    // Retourne une erreur si le parse échoue
+                    return new HashSet<int> { -1 };
                 }
             }
             return indices;
         }
 
+        /// <summary>
+        /// Gère un état booléen indiquant le résultat de la vérification des indices fournis en entrée
+        /// </summary>
+        /// <param name="pInput"></param>
         private bool CheckSelectJobs(string pInput)
         {
             HashSet<int> indices = GetIndicesFromInput(pInput);
-            bool isValid = indices.All(index => index >= 0 && index < _JobVm.JobManager.Jobs.Count);
 
-
-            if (!isValid)
+            if (indices.Contains(-1))
             {
-                // Affiche un message d'erreur et d'instruction si les indices sont invalides
-                ConsoleExtention.WriteLineError("Indices invalides détectés.\n");
+                ConsoleExtention.WriteLineError("Indice invalide détecté");
+                return false;
             }
-
-            return isValid;
+            return true;
         }
 
+        /// <summary>
+        /// Sélectionne et retourne une liste de jobs basée sur les indices spécifiés dans l'entrée utilisateur
+        /// </summary>
+        /// <param name="pInput"></param>
+        /// <returns>List<CJob></returns>
         private List<CJob> SelectJobsFromInput(string pInput)
         {
             HashSet<int> indices = GetIndicesFromInput(pInput);
-            return indices
-                .Where(index => index >= 0 && index < _JobVm.JobManager.Jobs.Count)
-                .Select(index => _JobVm.JobManager.Jobs[index])
-                .ToList();
+            int jobCount = _JobVm.JobManager.Jobs.Count;
+
+            List<CJob> selectedJobs = new List<CJob>();
+
+            foreach (int index in indices)
+            {
+                if (index >= 0 && index < jobCount)
+                {
+                    selectedJobs.Add(_JobVm.JobManager.Jobs[index]);
+                }
+            }
+
+            return selectedJobs;
         }
+
 
 
         #endregion

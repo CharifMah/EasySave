@@ -1,17 +1,23 @@
 ﻿using System.Globalization;
+using System.Runtime.Serialization;
+
 namespace Models
 {
     /// <summary>
     /// Classe langue
     /// </summary>
+    [DataContract]
     public class CLangue
     {
         private Dictionary<int, string> _Languages;
-
+        [DataMember]
+        private string _SelectedCulture;
         /// <summary>
         /// Dictionnaire de langues
         /// </summary>
         public Dictionary<int, string> Languages { get => _Languages; set => _Languages = value; }
+        public string SelectedCulture { get => _SelectedCulture; set => _SelectedCulture = value; }
+
         /// <summary>
         /// Constructeur de la classe Clangue Init the language with the installed culture of the operating system
         /// </summary>
@@ -19,33 +25,28 @@ namespace Models
         {
             _Languages = new Dictionary<int, string>()
             {
-              {1, "Français"},
-              {2, "English"}
+              {1, "fr"},
+              {2, "en-US"}
             };
-            // cm - set le culture a la culture de l'OS
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.InstalledUICulture;
+            _SelectedCulture = CultureInfo.InstalledUICulture.ToString();
         }
+
         /// <summary>
         /// Set the current UI culture
         /// </summary>
         /// <param name="pLanguageChoice">give a number</param>
         /// <returns>true if the language was changed</returns>
-        public bool SetLanguage(string pLanguageChoice)
+        public bool SetLanguage(string pCultureInfo)
         {
-            bool lIsLangChanged = true;
-            switch (pLanguageChoice)
+            bool result = false;
+            _SelectedCulture = pCultureInfo;
+            CultureInfo lCultureInfo = CultureInfo.GetCultureInfo(pCultureInfo);
+            if (Thread.CurrentThread.CurrentUICulture != lCultureInfo)
             {
-                case "1":
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr");
-                    break;
-                case "2":
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
-                    break;
-                default:
-                    lIsLangChanged = false;
-                    break;
+                Thread.CurrentThread.CurrentUICulture = lCultureInfo;
+                result = true;
             }
-            return lIsLangChanged;
+            return result;
         }
     }
 }

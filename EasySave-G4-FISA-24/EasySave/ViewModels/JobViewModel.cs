@@ -1,5 +1,4 @@
-﻿using GLib;
-using Models.Backup;
+﻿using Models.Backup;
 namespace EasySave.ViewModels
 {
     /// <summary>

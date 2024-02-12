@@ -101,8 +101,8 @@ namespace Models.Backup
         }
         public override bool Equals(object? obj)
         {
-            CJob lJob = (obj as CJob);
-            return lJob.Name == this._Name && lJob.SourceDirectory == this._SourceDirectory && lJob.TargetDirectory == this.TargetDirectory;
+            CJob lJob = obj as CJob;
+            return lJob.Name == _Name && lJob.SourceDirectory == _SourceDirectory && lJob.TargetDirectory == TargetDirectory;
         }
         #endregion
     }

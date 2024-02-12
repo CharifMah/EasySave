@@ -14,7 +14,7 @@ namespace Stockage
         /// <Author>Charif</Author>
         public ChargerCollection(string pPath)
         {
-            this._Path = pPath;
+            _Path = pPath;
         }
 
         /// <summary>

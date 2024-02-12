@@ -1,6 +1,4 @@
-﻿using GLib;
-
-namespace EasySave.ViewModels
+﻿namespace EasySave.ViewModels
 {
     public class MainViewModel
     {

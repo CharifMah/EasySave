@@ -357,6 +357,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 Conception/Conception.vpp.bak*
-/Conception
 /Conception/.lock
 /Conception/.vpprefdata

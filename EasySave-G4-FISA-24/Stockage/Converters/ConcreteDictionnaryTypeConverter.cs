@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-
-
 namespace Stockage.Converters
 {
     /// <summary>
@@ -22,7 +20,6 @@ namespace Stockage.Converters
         {
             serializer.Serialize(writer, value);
         }
-
         /// <summary>
         /// ReadJson
         /// </summary>
@@ -35,7 +32,6 @@ namespace Stockage.Converters
         {
             var collection = new TDictionary();
             var items = serializer.Deserialize<Dictionary<TKey, TItem>>(reader);
-
             if (items != null)
             {
                 foreach (var item in items)
@@ -43,10 +39,8 @@ namespace Stockage.Converters
                     collection.Add(item.Key, item.Value);
                 }
             }
-
             return collection;
         }
-
         /// <summary>
         /// CanConvert
         /// </summary>
@@ -58,5 +52,3 @@ namespace Stockage.Converters
         }
     }
 }
-
-

@@ -1,12 +1,9 @@
-﻿
-using Newtonsoft.Json;
-
+﻿using Newtonsoft.Json;
 namespace Stockage
 {
     public class ChargerCollection : ICharge
     {
         private static readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
-
         /// <summary>
         /// Charger un fichier
         /// </summary>
@@ -17,7 +14,6 @@ namespace Stockage
         public T Charger<T>(string pPath)
         {
             T d2 = default;
-
             try
             {
                 if (File.Exists(pPath))
@@ -28,7 +24,6 @@ namespace Stockage
             {
                 throw new Exception(ex.Message);
             }
-
             return d2;
         }
     }

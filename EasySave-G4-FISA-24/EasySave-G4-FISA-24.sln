@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasySave", "EasySave\EasySa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogsModels", "Logs\LogsModels.csproj", "{334B09B1-F615-46CE-868C-678E1E2CA01A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestJobs", "UnitTestJobs\UnitTestJobs.csproj", "{CF0222CE-32FB-43B3-BF87-53D4CF4A8A81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{334B09B1-F615-46CE-868C-678E1E2CA01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{334B09B1-F615-46CE-868C-678E1E2CA01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{334B09B1-F615-46CE-868C-678E1E2CA01A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF0222CE-32FB-43B3-BF87-53D4CF4A8A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF0222CE-32FB-43B3-BF87-53D4CF4A8A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF0222CE-32FB-43B3-BF87-53D4CF4A8A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF0222CE-32FB-43B3-BF87-53D4CF4A8A81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
 namespace Stockage.Converters
 {
     /// <summary>
@@ -22,7 +21,6 @@ namespace Stockage.Converters
         {
             return objectType == typeof(TInterface);
         }
-
         /// <summary>
         /// Gets a value indicating whether this <see cref="JsonConverter"/> can read.
         /// </summary>
@@ -33,7 +31,6 @@ namespace Stockage.Converters
                 return true;
             }
         }
-
         /// <summary>
         /// Gets a value indicating whether this <see cref="JsonConverter"/> can write
         /// JSON.
@@ -45,7 +42,6 @@ namespace Stockage.Converters
                 return true;
             }
         }
-
         /// <summary>
         /// Reads the JSON representation of the object.
         /// </summary>
@@ -57,21 +53,18 @@ namespace Stockage.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             object returnValue = null;
-
             if (objectType == typeof(TInterface))
             {
                 // ***
                 // *** Deserialize the object to a temporary instance
                 // ***
                 JToken jsonToken = JToken.Load(reader);
-
                 if (jsonToken is JObject || jsonToken is JArray)
                 {
                     // ***
                     // *** Create the concrete type
                     // ***
                     returnValue = new TConcrete();
-
                     using JsonReader serializerReader = jsonToken.CreateReader();
                     // ***
                     // *** Populate the object
@@ -79,10 +72,8 @@ namespace Stockage.Converters
                     serializer.Populate(serializerReader, returnValue);
                 }
             }
-
             return returnValue;
         }
-
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>

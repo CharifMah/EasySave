@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-
 namespace Stockage.Converters
 {
     /// <summary>
@@ -34,7 +33,6 @@ namespace Stockage.Converters
                     collection.Add(item);
                 }
             }
-
             return collection;
         }
         /// <summary>
@@ -48,5 +46,3 @@ namespace Stockage.Converters
         }
     }
 }
-
-

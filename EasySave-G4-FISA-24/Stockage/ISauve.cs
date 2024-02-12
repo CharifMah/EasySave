@@ -15,7 +15,6 @@
         /// <param name="pExtention">Extention</param>
         /// <remarks>Mahmoud Charif - 31/12/2022 - Création</remarks>
         void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json");
-
         /// <summary>
         /// Copy files and directory from the soruce path to the destinationPath
         /// </summary>
@@ -23,7 +22,6 @@
         /// <param name="pTargetDir">Path of the target directory</param>
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pForce">true if overwrite</param>
-        /// <param name="pLogger">Class de logger</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
         void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false);
     }

@@ -1,6 +1,5 @@
 ﻿namespace EasySave.Views
 {
-
     public abstract class BaseView
     {
         public abstract string Title { get; }

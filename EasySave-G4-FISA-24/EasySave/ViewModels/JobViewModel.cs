@@ -1,7 +1,4 @@
-﻿using Gtk;
-using Models.Backup;
-
-
+﻿using Models.Backup;
 namespace EasySave.ViewModels
 {
     /// <summary>
@@ -10,15 +7,12 @@ namespace EasySave.ViewModels
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
-
         private CJobManager _jobManager;
         /// <summary>
         /// JobManager
         /// </summary>
         public CJobManager JobManager { get => _jobManager; set => _jobManager = value; }
-
         #endregion
-
         #region CTOR
         /// <summary>
         /// Initialise le JobManager
@@ -27,9 +21,7 @@ namespace EasySave.ViewModels
         {
             _jobManager = CJobManager.LoadJobs();
         }
-
         #endregion
-
         /// <summary>
         /// Lance les jobs selectionnée
         /// </summary>
@@ -39,7 +31,6 @@ namespace EasySave.ViewModels
         {
             return _jobManager.RunJobs(pJobs);
         }
-
         /// <summary>
         /// Crée un job
         /// </summary>
@@ -48,17 +39,24 @@ namespace EasySave.ViewModels
         /// <param name="pTargetDir">chemin cible</param>
         /// <param name="pType">Type de backup</param>
         /// <returns>Vrai si le job a été crée</returns>
-        public bool CreateBackupJob(string pName, string pSourceDir, string pTargetDir, ETypeBackup pType)
+        public bool CreateBackupJob(CJob lJob)
         {
-            return _jobManager.CreateBackupJob(pName, pSourceDir, pTargetDir, pType);
+            return _jobManager.CreateBackupJob(lJob);
         }
-
+        /// <summary>
+        /// Supprimer un ou plusieurs jobs
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public bool DeleteJobs(List<CJob> pJobs)
+        {
+            return _jobManager.DeleteJobs(pJobs);
+        }
         #region Serialization
         public void SaveJobs()
         {
             _jobManager.SaveJobs();
         }
-
         public void LoadJobs(bool IsDefaultFile = true, string pPath = "")
         {
             if (IsDefaultFile)

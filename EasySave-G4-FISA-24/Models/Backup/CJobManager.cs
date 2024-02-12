@@ -72,16 +72,14 @@ namespace Models.Backup
         /// <param name="index"></param>
         /// <returns>true si reussi</returns>
         /// <remarks>Mehmeti faik</remarks>
-        public bool DeleteJobByIndex(int index)
+        public bool DeleteJobs(List<CJob> pJobs)
         {
-            bool lResult = false;
-
-            if (index >= 0 && index < Jobs.Count)
+            foreach (CJob lJob in pJobs)
             {
-                _Jobs.RemoveAt(index);
-                lResult = true;
+                _Jobs.Remove(lJob);
             }
-            return lResult;
+
+            return true;
         }
         /// <summary>
         /// Lance les jobs dans un interval d'index

@@ -57,55 +57,9 @@ namespace EasySave.ViewModels
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public bool DeleteJobs(string input)
+        public bool DeleteJobs(List<CJob> pJobs)
         {
-            var indices = ParseUserInput(input);
-            var sortedIndices = indices.OrderByDescending(x => x).Distinct();
-            bool jobDeleted = false;
-
-            foreach (var index in sortedIndices)
-            {
-                if (index >= 0 && index < _jobManager.Jobs.Count)
-                {
-                    bool result = _jobManager.DeleteJobByIndex(index);
-                    jobDeleted = result;
-                }
-            }
-
-            SaveJobs();
-            return jobDeleted;
-        }
-
-        /// <summary>
-        /// Récupère tout les indices de selections de job
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        private HashSet<int> ParseUserInput(string input)
-        {
-            HashSet<int> indices = new HashSet<int>();
-            string[] parts = input.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string part in parts)
-            {
-                if (part.Contains('-'))
-                {
-                    string[] rangeParts = part.Split('-');
-                    int start = int.Parse(rangeParts[0]);
-                    int end = int.Parse(rangeParts[1]);
-
-                    for (int i = start; i <= end; i++)
-                    {
-                        indices.Add(i);
-                    }
-                }
-                else
-                {
-                    indices.Add(int.Parse(part));
-                }
-            }
-
-            return indices;
+            return _jobManager.DeleteJobs(pJobs);    
         }
 
         #region Serialization

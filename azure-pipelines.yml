@@ -10,7 +10,7 @@ variables:
   Solution: '$(BasePath)**/*.sln'
   RestoreBuildProjects: '$(BasePath)**/*.csproj'
   PublishProjects: '$(BasePath)**/*.csproj'
-  TestProjects: '$(BasePath)**/*UnitTestStorage/*.csproj'
+  TestProjects: '$(BasePath)**/*UnitTest*/*.csproj'
   PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
 
 steps:

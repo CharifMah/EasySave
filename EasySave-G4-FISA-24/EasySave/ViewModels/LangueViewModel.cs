@@ -16,9 +16,9 @@ namespace EasySave.ViewModels
         /// </summary>
         /// <param name="pLanguageChoice">give a number</param>
         /// <returns>true if the language was changed</returns>
-        public bool SetLanguage(string pInput)
+        public bool SetLanguage(string pCultureInfo)
         {
-            bool result = _Langue.SetLanguage(_Langue.Languages[int.Parse(pInput)]);
+            bool result = _Langue.SetLanguage(pCultureInfo);
             Settings.Instance.SaveSettings();
             return result;
         }

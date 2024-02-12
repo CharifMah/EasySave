@@ -14,7 +14,7 @@ namespace Stockage
         /// <param name="pPath">Directory Path</param>
         public BaseSave(string pPath)
         {
-            if (!String.IsNullOrEmpty(pPath) && !Directory.Exists(pPath))
+            if (!String.IsNullOrEmpty(pPath) && !Directory.Exists(pPath) && !File.Exists(pPath))
                 Directory.CreateDirectory(pPath);
             _path = pPath;
         }

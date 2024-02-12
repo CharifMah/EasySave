@@ -14,6 +14,7 @@ namespace EasySave.Views
         private JobViewModel _JobVm;
         public override string Title => "JobView";
         #endregion
+
         #region CTOR
         public JobView(JobViewModel pJobVm)
         {
@@ -22,7 +23,9 @@ namespace EasySave.Views
             CLogger<CLogBase>.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged;
         }
         #endregion
+
         #region Methods
+
         #region public
         /// <summary>
         /// Lance
@@ -49,6 +52,7 @@ namespace EasySave.Views
                 ShowSummary(CLogger<List<CLogState>>.GenericLogger.Datas.Last());
             }
         }
+
         /// <summary>
         /// Print all jobs
         /// </summary>
@@ -84,6 +88,7 @@ namespace EasySave.Views
             else
                 ConsoleExtention.WriteLineError("Aucun job a été trouvée");
         }
+
         /// <summary>
         /// Create and add a new job to the JobManager
         /// </summary>
@@ -166,15 +171,56 @@ namespace EasySave.Views
             // Appellez la méthode DeleteJobs si il existe des jobs à supprimer            
             if (_JobVm.JobManager.Jobs.Any() && lJobsToDelete != null)
             {
-                if(_JobVm.DeleteJobs(lJobsToDelete))
+                if (_JobVm.DeleteJobs(lJobsToDelete))
                 {
                     SaveJobs();
                     ConsoleExtention.WriteLineSucces("Les jobs sélectionnés ont été supprimés.");
-                } else {
+                }
+                else
+                {
                     ConsoleExtention.WriteLineError("Erreur de suppression des jobs");
                 }
-              
-            }      
+
+            }
+        }
+
+        /// <summary>
+        /// Save Jobs and print
+        /// </summary>
+        public void SaveJobs()
+        {
+            _JobVm.SaveJobs();
+            ConsoleExtention.WriteLineSucces($"Job {_JobVm.JobManager.Name} saved");
+        }
+
+        /// <summary>
+        /// Load jobs and print
+        /// </summary>
+        public void LoadJobs()
+        {
+            ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("LoadJobs").ToString());
+            string lInput = ConsoleExtention.ReadResponse("\n0 - Fichier par defaut\n" +
+                                                          "1 - Autre fichier\n\n" +
+                                                          Strings.ResourceManager.GetObject("SelectChoice").ToString(), new Regex("^[0-1]$"));
+            if (lInput == "-1")
+            {
+                ConsoleExtention.WriteLineError("Eerreur");
+                return;
+            }
+
+            switch (lInput)
+            {
+                case "0":
+                    _JobVm.LoadJobs();
+                    break;
+                case "1":
+                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.Settings.Instance.JobConfigPath)));
+                    if (_JobVm.JobManager.Jobs.Count > 0)
+                        ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
+                    else
+                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name} Loaded without Jobs");
+                    break;
+            }
         }
 
         /// <summary>
@@ -196,7 +242,7 @@ namespace EasySave.Views
             string pattern = @"^(\d+(-\d+)?)(,\d+(-\d+)?)*$";
             Func<string, bool> pValidator = lInput => CheckSelectJobs(lInput);
             string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex(pattern), pValidator);
-            
+
             if (lInput == "-1")
                 return null; // L'utilisateur a choisi de sortir
 
@@ -302,8 +348,8 @@ namespace EasySave.Views
         }
 
 
-
         #endregion
+
         #region private
         /// <summary>
         /// Truncate the middle of a string if the string is greater than maxLenght
@@ -433,39 +479,11 @@ namespace EasySave.Views
             }
         }
         #endregion
-        #region Serialization
-        /// <summary>
-        /// Save Jobs and print
-        /// </summary>
-        public void SaveJobs()
-        {
-            _JobVm.SaveJobs();
-            ConsoleExtention.WriteLineSucces($"Job {_JobVm.JobManager.Name} saved");
-        }
-        /// <summary>
-        /// Load jobs and print
-        /// </summary>
-        public void LoadJobs()
-        {
-            ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("LoadJobs").ToString());
-            string lInput = ConsoleExtention.ReadResponse("0 - Fichier par defaut\n" +
-                                                          "1 - Autre fichier\n");
-            switch (lInput)
-            {
-                case "0":
-                    _JobVm.LoadJobs();
-                    break;
-                case "1":
-                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.Settings.Instance.JobConfigPath)));
-                    if (_JobVm.JobManager.Jobs.Count > 0)
-                        ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
-                    else
-                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name} Loaded without Jobs");
-                    break;
-            }
-        }
+
+
+
         #endregion
-        #endregion
+
         #endregion
     }
 }

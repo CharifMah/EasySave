@@ -7,6 +7,10 @@ namespace Models
     public class CLangue
     {
         private Dictionary<int, string> _Languages;
+
+        /// <summary>
+        /// Dictionnaire de langues
+        /// </summary>
         public Dictionary<int, string> Languages { get => _Languages; set => _Languages = value; }
         /// <summary>
         /// Constructeur de la classe Clangue Init the language with the installed culture of the operating system
@@ -22,7 +26,7 @@ namespace Models
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InstalledUICulture;
         }
         /// <summary>
-        /// Set the language
+        /// Set the current UI culture
         /// </summary>
         /// <param name="pLanguageChoice">give a number</param>
         /// <returns>true if the language was changed</returns>

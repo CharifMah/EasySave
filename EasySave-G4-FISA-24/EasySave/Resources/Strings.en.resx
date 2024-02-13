@@ -131,10 +131,10 @@
     <value>Run jobs</value>
   </data>
   <data name="SelectChoice" xml:space="preserve">
-    <value>Please enter your choice: </value>
+    <value>Please enter your choice : </value>
   </data>
   <data name="YouSelected" xml:space="preserve">
-    <value>You have selected: </value>
+    <value>You have selected : </value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>

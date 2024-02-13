@@ -132,7 +132,7 @@ namespace EasySave.Views
             {
                 Console.WriteLine((int)type + " - " + type);
             }
-            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex("^[0-1]$"));
+            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}", new Regex("^[0-1]$"));
             if (lInput == "-1")
             {
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
@@ -199,7 +199,7 @@ namespace EasySave.Views
         public void LoadJobs()
         {
             ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("LoadJobs").ToString());
-            string lInput = ConsoleExtention.ReadResponse("\n0 - Fichier par defaut\n" +
+            string lInput = ConsoleExtention.ReadResponse("\n0 - Fichier par défaut\n" +
                                                           "1 - Autre fichier\n\n" +
                                                           Strings.ResourceManager.GetObject("SelectChoice").ToString(), new Regex("^[0-1]$"));
             if (lInput == "-1")
@@ -387,7 +387,7 @@ namespace EasySave.Views
                 return null;
             if (lEndIndex < pJobs.Count - 1)
             {
-                string lIndividualIndex = ConsoleExtention.ReadResponse("Voulez vous choisir des job supplementaire de manière individuel Y/N : ", new Regex("^[YyNn]$"));
+                string lIndividualIndex = ConsoleExtention.ReadResponse("Voulez-vous choisir des jobs supplementaires de manière individuelle Y/N : ", new Regex("^[YyNn]$"));
                 if (lIndividualIndex == "-1")
                     return null;
                 if (lIndividualIndex.ToLower() == "y")

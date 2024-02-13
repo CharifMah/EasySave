@@ -290,7 +290,7 @@ namespace EasySave.Views
             Func<string, bool> pValidator = lPath => File.Exists(lPath);
             do
             {
-                lFilePath = ReadResponse("\nEnter file path: ", pRegex, pValidator);
+                lFilePath = ReadResponse("\nEnter file path : ", pRegex, pValidator);
                 if (lFilePath == "-1")
                     return lFilePath;
             } while (!File.Exists(lFilePath));

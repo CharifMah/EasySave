@@ -46,9 +46,7 @@ namespace Models.Backup
             _Name = "JobManager";
             _Jobs = new List<CJob>();
 
-            if (pConfigPath == "")
-                Settings.Instance.JobConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs");
-            else
+            if (!String.IsNullOrEmpty(pConfigPath))
                 Settings.Instance.JobConfigPath = pConfigPath;
 
             _SauveCollection = new SauveCollection(Settings.Instance.JobConfigPath);
@@ -134,6 +132,7 @@ namespace Models.Backup
             else
             {
                 Models.Settings.Instance.JobConfigPath = pPath;
+                lJobManager.SauveCollection = new SauveCollection(Models.Settings.Instance.JobConfigPath);
                 Models.Settings.Instance.SaveSettings();
             }
             return lJobManager;

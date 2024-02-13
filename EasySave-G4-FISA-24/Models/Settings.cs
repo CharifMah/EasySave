@@ -68,6 +68,8 @@ namespace Models
             {
                 if (_Instance.Langue == null)
                     _Instance.Langue = new CLangue();
+                if (_Instance.JobConfigPath == null)
+                    _Instance.JobConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs");
             }
         }
         #endregion

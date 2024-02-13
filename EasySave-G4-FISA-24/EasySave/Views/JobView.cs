@@ -347,7 +347,6 @@ namespace EasySave.Views
             return selectedJobs;
         }
 
-
         #endregion
 
         #region private

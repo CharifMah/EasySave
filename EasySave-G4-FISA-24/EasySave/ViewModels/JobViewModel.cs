@@ -33,6 +33,7 @@ namespace EasySave.ViewModels
         {
             return _jobManager.RunJobs(pJobs);
         }
+
         /// <summary>
         /// Crée un job
         /// </summary>
@@ -45,6 +46,7 @@ namespace EasySave.ViewModels
         {
             return _jobManager.CreateBackupJob(lJob);
         }
+
         /// <summary>
         /// Supprimer un ou plusieurs jobs
         /// </summary>
@@ -54,11 +56,12 @@ namespace EasySave.ViewModels
         {
             return _jobManager.DeleteJobs(pJobs);
         }
-        #region Serialization
+
         public void SaveJobs()
         {
             _jobManager.SaveJobs();
         }
+
         public void LoadJobs(bool IsDefaultFile = true, string pPath = "")
         {
             if (IsDefaultFile)
@@ -66,6 +69,5 @@ namespace EasySave.ViewModels
             else
                 _jobManager = CJobManager.LoadJobs(pPath);
         }
-        #endregion
     }
 }

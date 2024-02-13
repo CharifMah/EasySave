@@ -87,10 +87,14 @@ namespace Models.Backup
             }
             return true;
         }
+
         /// <summary>
-        /// Lance les jobs
+        /// Lance l'exécution de la liste de jobs passée en paramètre
         /// </summary>
-        /// <param name="pJobs">Liste de jobs a lancée</param>
+        /// <param name="pJobs">Liste des jobs à exécuter</param>
+        /// <returns>
+        /// La liste des jobs, mise à jour avec leur état après exécution
+        /// </returns>
         public List<CJob> RunJobs(List<CJob> pJobs)
         {
             SauveJobs lSauveJobs = new SauveJobs(Settings.Instance.JobConfigPath);

@@ -57,14 +57,11 @@ namespace Models.Backup
 
         #region Methods
         /// <summary>
-        /// Crée un job
+        /// Crée un nouveau job de sauvegarde
         /// </summary>
-        /// <param name="name">nom du job</param>
-        /// <param name="sourceDir">chemin source</param>
-        /// <param name="targetDir">chemin cible</param>
-        /// <param name="type">type de job</param>
-        /// <returns>true si reussi</returns>
-        /// <remarks>Mehmeti faik - 06/02/2024 - fixbug</remarks>
+        /// <param name="backupJob">Objet représentant le job de sauvegarde à créer</param>
+        /// <returns>True si le job a été créé avec succès, false sinon</returns>
+        /// <remarks> Created by Mehmeti Faik on 06/02/2024 Updated validation logic to handle null parameters</remarks>
         public bool CreateBackupJob(CJob lJob)
         {
             bool lResult = true;
@@ -75,6 +72,7 @@ namespace Models.Backup
                 lResult = false;
             return lResult;
         }
+
         /// <summary>
         /// Supprimé un job
         /// </summary>

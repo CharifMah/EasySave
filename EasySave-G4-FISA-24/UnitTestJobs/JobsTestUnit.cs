@@ -45,5 +45,26 @@ namespace UnitTestJobs
 
             Assert.True(lJobManager2.Jobs.Any());
         }
+
+        [Fact]
+        public void DeleteJob()
+        {
+            CJobManager lJobManager = new CJobManager();
+            CJob lJob = new CJob("Job1", "", "", ETypeBackup.COMPLET);
+            lJobManager.CreateBackupJob(lJob);
+            lJobManager.SaveJobs();
+
+            lJobManager = Models.Settings.Instance.LoadJobsFile();
+
+            Assert.True(lJobManager.Jobs.Any());
+
+            Assert.True(lJobManager.DeleteJobs(new List<CJob>() { lJob }));
+            Assert.False(lJobManager.Jobs.Any());
+
+            lJobManager.SaveJobs();
+
+            lJobManager = Models.Settings.Instance.LoadJobsFile();
+            Assert.False(lJobManager.Jobs.Any());
+        }
     }
 }

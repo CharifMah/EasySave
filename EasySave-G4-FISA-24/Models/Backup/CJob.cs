@@ -114,7 +114,6 @@ namespace Models.Backup
                     _LogState.RemainingFiles = 0;
                     _LogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
                     _LogState.IsActive = false;
-                    _LogState.IsSummary = true;
                     pSauveJobs.UpdateLog(_LogState);
                 }
                 else

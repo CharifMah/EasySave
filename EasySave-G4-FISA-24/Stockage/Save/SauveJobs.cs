@@ -43,7 +43,6 @@ namespace Stockage.Save
                 Directory.CreateDirectory(pTargetDir.FullName);
                 FileInfo[] lFiles = pSourceDir.GetFiles();
                 CLogDaily lLogFilesDaily = new CLogDaily();
-                lLogFilesDaily.IsSummary = false;
                 // cm - Get files in the source directory and copy to the destination directory
                 for (int i = 0; i < lFiles.Length; i++)
                 {

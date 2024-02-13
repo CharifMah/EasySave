@@ -5,6 +5,7 @@ namespace LogsModels
     {
         [DataMember]
         private double _TransfertTimeSecond;
+
         public double TransfertTimeSecond { get => _TransfertTimeSecond; set => _TransfertTimeSecond = value; }
     }
 }

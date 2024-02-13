@@ -172,4 +172,7 @@
   <data name="DeleteJob" xml:space="preserve">
     <value>Supprimer un job</value>
   </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Résumé</value>
+  </data>
 </root>

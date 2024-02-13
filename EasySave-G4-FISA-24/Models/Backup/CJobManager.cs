@@ -13,23 +13,30 @@ namespace Models.Backup
         [DataMember]
         private string _Name;
         private ISauve _SauveCollection;
+
         #endregion
 
         #region Property
         public List<CJob> Jobs { get => _Jobs; }
         public string Name { get => _Name; set => _Name = value; }
         public ISauve SauveCollection { get => _SauveCollection; set => _SauveCollection = value; }
+
         #endregion
         #region CTOR
         /// <summary>
         /// Contructeur de CJobManager initialise le chemin de sauvegarde
         /// </summary>
-        public CJobManager()
+        public CJobManager(string pConfigPath = "")
         {
             _Name = "JobManager";
             _Jobs = new List<CJob>();
-            string lPath = Path.Combine(Environment.CurrentDirectory, "Jobs");
-            _SauveCollection = new SauveCollection(lPath);
+
+            if (pConfigPath == "")
+                Settings.Instance.JobConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs");
+            else
+                Settings.Instance.JobConfigPath = pConfigPath;
+
+            _SauveCollection = new SauveCollection(Settings.Instance.JobConfigPath);
         }
         #endregion
         #region Methods
@@ -72,7 +79,7 @@ namespace Models.Backup
         /// <param name="pRange">Tuple d'index</param>
         public List<CJob> RunJobs(List<CJob> pJobs)
         {
-            SauveJobs lSauveJobs = new SauveJobs(Path.Combine(Environment.CurrentDirectory, "Jobs"));
+            SauveJobs lSauveJobs = new SauveJobs(Settings.Instance.JobConfigPath);
             // cm - Lance les jobs
             foreach (CJob lJob in pJobs)
             {
@@ -89,6 +96,7 @@ namespace Models.Backup
         {
             _SauveCollection.Sauver(this, _Name);
         }
+
         /// <summary>
         /// Charge les Jobs
         /// </summary>
@@ -96,15 +104,20 @@ namespace Models.Backup
         /// <returns>CJobManager</returns>
         public static CJobManager LoadJobs(string pPath = null)
         {
-            ICharge lChargerCollection = new ChargerCollection();
+            ICharge lChargerCollection = new ChargerCollection("");
             // cm - Si le path est null on init le path par default
-            if (pPath == null)
+            if (String.IsNullOrEmpty(pPath))
                 pPath = Path.Combine(Environment.CurrentDirectory, "Jobs", "JobManager.json");
             // cm - Charge le job manager
             CJobManager lJobManager = lChargerCollection.Charger<CJobManager>(pPath);
             // cm - Si aucun fichier n'a été charger on crée un nouveau JobManager
             if (lJobManager == null)
                 lJobManager = new CJobManager();
+            else
+            {
+                Models.Settings.Instance.JobConfigPath = pPath;
+                Models.Settings.Instance.SaveSettings();
+            }
             return lJobManager;
         }
         #endregion

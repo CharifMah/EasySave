@@ -4,6 +4,9 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 namespace Models.Backup
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [DataContract]
     public class CJob : IPath
     {
@@ -25,6 +28,7 @@ namespace Models.Backup
         public string TargetDirectory { get => _TargetDirectory; set => _TargetDirectory = value; }
         public ETypeBackup BackupType { get => _BackupType; set => _BackupType = value; }
         #endregion
+
         #region CTOR
         /// <summary>
         /// Constructeur de job
@@ -97,8 +101,8 @@ namespace Models.Backup
         }
         public override bool Equals(object? obj)
         {
-            CJob lJob = (obj as CJob);
-            return lJob.Name == this._Name && lJob.SourceDirectory == this._SourceDirectory && lJob.TargetDirectory == this.TargetDirectory;
+            CJob lJob = obj as CJob;
+            return lJob.Name == _Name && lJob.SourceDirectory == _SourceDirectory && lJob.TargetDirectory == TargetDirectory;
         }
         #endregion
     }

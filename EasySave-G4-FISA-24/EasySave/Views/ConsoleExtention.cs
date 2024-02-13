@@ -224,12 +224,14 @@ namespace EasySave.Views
         /// </summary>
         /// <param name="pDescription">Description for the interface</param>
         /// <returns>return the selected file full path</returns>
-        public static string ReadFile(string pDescription, Regex pRegexExtentions = null)
+        public static string ReadFile(string pDescription, Regex pRegexExtentions = null, string pCurrentFolder = null)
         {
             string lSelectedFile = null;
             FileChooserDialog lDialog = null;
             try
             {
+                if (pCurrentFolder == null)
+                    pCurrentFolder = Directory.GetCurrentDirectory();
                 Console.WriteLine(pDescription);
                 if (CheckIfGuiExist())
                 {
@@ -246,7 +248,7 @@ namespace EasySave.Views
                     }
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                     lDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
-                    lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
+                    lDialog.SetCurrentFolder(pCurrentFolder);
                     if (lDialog.Run() == (int)ResponseType.Ok)
                     {
                         lSelectedFile = lDialog.Filename;

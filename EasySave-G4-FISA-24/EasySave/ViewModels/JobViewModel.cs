@@ -20,7 +20,7 @@ namespace EasySave.ViewModels
         /// </summary>
         public JobViewModel()
         {
-            _jobManager = CJobManager.LoadJobs();
+            _jobManager = CJobManager.LoadJobs(Models.Settings.Instance.JobConfigPath);
         }
         #endregion
 

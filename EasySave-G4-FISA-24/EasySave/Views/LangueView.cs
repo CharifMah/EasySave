@@ -1,5 +1,6 @@
 ﻿using EasySave.ViewModels;
 using EasySaveDraft.Resources;
+using Models;
 using System.Text.RegularExpressions;
 namespace EasySave.Views
 {
@@ -18,8 +19,16 @@ namespace EasySave.Views
         {
             ListLanguage();
             string? lInput = ConsoleExtention.ReadResponse(Strings.ResourceManager.GetObject("SelectChoice").ToString(), new Regex("^[" + _LangueVm.Langue.Languages.First().Key + "-" + _LangueVm.Langue.Languages.Last().Key + "]$"));
+            if (lInput == "-1")
+            {
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("SelectedLanguage").ToString());
+                return;
+            }
+
+            int lLangue = int.Parse(lInput);
+
             // cm - if the input is correct printe 
-            if (_LangueVm.SetLanguage(lInput))
+            if (_LangueVm.SetLanguage(_LangueVm.Langue.Languages[lLangue]))
                 ConsoleExtention.WriteLineSucces(Strings.ResourceManager.GetObject("SelectedLanguage").ToString());
         }
         /// <summary>

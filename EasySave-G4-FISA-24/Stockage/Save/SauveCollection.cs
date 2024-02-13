@@ -1,4 +1,4 @@
-﻿namespace Stockage
+﻿namespace Stockage.Save
 {
     public class SauveCollection : BaseSave
     {

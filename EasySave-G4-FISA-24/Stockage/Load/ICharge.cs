@@ -1,4 +1,4 @@
-﻿namespace Stockage
+﻿namespace Stockage.Load
 {
     /// <summary>
     /// Interface sur un chargeur de dictionnaire
@@ -12,6 +12,6 @@
         /// <param name="pPath">Complete path of the file with extention</param>
         /// <returns>Loaded file</returns>
         /// <remarks>Mahmoud Charif - 31/12/2022 - Creation </remarks>
-        T Charger<T>(string pPath);
+        T Charger<T>(string pPath, bool pIsFullPath = false);
     }
 }

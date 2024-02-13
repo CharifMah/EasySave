@@ -1,5 +1,5 @@
 ﻿using LogsModels;
-using Stockage;
+using Stockage.Save;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 namespace Models.Backup

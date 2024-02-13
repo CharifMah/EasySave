@@ -1,14 +1,14 @@
 ﻿using LogsModels;
 using Stockage.Logs;
 using System.Diagnostics;
-namespace Stockage
+namespace Stockage.Save
 {
     public class SauveJobs : BaseSave
     {
         private int _TransferedFiles;
         private List<CLogState> _LogStates;
         public int TransferedFiles { get => _TransferedFiles; set => _TransferedFiles = value; }
-        public SauveJobs(string pPath) : base(pPath)
+        public SauveJobs(string pPath = null) : base(pPath)
         {
             _LogStates = new List<CLogState>();
             _TransferedFiles = 0;

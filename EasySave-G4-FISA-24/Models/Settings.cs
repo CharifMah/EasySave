@@ -1,4 +1,7 @@
-﻿using Stockage;
+﻿using Models.Backup;
+using Stockage;
+using Stockage.Load;
+using Stockage.Save;
 using System.Runtime.Serialization;
 
 namespace Models
@@ -7,19 +10,34 @@ namespace Models
     public class Settings
     {
         #region Attributes
+
         private ICharge _loadSettings;
         private ISauve _saveSettings;
-        private static Settings? _Instance;
+        private string _JobDefaultConfigPath;
         [DataMember]
-        private string _JobConfigPath;
+        private string _JobConfigFolderPath;
         [DataMember]
         private CLangue _Langue;
 
         #endregion
-        public CLangue Langue { get => _Langue; set => _Langue = value; }
-        public string JobConfigPath { get => _JobConfigPath; set => _JobConfigPath = value; }
-        #region CTOR
 
+        public CLangue Langue { get => _Langue; set => _Langue = value; }
+
+
+        public string JobConfigFolderPath 
+        {
+            get 
+            { 
+                return _JobConfigFolderPath; 
+            }
+            set => _JobConfigFolderPath = value; 
+        }
+
+        public string JobDefaultConfigPath { get => _JobDefaultConfigPath; set => _JobDefaultConfigPath = value; }
+
+
+        #region CTOR
+        private static Settings? _Instance;
         public static Settings Instance
         {
             get
@@ -30,10 +48,9 @@ namespace Models
             }
         }
 
-
         private Settings()
         {
-
+            _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs","JobManager.json");
         }
         ~Settings()
         {
@@ -68,9 +85,35 @@ namespace Models
             {
                 if (_Instance.Langue == null)
                     _Instance.Langue = new CLangue();
-                if (_Instance.JobConfigPath == null)
-                    _Instance.JobConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs");
             }
+        }
+
+        /// <summary>
+        /// Charge la liste des jobs depuis un fichier
+        /// </summary>
+        /// <param name="pPath"> Chemin du fichier de configuration. Null pour le fichier par défaut. </param>
+        /// <returns> Instance du gestionnaire de jobs chargé </returns>
+        public CJobManager LoadJobsFile(string pPath = null)
+        {
+            // cm - Si le path est null on init le path par default
+            if (String.IsNullOrEmpty(pPath))
+                pPath = _JobDefaultConfigPath;
+
+            ICharge lChargerCollection = new ChargerCollection(null);
+
+            // cm - Charge le job manager
+            CJobManager lJobManager = lChargerCollection.Charger<CJobManager>(pPath, true);
+            // cm - Si aucun fichier n'a été charger on crée un nouveau JobManager
+            if (lJobManager == null)
+            {
+                lJobManager = new CJobManager();
+            }
+            else
+            {
+                _JobConfigFolderPath = new FileInfo(pPath).DirectoryName;
+                SaveSettings();
+            }
+            return lJobManager;
         }
         #endregion
     }

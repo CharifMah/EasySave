@@ -1,4 +1,4 @@
-﻿namespace Stockage
+﻿namespace Stockage.Save
 {
     /// <summary>
     /// Interface ISauve
@@ -14,7 +14,7 @@
         /// <param name="pAppend">True si on veux append sur le fichier</param>
         /// <param name="pExtention">Extention</param>
         /// <remarks>Mahmoud Charif - 31/12/2022 - Création</remarks>
-        void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json");
+        void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json", bool IsFullPath = false);
         /// <summary>
         /// Copy files and directory from the soruce path to the destinationPath
         /// </summary>

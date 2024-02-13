@@ -2,6 +2,9 @@
 using System.Runtime.Serialization;
 namespace Models.Backup
 {
+    /// <summary>
+    /// Gestionnaire de jobs
+    /// </summary>
     [DataContract]
     public class CJobManager
     {
@@ -17,8 +20,19 @@ namespace Models.Backup
         #endregion
 
         #region Property
+        /// <summary>
+        /// Liste des jobs gérés
+        /// </summary>
         public List<CJob> Jobs { get => _Jobs; }
+
+        /// <summary>
+        /// Nom du gestionnaire
+        /// </summary>
         public string Name { get => _Name; set => _Name = value; }
+
+        /// <summary>
+        /// Interface de sauvegarde des données
+        /// </summary>
         public ISauve SauveCollection { get => _SauveCollection; set => _SauveCollection = value; }
 
         #endregion
@@ -43,14 +57,11 @@ namespace Models.Backup
 
         #region Methods
         /// <summary>
-        /// Crée un job
+        /// Crée un nouveau job de sauvegarde
         /// </summary>
-        /// <param name="name">nom du job</param>
-        /// <param name="sourceDir">chemin source</param>
-        /// <param name="targetDir">chemin cible</param>
-        /// <param name="type">type de job</param>
-        /// <returns>true si reussi</returns>
-        /// <remarks>Mehmeti faik - 06/02/2024 - fixbug</remarks>
+        /// <param name="backupJob">Objet représentant le job de sauvegarde à créer</param>
+        /// <returns>True si le job a été créé avec succès, false sinon</returns>
+        /// <remarks> Created by Mehmeti Faik on 06/02/2024 Updated validation logic to handle null parameters</remarks>
         public bool CreateBackupJob(CJob lJob)
         {
             bool lResult = true;
@@ -61,10 +72,11 @@ namespace Models.Backup
                 lResult = false;
             return lResult;
         }
+
         /// <summary>
-        /// Supprimé un job par son index
+        /// Supprimé un job
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="pJobs">List de jobs à supprimer</param>
         /// <returns>true si reussi</returns>
         /// <remarks>Mehmeti faik</remarks>
         public bool DeleteJobs(List<CJob> pJobs)
@@ -76,9 +88,9 @@ namespace Models.Backup
             return true;
         }
         /// <summary>
-        /// Lance les jobs dans un interval d'index
+        /// Lance les jobs
         /// </summary>
-        /// <param name="pRange">Tuple d'index</param>
+        /// <param name="pJobs">Liste de jobs a lancée</param>
         public List<CJob> RunJobs(List<CJob> pJobs)
         {
             SauveJobs lSauveJobs = new SauveJobs(Settings.Instance.JobConfigPath);
@@ -90,7 +102,7 @@ namespace Models.Backup
             }
             return pJobs;
         }
-        #region Serialization
+
         /// <summary>
         /// Sauvegarde le JobManager
         /// </summary>
@@ -100,10 +112,10 @@ namespace Models.Backup
         }
 
         /// <summary>
-        /// Charge les Jobs
+        /// Charge la liste des jobs depuis un fichier
         /// </summary>
-        /// <param name="pPath">Absolute Path</param>
-        /// <returns>CJobManager</returns>
+        /// <param name="pPath"> Chemin du fichier de configuration. Null pour le fichier par défaut. </param>
+        /// <returns> Instance du gestionnaire de jobs chargé </returns>
         public static CJobManager LoadJobs(string pPath = null)
         {
             ICharge lChargerCollection = new ChargerCollection("");
@@ -122,7 +134,6 @@ namespace Models.Backup
             }
             return lJobManager;
         }
-        #endregion
         #endregion
     }
 }

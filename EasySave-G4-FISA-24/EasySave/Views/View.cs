@@ -8,7 +8,13 @@ namespace EasySave.Views
         private MainViewModel _MainVm;
         private LangueView _LangView;
         private JobView _JobView;
+        /// <summary>
+        /// Titre affiché pour l'application
+        /// </summary>
         public override string Title => "--- EasySave ---";
+        /// <summary>
+        /// Chaîne de caractères contenant le menu
+        /// </summary>
         public string Menu
         {
             get => $"\n0 - {Strings.ResourceManager.GetObject("ChooseLang")} \n" +

@@ -13,6 +13,8 @@ variables:
   TestProjects: '$(BasePath)**/UnitTest*/*.csproj'
   PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
 
+name: Release-1.0.$(Build.BuildId)
+
 steps:
 - task: UseDotNet@2
   inputs:

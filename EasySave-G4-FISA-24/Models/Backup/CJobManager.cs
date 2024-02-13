@@ -22,6 +22,7 @@ namespace Models.Backup
         public ISauve SauveCollection { get => _SauveCollection; set => _SauveCollection = value; }
 
         #endregion
+
         #region CTOR
         /// <summary>
         /// Contructeur de CJobManager initialise le chemin de sauvegarde
@@ -39,6 +40,7 @@ namespace Models.Backup
             _SauveCollection = new SauveCollection(Settings.Instance.JobConfigPath);
         }
         #endregion
+
         #region Methods
         /// <summary>
         /// Crée un job

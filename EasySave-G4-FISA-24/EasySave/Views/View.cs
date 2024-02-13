@@ -18,6 +18,7 @@ namespace EasySave.Views
                     $"4 - {Strings.ResourceManager.GetObject("DeleteJob")}\n" +
                     $"5 - {Strings.ResourceManager.GetObject("RunJobs")}\n";
         }
+
         #region CTOR
         public View()
         {
@@ -27,6 +28,7 @@ namespace EasySave.Views
             Console.CancelKeyPress += Console_CancelKeyPress;
         }
         #endregion
+
         #region METHODES
         /// <summary>
         /// Start the main program
@@ -66,6 +68,7 @@ namespace EasySave.Views
             }
         }
         #endregion
+
         private void Console_CancelKeyPress(object? sender, ConsoleCancelEventArgs e)
         {
             ConsoleExtention.Clear();

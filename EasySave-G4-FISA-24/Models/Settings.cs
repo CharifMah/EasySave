@@ -6,6 +6,9 @@ using System.Runtime.Serialization;
 
 namespace Models
 {
+    /// <summary>
+    /// Classe des settings de l'application permettant le chargement et la sauvegarde des parametres de l'utilisateur
+    /// </summary>
     [DataContract]
     public class Settings
     {
@@ -13,6 +16,7 @@ namespace Models
 
         private ICharge _loadSettings;
         private ISauve _saveSettings;
+
         private string _JobDefaultConfigPath;
         [DataMember]
         private string _JobConfigFolderPath;
@@ -21,9 +25,14 @@ namespace Models
 
         #endregion
 
+        /// <summary>
+        /// Langue préférer de l'utilisateur
+        /// </summary>
         public CLangue Langue { get => _Langue; set => _Langue = value; }
 
-
+        /// <summary>
+        /// Emplacement du répertoire dans lequel le fichier de configuration du travail est stocké
+        /// </summary>
         public string JobConfigFolderPath 
         {
             get 
@@ -32,7 +41,9 @@ namespace Models
             }
             set => _JobConfigFolderPath = value; 
         }
-
+        /// <summary>
+        /// Emplacement par défaut du répertoire dans lequel le fichier de configuration du travail est stocké
+        /// </summary>
         public string JobDefaultConfigPath { get => _JobDefaultConfigPath; set => _JobDefaultConfigPath = value; }
 
 
@@ -47,7 +58,9 @@ namespace Models
                 return _Instance;
             }
         }
-
+        /// <summary>
+        /// Constructeur Settings initialise le path par default de la configuration des jobs
+        /// </summary>
         private Settings()
         {
             _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs","JobManager.json");
@@ -62,7 +75,7 @@ namespace Models
         #region Methods
 
         /// <summary>
-        /// Save Settings in a json file
+        /// Enregistrer les paramètres dans un fichier json
         /// </summary>
         public void SaveSettings()
         {
@@ -71,7 +84,7 @@ namespace Models
         }
 
         /// <summary>
-        /// Load Settigns from json file
+        ///  Chargement des paramètres à partir d'un fichier json
         /// </summary>
         public void LoadSettings()
         {

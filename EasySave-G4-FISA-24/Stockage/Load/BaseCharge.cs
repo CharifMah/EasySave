@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Stockage.Load
 {
+    /// <summary>
+    /// Classe abstraite de base pour le chargement d'un object
+    /// </summary>
     public abstract class BaseCharge : ICharge
     {
         private static readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
@@ -14,10 +17,10 @@ namespace Stockage.Load
         private string _Path;
 
         /// <summary>
-        /// Charger un object 
+        /// Constructeur
         /// </summary>
-        /// <param name="pPath">Chemin du fichier</param>
-        /// <Author>Charif</Author>
+        /// <param name="pPath">Chemin du dossier</param>
+        /// <remarks>Mahmoud Charif - 13/02/2024 - Création</remarks>
         public BaseCharge(string pPath)
         {
             _Path = pPath;
@@ -26,9 +29,9 @@ namespace Stockage.Load
         /// <summary>
         /// Charger un fichier
         /// </summary>
-        /// <typeparam name="T">Generic Type</typeparam>
-        /// <param name="pFileName">chemin du fichier or full path if the attribute _Path is not null</param>
-        /// <param name="pIsFullPath">allow to put full path in the first param</param>
+        /// <typeparam name="T">Type du fichier à charger</typeparam>
+        /// <param name="pFileName">Nom du fichier</param>
+        /// <param name="pIsFullPath">vrai si le premier parametre est un chemin complet et non le nom du fichier</param>
         /// <returns>Data Cast in Generic Type</returns>
         /// <remarks>Mahmoud Charif - 31/12/2022 - Creation</remarks>
         public virtual T Charger<T>(string pFileName, bool pIsFullPath = false)

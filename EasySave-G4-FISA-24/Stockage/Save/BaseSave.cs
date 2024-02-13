@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace Stockage.Save
 {
+    /// <summary>
+    /// Classe abstraite de base pour la sauvegrade d'un ficher ou le deplacement de Repertoire
+    /// </summary>
     public abstract class BaseSave : ISauve
     {
         private string _path;

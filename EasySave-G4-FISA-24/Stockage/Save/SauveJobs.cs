@@ -3,6 +3,9 @@ using Stockage.Logs;
 using System.Diagnostics;
 namespace Stockage.Save
 {
+    /// <summary>
+    /// Classe permettant de sauvegarder des jobs et de les logger
+    /// </summary>
     public class SauveJobs : BaseSave
     {
         private int _TransferedFiles;
@@ -77,6 +80,11 @@ namespace Stockage.Save
                 CLogger<CLogBase>.StringLogger.Log(ex.Message, false, true, lName);
             }
         }
+        /// <summary>
+        /// Calcule la taille d'un repertoire
+        /// </summary>
+        /// <param name="pPath">Chemin du repertoire</param>
+        /// <returns>la taille du repertoire en bytes</returns>
         public long GetDirSize(string pPath)
         {
             try

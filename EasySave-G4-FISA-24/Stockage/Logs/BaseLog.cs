@@ -2,24 +2,27 @@
 namespace Stockage.Logs
 {
     /// <summary>
-    /// BaseLogger
+    /// Classe de base abstraite pour les loggers.
     /// </summary>
-    /// <typeparam name="T">Type du Logger</typeparam>
+    /// <typeparam name="T">Type des objets loggés</typeparam>
     public abstract class BaseLogger<T> : ILogger<T>
     {
         private ObservableCollection<T> _Datas;
+        /// <summary>
+        /// Collection de données observables
+        /// </summary>
         public ObservableCollection<T> Datas => _Datas;
         protected BaseLogger()
         {
             _Datas = new ObservableCollection<T>();
         }
         /// <summary>
-        /// 
+        /// Méthode de logging des données
         /// </summary>
-        /// <param name="pData"></param>
-        /// <param name="pSerialize"></param>
-        /// <param name="pAppend"></param>
-        /// <param name="pFileName"></param>
+        /// <param name="pData">Données à logger</param>
+        /// <param name="pSerialize">Indique si les données doivent être sérialisées avant d'être loggées</param>
+        /// <param name="pAppend">Indique si on ajoute le logging au fichier existant ou si on recrée le fichier</param>
+        /// <param name="pFileName">Nom du fichier où sont loggées les données</param>
         public virtual void Log(T pData, bool pSerialize = true, bool pAppend = true, string pFileName = "Logs")
         {
             if (pSerialize)
@@ -32,7 +35,7 @@ namespace Stockage.Logs
             _Datas.Add(pData);
         }
         /// <summary>
-        /// 
+        /// Vide la collection de données
         /// </summary>
         public virtual void Clear()
         {

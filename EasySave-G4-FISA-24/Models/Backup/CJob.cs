@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace Models.Backup
 {
     /// <summary>
-    /// 
+    /// Représente un travail/tâche à exécuter
     /// </summary>
     [DataContract]
     public class CJob : IPath
@@ -22,11 +22,28 @@ namespace Models.Backup
 
         private CLogState _LogState;
         #endregion
+
         #region Property
+        /// <summary>
+        /// Nom du job de sauvegarde
+        /// </summary>
         public string Name { get => _Name; set => _Name = value; }
+
+        /// <summary>
+        /// Répertoire source à sauvegarder
+        /// </summary>
         public string SourceDirectory { get => _SourceDirectory; set => _SourceDirectory = value; }
+
+        /// <summary>
+        /// Répertoire cible de la sauvegarde
+        /// </summary>
         public string TargetDirectory { get => _TargetDirectory; set => _TargetDirectory = value; }
+
+        /// <summary>
+        /// Type de sauvegarde
+        /// </summary>
         public ETypeBackup BackupType { get => _BackupType; set => _BackupType = value; }
+
         #endregion
 
         #region CTOR
@@ -47,7 +64,12 @@ namespace Models.Backup
             _LogState = new CLogState();
         }
         #endregion
+
         #region Methods
+        /// <summary>
+        /// Lance l'exécution du job de sauvegarde
+        /// </summary>
+        /// <param name="pSauveJobs">Objet de sauvegarde des données de jobs</param>
         public void Run(SauveJobs pSauveJobs)
         {
             switch (BackupType)
@@ -60,6 +82,12 @@ namespace Models.Backup
                     break;
             }
         }
+
+        /// <summary>
+        /// Réalise la sauvegarde des données
+        /// </summary>
+        /// <param name="pForceCopy">Indique une recopie forcée</param>
+        /// <param name="pSauveJobs">Objet de sauvegarde des jobs</param>
         private void Backup(bool pForceCopy, SauveJobs pSauveJobs)
         {
             try

@@ -59,7 +59,11 @@ namespace Models
         public void LoadSettings()
         {
             _loadSettings = new ChargerCollection(Environment.CurrentDirectory);
-            _Instance = _loadSettings.Charger<Settings>(Path.Combine("Settings"));
+            Settings lInstance = _loadSettings.Charger<Settings>(Path.Combine("Settings"));
+            if (lInstance != null)
+            {
+                _Instance = lInstance;
+            }
             if (_Instance != null)
             {
                 if (_Instance.Langue == null)

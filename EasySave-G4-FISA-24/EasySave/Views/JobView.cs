@@ -351,6 +351,7 @@ namespace EasySave.Views
         #endregion
 
         #region private
+
         /// <summary>
         /// Truncate the middle of a string if the string is greater than maxLenght
         /// </summary>
@@ -367,6 +368,7 @@ namespace EasySave.Views
             int startIndex = pMessage.Length - rightCharacters;
             return pMessage.Substring(0, leftCharacters) + "..." + pMessage.Substring(startIndex);
         }
+
         /// <summary>
         /// Print the range selection to run jobs
         /// </summary>
@@ -420,6 +422,7 @@ namespace EasySave.Views
             }
             return lSelectedJobs;
         }
+
         private void ShowSummary(List<CLogState> pLogStates)
         {
             foreach (CLogState lLog in pLogStates)
@@ -448,6 +451,7 @@ namespace EasySave.Views
                 Console.ResetColor();
             }
         }
+
         #region Events
         private void LogGenericData_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -479,8 +483,6 @@ namespace EasySave.Views
             }
         }
         #endregion
-
-
 
         #endregion
 

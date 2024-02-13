@@ -16,7 +16,7 @@ namespace EasySave.ViewModels
 
         #region CTOR
         /// <summary>
-        /// Initialise le JobManager
+        /// Constructeur de JobViewModel initialise le JobManager
         /// </summary>
         public JobViewModel()
         {
@@ -25,40 +25,48 @@ namespace EasySave.ViewModels
         #endregion
 
         /// <summary>
-        /// Lance les jobs selectionnée
+        /// Lance l'exécution des jobs sélectionnés
         /// </summary>
-        /// <param name="pRange">L'interval de séléction</param>
-        /// <returns>List de Job</returns>
+        /// <param name="pJobs">Liste des jobs à lancer</param>
+        /// <returns> Liste mise à jour des jobs avec leur état après exécution </returns>
         public List<CJob> RunJobs(List<CJob> pJobs)
         {
             return _jobManager.RunJobs(pJobs);
         }
+
         /// <summary>
-        /// Crée un job
+        /// Crée un nouveau job de sauvegarde
         /// </summary>
-        /// <param name="pName">Nom du job</param>
-        /// <param name="pSourceDir">chemin source</param>
-        /// <param name="pTargetDir">chemin cible</param>
-        /// <param name="pType">Type de backup</param>
-        /// <returns>Vrai si le job a été crée</returns>
+        /// <param name="lJob">Job à créer</param>
+        /// <returns>Succès de la création</returns>
         public bool CreateBackupJob(CJob lJob)
         {
             return _jobManager.CreateBackupJob(lJob);
         }
+
         /// <summary>
         /// Supprimer un ou plusieurs jobs
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
+        /// <param name="pJobs">List de jobs a delete</param>
+        /// <returns>vrai si les jobs on été delete</returns>
         public bool DeleteJobs(List<CJob> pJobs)
         {
             return _jobManager.DeleteJobs(pJobs);
         }
-        #region Serialization
+
+        /// <summary>
+        /// Sauvegarde la configuration des jobs
+        /// </summary>
         public void SaveJobs()
         {
             _jobManager.SaveJobs();
         }
+
+        /// <summary>
+        /// Charge la liste des jobs depuis un fichier
+        /// </summary>
+        /// <param name="IsDefaultFile"> Indique si le fichier par défaut doit être chargé </param>
+        /// <param name="pPath"> Chemin du fichier à charger, vide pour le fichier par défaut </param>
         public void LoadJobs(bool IsDefaultFile = true, string pPath = "")
         {
             if (IsDefaultFile)
@@ -66,6 +74,5 @@ namespace EasySave.ViewModels
             else
                 _jobManager = CJobManager.LoadJobs(pPath);
         }
-        #endregion
     }
 }

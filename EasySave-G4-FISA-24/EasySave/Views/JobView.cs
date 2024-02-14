@@ -218,9 +218,9 @@ namespace EasySave.Views
                 case "1":
                     _JobVm.LoadJobs(false, ConsoleExtention.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
                     if (_JobVm.JobManager.Jobs.Count > 0)
-                        ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name}" + Strings.ResourceManager.GetObject("Loaded").ToString());
+                        ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} " + Strings.ResourceManager.GetObject("Loaded").ToString());
                     else
-                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name}" + Strings.ResourceManager.GetObject("WithoutJobLoaded").ToString());
+                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name} " + Strings.ResourceManager.GetObject("WithoutJobLoaded").ToString());
                     break;
             }
         }
@@ -450,7 +450,7 @@ namespace EasySave.Views
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write($"\n{Strings.ResourceManager.GetObject("TotalSize")}");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"\n{Strings.ResourceManager.GetObject("bytes")}");
+                Console.WriteLine(lLog.TotalSize + $" : {Strings.ResourceManager.GetObject("bytes")}");
                 Console.ResetColor();
             }
         }
@@ -473,7 +473,7 @@ namespace EasySave.Views
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write($"\n{Strings.ResourceManager.GetObject("TotalSize")}");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"\n{Strings.ResourceManager.GetObject("bytes")}");
+                Console.WriteLine(lLogFileState.TotalSize + $" : {Strings.ResourceManager.GetObject("bytes")}");
                 Console.ResetColor();
             }
         }

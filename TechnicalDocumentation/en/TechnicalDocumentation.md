@@ -48,16 +48,6 @@ Please consult the "releases" tab to access the latest version of livrable 1 (Pi
 
 https://dev.azure.com/faikmehmeti/G4-FISA-24/_release?_a=releases&view=mine&definitionId=1
 
-### Build and test
-
-* A download request to the develop-livrable-1 branch automatically triggers a build and test process (unit tests only).
-
-* A pull request to the livrable-1 branch automatically triggers a continuous integration process, from build and test to release.
-
-These processes can be visualized via pipelines: https://dev.azure.com/faikmehmeti/G4-FISA-24/_build
-
-NOTES: A single agent can manage the execution of a single pipeline; parallelism is not possible.
-
 ### Features
 - Sequential backup
 - Daily logs

@@ -48,4 +48,4 @@ Supprime définitivement un profil de sauvegarde sélectionné
 
 #### Lancer les jobs
 
-Démarre les sauvegardes planifiées ou manuelles
+Démarre les sauvegardes manuelles

@@ -48,4 +48,4 @@ Permanently deletes a selected backup profile
 
 #### Start jobs
 
-Starts scheduled or manual backups
+Starts manual backups

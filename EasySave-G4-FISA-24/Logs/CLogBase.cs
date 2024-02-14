@@ -1,6 +1,9 @@
 ﻿using System.Runtime.Serialization;
 namespace LogsModels
 {
+    /// <summary>
+    /// Log de base
+    /// </summary>
     [DataContract]
     public abstract class CLogBase : IPath
     {

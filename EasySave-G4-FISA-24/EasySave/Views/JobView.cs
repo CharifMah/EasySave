@@ -1,5 +1,4 @@
-﻿using Gtk;
-using LogsModels;
+﻿using LogsModels;
 using Models.Backup;
 using Ressources;
 using Stockage.Logs;

@@ -7,6 +7,7 @@ namespace EasySave // Note: actual namespace depends on the project name.
         static void Main(string[] args)
         {
             View pView = new View();
+            //Lance le program principale
             pView.Run();
         }
     }

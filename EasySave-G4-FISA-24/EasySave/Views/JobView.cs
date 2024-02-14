@@ -1,4 +1,5 @@
-﻿using LogsModels;
+﻿using Gtk;
+using LogsModels;
 using Models.Backup;
 using Ressources;
 using Stockage.Logs;
@@ -47,7 +48,7 @@ namespace EasySave.Views
             {
                 List<CJob> lJobsRunning = _JobVm.RunJobs(lJobsToRun);
                 foreach (CJob lJobRunning in lJobsRunning)
-                    ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} copy is finished");
+                    ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} " + Strings.ResourceManager.GetObject("CopyEnd"));
                 ShowSummary(CLogger<List<CLogState>>.GenericLogger.Datas.Last());
             }
         }
@@ -85,7 +86,7 @@ namespace EasySave.Views
                 Console.ForegroundColor = ConsoleColor.White;
             }
             else
-                ConsoleExtention.WriteLineError("Aucun job a été trouvée");
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
         }
 
         /// <summary>
@@ -93,7 +94,7 @@ namespace EasySave.Views
         /// </summary>
         public void CreateJob()
         {
-            ConsoleExtention.WriteTitle("Création d'un job");
+            ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("JobCreation").ToString());
             // cm - Demande a l'utilisateur de saisir les info du job  
             string lName = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Name")}: ", new Regex("^[a-zA-Z0-9]+$"));
             if (lName == "-1")
@@ -115,13 +116,13 @@ namespace EasySave.Views
             }
             else if (lTargetDir == lSourceDir)
             {
-                ConsoleExtention.WriteLineError("La path source et le path terget est le meme");
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("SamePath").ToString());
                 return;
             }
 
             if (!Directory.Exists(lSourceDir) || !Directory.Exists(lTargetDir))
             {
-                ConsoleExtention.WriteLineError("The Source Path or Target Path doesn't exist or is not reacheable " + " " + Strings.ResourceManager.GetObject("JobNotCreated").ToString());
+                ConsoleExtention.WriteLineError($"{Strings.ResourceManager.GetObject("PossibleTypeBackup")} " + " " + Strings.ResourceManager.GetObject("JobNotCreated").ToString());
                 return;
             }
 
@@ -155,7 +156,7 @@ namespace EasySave.Views
         /// </summary>
         public void DeleteJob()
         {
-            ConsoleExtention.WriteTitle("Suppression d'un job");
+            ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("DeletingJobs").ToString());
             if (!_JobVm.JobManager.Jobs.Any())
             {
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
@@ -173,11 +174,11 @@ namespace EasySave.Views
                 if (_JobVm.DeleteJobs(lJobsToDelete))
                 {
                     SaveJobs();
-                    ConsoleExtention.WriteLineSucces("Les jobs sélectionnés ont été supprimés.");
+                    ConsoleExtention.WriteLineSucces(Strings.ResourceManager.GetObject("JobsDeleted").ToString());
                 }
                 else
                 {
-                    ConsoleExtention.WriteLineError("Erreur de suppression des jobs");
+                    ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobDeleteError").ToString());
                 }
 
             }
@@ -189,7 +190,7 @@ namespace EasySave.Views
         public void SaveJobs()
         {
             _JobVm.SaveJobs();
-            ConsoleExtention.WriteLineSucces($"Job {_JobVm.JobManager.Name} saved");
+            ConsoleExtention.WriteLineSucces($"Job {_JobVm.JobManager.Name} " + Strings.ResourceManager.GetObject("Saved"));
         }
 
         /// <summary>

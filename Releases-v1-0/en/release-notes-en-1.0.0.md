@@ -8,7 +8,7 @@ This first release provides a series of features designed to simplify the manage
 
 ## Main features
 
-### - Interactive menu
+#### Interactive menu
 
 As soon as you start EasySave, you'll be guided by a simplified interactive menu, designed to make it easy to access and manage your backups.
 
@@ -24,29 +24,29 @@ EasySave is available to both English- and French-speaking users, with a simple,
 
 ![alt text](images/en-language-select.png)
 
-### - View list of backup jobs
+#### View list of backup jobs
 
 Easily access a list of all your backup jobs, including full configuration information.
 
 ![alt text](images/en-jobs-list.png)
 
-### - Customize backup job configuration file
+#### Customize backup job configuration file
 
 You can import an existing configuration file for your backup jobs, or restore the default file originally assigned.
 
-### - Manage multiple backup jobs
+#### Manage multiple backup jobs
 
 Configure up to five backup jobs, customizable by name, source directory, target directory and backup mode (full or differential).
 
 ![alt text](images/en-create-job.png)
 
-### - Full and differential backup
+#### Full and differential backup
 
 Full: Copies all your files on each run, guaranteeing complete restoration.
 
 Differential: Copies only files that have changed since the last backup.
 
-### - Flexible deletion of backup jobs
+#### Flexible deletion of backup jobs
 
 In a similar way, the deletion of backup jobs in EasySave uses the same selection principle.
 
@@ -54,7 +54,7 @@ By specifying "2-4,6", users can delete jobs 2 to 4 and job 6 quickly and easily
 
 ![alt text](images/en-delete-jobs.png)
 
-### - Customized execution of backup jobs
+#### Customized execution of backup jobs
 
 EasySave makes the selection of backup jobs extremely flexible, giving users the ability to choose precisely which backups to run.
 
@@ -64,20 +64,20 @@ This simplified method allows you to select ranges of tasks (such as "1-3") and 
 
 ![alt text](images/en-run-jobs.png)
 
-### - Extended backup location support
+#### Extended backup location support
 
 Compatible with various types of storage, including local, external and network drives.
 
-### - Daily logging
+#### Daily logging
 
 Detailed monitoring of backup operations is recorded daily in a log file in JSON format. This file includes information such as timestamp, job name, source and target file paths, file size and transfer duration.
 
-### - Real-time monitoring
+#### Real-time monitoring
 
 A status file in JSON format, updated in real time, lets you track the progress of your backups. It displays the number of files remaining to be backed up, as well as their total size.
 
 In addition to being able to view the progress of your backups in this file, you also have the option of tracking the progress of backup tasks directly on the application as these tasks are executed.
 
-### - File configuration and location
+#### File configuration and location
 
 Locations for log and status files have been optimized to work reliably on customer servers, avoiding standard local paths and making JSON files easier to access and read.

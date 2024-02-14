@@ -155,4 +155,7 @@
   <data name="Summary" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Quit" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

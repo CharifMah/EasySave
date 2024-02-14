@@ -175,4 +175,7 @@
   <data name="Summary" xml:space="preserve">
     <value>Résumé</value>
   </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Quitter l'application</value>
+  </data>
 </root>

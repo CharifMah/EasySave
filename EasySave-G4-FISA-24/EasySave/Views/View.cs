@@ -22,7 +22,8 @@ namespace EasySave.Views
                     $"2 - {Strings.ResourceManager.GetObject("LoadJobConfig")}\n" +
                     $"3 - {Strings.ResourceManager.GetObject("CreateJob")}\n" +
                     $"4 - {Strings.ResourceManager.GetObject("DeleteJob")}\n" +
-                    $"5 - {Strings.ResourceManager.GetObject("RunJobs")}\n";
+                    $"5 - {Strings.ResourceManager.GetObject("RunJobs")}\n" +
+                    $"6 - {Strings.ResourceManager.GetObject("Quit")}\n";
         }
 
         #region CTOR
@@ -46,7 +47,7 @@ namespace EasySave.Views
             {
                 ConsoleExtention.WriteTitle(Title);
                 ConsoleExtention.WriteSubtitle("CTRL+C => Clear the console | CTRL+V => Past the current clipboard text");
-                lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")}", new Regex("^[0-5]$"));
+                lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")}", new Regex("^[0-6]$"));
                 switch (lInput)
                 {
                     case "-1": // cm - Restart the program if the user press CTRL+C
@@ -69,6 +70,9 @@ namespace EasySave.Views
                         break;
                     case "5":
                         _JobView.Run();
+                        break;
+                    case "6":
+                        Environment.Exit(0);
                         break;
                 }
             }

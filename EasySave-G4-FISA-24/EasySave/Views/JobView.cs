@@ -10,7 +10,7 @@ namespace EasySave.Views
     /// <summary>
     /// Vue en rapport avec les jobs
     /// </summary>
-    internal class JobView : BaseView
+    public class JobView : BaseView
     {
         #region Attributes
         private JobViewModel _JobVm;

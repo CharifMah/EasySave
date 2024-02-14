@@ -131,10 +131,10 @@
     <value>Run jobs</value>
   </data>
   <data name="SelectChoice" xml:space="preserve">
-    <value>Please enter your choice: </value>
+    <value>Please enter your choice : </value>
   </data>
   <data name="YouSelected" xml:space="preserve">
-    <value>You have selected: </value>
+    <value>You have selected : </value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -177,5 +177,85 @@
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Exit</value>
+  <data name="Confirm" xml:space="preserve">
+    <value>Please confirm : (y/n) : </value>
+  </data>
+  <data name="InvalidIndice" xml:space="preserve">
+    <value>Invalid indice detected</value>
+  </data>
+  <data name="SelectRangeJobs" xml:space="preserve">
+    <value>Select the range of jobs you want to run</value>
+  </data>
+  <data name="StartIndex" xml:space="preserve">
+    <value>Start index : </value>
+  </data>
+  <data name="AdditionalJobs" xml:space="preserve">
+    <value>Do you want to choose additional jobs individually ? y/n : </value>
+  </data>
+  <data name="IndividualIndex" xml:space="preserve">
+    <value>Individual index ('q' to complete typing) : </value>
+  </data>
+  <data name="SourceDirectory" xml:space="preserve">
+    <value>Source Directory : </value>
+  </data>
+  <data name="TargetDirectory" xml:space="preserve">
+    <value>Target Directory : </value>
+  </data>
+  <data name="TotalSize" xml:space="preserve">
+    <value>Total size : </value>
+  </data>
+  <data name="bytes" xml:space="preserve">
+    <value> bytes</value>
+  </data>
+  <data name="SelectConfigurationFile" xml:space="preserve">
+    <value>Select a configuration file</value>
+  </data>
+  <data name="Loaded" xml:space="preserve">
+    <value>Loaded</value>
+  </data>
+  <data name="WithoutJobLoaded" xml:space="preserve">
+    <value>Loaded without jobs</value>
+  </data>
+  <data name="InputFormat" xml:space="preserve">
+    <value>Input format :</value>
+  </data>
+  <data name="SingleIndex" xml:space="preserve">
+    <value>For a single index, (for example : 2).</value>
+  </data>
+  <data name="MultipleIndexes" xml:space="preserve">
+    <value>For multiple indexes, (for example : 2,4,6).</value>
+  </data>
+  <data name="RangeIndexes" xml:space="preserve">
+    <value>For a range of indexes, (for example : 1-3).</value>
+  </data>
+  <data name="CombineIndexes" xml:space="preserve">
+    <value>To combine indexes and intervals, (for exemple : 1-3,5).</value>
+  </data>
+  <data name="DefaultFile" xml:space="preserve">
+    <value>Default file</value>
+  </data>
+  <data name="OtherFile" xml:space="preserve">
+    <value>Other file</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="InvalidIndexRange" xml:space="preserve">
+    <value>Invalid indexes range, the number of availablejob is </value>
+  </data>
+  <data name="TimeElapsed" xml:space="preserve">
+    <value>Time Elapsed: </value>
+  </data>
+  <data name="ClearConsole" xml:space="preserve">
+    <value>Clear the console</value>
+  </data>
+  <data name="PasteClipboard" xml:space="preserve">
+    <value>Paste the current clipboard text</value>
+  </data>
+  <data name="EnterFolderPath" xml:space="preserve">
+    <value>Enter folder path: </value>
+  </data>
+  <data name="EnterFilePath" xml:space="preserve">
+    <value>Enter file path: </value>
   </data>
 </root>

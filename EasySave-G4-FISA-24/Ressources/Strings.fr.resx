@@ -131,10 +131,10 @@
     <value>Lancer les jobs</value>
   </data>
   <data name="SelectChoice" xml:space="preserve">
-    <value>Veuillez entrer votre choix: </value>
+    <value>Veuillez entrer votre choix : </value>
   </data>
   <data name="YouSelected" xml:space="preserve">
-    <value>Vous avez sélectionné: </value>
+    <value>Vous avez sélectionné : </value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annuler</value>
@@ -146,7 +146,7 @@
     <value>Ouvrir</value>
   </data>
   <data name="NoJobCreated" xml:space="preserve">
-    <value>Aucun job n'a été crée</value>
+    <value>Aucun job n'a été créé</value>
   </data>
   <data name="SourceDir" xml:space="preserve">
     <value>Répertoire source</value>
@@ -161,7 +161,7 @@
     <value>Job créé</value>
   </data>
   <data name="JobNotCreated" xml:space="preserve">
-    <value>Le job n'a pas été crée</value>
+    <value>Le job n'a pas été créé</value>
   </data>
   <data name="Lang" xml:space="preserve">
     <value>Langue</value>
@@ -177,5 +177,85 @@
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Quitter l'application</value>
+  <data name="Confirm" xml:space="preserve">
+    <value>Veuillez confirmer (y/n) : </value>
+  </data>
+  <data name="InvalidIndice" xml:space="preserve">
+    <value>Indice invalide détecté</value>
+  </data>
+  <data name="SelectRangeJobs" xml:space="preserve">
+    <value>Sélectionnez la plage de jobs à exécuter</value>
+  </data>
+  <data name="StartIndex" xml:space="preserve">
+    <value>Index de début : </value>
+  </data>
+  <data name="AdditionalJobs" xml:space="preserve">
+    <value>Voulez-vous choisir des jobs supplémentaires de manière individuelle ? y/n : </value>
+  </data>
+  <data name="IndividualIndex" xml:space="preserve">
+    <value>Index individuel ('q' pour terminer la saisie) : </value>
+  </data>
+  <data name="SourceDirectory" xml:space="preserve">
+    <value>Répertoire Source : </value>
+  </data>
+  <data name="TargetDirectory" xml:space="preserve">
+    <value>Répertoire cible : </value>
+  </data>
+  <data name="TotalSize" xml:space="preserve">
+    <value>Taille totale : </value>
+  </data>
+  <data name="bytes" xml:space="preserve">
+    <value> octets</value>
+  </data>
+  <data name="SelectConfigurationFile" xml:space="preserve">
+    <value>Choisir un fichier de configuration</value>
+  </data>
+  <data name="Loaded" xml:space="preserve">
+    <value>Chargé</value>
+  </data>
+  <data name="WithoutJobLoaded" xml:space="preserve">
+    <value>Chargé sans jobs</value>
+  </data>
+  <data name="InputFormat" xml:space="preserve">
+    <value>Format de saisie :</value>
+  </data>
+  <data name="SingleIndex" xml:space="preserve">
+    <value>Pour un indice unique, (ex : 2).</value>
+  </data>
+  <data name="MultipleIndexes" xml:space="preserve">
+    <value>Pour plusieurs indices, (ex : 2,4,6).</value>
+  </data>
+  <data name="RangeIndexes" xml:space="preserve">
+    <value>Pour un intervalle d'indices, (ex : 1-3).</value>
+  </data>
+  <data name="CombineIndexes" xml:space="preserve">
+    <value>Pour combiner des indices et des intervalles, (ex : 1-3,5).</value>
+  </data>
+  <data name="DefaultFile" xml:space="preserve">
+    <value>Fichier par défaut</value>
+  </data>
+  <data name="OtherFile" xml:space="preserve">
+    <value>Autre fichier</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="InvalidIndexRange" xml:space="preserve">
+    <value>Plage d'indices invalide, le nombre de job disponible est de </value>
+  </data>
+  <data name="TimeElapsed" xml:space="preserve">
+    <value>Temps écoulé: </value>
+  </data>
+  <data name="ClearConsole" xml:space="preserve">
+    <value>Nettoyer la console</value>
+  </data>
+  <data name="PasteClipboard" xml:space="preserve">
+    <value>Coller le texte actuel du presse-papiers</value>
+  </data>
+  <data name="EnterFolderPath" xml:space="preserve">
+    <value>Entrer le chemin du dossier: </value>
+  </data>
+  <data name="EnterFilePath" xml:space="preserve">
+    <value>Entrer le chemin du fichier: </value>
   </data>
 </root>

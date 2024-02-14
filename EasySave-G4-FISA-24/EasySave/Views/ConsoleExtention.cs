@@ -291,7 +291,7 @@ namespace EasySave.Views
             Func<string, bool> pValidator = lPath => File.Exists(lPath);
             do
             {
-                lFilePath = ReadResponse("\nEnter file path: ", pRegex, pValidator);
+                lFilePath = ReadResponse($"\n{Strings.ResourceManager.GetObject("EnterFilePath")}", pRegex, pValidator);
                 if (lFilePath == "-1")
                     return lFilePath;
             } while (!File.Exists(lFilePath));
@@ -307,7 +307,7 @@ namespace EasySave.Views
             Func<string, bool> pValidator = lPath => Directory.Exists(lPath);
             do
             {
-                lFolderPath = ReadResponse("\nEnter folder path: ", null, pValidator);
+                lFolderPath = ReadResponse($"\n{Strings.ResourceManager.GetObject("EnterFolderPath")}", null, pValidator);
                 if (lFolderPath == "-1")
                     return lFolderPath;
             } while (!Directory.Exists(lFolderPath));

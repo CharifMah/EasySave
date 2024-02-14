@@ -46,8 +46,8 @@ namespace EasySave.Views
             while (true)
             {
                 ConsoleExtention.WriteTitle(Title);
-                ConsoleExtention.WriteSubtitle("CTRL+C => Clear the console | CTRL+V => Past the current clipboard text");
-                lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")}", new Regex("^[0-6]$"));
+                ConsoleExtention.WriteSubtitle("CTRL+C => " + $"{Strings.ResourceManager.GetObject("ClearConsole")}" + " | " + "CTRL+V => " + $"{Strings.ResourceManager.GetObject("PasteClipboard")}");
+                lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")}", new Regex("^[0-5]$"));
                 switch (lInput)
                 {
                     case "-1": // cm - Restart the program if the user press CTRL+C

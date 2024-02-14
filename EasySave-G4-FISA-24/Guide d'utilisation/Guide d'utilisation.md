@@ -1,4 +1,4 @@
-# Guide d'utilisation EasySave
+# Guide d'utilisation EasySave 1.0
 ## Démarrer l'application
 Exécuter le fichier EasySave.exe
 

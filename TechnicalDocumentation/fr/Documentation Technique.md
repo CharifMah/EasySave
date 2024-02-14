@@ -48,16 +48,6 @@ Veuillez consulter l'onglet "releases" pour accéder à la dernière version du 
 
 https://dev.azure.com/faikmehmeti/G4-FISA-24/_release?_a=releases&view=mine&definitionId=1
 
-### Construction et test
-
-* Une demande de téléchargement vers la branche develop-livrable-1 déclenche automatiquement un processus de construction et de test (tests unitaires uniquement).
-
-* Une demande d'extraction vers la branche livrable-1 déclenche automatiquement un processus d'intégration continue, depuis la construction et les tests jusqu'à la publication.
-
-Ces processus peuvent être visualisés via les pipelines : https://dev.azure.com/faikmehmeti/G4-FISA-24/_build
-
-NOTES : Un seul agent peut gérer l'exécution d'un seul pipeline ; le parallélisme n'est pas possible.
-
 ### Fonctionnalités
 - Sauvegarde séquentielle
 - Journaux quotidiens

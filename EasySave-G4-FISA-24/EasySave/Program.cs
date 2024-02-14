@@ -2,7 +2,7 @@
 namespace EasySave // Note: actual namespace depends on the project name.
 {
     /// <summary>
-    /// Point d'entrer de l'application
+    /// Application entry point
     /// </summary>
     internal class Program
     {

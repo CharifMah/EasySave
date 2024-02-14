@@ -55,6 +55,28 @@ NOTES : Un seul agent peut gérer l'exécution d'un seul pipeline ; le parallél
 - Supprimer un job
 - Lancer les jobs
 
+### Point d'entrée de l'application console
+
+``` csharp
+using View = EasySave.Views.View;
+namespace EasySave // Note: actual namespace depends on the project name.
+{
+    /// <summary>
+    /// Application entry point
+    /// </summary>
+    internal class Program
+    {
+        [STAThread]
+        static void Main(string[] args)
+        {
+            View pView = new View();
+            //Lance le program principale
+            pView.Run();
+        }
+    }
+}
+```
+
 ### Architecture
  L'architecture est basée sur un modèle MVVM avec :
 

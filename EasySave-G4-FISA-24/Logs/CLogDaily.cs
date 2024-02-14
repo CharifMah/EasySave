@@ -7,10 +7,10 @@ namespace LogsModels
     public class CLogDaily : CLogBase
     {
         [DataMember]
-        private double _TransfertTimeSecond;
+        private double _TransfertTime;
         /// <summary>
-        /// Temps de transfert en seconde
+        /// Temps de transfert en miliseconde
         /// </summary>
-        public double TransfertTimeSecond { get => _TransfertTimeSecond; set => _TransfertTimeSecond = value; }
+        public double TransfertTime { get => _TransfertTime; set => _TransfertTime = value; }
     }
 }

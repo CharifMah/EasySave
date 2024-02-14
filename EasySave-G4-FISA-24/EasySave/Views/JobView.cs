@@ -204,7 +204,7 @@ namespace EasySave.Views
                                                           Strings.ResourceManager.GetObject("SelectChoice").ToString(), new Regex("^[0-1]$"));
             if (lInput == "-1")
             {
-                ConsoleExtention.WriteLineError("Eerreur");
+                ConsoleExtention.WriteLineError("Erreur");
                 return;
             }
 
@@ -247,9 +247,11 @@ namespace EasySave.Views
                 return null; // L'utilisateur a choisi de sortir
 
             // Demande la confirmation avant de procéder
-            string lConfirmation = ConsoleExtention.ReadResponse($"Veuillez confirmer (y/n) : ", new Regex("^[YyNn]$"));
+            string lConfirmation = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Confirm")}: ", new Regex("^[YyNn]$"));
             if (lConfirmation.ToLower() == "n" || lConfirmation == "-1")
                 return null; // L'utilisateur a annulé la suppression
+
+
 
             // Récupére et retourne la liste des jobs basée sur l'entrée de l'utilisateur
             List<CJob> lSelectedJobs = SelectJobsFromInput(lInput);
@@ -318,7 +320,7 @@ namespace EasySave.Views
 
             if (indices.Contains(-1))
             {
-                ConsoleExtention.WriteLineError("Indice invalide détecté");
+                ConsoleExtention.WriteLineError($"\n{Strings.ResourceManager.GetObject("InvalidIndice")}");
                 return false;
             }
             return true;
@@ -377,17 +379,17 @@ namespace EasySave.Views
             int lStartIndex = 0;
             int lEndIndex = 0;
             List<int> lListIndex = new List<int>();
-            Console.WriteLine("Sélectionnez la plage de jobs à exécuter");
+            Console.WriteLine($"\n{Strings.ResourceManager.GetObject("SelectRangeJobs")}");
             lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
             if (lStartIndex == -1)
                 return null;
             Console.WriteLine();
-            lEndIndex = int.Parse(ConsoleExtention.ReadResponse("Index de fin : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
+            lEndIndex = int.Parse(ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectRangeJobs")}", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
             if (lEndIndex == -1)
                 return null;
             if (lEndIndex < pJobs.Count - 1)
             {
-                string lIndividualIndex = ConsoleExtention.ReadResponse("Voulez-vous choisir des jobs supplementaires de manière individuelle Y/N : ", new Regex("^[YyNn]$"));
+                string lIndividualIndex = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("AdditionalJobs")}", new Regex("^[YyNn]$"));
                 if (lIndividualIndex == "-1")
                     return null;
                 if (lIndividualIndex.ToLower() == "y")
@@ -395,7 +397,7 @@ namespace EasySave.Views
                     string lResponse = String.Empty;
                     do
                     {
-                        lResponse = ConsoleExtention.ReadResponse("Index de individuel ('q' pour terminer la saisie) : ", new Regex("^((0-" + (pJobs.Count - 1) + ")|[^" + lStartIndex + "-" + lEndIndex + "])$"));
+                        lResponse = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("IndividualIndex")}", new Regex("^((0-" + (pJobs.Count - 1) + ")|[^" + lStartIndex + "-" + lEndIndex + "])$"));
                         if (lResponse == "-1")
                             return null;
                         if (lResponse != "q")
@@ -426,7 +428,7 @@ namespace EasySave.Views
             {
                 ConsoleExtention.WriteTitle(lLog.Name, ConsoleColor.Red);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Date: ");
+                Console.Write("Date : ");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(lLog.Date);
                 Console.ForegroundColor = ConsoleColor.Green;

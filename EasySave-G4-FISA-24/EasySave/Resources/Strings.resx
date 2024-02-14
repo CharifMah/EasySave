@@ -152,4 +152,22 @@
   <data name="DeleteJob" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="InvalidIndice" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SelectRangeJobs" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StartIndex" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="AdditionalJobs" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="IndividualIndex" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

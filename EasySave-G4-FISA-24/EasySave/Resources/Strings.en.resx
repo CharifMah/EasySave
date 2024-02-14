@@ -172,4 +172,22 @@
   <data name="DeleteJob" xml:space="preserve">
     <value>Delete a job</value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Please confirm : (y/n) : </value>
+  </data>
+  <data name="InvalidIndice" xml:space="preserve">
+    <value>Invalid indice detected</value>
+  </data>
+  <data name="SelectRangeJobs" xml:space="preserve">
+    <value>Select the range of jobs you want to run</value>
+  </data>
+  <data name="StartIndex" xml:space="preserve">
+    <value>Start index : </value>
+  </data>
+  <data name="AdditionalJobs" xml:space="preserve">
+    <value>Do you want to choose additional jobs individually ? y/n : </value>
+  </data>
+  <data name="IndividualIndex" xml:space="preserve">
+    <value>Individual index ('q' to complete typing) : </value>
+  </data>
 </root>

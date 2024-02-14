@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace Stockage.Save
 {
     /// <summary>
-    /// Classe abstraite de base pour la sauvegrade d'un ficher ou le deplacement de Repertoire
+    /// Classe abstraite de base pour la sauvegarde d'un ficher ou le déplacement de Repertoire
     /// </summary>
     public abstract class BaseSave : ISauve
     {
@@ -15,7 +15,7 @@ namespace Stockage.Save
         public JsonSerializerSettings Options => _options;
 
         /// <summary>
-        /// Sauvgarde
+        /// Sauvegarde
         /// </summary>
         /// <param name="pPath">Directory Path</param>
         public BaseSave(string pPath)
@@ -27,9 +27,9 @@ namespace Stockage.Save
         /// <summary>
         /// Crée un fichier Json par default avec les Settings
         /// </summary>
-        /// <param name="pData">Data a sauvgarde</param>
+        /// <param name="pData">Data a sauvegarde</param>
         /// <param name="pFileName">Name of the file</param>
-        /// <param name="pExtention">Extention of the file can be null</param>
+        /// <param name="pExtention">Extension of the file can be null</param>
         /// <Author>Mahmoud Charif - 31/12/2022 - Création</Author>
         public virtual void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json", bool IsFullPath = false)
         {

@@ -5,6 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>10.0</LangVersion>
+		<ApplicationIcon>EasySave.ico</ApplicationIcon>
 		</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <Deterministic>True</Deterministic>
@@ -12,6 +13,9 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	  <Deterministic>True</Deterministic>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Content Include="EasySave.ico" />
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
 		<PackageReference Include="TextCopy" Version="6.0.0" />

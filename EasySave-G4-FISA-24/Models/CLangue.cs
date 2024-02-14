@@ -13,13 +13,13 @@ namespace Models
         [DataMember]
         private string _SelectedCulture;
         /// <summary>
-        /// Dictionnaire de langues disponnible dans l'application
+        /// Dictionnaire de langues disponible dans l'application
         /// </summary>
         public Dictionary<int, string> Languages { get => _Languages; set => _Languages = value; }
         public string SelectedCulture { get => _SelectedCulture; set => _SelectedCulture = value; }
 
         /// <summary>
-        /// Constructeur de la classe Clangue Init the language with the installed culture of the operating system
+        /// Initialize the language with the installed culture of the operating system
         /// </summary>
         public CLangue()
         {

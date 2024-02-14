@@ -14,6 +14,9 @@ namespace EasySave.Views
     {
         #region Attributes
         private JobViewModel _JobVm;
+        /// <summary>
+        /// Titre de la vue Job
+        /// </summary>
         public override string Title => "JobView";
         #endregion
 
@@ -66,7 +69,7 @@ namespace EasySave.Views
                 int lNameColumnWidth = 30;
                 int lPathSourceColumnWidth = (lConsoleWidth - lNameColumnWidth) / 2;
                 int lPathTargetColumnWidth = lConsoleWidth - lNameColumnWidth - lPathSourceColumnWidth - 2;
-                // cm - Ecrit le nom de la config
+                // cm - Écrit le nom de la config
                 ConsoleExtention.WriteTitle(_JobVm.JobManager.Name);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 // cm - Affiche les colonne du tableau
@@ -359,7 +362,7 @@ namespace EasySave.Views
         /// Truncate the middle of a string if the string is greater than maxLenght
         /// </summary>
         /// <param name="pMessage">string to truncate</param>
-        /// <param name="pMaxLength">max lenght of the message</param>
+        /// <param name="pMaxLength">max length of the message</param>
         /// <returns>truncated string</returns>
         /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
         public string TruncateMiddle(string pMessage, int pMaxLength)
@@ -416,7 +419,7 @@ namespace EasySave.Views
             {
                 lSelectedJobs.Add(pJobs[i]);
             }
-            // Check indexs
+            // Check indexes
             if (lStartIndex > lEndIndex)
             {
                 Console.WriteLine($"{Strings.ResourceManager.GetObject("InvalidIndexRange")}" + $"{_JobVm.JobManager.Jobs.Count}");

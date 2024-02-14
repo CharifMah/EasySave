@@ -10,6 +10,10 @@ namespace EasySave.Views
     {
         private LangueViewModel _LangueVm;
         public override string Title => Strings.ResourceManager.GetObject("Lang").ToString();
+        /// <summary>
+        /// Constructeur de la Vue de la langue
+        /// </summary>
+        /// <param name="pJobVm">Le JobViewModel</param>
         public LangueView(LangueViewModel pJobVm)
         {
             _LangueVm = pJobVm;
@@ -29,7 +33,7 @@ namespace EasySave.Views
 
             int lLangue = int.Parse(lInput);
 
-            // cm - if the input is correct printe 
+            // cm - if the input is correct print 
             if (_LangueVm.SetLanguage(_LangueVm.Langue.Languages[lLangue]))
                 ConsoleExtention.WriteLineSucces(Strings.ResourceManager.GetObject("SelectedLanguage").ToString());
         }

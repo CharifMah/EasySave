@@ -20,7 +20,7 @@ namespace EasySave.Views
             Console.ForegroundColor = ConsoleColor.White;
         }
         /// <summary>
-        /// Write line a succes in green
+        /// Write line a success in green
         /// </summary>
         /// <param name="pMessage">message to write</param>
         public static void WriteLineSucces(string pMessage)
@@ -81,7 +81,7 @@ namespace EasySave.Views
         /// <summary>
         /// WriteSubTitle
         /// </summary>
-        /// <param name="pSubtitle">subvtitle</param>
+        /// <param name="pSubtitle">subtitle</param>
         /// <param name="pColor">couleur du subtitle</param>
         public static void WriteSubtitle(string pSubtitle, ConsoleColor pColor = ConsoleColor.DarkGray)
         {
@@ -103,7 +103,7 @@ namespace EasySave.Views
         /// </summary>
         /// <param name="pMessage">Message to loop through if the user makes an input error</param>
         /// <param name="pRegex">Regex permettant de validée l'entrée utilisateur</param>
-        /// <param name="pIsValid">Fonction qui prend un string en parametre et valide l'entrée utilisateur</param>
+        /// <param name="pIsValid">Fonction qui prend un string en paramètre et valide l'entrée utilisateur</param>
         /// <returns>user input</returns>
         /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
         /// <remarks>Mahmoud Charif - 09/02/2024 - Ajout d'une fonction anonyme de validation en paramètre</remarks>
@@ -141,13 +141,13 @@ namespace EasySave.Views
                 }
                 else if (lsInput.Key != ConsoleKey.Enter && lsInput.Key != ConsoleKey.Backspace) // cm - Concatenate inputs to obtain the final output
                     _Input += lsInput.KeyChar;
-                if (lsInput.Key == ConsoleKey.Backspace)   // cm - If user press Backspace delete 1 caratere in the console
+                if (lsInput.Key == ConsoleKey.Backspace)   // cm - If user press Backspace delete 1 character in the console
                 {
                     RemoveLastChar();
                     if (_Input.Length > 0)
                         _Input = _Input[0..^1].ToString();
                 }
-                else if (lsInput.Key == ConsoleKey.Delete)  // cm - If user press Delete delete 1 caratere in the console
+                else if (lsInput.Key == ConsoleKey.Delete)  // cm - If user press Delete 1 character in the console
                 {
                     RemoveLastChar();
                     if (_Input.Length > 0)
@@ -286,8 +286,8 @@ namespace EasySave.Views
         /// <summary>
         /// Wait path from the console input
         /// </summary>
-        /// <param name="pRegex">filter the file or the extention</param>
-        /// <returns>file fullpath</returns>
+        /// <param name="pRegex">filter the file or the extension</param>
+        /// <returns>file full path</returns>
         private static string ReadFileConsole(Regex pRegex = null)
         {
             string lFilePath = String.Empty;
@@ -303,7 +303,7 @@ namespace EasySave.Views
         /// <summary>
         /// Wait path from the console input
         /// </summary>
-        /// <returns>folder fullpath</returns>
+        /// <returns>folder full path</returns>
         private static string ReadFolderConsole()
         {
             string lFolderPath = String.Empty;

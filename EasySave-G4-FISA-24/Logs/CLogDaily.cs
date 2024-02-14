@@ -9,7 +9,7 @@ namespace LogsModels
         [DataMember]
         private double _TransfertTime;
         /// <summary>
-        /// Temps de transfert en miliseconde
+        /// Temps de transfert en milliseconde
         /// </summary>
         public double TransfertTime { get => _TransfertTime; set => _TransfertTime = value; }
     }

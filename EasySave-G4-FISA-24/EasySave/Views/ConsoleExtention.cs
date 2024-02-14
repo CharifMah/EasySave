@@ -3,6 +3,9 @@ using Ressources;
 using System.Text.RegularExpressions;
 namespace EasySave.Views
 {
+    /// <summary>
+    /// Console extension class adds additional display functionality
+    /// </summary>
     public static class ConsoleExtention
     {
         private static string _Input = string.Empty;

@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 using ViewModels;
 namespace EasySave.Views
 {
+    /// <summary>
+    /// Vue des langues
+    /// </summary>
     public class LangueView : BaseView
     {
         private LangueViewModel _LangueVm;

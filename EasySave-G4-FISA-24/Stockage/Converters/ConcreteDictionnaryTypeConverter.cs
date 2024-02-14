@@ -2,12 +2,13 @@
 namespace Stockage.Converters
 {
     /// <summary>
-    /// Concrete dictionnaryConverter
+    /// A JSON converter for dictionaries of generic types
     /// </summary>
-    /// <typeparam name="TDictionary"></typeparam>
-    /// <typeparam name="TItem"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TDictionary">The dictionary type</typeparam>
+    /// <typeparam name="TItem">The item type</typeparam>
+    /// <typeparam name="TKey">The key type</typeparam>
+    /// <typeparam name="TValue">The value type</typeparam>
+    /// <remarks>Mahmoud Charif - 31/12/2022 - Creation</remarks>
     public class ConcreteDictionnaryTypeConverter<TDictionary, TItem, TKey, TValue> : JsonConverter where TDictionary : IDictionary<TKey, TValue>, new() where TItem : TValue
     {
         /// <summary>

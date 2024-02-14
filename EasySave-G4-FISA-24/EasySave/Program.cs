@@ -1,6 +1,9 @@
 ﻿using View = EasySave.Views.View;
 namespace EasySave // Note: actual namespace depends on the project name.
 {
+    /// <summary>
+    /// Point d'entrer de l'application
+    /// </summary>
     internal class Program
     {
         [STAThread]

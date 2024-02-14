@@ -78,7 +78,7 @@ namespace Stockage.Save
                             lLogFilesDaily.TargetDirectory = lTargetFilePath;
                             lLogFilesDaily.Date = DateTime.Now;
                             lLogFilesDaily.TotalSize = lFiles[i].Length;
-                            lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalSeconds;
+                            lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
                             CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
                         }
                     }

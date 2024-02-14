@@ -7,6 +7,9 @@ using System.Text.RegularExpressions;
 using ViewModels;
 namespace EasySave.Views
 {
+    /// <summary>
+    /// Vue en rapport avec les jobs
+    /// </summary>
     internal class JobView : BaseView
     {
         #region Attributes

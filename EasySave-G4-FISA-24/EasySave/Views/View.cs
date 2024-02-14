@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 using ViewModels;
 namespace EasySave.Views
 {
+    /// <summary>
+    /// Vue principale (Menu)
+    /// </summary>
     public class View : BaseView
     {
         private MainViewModel _MainVm;

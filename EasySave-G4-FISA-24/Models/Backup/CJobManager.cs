@@ -63,7 +63,7 @@ namespace Models.Backup
         /// <summary>
         /// Crée un nouveau job de sauvegarde
         /// </summary>
-        /// <param name="backupJob">Objet représentant le job de sauvegarde à créer</param>
+        /// <param name="lJob">Objet représentant le job de sauvegarde à créer</param>
         /// <returns>True si le job a été créé avec succès, false sinon</returns>
         /// <remarks> Created by Mehmeti Faik on 06/02/2024 Updated validation logic to handle null parameters</remarks>
         public bool CreateBackupJob(CJob lJob)

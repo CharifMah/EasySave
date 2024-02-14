@@ -107,72 +107,75 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Name" xml:space="preserve">
-    <value>Nom</value>
+    <value>Name</value>
   </data>
   <data name="SelectedLanguage" xml:space="preserve">
-    <value>Vous avez choisi le français.</value>
+    <value>You have selected English.</value>
   </data>
   <data name="InvalideSelection" xml:space="preserve">
-    <value>Sélection non valide.</value>
+    <value>Invalid selection.</value>
   </data>
   <data name="ChooseLang" xml:space="preserve">
-    <value>Choisir la langue</value>
+    <value>Select language</value>
   </data>
   <data name="ListJobs" xml:space="preserve">
-    <value>Lister les jobs</value>
+    <value>List jobs</value>
   </data>
   <data name="LoadJobs" xml:space="preserve">
-    <value>Charger des jobs</value>
+    <value>Load jobs</value>
   </data>
   <data name="CreateJob" xml:space="preserve">
-    <value>Créer un job</value>
+    <value>Create a job</value>
   </data>
   <data name="RunJobs" xml:space="preserve">
-    <value>Lancer les jobs</value>
+    <value>Run jobs</value>
   </data>
   <data name="SelectChoice" xml:space="preserve">
-    <value>Veuillez entrer votre choix: </value>
+    <value>Please enter your choice: </value>
   </data>
   <data name="YouSelected" xml:space="preserve">
-    <value>Vous avez sélectionné: </value>
+    <value>You have selected: </value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Cancel</value>
   </data>
   <data name="Select" xml:space="preserve">
-    <value>Choisir</value>
+    <value>Select</value>
   </data>
   <data name="Open" xml:space="preserve">
-    <value>Ouvrir</value>
+    <value>Open</value>
   </data>
   <data name="NoJobCreated" xml:space="preserve">
-    <value>Aucun job n'a été crée</value>
+    <value>No jobs created</value>
   </data>
   <data name="SourceDir" xml:space="preserve">
-    <value>Répertoire source</value>
+    <value>Source directory</value>
   </data>
   <data name="TargetDir" xml:space="preserve">
-    <value>Répertoire cible</value>
+    <value>Target directory</value>
   </data>
   <data name="PossibleTypeBackup" xml:space="preserve">
-    <value>Types de sauvegarde possibles</value>
+    <value>Possible backup types</value>
   </data>
   <data name="JobCreated" xml:space="preserve">
-    <value>Job créé</value>
+    <value>Job created</value>
   </data>
   <data name="JobNotCreated" xml:space="preserve">
-    <value>Le job n'a pas été crée</value>
+    <value>The job was not created</value>
   </data>
   <data name="Lang" xml:space="preserve">
-    <value>Langue</value>
+    <value>Language</value>
   </data>
   <data name="LoadJobConfig" xml:space="preserve">
-    <value>Charger une configuration de Jobs</value>
+    <value>Load a Jobs configuration</value>
   </data>
   <data name="DeleteJob" xml:space="preserve">
-    <value>Supprimer un job</value>
+    <value>Delete a job</value>
   </data>
   <data name="Summary" xml:space="preserve">
-    <value>Résumé</value>
+    <value>Summary</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Exit</value>
   </data>
 </root>

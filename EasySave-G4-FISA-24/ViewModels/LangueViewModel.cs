@@ -9,18 +9,18 @@ namespace ViewModels
         // Constructor
         public LangueViewModel()
         {
-            _Langue = Settings.Instance.Langue;
+            _Langue = CSettings.Instance.Langue;
             SetLanguage(_Langue.SelectedCulture);
         }
         /// <summary>
         /// Set the current language
         /// </summary>
-        /// <param name="pLanguageChoice">give a number</param>
+        /// <param name="pCultureInfo">give a number</param>
         /// <returns>true if the language was changed</returns>
         public bool SetLanguage(string pCultureInfo)
         {
             bool result = _Langue.SetLanguage(pCultureInfo);
-            Models.Settings.Instance.SaveSettings();
+            Models.CSettings.Instance.SaveSettings();
             return result;
         }
     }

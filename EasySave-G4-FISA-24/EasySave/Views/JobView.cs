@@ -1,6 +1,6 @@
-﻿using EasySaveDraft.Resources;
-using LogsModels;
+﻿using LogsModels;
 using Models.Backup;
+using Ressources;
 using Stockage.Logs;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
@@ -213,7 +213,7 @@ namespace EasySave.Views
                     _JobVm.LoadJobs();
                     break;
                 case "1":
-                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.Settings.Instance.JobConfigFolderPath)));
+                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
                     if (_JobVm.JobManager.Jobs.Count > 0)
                         ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
                     else

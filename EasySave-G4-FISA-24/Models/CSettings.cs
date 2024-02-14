@@ -1,5 +1,4 @@
 ﻿using Models.Backup;
-using Stockage;
 using Stockage.Load;
 using Stockage.Save;
 using System.Runtime.Serialization;
@@ -10,7 +9,7 @@ namespace Models
     /// Classe des settings de l'application permettant le chargement et la sauvegarde des parametres de l'utilisateur
     /// </summary>
     [DataContract]
-    public class Settings
+    public class CSettings
     {
         #region Attributes
 
@@ -33,13 +32,13 @@ namespace Models
         /// <summary>
         /// Emplacement du répertoire dans lequel le fichier de configuration du travail est stocké
         /// </summary>
-        public string JobConfigFolderPath 
+        public string JobConfigFolderPath
         {
-            get 
-            { 
-                return _JobConfigFolderPath; 
+            get
+            {
+                return _JobConfigFolderPath;
             }
-            set => _JobConfigFolderPath = value; 
+            set => _JobConfigFolderPath = value;
         }
         /// <summary>
         /// Emplacement par défaut du répertoire dans lequel le fichier de configuration du travail est stocké
@@ -48,24 +47,24 @@ namespace Models
 
 
         #region CTOR
-        private static Settings? _Instance;
-        public static Settings Instance
+        private static CSettings? _Instance;
+        public static CSettings Instance
         {
             get
             {
                 if (_Instance == null)
-                    _Instance = new Settings();
+                    _Instance = new CSettings();
                 return _Instance;
             }
         }
         /// <summary>
         /// Constructeur Settings initialise le path par default de la configuration des jobs
         /// </summary>
-        private Settings()
+        private CSettings()
         {
-            _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs","JobManager.json");
+            _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs", "JobManager.json");
         }
-        ~Settings()
+        ~CSettings()
         {
             SaveSettings();
         }
@@ -89,7 +88,7 @@ namespace Models
         public void LoadSettings()
         {
             _loadSettings = new ChargerCollection(Environment.CurrentDirectory);
-            Settings lInstance = _loadSettings.Charger<Settings>(Path.Combine("Settings"));
+            CSettings lInstance = _loadSettings.Charger<CSettings>(Path.Combine("Settings"));
             if (lInstance != null)
             {
                 _Instance = lInstance;

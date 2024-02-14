@@ -24,11 +24,11 @@ namespace UnitTestJobs
             lJobManager.CreateBackupJob(lJob);
             Assert.Equal(lJobManager.Jobs.Count, 1);
             lJobManager.SaveJobs();
-            lJobManager = Models.Settings.Instance.LoadJobsFile();
+            lJobManager = Models.CSettings.Instance.LoadJobsFile();
             Assert.Equal(lJobManager.Jobs.First(), lJob);
             CJob lJob1 = new CJob("Job11", "", "", ETypeBackup.COMPLET);
             lJobManager.CreateBackupJob(lJob1);
-            lJobManager = Models.Settings.Instance.LoadJobsFile();
+            lJobManager = Models.CSettings.Instance.LoadJobsFile();
             Assert.Equal(lJobManager.Jobs.First(), lJob);
             Assert.Equal(lJobManager.Jobs.Count, 1);
         }
@@ -41,7 +41,7 @@ namespace UnitTestJobs
             lJobManager.CreateBackupJob(lJob);
             lJobManager.SaveJobs();
 
-            CJobManager lJobManager2 = Models.Settings.Instance.LoadJobsFile();
+            CJobManager lJobManager2 = Models.CSettings.Instance.LoadJobsFile();
 
             Assert.True(lJobManager2.Jobs.Any());
         }
@@ -54,7 +54,7 @@ namespace UnitTestJobs
             lJobManager.CreateBackupJob(lJob);
             lJobManager.SaveJobs();
 
-            lJobManager = Models.Settings.Instance.LoadJobsFile();
+            lJobManager = Models.CSettings.Instance.LoadJobsFile();
 
             Assert.True(lJobManager.Jobs.Any());
 
@@ -63,7 +63,7 @@ namespace UnitTestJobs
 
             lJobManager.SaveJobs();
 
-            lJobManager = Models.Settings.Instance.LoadJobsFile();
+            lJobManager = Models.CSettings.Instance.LoadJobsFile();
             Assert.False(lJobManager.Jobs.Any());
         }
     }

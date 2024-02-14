@@ -50,8 +50,9 @@ https://dev.azure.com/faikmehmeti/G4-FISA-24/_release?_a=releases&view=mine&defi
 
 ### Construction et test
 
-* Une demande de téléchargement vers la branche develop-deliverable-1 déclenche automatiquement un processus de construction et de test (tests unitaires uniquement).
-* Une demande d'extraction vers la branche deliverable-1 déclenche automatiquement un processus d'intégration continue, depuis la construction et les tests jusqu'à la publication.
+* Une demande de téléchargement vers la branche develop-livrable-1 déclenche automatiquement un processus de construction et de test (tests unitaires uniquement).
+
+* Une demande d'extraction vers la branche livrable-1 déclenche automatiquement un processus d'intégration continue, depuis la construction et les tests jusqu'à la publication.
 
 Ces processus peuvent être visualisés via les pipelines : https://dev.azure.com/faikmehmeti/G4-FISA-24/_build
 

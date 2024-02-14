@@ -92,6 +92,9 @@ namespace EasySave // Note: actual namespace depends on the project name.
 ```
 
 ### Architecture
+
+![alt text](images/package.png)
+
  L'architecture est basée sur un modèle MVVM avec :
 
 - **Modèles** : classes représentant les données ([CJob](https://charifmah.github.io/EasySaveWiki/api/Models.Backup.CJob.html), [CJobManager](https://charifmah.github.io/EasySaveWiki/api/Models.Backup.CJobManager.html), [CSettings](https://charifmah.github.io/EasySaveWiki/api/Models.CSettings.html), etc.)
@@ -101,6 +104,17 @@ namespace EasySave // Note: actual namespace depends on the project name.
 ### Systeme de Log
 
 Emplacement par defaut du [CJobManager](https://charifmah.github.io/EasySaveWiki/api/Models.Backup.CJobManager.html) et [CSettings](https://charifmah.github.io/EasySaveWiki/api/Models.Backup.CJobManager.html) et l'emplacement des [modèle de logs](https://charifmah.github.io/EasySaveWiki/api/LogsModels.html) stockée grace aux classes de journalisation dans le package [Logs](https://charifmah.github.io/EasySaveWiki/api/LogsModels.html)
+
+L'emplacement actuel des journaux d'événements est stocké dans le dossier ``Logs``.
+
+L'emplacement actuel des paramètres de l'utilisateur est stocké dans le répertoire racine ``Settings.json``.
+
+L'emplacement des tâches de sauvegarde est stocké dans le dossier ``Jobs``.
+
+Les logs dont le nom est formaté dans ce type ``Logs - 2024-02-15`` sont des logs journalier.
+
+Le fichier ``Logs.json`` est l'état du journal.
+
 
 # Processus d'intégration continue (CI) et de déploiement continu (CD) utilisant Azure DevOps
 

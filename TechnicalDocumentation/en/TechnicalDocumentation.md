@@ -92,6 +92,9 @@ namespace EasySave // Note: actual namespace depends on the project name.
 ```
 
 ### Architecture
+
+![alt text](images/package.png)
+
  The architecture is based on an MVVM model with :
 
 - **Models** : classes representing data ([CJob](https://charifmah.github.io/EasySaveWiki/api/Models.Backup.CJob.html), [CJobManager](https://charifmah.github.io/EasySaveWiki/api/Models.Backup.CJobManager.html), [CSettings](https://charifmah.github.io/EasySaveWiki/api/Models.CSettings.html), etc.)
@@ -101,6 +104,16 @@ namespace EasySave // Note: actual namespace depends on the project name.
 ### Log System
 
 Default location of [CJobManager](https://charifmah.github.io/EasySaveWiki/api/Models.Backup.CJobManager.html) and [CSettings](https://charifmah.github.io/EasySaveWiki/api/Models.Backup.CJobManager.html) and location of [log model](https://charifmah.github.io/EasySaveWiki/api/LogsModels.html) stored using the logging classes in the [Logs](https://charifmah.github.io/EasySaveWiki/api/LogsModels.html) package.
+
+The current location of event logs is stored in the ``Logs`` folder.
+
+The current location of user settings is stored in the root directory ``Settings.json``.
+
+The location of backup jobs is stored in the ``Jobs`` folder.
+
+Logs with names formatted as ``Logs - 2024-02-15`` are daily logs.
+
+The ``Logs.json`` file is the log status.
 
 # Continuous Integration (CI) and Continuous Deployment (CD) processes using Azure DevOps
 

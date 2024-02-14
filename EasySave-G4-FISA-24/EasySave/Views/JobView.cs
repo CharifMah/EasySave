@@ -243,13 +243,13 @@ namespace EasySave.Views
             // Demande à l'utilisateur de saisir les indices des jobs à supprimer
             string pattern = @"^(\d+(-\d+)?)(,\d+(-\d+)?)*$";
             Func<string, bool> pValidator = lInput => CheckSelectJobs(lInput);
-            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex(pattern), pValidator);
+            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")} ", new Regex(pattern), pValidator);
 
             if (lInput == "-1")
                 return null; // L'utilisateur a choisi de sortir
 
             // Demande la confirmation avant de procéder
-            string lConfirmation = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Confirm")}: ", new Regex("^[YyNn]$"));
+            string lConfirmation = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Confirm")} ", new Regex("^[YyNn]$"));
             if (lConfirmation.ToLower() == "n" || lConfirmation == "-1")
                 return null; // L'utilisateur a annulé la suppression
 

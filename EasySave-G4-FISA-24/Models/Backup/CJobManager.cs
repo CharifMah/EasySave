@@ -47,13 +47,13 @@ namespace Models.Backup
             _Name = "JobManager";
             _Jobs = new List<CJob>();
             _MaxJobs = 5;
-            if (String.IsNullOrEmpty(Settings.Instance.JobConfigFolderPath))
+            if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
             {
-                _SauveCollection = new SauveCollection(new FileInfo(Settings.Instance.JobDefaultConfigPath).DirectoryName);
+                _SauveCollection = new SauveCollection(new FileInfo(CSettings.Instance.JobDefaultConfigPath).DirectoryName);
             }
             else
             {
-                _SauveCollection = new SauveCollection(Settings.Instance.JobConfigFolderPath);
+                _SauveCollection = new SauveCollection(CSettings.Instance.JobConfigFolderPath);
             }
         }
         #endregion 

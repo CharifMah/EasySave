@@ -21,13 +21,13 @@ namespace ViewModels
         public JobViewModel()
         {
             string lPath;
-            string lFolderPath = Models.Settings.Instance.JobConfigFolderPath;
+            string lFolderPath = Models.CSettings.Instance.JobConfigFolderPath;
             if (!string.IsNullOrEmpty(lFolderPath))
                 lPath = Path.Combine(lFolderPath, "JobManager.json");
             else
-                lPath = Models.Settings.Instance.JobDefaultConfigPath;
+                lPath = Models.CSettings.Instance.JobDefaultConfigPath;
 
-            _jobManager = Models.Settings.Instance.LoadJobsFile(lPath);
+            _jobManager = Models.CSettings.Instance.LoadJobsFile(lPath);
         }
         #endregion
 
@@ -77,9 +77,9 @@ namespace ViewModels
         public void LoadJobs(bool IsDefaultFile = true, string pPath = null)
         {
             if (IsDefaultFile)
-                _jobManager = Models.Settings.Instance.LoadJobsFile();
+                _jobManager = Models.CSettings.Instance.LoadJobsFile();
             else
-                _jobManager = Models.Settings.Instance.LoadJobsFile(pPath);
+                _jobManager = Models.CSettings.Instance.LoadJobsFile(pPath);
         }
     }
 }

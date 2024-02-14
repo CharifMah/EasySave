@@ -10,7 +10,7 @@
 
         public MainViewModel()
         {
-            Models.Settings.Instance.LoadSettings();
+            Models.CSettings.Instance.LoadSettings();
             _LangueVm = new LangueViewModel();
             _JobVm = new JobViewModel();
         }

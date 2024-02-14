@@ -9,7 +9,7 @@ namespace ViewModels
         // Constructor
         public LangueViewModel()
         {
-            _Langue = Settings.Instance.Langue;
+            _Langue = CSettings.Instance.Langue;
             SetLanguage(_Langue.SelectedCulture);
         }
         /// <summary>
@@ -20,7 +20,7 @@ namespace ViewModels
         public bool SetLanguage(string pCultureInfo)
         {
             bool result = _Langue.SetLanguage(pCultureInfo);
-            Models.Settings.Instance.SaveSettings();
+            Models.CSettings.Instance.SaveSettings();
             return result;
         }
     }

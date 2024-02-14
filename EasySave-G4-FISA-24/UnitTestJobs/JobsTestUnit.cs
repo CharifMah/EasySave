@@ -17,20 +17,54 @@ namespace UnitTestJobs
             Assert.Equal(lJobManager.Jobs.Count, 2);
         }
         [Fact]
-        public void SaveJobManager()
+        public void SaveLoadJobManager()
         {
             CJobManager lJobManager = new CJobManager();
             CJob lJob = new CJob("Job1", "", "", ETypeBackup.COMPLET);
             lJobManager.CreateBackupJob(lJob);
             Assert.Equal(lJobManager.Jobs.Count, 1);
             lJobManager.SaveJobs();
-            lJobManager = CJobManager.LoadJobs();
+            lJobManager = Models.Settings.Instance.LoadJobsFile();
             Assert.Equal(lJobManager.Jobs.First(), lJob);
             CJob lJob1 = new CJob("Job11", "", "", ETypeBackup.COMPLET);
             lJobManager.CreateBackupJob(lJob1);
-            lJobManager = CJobManager.LoadJobs();
+            lJobManager = Models.Settings.Instance.LoadJobsFile();
             Assert.Equal(lJobManager.Jobs.First(), lJob);
             Assert.Equal(lJobManager.Jobs.Count, 1);
+        }
+
+        [Fact]
+        public void SaveLoadJobs()
+        {
+            CJobManager lJobManager = new CJobManager();
+            CJob lJob = new CJob("Job1", "", "", ETypeBackup.COMPLET);
+            lJobManager.CreateBackupJob(lJob);
+            lJobManager.SaveJobs();
+
+            CJobManager lJobManager2 = Models.Settings.Instance.LoadJobsFile();
+
+            Assert.True(lJobManager2.Jobs.Any());
+        }
+
+        [Fact]
+        public void DeleteJob()
+        {
+            CJobManager lJobManager = new CJobManager();
+            CJob lJob = new CJob("Job1", "", "", ETypeBackup.COMPLET);
+            lJobManager.CreateBackupJob(lJob);
+            lJobManager.SaveJobs();
+
+            lJobManager = Models.Settings.Instance.LoadJobsFile();
+
+            Assert.True(lJobManager.Jobs.Any());
+
+            Assert.True(lJobManager.DeleteJobs(new List<CJob>() { lJob }));
+            Assert.False(lJobManager.Jobs.Any());
+
+            lJobManager.SaveJobs();
+
+            lJobManager = Models.Settings.Instance.LoadJobsFile();
+            Assert.False(lJobManager.Jobs.Any());
         }
     }
 }

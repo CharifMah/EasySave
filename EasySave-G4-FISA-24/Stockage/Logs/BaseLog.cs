@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using Stockage.Save;
+
 namespace Stockage.Logs
 {
     /// <summary>

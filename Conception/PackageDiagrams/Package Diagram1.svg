@@ -152,14 +152,14 @@
     ><text x="29" xml:space="preserve" y="12" clip-path="url(#clipPath2)" stroke="none"
       >UnitTestStorage</text
     ></g
-    ><g font-size="11px" transform="translate(276,216)" fill-opacity="1" fill="olive" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="olive" stroke-opacity="1"
+    ><g font-size="11px" transform="translate(275,216)" fill-opacity="1" fill="olive" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="olive" stroke-opacity="1"
     ><rect x="0" width="15" height="20" y="0" clip-path="url(#clipPath5)" stroke="none"
       /><rect x="0" width="79" height="29" y="20" clip-path="url(#clipPath5)" stroke="none"
     /></g
-    ><g stroke-linecap="butt" font-size="11px" transform="translate(276,216)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1" stroke-miterlimit="0"
+    ><g stroke-linecap="butt" font-size="11px" transform="translate(275,216)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1" stroke-miterlimit="0"
     ><path fill="none" d="M0 20 L79 20 L79 49 L0 49 L0 0 L15 0 L15 20" clip-path="url(#clipPath5)"
     /></g
-    ><g font-size="11px" transform="translate(276,236)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><g font-size="11px" transform="translate(275,236)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="28" xml:space="preserve" y="12" clip-path="url(#clipPath6)" stroke="none"
       >Logs</text
     ></g

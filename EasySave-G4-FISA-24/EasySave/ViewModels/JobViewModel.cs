@@ -20,7 +20,8 @@ namespace EasySave.ViewModels
         /// </summary>
         public JobViewModel()
         {
-            _jobManager = CJobManager.LoadJobs(Models.Settings.Instance.JobConfigPath);
+            string lPath = Path.Combine(Models.Settings.Instance.JobConfigFolderPath,"JobManager.json");
+            _jobManager = Models.Settings.Instance.LoadJobsFile(lPath);
         }
         #endregion
 
@@ -67,12 +68,12 @@ namespace EasySave.ViewModels
         /// </summary>
         /// <param name="IsDefaultFile"> Indique si le fichier par défaut doit être chargé </param>
         /// <param name="pPath"> Chemin du fichier à charger, vide pour le fichier par défaut </param>
-        public void LoadJobs(bool IsDefaultFile = true, string pPath = "")
+        public void LoadJobs(bool IsDefaultFile = true, string pPath = null)
         {
             if (IsDefaultFile)
-                _jobManager = CJobManager.LoadJobs();
+                _jobManager = Models.Settings.Instance.LoadJobsFile();
             else
-                _jobManager = CJobManager.LoadJobs(pPath);
+                _jobManager = Models.Settings.Instance.LoadJobsFile(pPath);
         }
     }
 }

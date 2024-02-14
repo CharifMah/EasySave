@@ -1,4 +1,4 @@
-﻿namespace Stockage
+﻿namespace Stockage.Save
 {
     /// <summary>
     /// Interface ISauve
@@ -7,14 +7,15 @@
     public interface ISauve
     {
         /// <summary>
-        /// Sauvagarde les data dans un fichier
+        /// Sauvagarde les données dans un fichier
         /// </summary>
         /// <param name="pData">Data to serialize</param>
         /// <param name="pFileName">File name</param>
         /// <param name="pAppend">True si on veux append sur le fichier</param>
         /// <param name="pExtention">Extention</param>
+        /// <param name="IsFullPath">vrai si pFileName est un chemin complet</param>
         /// <remarks>Mahmoud Charif - 31/12/2022 - Création</remarks>
-        void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json");
+        void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json", bool IsFullPath = false);
         /// <summary>
         /// Copy files and directory from the soruce path to the destinationPath
         /// </summary>

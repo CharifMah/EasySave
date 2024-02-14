@@ -1,14 +1,17 @@
 ﻿using LogsModels;
 using Stockage.Logs;
 using System.Diagnostics;
-namespace Stockage
+namespace Stockage.Save
 {
+    /// <summary>
+    /// Classe permettant de sauvegarder des jobs et de les logger
+    /// </summary>
     public class SauveJobs : BaseSave
     {
         private int _TransferedFiles;
         private List<CLogState> _LogStates;
         public int TransferedFiles { get => _TransferedFiles; set => _TransferedFiles = value; }
-        public SauveJobs(string pPath) : base(pPath)
+        public SauveJobs(string pPath = null) : base(pPath)
         {
             _LogStates = new List<CLogState>();
             _TransferedFiles = 0;
@@ -40,7 +43,6 @@ namespace Stockage
                 Directory.CreateDirectory(pTargetDir.FullName);
                 FileInfo[] lFiles = pSourceDir.GetFiles();
                 CLogDaily lLogFilesDaily = new CLogDaily();
-                lLogFilesDaily.IsSummary = false;
                 // cm - Get files in the source directory and copy to the destination directory
                 for (int i = 0; i < lFiles.Length; i++)
                 {
@@ -77,6 +79,11 @@ namespace Stockage
                 CLogger<CLogBase>.StringLogger.Log(ex.Message, false, true, lName);
             }
         }
+        /// <summary>
+        /// Calcule la taille d'un repertoire
+        /// </summary>
+        /// <param name="pPath">Chemin du repertoire</param>
+        /// <returns>la taille du repertoire en bytes</returns>
         public long GetDirSize(string pPath)
         {
             try

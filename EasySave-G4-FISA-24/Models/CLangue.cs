@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Models
 {
     /// <summary>
-    /// Classe langue
+    /// Classe de la langue de l'application
     /// </summary>
     [DataContract]
     public class CLangue
@@ -13,7 +13,7 @@ namespace Models
         [DataMember]
         private string _SelectedCulture;
         /// <summary>
-        /// Dictionnaire de langues
+        /// Dictionnaire de langues disponnible dans l'application
         /// </summary>
         public Dictionary<int, string> Languages { get => _Languages; set => _Languages = value; }
         public string SelectedCulture { get => _SelectedCulture; set => _SelectedCulture = value; }

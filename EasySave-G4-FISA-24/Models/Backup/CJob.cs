@@ -1,5 +1,5 @@
 ﻿using LogsModels;
-using Stockage;
+using Stockage.Save;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 namespace Models.Backup
@@ -114,7 +114,6 @@ namespace Models.Backup
                     _LogState.RemainingFiles = 0;
                     _LogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
                     _LogState.IsActive = false;
-                    _LogState.IsSummary = true;
                     pSauveJobs.UpdateLog(_LogState);
                 }
                 else

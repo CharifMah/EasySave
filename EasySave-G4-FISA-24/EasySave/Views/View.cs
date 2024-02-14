@@ -1,4 +1,4 @@
-﻿using EasySaveDraft.Resources;
+﻿using Ressources;
 using System.Text.RegularExpressions;
 using ViewModels;
 namespace EasySave.Views

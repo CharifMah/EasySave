@@ -1,6 +1,6 @@
-﻿using EasySaveDraft.Resources;
-using LogsModels;
+﻿using LogsModels;
 using Models.Backup;
+using Ressources;
 using Stockage.Logs;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;

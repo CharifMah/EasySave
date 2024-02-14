@@ -1,5 +1,4 @@
 ﻿using Models.Backup;
-using Stockage;
 using Stockage.Load;
 using Stockage.Save;
 using System.Runtime.Serialization;
@@ -33,13 +32,13 @@ namespace Models
         /// <summary>
         /// Emplacement du répertoire dans lequel le fichier de configuration du travail est stocké
         /// </summary>
-        public string JobConfigFolderPath 
+        public string JobConfigFolderPath
         {
-            get 
-            { 
-                return _JobConfigFolderPath; 
+            get
+            {
+                return _JobConfigFolderPath;
             }
-            set => _JobConfigFolderPath = value; 
+            set => _JobConfigFolderPath = value;
         }
         /// <summary>
         /// Emplacement par défaut du répertoire dans lequel le fichier de configuration du travail est stocké
@@ -63,7 +62,7 @@ namespace Models
         /// </summary>
         private Settings()
         {
-            _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs","JobManager.json");
+            _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs", "JobManager.json");
         }
         ~Settings()
         {

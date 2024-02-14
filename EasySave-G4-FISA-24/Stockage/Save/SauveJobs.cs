@@ -97,7 +97,7 @@ namespace Stockage.Save
                         lLogFilesDaily.TotalSize = lFiles[i].Length;
                         lLogFilesDaily.TransfertTimeSecond = lSw.Elapsed.TotalSeconds;
                         CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
-                    }             
+                    }
                 }
 
                 // cm - If recursive and copying subdirectories, recursively call this method

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Stockage.Load
+﻿namespace Stockage.Load
 {
     public class ChargerCollection : BaseCharge
     {

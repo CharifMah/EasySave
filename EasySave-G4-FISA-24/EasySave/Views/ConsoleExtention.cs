@@ -1,5 +1,5 @@
-﻿using EasySaveDraft.Resources;
-using Gtk;
+﻿using Gtk;
+using Ressources;
 using System.Text.RegularExpressions;
 namespace EasySave.Views
 {

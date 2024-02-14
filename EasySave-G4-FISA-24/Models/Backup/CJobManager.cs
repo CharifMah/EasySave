@@ -1,5 +1,4 @@
-﻿using Stockage.Load;
-using Stockage.Save;
+﻿using Stockage.Save;
 using System.Runtime.Serialization;
 namespace Models.Backup
 {

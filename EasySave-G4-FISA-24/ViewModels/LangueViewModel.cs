@@ -15,7 +15,7 @@ namespace ViewModels
         /// <summary>
         /// Set the current language
         /// </summary>
-        /// <param name="pLanguageChoice">give a number</param>
+        /// <param name="pCultureInfo">give a number</param>
         /// <returns>true if the language was changed</returns>
         public bool SetLanguage(string pCultureInfo)
         {

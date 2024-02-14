@@ -2,36 +2,47 @@
 
 ## Introduction 
 
-La branche livrable-1 contient la première version fonctionnelle d'EasySave, conformément au cahier des charges de ProSoft. 
+Le livrable 1 contient la première version fonctionnelle d'EasySave, conformément aux spécifications de ProSoft. 
 
-Cette version initie le développement d'une application console en .NET Core pour la gestion de travaux de sauvegarde.
+Cette version initie le développement d'une application console .NET Core pour la gestion des tâches de sauvegarde.
 
 ### Prérequis
 
-1.	Installation process
+1.	Processus d'installation
 
-* Clonez la branche livrable-1 et ouvrez le projet avec Visual Studio 2022. 
-* Veillez à avoir .NET Core 6.X installé.
+* Cloner la branche livrable-1 et ouvrir le projet avec Visual Studio 2022. 
+* Assurez-vous d'avoir installé .NET Core 6.0.
 
-2.	Software dependencies
+2.	Dépendances logicielles
 
-* .NET Core 6.X
+* .NET Core 6.0
 * Visual Studio 2022
 
-3.	Latest releases
+### Temps d'exécution
+#### Windows
+Lancer EasySave.exe dans le répertoire ``../G4-FISA-24/EasySave-G4-FISA-24/EasySave/bin/Debug/net6.0/EasySave.exe``.
 
-Veuillez consulter l'onglet des releases pour accéder à la dernière version du livrable 1 (Pipelines -> Releases) :
+#### Linux
+Exécutez ``./EasySave`` à partir du répertoire ``bin/Release/net6.0/linux-x64/``.
+
+### Tests
+
+Ouvrez l'explorateur de tests dans Visual Studio et exécutez les tests unitaires.
+
+### Dernières versions
+
+Veuillez consulter l'onglet "releases" pour accéder à la dernière version du livrable 1 (Pipelines -> Releases) :
 
 https://dev.azure.com/faikmehmeti/G4-FISA-24/_release?_a=releases&view=mine&definitionId=1
 
-### Build and Test
+### Construction et test
 
-* Un pull request vers la branche develop-livrable-1 entraîne automatiquement un processus de build et de tests (tests unitaires uniquement).
-* Un pull request vers la branche livrable-1 entraîne automatiquement un processus d'intégration continue, allant du build, aux tests, jusqu'à la publication d'une release.
+* Une demande de téléchargement vers la branche develop-deliverable-1 déclenche automatiquement un processus de construction et de test (tests unitaires uniquement).
+* Une demande d'extraction vers la branche deliverable-1 déclenche automatiquement un processus d'intégration continue, depuis la construction et les tests jusqu'à la publication.
 
-Ces processus sont consultables via les pipelines : https://dev.azure.com/faikmehmeti/G4-FISA-24/_build
+Ces processus peuvent être visualisés via les pipelines : https://dev.azure.com/faikmehmeti/G4-FISA-24/_build
 
-NOTES : Un seul agent pourra gérer l'éxécution d'une unique pipeline, le paralélisme n'est pas possible.
+NOTES : Un seul agent peut gérer l'exécution d'un seul pipeline ; le parallélisme n'est pas possible.
 
 ### Fonctionnalités
 - Sauvegarde séquentielle
@@ -50,5 +61,7 @@ NOTES : Un seul agent pourra gérer l'éxécution d'une unique pipeline, le para
 - **Modèles** : classes représentant les données ([CJob](https://charifmah.github.io/EasySaveWiki/api/Models.Backup.CJob.html), [CJobManager](https://charifmah.github.io/EasySaveWiki/api/Models.Backup.CJobManager.html), [CSettings](https://charifmah.github.io/EasySaveWiki/api/Models.CSettings.html), etc.)
 - **Vues** :  classes représentant les vues ([BaseView](https://charifmah.github.io/EasySaveWiki/api/EasySave.Views.BaseView.html), [View](https://charifmah.github.io/EasySaveWiki/api/EasySave.Views.View.html), [JobView](https://charifmah.github.io/EasySaveWiki/api/EasySave.Views.JobView.html), etc.)
 - **ViewModels** : classes faisant le lien entre modèles et vues.
+
+
 
 

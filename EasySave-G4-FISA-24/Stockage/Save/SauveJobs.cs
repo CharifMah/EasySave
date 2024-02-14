@@ -11,11 +11,17 @@ namespace Stockage.Save
         private int _TransferedFiles;
         private List<CLogState> _LogStates;
         public int TransferedFiles { get => _TransferedFiles; set => _TransferedFiles = value; }
+
         public SauveJobs(string pPath = null) : base(pPath)
         {
             _LogStates = new List<CLogState>();
             _TransferedFiles = 0;
         }
+
+        /// <summary>
+        /// UpdateLog
+        /// </summary>
+        /// <param name="logState">Log a jour</param>
         public void UpdateLog(CLogState logState)
         {
             if (_LogStates.Contains(logState))
@@ -23,23 +29,25 @@ namespace Stockage.Save
             _LogStates.Add(logState);
             CLogger<List<CLogState>>.GenericLogger.Log(_LogStates, true, false);
         }
+
         /// <summary>
         /// Copy files and directory from the soruce path to the destinationPath
         /// </summary>
         /// <param name="pSourceDir">Path of the directory you want tot copy</param>
         /// <param name="pTargetDir">Path of the target directory</param>
         /// <param name="pRecursive">True if recursive</param>
-        /// <param name="pForce">true if overwrite</param>
-        /// <param name="pLogger">Logger</param>
+        /// <param name="pDiffertielle">true if the backup is differentiel</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public override void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, ref CLogState pLogState, bool pForce = false)
+        public override void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, ref CLogState pLogState, bool pDiffertielle = false)
         {
             string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
+
             try
             {
                 // cm - Check if the source directory exists
                 if (!pSourceDir.Exists)
                     throw new DirectoryNotFoundException($"Source directory not found: {pSourceDir.FullName}");
+
                 Directory.CreateDirectory(pTargetDir.FullName);
                 FileInfo[] lFiles = pSourceDir.GetFiles();
                 CLogDaily lLogFilesDaily = new CLogDaily();
@@ -50,27 +58,55 @@ namespace Stockage.Save
                     lSw.Start();
                     string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
                     _TransferedFiles++;
-                    lFiles[i].CopyTo(lTargetFilePath, pForce);
-                    lSw.Stop();
-                    pLogState.SourceDirectory = lFiles[i].FullName;
-                    pLogState.TargetDirectory = lTargetFilePath;
-                    pLogState.RemainingFiles = pLogState.EligibleFileCount - _TransferedFiles;
-                    UpdateLog(pLogState);
-                    lLogFilesDaily.Name = lFiles[i].Name;
-                    lLogFilesDaily.SourceDirectory = lFiles[i].FullName;
-                    lLogFilesDaily.TargetDirectory = lTargetFilePath;
-                    lLogFilesDaily.Date = DateTime.Now;
-                    lLogFilesDaily.TotalSize = lFiles[i].Length;
-                    lLogFilesDaily.TransfertTimeSecond = lSw.Elapsed.TotalSeconds;
-                    CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
+
+                    // Vérifie si le fichier existe déjà  
+                    if (lFiles[i].Exists && pDiffertielle)
+                    {
+                        // Compare les dates  
+                        FileInfo destInfo = new FileInfo(lTargetFilePath);
+
+                        if (lFiles[i].LastWriteTime > destInfo.LastWriteTime)
+                        {
+                            lFiles[i].CopyTo(lTargetFilePath, true);
+                            lSw.Stop();
+                            pLogState.SourceDirectory = lFiles[i].FullName;
+                            pLogState.TargetDirectory = lTargetFilePath;
+                            pLogState.RemainingFiles = pLogState.EligibleFileCount - _TransferedFiles;
+                            UpdateLog(pLogState);
+                            lLogFilesDaily.Name = "Update : " + lFiles[i].Name;
+                            lLogFilesDaily.SourceDirectory = lFiles[i].FullName;
+                            lLogFilesDaily.TargetDirectory = lTargetFilePath;
+                            lLogFilesDaily.Date = DateTime.Now;
+                            lLogFilesDaily.TotalSize = lFiles[i].Length;
+                            lLogFilesDaily.TransfertTimeSecond = lSw.Elapsed.TotalSeconds;
+                            CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
+                        }
+                    }
+                    else
+                    {
+                        lFiles[i].CopyTo(lTargetFilePath, true);
+                        lSw.Stop();
+                        pLogState.SourceDirectory = lFiles[i].FullName;
+                        pLogState.TargetDirectory = lTargetFilePath;
+                        pLogState.RemainingFiles = pLogState.EligibleFileCount - _TransferedFiles;
+                        UpdateLog(pLogState);
+                        lLogFilesDaily.Name = lFiles[i].Name;
+                        lLogFilesDaily.SourceDirectory = lFiles[i].FullName;
+                        lLogFilesDaily.TargetDirectory = lTargetFilePath;
+                        lLogFilesDaily.Date = DateTime.Now;
+                        lLogFilesDaily.TotalSize = lFiles[i].Length;
+                        lLogFilesDaily.TransfertTimeSecond = lSw.Elapsed.TotalSeconds;
+                        CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
+                    }             
                 }
+
                 // cm - If recursive and copying subdirectories, recursively call this method
                 if (pRecursive)
                 {
                     foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
                     {
                         DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
-                        CopyDirectory(lSubDir, lNewDestinationDir, true, ref pLogState, pForce);
+                        CopyDirectory(lSubDir, lNewDestinationDir, true, ref pLogState, pDiffertielle);
                     }
                 }
             }
@@ -79,6 +115,7 @@ namespace Stockage.Save
                 CLogger<CLogBase>.StringLogger.Log(ex.Message, false, true, lName);
             }
         }
+
         /// <summary>
         /// Calcule la taille d'un repertoire
         /// </summary>

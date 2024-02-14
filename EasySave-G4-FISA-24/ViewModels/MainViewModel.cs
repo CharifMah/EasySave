@@ -1,4 +1,4 @@
-﻿namespace EasySave.ViewModels
+﻿namespace ViewModels
 {
     public class MainViewModel
     {

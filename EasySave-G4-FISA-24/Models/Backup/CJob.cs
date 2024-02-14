@@ -75,10 +75,10 @@ namespace Models.Backup
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:
-                    Backup(true, pSauveJobs);
+                    Backup(pSauveJobs);
                     break;
                 case ETypeBackup.DIFFERENTIEL:
-                    Backup(false, pSauveJobs);
+                    Backup(pSauveJobs, true);
                     break;
             }
         }
@@ -86,9 +86,9 @@ namespace Models.Backup
         /// <summary>
         /// Réalise la sauvegarde des données
         /// </summary>
-        /// <param name="pForceCopy">Indique une recopie forcée</param>
+        /// <param name="pDifferentiel = false">Indique une recopie forcée</param>
         /// <param name="pSauveJobs">Objet de sauvegarde des jobs</param>
-        private void Backup(bool pForceCopy, SauveJobs pSauveJobs)
+        private void Backup(SauveJobs pSauveJobs, bool pDifferentiel = false)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace Models.Backup
                 pSauveJobs.UpdateLog(_LogState);
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    pSauveJobs.CopyDirectory(lSourceDir, lTargetDir, true, ref _LogState, pForceCopy);
+                    pSauveJobs.CopyDirectory(lSourceDir, lTargetDir, true, ref _LogState, pDifferentiel);
                     lSw.Stop();
                     _LogState.Date = DateTime.Now;
                     _LogState.RemainingFiles = 0;

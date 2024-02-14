@@ -1,7 +1,6 @@
-﻿using EasySave.ViewModels;
-using EasySaveDraft.Resources;
-using Models;
+﻿using EasySaveDraft.Resources;
 using System.Text.RegularExpressions;
+using ViewModels;
 namespace EasySave.Views
 {
     public class LangueView : BaseView

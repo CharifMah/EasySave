@@ -18,16 +18,29 @@ Cette version initie le développement d'une application console .NET Core pour 
 * .NET Core 6.0
 * Visual Studio 2022
 
-### Temps d'exécution
+## Executer Easy Save
 #### Windows
 Lancer EasySave.exe dans le répertoire ``../G4-FISA-24/EasySave-G4-FISA-24/EasySave/bin/Debug/net6.0/EasySave.exe``.
 
 #### Linux
-Exécutez ``./EasySave`` à partir du répertoire ``bin/Release/net6.0/linux-x64/``.
+Exécutez ``./EasySave`` apres avoir fait la publication depuis visual studio.
+
+## Publication de EasySave
+![alt text](images/image.png)
+
+Il faut specifier le 'Target runtime' en fonction du système d'exploitation
+
+![alt text](images/image-1.png)
 
 ### Tests
 
 Ouvrez l'explorateur de tests dans Visual Studio et exécutez les tests unitaires.
+
+![alt text](images/image-2.png)
+
+![alt text](images/image-3.png)
+
+Tous les tests sont testés pendant la phase CI/CD, mais il est préférable d'exécuter les tests avant de 'push'.
 
 ### Dernières versions
 

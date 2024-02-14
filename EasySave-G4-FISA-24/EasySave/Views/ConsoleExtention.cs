@@ -122,8 +122,8 @@ namespace EasySave.Views
                 while (Console.KeyAvailable)
                     Console.ReadKey(false); // cm - skips previous inputs
                 lsInput = Console.ReadKey(); // cm - wait to read a new character
-                // cm - If the user enters CTRL+C cancel the loop and clear the console
-                
+                                             // cm - If the user enters CTRL+C cancel the loop and clear the console
+
                 if ((lsInput.Modifiers & ConsoleModifiers.Control) != 0 && lsInput.Key == ConsoleKey.C)
                 {
                     Clear();

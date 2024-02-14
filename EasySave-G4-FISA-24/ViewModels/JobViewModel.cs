@@ -1,6 +1,5 @@
-﻿using GLib;
-using Models.Backup;
-namespace EasySave.ViewModels
+﻿using Models.Backup;
+namespace ViewModels
 {
     /// <summary>
     /// Classe JobViewModel
@@ -23,7 +22,7 @@ namespace EasySave.ViewModels
         {
             string lPath;
             string lFolderPath = Models.Settings.Instance.JobConfigFolderPath;
-            if (!String.IsNullOrEmpty(lFolderPath))
+            if (!string.IsNullOrEmpty(lFolderPath))
                 lPath = Path.Combine(lFolderPath, "JobManager.json");
             else
                 lPath = Models.Settings.Instance.JobDefaultConfigPath;

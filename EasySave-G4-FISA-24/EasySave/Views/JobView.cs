@@ -1,11 +1,10 @@
-﻿using EasySave.ViewModels;
-using EasySaveDraft.Resources;
+﻿using EasySaveDraft.Resources;
 using LogsModels;
 using Models.Backup;
 using Stockage.Logs;
-using System;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using ViewModels;
 namespace EasySave.Views
 {
     internal class JobView : BaseView

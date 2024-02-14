@@ -66,10 +66,10 @@ namespace EasySave.Views
             if (_JobVm.JobManager != null && _JobVm.JobManager.Jobs.Any())
             {
                 int lConsoleWidth = Console.WindowWidth;
-                int lNameColumnWidth = lConsoleWidth / 4;
+                int lNameColumnWidth = lConsoleWidth / 6;
                 int lTypeColumnWidth = (lConsoleWidth - lNameColumnWidth) / 4;
                 int lPathSourceColumnWidth = (lConsoleWidth - lNameColumnWidth - lTypeColumnWidth) / 2;
-                int lPathTargetColumnWidth = lConsoleWidth - lNameColumnWidth - lTypeColumnWidth - lPathSourceColumnWidth;
+                int lPathTargetColumnWidth = lConsoleWidth - lNameColumnWidth - lTypeColumnWidth - lPathSourceColumnWidth - 3;
 
 
                 // cm - Écrit le nom de la config

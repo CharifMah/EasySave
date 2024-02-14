@@ -7,14 +7,29 @@ namespace UnitTestJobs
         public void CreateJob()
         {
             CJobManager lJobManager = new CJobManager();
+
             CJob lJob = new CJob("Job1", "", "", ETypeBackup.COMPLET);
             lJobManager.CreateBackupJob(lJob);
+            CJob lJobe = new CJob("Job1", "", "", ETypeBackup.COMPLET);
+            lJobManager.CreateBackupJob(lJobe);
+
             Assert.Equal(lJobManager.Jobs.Count, 1);
+
             lJobManager.CreateBackupJob(lJob);
+
             Assert.Equal(lJobManager.Jobs.Count, 1);
+
             CJob lJob2 = new CJob("Job2", "", "", ETypeBackup.COMPLET);
+
             lJobManager.CreateBackupJob(lJob2);
+
             Assert.Equal(lJobManager.Jobs.Count, 2);
+
+            CJob lJob3 = new CJob("Job2", "/", "/", ETypeBackup.COMPLET);
+
+            lJobManager.CreateBackupJob(lJob3);
+
+            Assert.Equal(lJobManager.Jobs.Count, 3);
         }
         [Fact]
         public void SaveLoadJobManager()

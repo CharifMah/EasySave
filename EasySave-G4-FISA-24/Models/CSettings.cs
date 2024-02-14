@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Models
 {
     /// <summary>
-    /// Classe des settings de l'application permettant le chargement et la sauvegarde des parametres de l'utilisateur
+    /// Classe des settings de l'application permettant le chargement et la sauvegarde des paramètres de l'utilisateur
     /// </summary>
     [DataContract]
     public class CSettings

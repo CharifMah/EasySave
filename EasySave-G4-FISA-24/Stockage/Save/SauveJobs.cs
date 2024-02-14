@@ -10,8 +10,14 @@ namespace Stockage.Save
     {
         private int _TransferedFiles;
         private List<CLogState> _LogStates;
+        /// <summary>
+        /// Le nombre de fichier transférer
+        /// </summary>
         public int TransferedFiles { get => _TransferedFiles; set => _TransferedFiles = value; }
-
+        /// <summary>
+        /// Constructeur de SauveJobs
+        /// </summary>
+        /// <param name="pPath">Le chemin du dossier</param>
         public SauveJobs(string pPath = null) : base(pPath)
         {
             _LogStates = new List<CLogState>();
@@ -31,12 +37,12 @@ namespace Stockage.Save
         }
 
         /// <summary>
-        /// Copy files and directory from the soruce path to the destinationPath
+        /// Copy files and directory from the source path to the destinationPath
         /// </summary>
         /// <param name="pSourceDir">Path of the directory you want tot copy</param>
         /// <param name="pTargetDir">Path of the target directory</param>
         /// <param name="pRecursive">True if recursive</param>
-        /// <param name="pDiffertielle">true if the backup is differentiel</param>
+        /// <param name="pDiffertielle">true if the backup is differential</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
         public override void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, ref CLogState pLogState, bool pDiffertielle = false)
         {
@@ -78,7 +84,7 @@ namespace Stockage.Save
                             lLogFilesDaily.TargetDirectory = lTargetFilePath;
                             lLogFilesDaily.Date = DateTime.Now;
                             lLogFilesDaily.TotalSize = lFiles[i].Length;
-                            lLogFilesDaily.TransfertTimeSecond = lSw.Elapsed.TotalSeconds;
+                            lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
                             CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
                         }
                     }
@@ -95,7 +101,7 @@ namespace Stockage.Save
                         lLogFilesDaily.TargetDirectory = lTargetFilePath;
                         lLogFilesDaily.Date = DateTime.Now;
                         lLogFilesDaily.TotalSize = lFiles[i].Length;
-                        lLogFilesDaily.TransfertTimeSecond = lSw.Elapsed.TotalSeconds;
+                        lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
                         CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
                     }
                 }

@@ -23,18 +23,22 @@ namespace LogsModels
                 base.Name = value;
             }
         }
+
         /// <summary>
         /// Nombre de fichier restant
         /// </summary>
         public int RemainingFiles { get => _RemainingFiles; set => _RemainingFiles = value; }
+
         /// <summary>
-        /// Nombre de fichier eligible au deplacement (Nombre de fichier Total)
+        /// Nombre de fichier eligible au déplacement (Nombre de fichier Total)
         /// </summary>
         public int EligibleFileCount { get => _EligibleFileCount; set => _EligibleFileCount = value; }
+
         /// <summary>
         /// Nombre de millisecondes écoulées
         /// </summary>
         public long ElapsedMilisecond { get => _ElapsedMilisecond; set => _ElapsedMilisecond = value; }
+
         /// <summary>
         /// Indique si le job est actif ou non
         /// </summary>

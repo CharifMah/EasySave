@@ -68,7 +68,7 @@ namespace Models.Backup
         public bool CreateBackupJob(CJob lJob)
         {
             bool lResult = true;
-            // cm - Verifie que on n'a pas atteint la maximum de job
+            // cm - Verifies que on n'a pas atteint la maximum de job
             if (_Jobs.Count <= _MaxJobs && !_Jobs.Contains(lJob))
                 _Jobs.Add(lJob);
             else
@@ -80,7 +80,7 @@ namespace Models.Backup
         /// Supprimé un job
         /// </summary>
         /// <param name="pJobs">List de jobs à supprimer</param>
-        /// <returns>true si reussi</returns>
+        /// <returns>true si réussi</returns>
         /// <remarks>Mehmeti faik</remarks>
         public bool DeleteJobs(List<CJob> pJobs)
         {

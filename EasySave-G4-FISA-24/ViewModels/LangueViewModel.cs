@@ -1,12 +1,20 @@
-﻿using Models;
+﻿    using Models;
 
 namespace ViewModels
 {
+    /// <summary>
+    /// Classe View Model de la langue
+    /// </summary>
     public class LangueViewModel : BaseViewModel
     {
         private CLangue _Langue;
+        /// <summary>
+        /// Classe model de la langue
+        /// </summary>
         public CLangue Langue { get => _Langue; set => _Langue = value; }
-        // Constructor
+        /// <summary>
+        /// Constructeur de la LangueViewModel
+        /// </summary>
         public LangueViewModel()
         {
             _Langue = CSettings.Instance.Langue;

@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 using ViewModels;
 namespace EasySave.Views
 {
+    /// <summary>
+    /// Vue principale (Menu)
+    /// </summary>
     public class View : BaseView
     {
         private MainViewModel _MainVm;
@@ -46,7 +49,7 @@ namespace EasySave.Views
             while (true)
             {
                 ConsoleExtention.WriteTitle(Title);
-                ConsoleExtention.WriteSubtitle("CTRL+C => Clear the console | CTRL+V => Past the current clipboard text");
+                ConsoleExtention.WriteSubtitle("CTRL+C => " + $"{Strings.ResourceManager.GetObject("ClearConsole")}" + " | " + "CTRL+V => " + $"{Strings.ResourceManager.GetObject("PasteClipboard")}");
                 lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")}", new Regex("^[0-6]$"));
                 switch (lInput)
                 {

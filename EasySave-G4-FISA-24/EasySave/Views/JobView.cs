@@ -7,10 +7,16 @@ using System.Text.RegularExpressions;
 using ViewModels;
 namespace EasySave.Views
 {
+    /// <summary>
+    /// Vue en rapport avec les jobs
+    /// </summary>
     internal class JobView : BaseView
     {
         #region Attributes
         private JobViewModel _JobVm;
+        /// <summary>
+        /// Titre de la vue Job
+        /// </summary>
         public override string Title => "JobView";
         #endregion
 
@@ -47,7 +53,7 @@ namespace EasySave.Views
             {
                 List<CJob> lJobsRunning = _JobVm.RunJobs(lJobsToRun);
                 foreach (CJob lJobRunning in lJobsRunning)
-                    ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} copy is finished");
+                    ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} " + Strings.ResourceManager.GetObject("CopyEnd"));
                 ShowSummary(CLogger<List<CLogState>>.GenericLogger.Datas.Last());
             }
         }
@@ -60,32 +66,36 @@ namespace EasySave.Views
             if (_JobVm.JobManager != null && _JobVm.JobManager.Jobs.Any())
             {
                 int lConsoleWidth = Console.WindowWidth;
-                int lNameColumnWidth = 30;
-                int lPathSourceColumnWidth = (lConsoleWidth - lNameColumnWidth) / 2;
-                int lPathTargetColumnWidth = lConsoleWidth - lNameColumnWidth - lPathSourceColumnWidth - 2;
-                // cm - Ecrit le nom de la config
+                int lNameColumnWidth = lConsoleWidth / 6;
+                int lTypeColumnWidth = (lConsoleWidth - lNameColumnWidth) / 4;
+                int lPathSourceColumnWidth = (lConsoleWidth - lNameColumnWidth - lTypeColumnWidth) / 2;
+                int lPathTargetColumnWidth = lConsoleWidth - lNameColumnWidth - lTypeColumnWidth - lPathSourceColumnWidth - 3;
+
+
+                // cm - Écrit le nom de la config
                 ConsoleExtention.WriteTitle(_JobVm.JobManager.Name);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 // cm - Affiche les colonne du tableau
-                Console.WriteLine(
-                    "{0,-30} {1,-" + lPathSourceColumnWidth + "} {2,-" + lPathTargetColumnWidth + "}",
-                    $"{Strings.ResourceManager.GetObject("Name")} : ",
-                    $"{Strings.ResourceManager.GetObject("SourceDir")} : ",
-                    $"{Strings.ResourceManager.GetObject("TargetDir")} : ");
+                Console.WriteLine("{0,-" + lNameColumnWidth + "} {1,-" + lTypeColumnWidth + "} {2,-" + lPathSourceColumnWidth + "} {3,-" + lPathTargetColumnWidth + "}",
+                                 $"{Strings.ResourceManager.GetObject("Name")} : ",
+                                 $"{Strings.ResourceManager.GetObject("Type")} : ",
+                                 $"{Strings.ResourceManager.GetObject("SourceDir")} : ",
+                                 $"{Strings.ResourceManager.GetObject("TargetDir")} : ");
+
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Green;
                 // cm - Affiche les ligne du tableau
                 for (int i = 0; i < _JobVm.JobManager.Jobs.Count; i++)
                 {
-                    string? lTruncatedSource = TruncateMiddle(_JobVm.JobManager.Jobs[i].SourceDirectory.Replace(@"\", @"\\"), lPathSourceColumnWidth);
+                    string? lTruncatedSource = TruncateMiddle(_JobVm.JobManager.Jobs[i].SourceDirectory.Replace(@"\", @"\\"), lTypeColumnWidth);
                     string? lTruncatedTarget = TruncateMiddle(_JobVm.JobManager.Jobs[i].TargetDirectory.Replace(@"\", @"\\"), lPathTargetColumnWidth);
-                    Console.WriteLine("{0,-30} {1,-" + lPathSourceColumnWidth + "} {2,-" + lPathTargetColumnWidth + "}", i + " - " + _JobVm.JobManager.Jobs[i].Name, lTruncatedSource, lTruncatedTarget);
+                    Console.WriteLine("{0,-" + lNameColumnWidth + "} {1,-" + lTypeColumnWidth + "} {2,-" + lPathSourceColumnWidth + "} {3,-" + lPathTargetColumnWidth + "}", i + " - " + _JobVm.JobManager.Jobs[i].Name, _JobVm.JobManager.Jobs[i].BackupType, lTruncatedSource, lTruncatedTarget);
                 }
                 Console.ForegroundColor = ConsoleColor.White;
             }
             else
-                ConsoleExtention.WriteLineError("Aucun job a été trouvée");
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
         }
 
         /// <summary>
@@ -93,7 +103,7 @@ namespace EasySave.Views
         /// </summary>
         public void CreateJob()
         {
-            ConsoleExtention.WriteTitle("Création d'un job");
+            ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("JobCreation").ToString());
             // cm - Demande a l'utilisateur de saisir les info du job  
             string lName = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Name")}: ", new Regex("^[a-zA-Z0-9]+$"));
             if (lName == "-1")
@@ -115,13 +125,13 @@ namespace EasySave.Views
             }
             else if (lTargetDir == lSourceDir)
             {
-                ConsoleExtention.WriteLineError("La path source et le path terget est le meme");
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("SamePath").ToString());
                 return;
             }
 
             if (!Directory.Exists(lSourceDir) || !Directory.Exists(lTargetDir))
             {
-                ConsoleExtention.WriteLineError("The Source Path or Target Path doesn't exist or is not reacheable " + " " + Strings.ResourceManager.GetObject("JobNotCreated").ToString());
+                ConsoleExtention.WriteLineError($"{Strings.ResourceManager.GetObject("PossibleTypeBackup")} " + " " + Strings.ResourceManager.GetObject("JobNotCreated").ToString());
                 return;
             }
 
@@ -131,7 +141,7 @@ namespace EasySave.Views
             {
                 Console.WriteLine((int)type + " - " + type);
             }
-            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex("^[0-1]$"));
+            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}", new Regex("^[0-1]$"));
             if (lInput == "-1")
             {
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobNotCreated").ToString());
@@ -155,7 +165,7 @@ namespace EasySave.Views
         /// </summary>
         public void DeleteJob()
         {
-            ConsoleExtention.WriteTitle("Suppression d'un job");
+            ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("DeletingJobs").ToString());
             if (!_JobVm.JobManager.Jobs.Any())
             {
                 ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("NoJobCreated").ToString());
@@ -167,17 +177,17 @@ namespace EasySave.Views
             //Invite l'utilisateur à sélectionner les jobs
             List<CJob> lJobsToDelete = SelectJobs();
 
-            // Appellez la méthode DeleteJobs si il existe des jobs à supprimer            
+            // Appelez la méthode DeleteJobs si il existe des jobs à supprimer            
             if (_JobVm.JobManager.Jobs.Any() && lJobsToDelete != null)
             {
                 if (_JobVm.DeleteJobs(lJobsToDelete))
                 {
                     SaveJobs();
-                    ConsoleExtention.WriteLineSucces("Les jobs sélectionnés ont été supprimés.");
+                    ConsoleExtention.WriteLineSucces(Strings.ResourceManager.GetObject("JobsDeleted").ToString());
                 }
                 else
                 {
-                    ConsoleExtention.WriteLineError("Erreur de suppression des jobs");
+                    ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("JobDeleteError").ToString());
                 }
 
             }
@@ -189,7 +199,7 @@ namespace EasySave.Views
         public void SaveJobs()
         {
             _JobVm.SaveJobs();
-            ConsoleExtention.WriteLineSucces($"Job {_JobVm.JobManager.Name} saved");
+            ConsoleExtention.WriteLineSucces($"Job {_JobVm.JobManager.Name} " + Strings.ResourceManager.GetObject("Saved"));
         }
 
         /// <summary>
@@ -198,12 +208,12 @@ namespace EasySave.Views
         public void LoadJobs()
         {
             ConsoleExtention.WriteTitle(Strings.ResourceManager.GetObject("LoadJobs").ToString());
-            string lInput = ConsoleExtention.ReadResponse("\n0 - Fichier par defaut\n" +
-                                                          "1 - Autre fichier\n\n" +
+            string lInput = ConsoleExtention.ReadResponse($"\n0 - {Strings.ResourceManager.GetObject("DefaultFile")}\n" +
+                                                          $"1 - {Strings.ResourceManager.GetObject("OtherFile")}\n\n" +
                                                           Strings.ResourceManager.GetObject("SelectChoice").ToString(), new Regex("^[0-1]$"));
             if (lInput == "-1")
             {
-                ConsoleExtention.WriteLineError("Eerreur");
+                ConsoleExtention.WriteLineError(Strings.ResourceManager.GetObject("Error").ToString());
                 return;
             }
 
@@ -213,11 +223,11 @@ namespace EasySave.Views
                     _JobVm.LoadJobs();
                     break;
                 case "1":
-                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
+                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
                     if (_JobVm.JobManager.Jobs.Count > 0)
-                        ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
+                        ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} " + Strings.ResourceManager.GetObject("Loaded").ToString());
                     else
-                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name} Loaded without Jobs");
+                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name} " + Strings.ResourceManager.GetObject("WithoutJobLoaded").ToString());
                     break;
             }
         }
@@ -231,24 +241,26 @@ namespace EasySave.Views
         {
             // Instructions pour l'utilisateur sur le format de saisie
             Console.WriteLine(
-              "\nFormat de saisie :\n" +
-              "- Pour un indice unique, (ex : 2).\n" +
-              "- Pour plusieurs indices, (ex : 2,4,6).\n" +
-              "- Pour un intervalle d'indices, (ex : 1-3).\n" +
-              "- Pour combiner des indices et des intervalles, (ex : 1-3,5).");
+            $"\n0 - {Strings.ResourceManager.GetObject("InputFormat")} \n" +
+            $"1 - {Strings.ResourceManager.GetObject("SingleIndex")}\n" +
+            $"2 - {Strings.ResourceManager.GetObject("MultipleIndexes")}\n" +
+            $"3 - {Strings.ResourceManager.GetObject("RangeIndexes")}\n" +
+            $"4 - {Strings.ResourceManager.GetObject("CombineIndexes")}\n");
 
             // Demande à l'utilisateur de saisir les indices des jobs à supprimer
             string pattern = @"^(\d+(-\d+)?)(,\d+(-\d+)?)*$";
             Func<string, bool> pValidator = lInput => CheckSelectJobs(lInput);
-            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")}: ", new Regex(pattern), pValidator);
+            string lInput = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectChoice")} ", new Regex(pattern), pValidator);
 
             if (lInput == "-1")
                 return null; // L'utilisateur a choisi de sortir
 
             // Demande la confirmation avant de procéder
-            string lConfirmation = ConsoleExtention.ReadResponse($"Veuillez confirmer (y/n) : ", new Regex("^[YyNn]$"));
+            string lConfirmation = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("Confirm")} ", new Regex("^[YyNn]$"));
             if (lConfirmation.ToLower() == "n" || lConfirmation == "-1")
                 return null; // L'utilisateur a annulé la suppression
+
+
 
             // Récupére et retourne la liste des jobs basée sur l'entrée de l'utilisateur
             List<CJob> lSelectedJobs = SelectJobsFromInput(lInput);
@@ -317,7 +329,7 @@ namespace EasySave.Views
 
             if (indices.Contains(-1))
             {
-                ConsoleExtention.WriteLineError("Indice invalide détecté");
+                ConsoleExtention.WriteLineError($"\n{Strings.ResourceManager.GetObject("InvalidIndice")}");
                 return false;
             }
             return true;
@@ -354,7 +366,7 @@ namespace EasySave.Views
         /// Truncate the middle of a string if the string is greater than maxLenght
         /// </summary>
         /// <param name="pMessage">string to truncate</param>
-        /// <param name="pMaxLength">max lenght of the message</param>
+        /// <param name="pMaxLength">max length of the message</param>
         /// <returns>truncated string</returns>
         /// <remarks>Mahmoud Charif - 05/02/2024 - Création</remarks>
         public string TruncateMiddle(string pMessage, int pMaxLength)
@@ -377,17 +389,17 @@ namespace EasySave.Views
             int lStartIndex = 0;
             int lEndIndex = 0;
             List<int> lListIndex = new List<int>();
-            Console.WriteLine("Sélectionnez la plage de jobs à exécuter");
-            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
+            Console.WriteLine($"\n{Strings.ResourceManager.GetObject("SelectRangeJobs")}");
+            lStartIndex = int.Parse(ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("StartIndex")}", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
             if (lStartIndex == -1)
                 return null;
             Console.WriteLine();
-            lEndIndex = int.Parse(ConsoleExtention.ReadResponse("Index de fin : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
+            lEndIndex = int.Parse(ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("SelectRangeJobs")}", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
             if (lEndIndex == -1)
                 return null;
             if (lEndIndex < pJobs.Count - 1)
             {
-                string lIndividualIndex = ConsoleExtention.ReadResponse("Voulez vous choisir des job supplementaire de manière individuel Y/N : ", new Regex("^[YyNn]$"));
+                string lIndividualIndex = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("AdditionalJobs")}", new Regex("^[YyNn]$"));
                 if (lIndividualIndex == "-1")
                     return null;
                 if (lIndividualIndex.ToLower() == "y")
@@ -395,7 +407,7 @@ namespace EasySave.Views
                     string lResponse = String.Empty;
                     do
                     {
-                        lResponse = ConsoleExtention.ReadResponse("Index de individuel ('q' pour terminer la saisie) : ", new Regex("^((0-" + (pJobs.Count - 1) + ")|[^" + lStartIndex + "-" + lEndIndex + "])$"));
+                        lResponse = ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("IndividualIndex")}", new Regex("^((0-" + (pJobs.Count - 1) + ")|[^" + lStartIndex + "-" + lEndIndex + "])$"));
                         if (lResponse == "-1")
                             return null;
                         if (lResponse != "q")
@@ -411,10 +423,10 @@ namespace EasySave.Views
             {
                 lSelectedJobs.Add(pJobs[i]);
             }
-            // Check indexs
+            // Check indexes
             if (lStartIndex > lEndIndex)
             {
-                Console.WriteLine($"Plage d'indices invalide le nombre de job disponible est de {_JobVm.JobManager.Jobs.Count}");
+                Console.WriteLine($"{Strings.ResourceManager.GetObject("InvalidIndexRange")}" + $"{_JobVm.JobManager.Jobs.Count}");
                 //Restart SelectJobs if the range is not correct
                 return SelectJobs(pJobs);
             }
@@ -431,21 +443,21 @@ namespace EasySave.Views
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(lLog.Date);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Temps elapsed: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("TimeElapsed")}");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(lLog.ElapsedMilisecond + " ms");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Source Directory: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("SourceDirectory")}");
                 ConsoleExtention.WritePath(lLog.SourceDirectory);
                 Console.ResetColor();
                 Console.WriteLine("=>");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Target Directory: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("TargetDirectory")}");
                 ConsoleExtention.WritePath(lLog.TargetDirectory);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Total Size: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("TotalSize")}");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(lLog.TotalSize + " bytes");
+                Console.WriteLine(lLog.TotalSize + $" : {Strings.ResourceManager.GetObject("bytes")}");
                 Console.ResetColor();
             }
         }
@@ -458,17 +470,17 @@ namespace EasySave.Views
                 CLogBase lLogFileState = (sender as ObservableCollection<CLogBase>).Last();
                 ConsoleExtention.WriteTitle(lLogFileState.Name);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Source Directory: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("SourceDirectory")}");
                 ConsoleExtention.WritePath(lLogFileState.SourceDirectory);
                 Console.ResetColor();
                 Console.WriteLine("=>");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Target Directory: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("TargetDirectory")}");
                 ConsoleExtention.WritePath(lLogFileState.TargetDirectory);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Total Size: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("TotalSize")}");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(lLogFileState.TotalSize + " bytes");
+                Console.WriteLine(lLogFileState.TotalSize + $" : {Strings.ResourceManager.GetObject("bytes")}");
                 Console.ResetColor();
             }
         }
@@ -480,6 +492,7 @@ namespace EasySave.Views
                 ConsoleExtention.WriteLineWarning(System.DateTime.Now + " " + lLog);
             }
         }
+
         #endregion
 
         #endregion

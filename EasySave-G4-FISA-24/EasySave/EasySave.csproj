@@ -5,6 +5,13 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>10.0</LangVersion>
+		<ApplicationIcon>EasySave.ico</ApplicationIcon>
+		<StartupObject>EasySave.Program</StartupObject>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageIcon>EasySave.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://dev.azure.com/faikmehmeti/G4-FISA-24</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 		</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <Deterministic>True</Deterministic>
@@ -12,6 +19,19 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	  <Deterministic>True</Deterministic>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Content Include="EasySave.ico" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="..\..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\Ressources\Images\EasySave.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="GtkSharp" Version="3.24.24.95" />
 		<PackageReference Include="TextCopy" Version="6.0.0" />

@@ -191,4 +191,46 @@
   <data name="WithoutJobLoaded" xml:space="preserve">
     <value></value>
   </data>
+  <data name="InputFormat" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SingleIndex" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MultipleIndexes" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="RangeIndexes" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="CombineIndexes" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DefaultFile" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="OtherFile" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="InvalidIndexRange" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="TimeElapsed" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ClearConsole" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="PasteClipboard" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="EnterFolderPath" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="EnterFilePath" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

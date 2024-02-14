@@ -211,4 +211,46 @@
   <data name="WithoutJobLoaded" xml:space="preserve">
     <value>Chargé sans jobs</value>
   </data>
+  <data name="InputFormat" xml:space="preserve">
+    <value>Format de saisie :</value>
+  </data>
+  <data name="SingleIndex" xml:space="preserve">
+    <value>Pour un indice unique, (ex : 2).</value>
+  </data>
+  <data name="MultipleIndexes" xml:space="preserve">
+    <value>Pour plusieurs indices, (ex : 2,4,6).</value>
+  </data>
+  <data name="RangeIndexes" xml:space="preserve">
+    <value>Pour un intervalle d'indices, (ex : 1-3).</value>
+  </data>
+  <data name="CombineIndexes" xml:space="preserve">
+    <value>Pour combiner des indices et des intervalles, (ex : 1-3,5).</value>
+  </data>
+  <data name="DefaultFile" xml:space="preserve">
+    <value>Fichier par défaut</value>
+  </data>
+  <data name="OtherFile" xml:space="preserve">
+    <value>Autre fichier</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="InvalidIndexRange" xml:space="preserve">
+    <value>Plage d'indices invalide, le nombre de job disponible est de </value>
+  </data>
+  <data name="TimeElapsed" xml:space="preserve">
+    <value>Temps écoulé: </value>
+  </data>
+  <data name="ClearConsole" xml:space="preserve">
+    <value>Nettoyer la console</value>
+  </data>
+  <data name="PasteClipboard" xml:space="preserve">
+    <value>Coller le texte actuel du presse-papiers</value>
+  </data>
+  <data name="EnterFolderPath" xml:space="preserve">
+    <value>Entrer le chemin du dossier: </value>
+  </data>
+  <data name="EnterFilePath" xml:space="preserve">
+    <value>Entrer le chemin du fichier: </value>
+  </data>
 </root>

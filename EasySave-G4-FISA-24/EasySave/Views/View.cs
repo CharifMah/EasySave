@@ -45,7 +45,7 @@ namespace EasySave.Views
             while (true)
             {
                 ConsoleExtention.WriteTitle(Title);
-                ConsoleExtention.WriteSubtitle("CTRL+C => Clear the console | CTRL+V => Past the current clipboard text");
+                ConsoleExtention.WriteSubtitle("CTRL+C => " + $"{Strings.ResourceManager.GetObject("ClearConsole")}" + " | " + "CTRL+V => " + $"{Strings.ResourceManager.GetObject("PasteClipboard")}");
                 lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")}", new Regex("^[0-5]$"));
                 switch (lInput)
                 {

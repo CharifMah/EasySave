@@ -211,4 +211,46 @@
   <data name="WithoutJobLoaded" xml:space="preserve">
     <value>Loaded without jobs</value>
   </data>
+  <data name="InputFormat" xml:space="preserve">
+    <value>Input format :</value>
+  </data>
+  <data name="SingleIndex" xml:space="preserve">
+    <value>For a single index, (for example : 2).</value>
+  </data>
+  <data name="MultipleIndexes" xml:space="preserve">
+    <value>For multiple indexes, (for example : 2,4,6).</value>
+  </data>
+  <data name="RangeIndexes" xml:space="preserve">
+    <value>For a range of indexes, (for example : 1-3).</value>
+  </data>
+  <data name="CombineIndexes" xml:space="preserve">
+    <value>To combine indexes and intervals, (for exemple : 1-3,5).</value>
+  </data>
+  <data name="DefaultFile" xml:space="preserve">
+    <value>Default file</value>
+  </data>
+  <data name="OtherFile" xml:space="preserve">
+    <value>Other file</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="InvalidIndexRange" xml:space="preserve">
+    <value>Invalid indexes range, the number of availablejob is </value>
+  </data>
+  <data name="TimeElapsed" xml:space="preserve">
+    <value>Time Elapsed: </value>
+  </data>
+  <data name="ClearConsole" xml:space="preserve">
+    <value>Clear the console</value>
+  </data>
+  <data name="PasteClipboard" xml:space="preserve">
+    <value>Paste the current clipboard text</value>
+  </data>
+  <data name="EnterFolderPath" xml:space="preserve">
+    <value>Enter folder path: </value>
+  </data>
+  <data name="EnterFilePath" xml:space="preserve">
+    <value>Enter file path: </value>
+  </data>
 </root>

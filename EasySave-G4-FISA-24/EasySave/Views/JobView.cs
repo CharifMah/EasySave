@@ -66,27 +66,31 @@ namespace EasySave.Views
             if (_JobVm.JobManager != null && _JobVm.JobManager.Jobs.Any())
             {
                 int lConsoleWidth = Console.WindowWidth;
-                int lNameColumnWidth = 30;
-                int lPathSourceColumnWidth = (lConsoleWidth - lNameColumnWidth) / 2;
-                int lPathTargetColumnWidth = lConsoleWidth - lNameColumnWidth - lPathSourceColumnWidth - 2;
+                int lNameColumnWidth = lConsoleWidth / 4;
+                int lTypeColumnWidth = (lConsoleWidth - lNameColumnWidth) / 4;
+                int lPathSourceColumnWidth = (lConsoleWidth - lNameColumnWidth - lTypeColumnWidth) / 2;
+                int lPathTargetColumnWidth = lConsoleWidth - lNameColumnWidth - lTypeColumnWidth - lPathSourceColumnWidth;
+
+
                 // cm - Écrit le nom de la config
                 ConsoleExtention.WriteTitle(_JobVm.JobManager.Name);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 // cm - Affiche les colonne du tableau
-                Console.WriteLine(
-                    "{0,-30} {1,-" + lPathSourceColumnWidth + "} {2,-" + lPathTargetColumnWidth + "}",
-                    $"{Strings.ResourceManager.GetObject("Name")} : ",
-                    $"{Strings.ResourceManager.GetObject("SourceDir")} : ",
-                    $"{Strings.ResourceManager.GetObject("TargetDir")} : ");
+                Console.WriteLine("{0,-" + lNameColumnWidth + "} {1,-" + lTypeColumnWidth + "} {2,-" + lPathSourceColumnWidth + "} {3,-" + lPathTargetColumnWidth + "}",
+                                 $"{Strings.ResourceManager.GetObject("Name")} : ",
+                                 $"{Strings.ResourceManager.GetObject("Type")} : ",
+                                 $"{Strings.ResourceManager.GetObject("SourceDir")} : ",
+                                 $"{Strings.ResourceManager.GetObject("TargetDir")} : ");
+
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Green;
                 // cm - Affiche les ligne du tableau
                 for (int i = 0; i < _JobVm.JobManager.Jobs.Count; i++)
                 {
-                    string? lTruncatedSource = TruncateMiddle(_JobVm.JobManager.Jobs[i].SourceDirectory.Replace(@"\", @"\\"), lPathSourceColumnWidth);
+                    string? lTruncatedSource = TruncateMiddle(_JobVm.JobManager.Jobs[i].SourceDirectory.Replace(@"\", @"\\"), lTypeColumnWidth);
                     string? lTruncatedTarget = TruncateMiddle(_JobVm.JobManager.Jobs[i].TargetDirectory.Replace(@"\", @"\\"), lPathTargetColumnWidth);
-                    Console.WriteLine("{0,-30} {1,-" + lPathSourceColumnWidth + "} {2,-" + lPathTargetColumnWidth + "}", i + " - " + _JobVm.JobManager.Jobs[i].Name, lTruncatedSource, lTruncatedTarget);
+                    Console.WriteLine("{0,-" + lNameColumnWidth + "} {1,-" + lTypeColumnWidth + "} {2,-" + lPathSourceColumnWidth + "} {3,-" + lPathTargetColumnWidth + "}", i + " - " + _JobVm.JobManager.Jobs[i].Name, _JobVm.JobManager.Jobs[i].BackupType, lTruncatedSource, lTruncatedTarget);
                 }
                 Console.ForegroundColor = ConsoleColor.White;
             }
@@ -173,7 +177,7 @@ namespace EasySave.Views
             //Invite l'utilisateur à sélectionner les jobs
             List<CJob> lJobsToDelete = SelectJobs();
 
-            // Appellez la méthode DeleteJobs si il existe des jobs à supprimer            
+            // Appelez la méthode DeleteJobs si il existe des jobs à supprimer            
             if (_JobVm.JobManager.Jobs.Any() && lJobsToDelete != null)
             {
                 if (_JobVm.DeleteJobs(lJobsToDelete))
@@ -488,6 +492,7 @@ namespace EasySave.Views
                 ConsoleExtention.WriteLineWarning(System.DateTime.Now + " " + lLog);
             }
         }
+
         #endregion
 
         #endregion

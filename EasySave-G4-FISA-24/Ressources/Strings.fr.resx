@@ -283,4 +283,7 @@
   <data name="DeletingJobs" xml:space="preserve">
     <value>Suppression de jobs</value>
   </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
 </root>

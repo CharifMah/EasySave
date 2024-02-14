@@ -6,6 +6,8 @@
 		<Nullable>enable</Nullable>
 		<LangVersion>10.0</LangVersion>
 		<ApplicationIcon>EasySave.ico</ApplicationIcon>
+		<StartupObject>EasySave.Program</StartupObject>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 	  <Deterministic>True</Deterministic>

@@ -213,7 +213,7 @@ namespace EasySave.Views
                     _JobVm.LoadJobs();
                     break;
                 case "1":
-                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.Settings.Instance.JobConfigPath)));
+                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
                     if (_JobVm.JobManager.Jobs.Count > 0)
                         ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name}" + Strings.ResourceManager.GetObject("Loaded").ToString());
                     else
@@ -236,13 +236,6 @@ namespace EasySave.Views
             $"2 - {Strings.ResourceManager.GetObject("MultipleIndexes")}\n" +
             $"3 - {Strings.ResourceManager.GetObject("RangeIndexes")}\n" +
             $"4 - {Strings.ResourceManager.GetObject("CombineIndexes")}\n");
-
-            //Console.WriteLine(
-            //  "\nFormat de saisie :\n" +
-            //  "- Pour un indice unique, (ex : 2).\n" +
-            //  "- Pour plusieurs indices, (ex : 2,4,6).\n" +
-            //  "- Pour un intervalle d'indices, (ex : 1-3).\n" +
-            //  "- Pour combiner des indices et des intervalles, (ex : 1-3,5).");
 
             // Demande à l'utilisateur de saisir les indices des jobs à supprimer
             string pattern = @"^(\d+(-\d+)?)(,\d+(-\d+)?)*$";

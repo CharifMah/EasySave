@@ -15,6 +15,7 @@ namespace ViewModels
         #endregion
 
         #region CTOR
+
         /// <summary>
         /// Constructeur de JobViewModel initialise le JobManager
         /// </summary>
@@ -29,6 +30,7 @@ namespace ViewModels
 
             _jobManager = Models.CSettings.Instance.LoadJobsFile(lPath);
         }
+
         #endregion
 
         /// <summary>

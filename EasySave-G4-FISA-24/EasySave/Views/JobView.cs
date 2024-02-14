@@ -214,11 +214,11 @@ namespace EasySave.Views
                     _JobVm.LoadJobs();
                     break;
                 case "1":
-                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile("Choisir le fichier de configuration", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.Settings.Instance.JobConfigPath)));
+                    _JobVm.LoadJobs(false, ConsoleExtention.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Path.GetDirectoryName(Models.Settings.Instance.JobConfigPath)));
                     if (_JobVm.JobManager.Jobs.Count > 0)
-                        ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name} Loaded");
+                        ConsoleExtention.WriteLineSucces($"{_JobVm.JobManager.Name}" + Strings.ResourceManager.GetObject("Loaded").ToString());
                     else
-                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name} Loaded without Jobs");
+                        ConsoleExtention.WriteLineError($"{_JobVm.JobManager.Name}" + Strings.ResourceManager.GetObject("WithoutJobLoaded").ToString());
                     break;
             }
         }
@@ -231,6 +231,12 @@ namespace EasySave.Views
         private List<CJob> SelectJobs()
         {
             // Instructions pour l'utilisateur sur le format de saisie
+            //$"\n0 - {Strings.ResourceManager.GetObject("ChooseLang")} \n" +
+            //$"1 - {Strings.ResourceManager.GetObject("ListJobs")}\n" +
+            //$"2 - {Strings.ResourceManager.GetObject("LoadJobConfig")}\n" +
+            //$"3 - {Strings.ResourceManager.GetObject("CreateJob")}\n" +
+            //$"4 - {Strings.ResourceManager.GetObject("DeleteJob")}\n" +
+            //$"5 - {Strings.ResourceManager.GetObject("RunJobs")}\n";
             Console.WriteLine(
               "\nFormat de saisie :\n" +
               "- Pour un indice unique, (ex : 2).\n" +
@@ -380,7 +386,7 @@ namespace EasySave.Views
             int lEndIndex = 0;
             List<int> lListIndex = new List<int>();
             Console.WriteLine($"\n{Strings.ResourceManager.GetObject("SelectRangeJobs")}");
-            lStartIndex = int.Parse(ConsoleExtention.ReadResponse("Index de début : ", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
+            lStartIndex = int.Parse(ConsoleExtention.ReadResponse($"\n{Strings.ResourceManager.GetObject("StartIndex")}", new Regex("^[0-" + (pJobs.Count - 1) + "]+$")));
             if (lStartIndex == -1)
                 return null;
             Console.WriteLine();
@@ -436,17 +442,17 @@ namespace EasySave.Views
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(lLog.ElapsedMilisecond + " ms");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Source Directory: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("SourceDirectory")}");
                 ConsoleExtention.WritePath(lLog.SourceDirectory);
                 Console.ResetColor();
                 Console.WriteLine("=>");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Target Directory: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("TargetDirectory")}");
                 ConsoleExtention.WritePath(lLog.TargetDirectory);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Total Size: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("TotalSize")}");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(lLog.TotalSize + " bytes");
+                Console.WriteLine($"\n{Strings.ResourceManager.GetObject("bytes")}");
                 Console.ResetColor();
             }
         }
@@ -458,17 +464,17 @@ namespace EasySave.Views
                 CLogBase lLogFileState = (sender as ObservableCollection<CLogBase>).Last();
                 ConsoleExtention.WriteTitle(lLogFileState.Name);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Source Directory: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("SourceDirectory")}");
                 ConsoleExtention.WritePath(lLogFileState.SourceDirectory);
                 Console.ResetColor();
                 Console.WriteLine("=>");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Target Directory: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("TargetDirectory")}");
                 ConsoleExtention.WritePath(lLogFileState.TargetDirectory);
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("Total Size: ");
+                Console.Write($"\n{Strings.ResourceManager.GetObject("TotalSize")}");
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(lLogFileState.TotalSize + " bytes");
+                Console.WriteLine($"\n{Strings.ResourceManager.GetObject("bytes")}");
                 Console.ResetColor();
             }
         }

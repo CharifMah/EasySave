@@ -190,4 +190,25 @@
   <data name="IndividualIndex" xml:space="preserve">
     <value>Individual index ('q' to complete typing) : </value>
   </data>
+  <data name="SourceDirectory" xml:space="preserve">
+    <value>Source Directory : </value>
+  </data>
+  <data name="TargetDirectory" xml:space="preserve">
+    <value>Target Directory : </value>
+  </data>
+  <data name="TotalSize" xml:space="preserve">
+    <value>Total size : </value>
+  </data>
+  <data name="bytes" xml:space="preserve">
+    <value> bytes</value>
+  </data>
+  <data name="SelectConfigurationFile" xml:space="preserve">
+    <value>Select a configuration file</value>
+  </data>
+  <data name="Loaded" xml:space="preserve">
+    <value>Loaded</value>
+  </data>
+  <data name="WithoutJobLoaded" xml:space="preserve">
+    <value>Loaded without jobs</value>
+  </data>
 </root>

@@ -30,10 +30,10 @@ namespace Stockage.Save
         /// <param name="logState">Log a jour</param>
         public void UpdateLog(CLogState logState)
         {
-            //if (_LogStates.Contains(logState))
-            //    _LogStates.Remove(logState);
-            //_LogStates.Add(logState);
-            //CLogger<List<CLogState>>.Instance.Instance.GenericLogger.Log(_LogStates, true, false);
+            if (_LogStates.Contains(logState))
+                _LogStates.Remove(logState);
+            _LogStates.Add(logState);
+            CLogger<List<CLogState>>.Instance.GenericLogger.Log(_LogStates, true, false);
         }
 
         /// <summary>

@@ -123,8 +123,10 @@ namespace Models
             else
             {
                 _JobConfigFolderPath = new FileInfo(pPath).DirectoryName;
-                SaveSettings();
             }
+
+            SaveSettings();
+
             return lJobManager;
         }
         #endregion

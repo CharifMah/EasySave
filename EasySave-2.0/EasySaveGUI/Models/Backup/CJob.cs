@@ -1,4 +1,5 @@
 ﻿using LogsModels;
+using Stockage.Logs;
 using Stockage.Save;
 using System.Diagnostics;
 using System.Runtime.Serialization;
@@ -123,7 +124,7 @@ namespace Models.Backup
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                CLogger<CLogBase>.StringLogger.Log(ex.Message,false);
             }
         }
         public override bool Equals(object? obj)

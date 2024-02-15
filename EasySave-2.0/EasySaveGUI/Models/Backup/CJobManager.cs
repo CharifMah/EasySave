@@ -1,5 +1,4 @@
 ﻿using Stockage.Save;
-using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 namespace Models.Backup
 {
@@ -25,7 +24,7 @@ namespace Models.Backup
         /// <summary>
         /// Liste des jobs gérés
         /// </summary>
-        public List<CJob> Jobs { get => _Jobs; set { _Jobs = value;} }
+        public List<CJob> Jobs { get => _Jobs; set { _Jobs = value; } }
 
         /// <summary>
         /// Nom du gestionnaire

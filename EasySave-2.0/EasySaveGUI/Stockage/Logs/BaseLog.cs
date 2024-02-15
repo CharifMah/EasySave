@@ -1,5 +1,7 @@
 ﻿using Stockage.Save;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Stockage.Logs
 {
@@ -7,7 +9,7 @@ namespace Stockage.Logs
     /// Classe de base abstraite pour les loggers.
     /// </summary>
     /// <typeparam name="T">Type des objets loggés</typeparam>
-    public abstract class BaseLogger<T> : ILogger<T>
+    public abstract class BaseLogger<T> : ILogger<T>, INotifyPropertyChanged
     {
         private ObservableCollection<T> _Datas;
         /// <summary>
@@ -35,6 +37,7 @@ namespace Stockage.Logs
                 lSave.Sauver(pData, pFileName, pAppend);
             }
             _Datas.Add(pData);
+            NotifyPropertyChanged("Datas");
         }
         /// <summary>
         /// Vide la collection de données
@@ -42,6 +45,15 @@ namespace Stockage.Logs
         public virtual void Clear()
         {
             _Datas.Clear();
+        }
+
+        /// <summary> Événement de modification d'une property </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary> Méthode à appeler pour avertir d'une modification </summary>
+        /// <param name="propertyName">Nom de la property modifiée (automatiquement déterminé si appelé directement dans le setter une property) </param>
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

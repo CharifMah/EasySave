@@ -1,5 +1,4 @@
-﻿using Gdk;
-using Gtk;
+﻿using Gtk;
 using Ressources;
 using System.Text.RegularExpressions;
 

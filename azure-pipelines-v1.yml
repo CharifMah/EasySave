@@ -58,3 +58,9 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/EasySaveComplete.zip'
     replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: EasySaveComplete'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/EasySaveComplete.zip'
+    ArtifactName: 'EasySaveComplete'

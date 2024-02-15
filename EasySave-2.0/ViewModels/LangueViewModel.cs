@@ -1,4 +1,4 @@
-﻿    using Models;
+﻿using Models;
 
 namespace ViewModels
 {
@@ -11,7 +11,11 @@ namespace ViewModels
         /// <summary>
         /// Classe model de la langue
         /// </summary>
-        public CLangue Langue { get => _Langue; set => _Langue = value; }
+        public CLangue Langue
+        {
+            get => _Langue;
+            set => _Langue = value;
+        }
         /// <summary>
         /// Constructeur de la LangueViewModel
         /// </summary>

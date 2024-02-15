@@ -1,4 +1,5 @@
 ﻿using Gtk;
+using OpenDialog;
 using Ressources;
 using System.Text.RegularExpressions;
 namespace EasySave.Views
@@ -187,28 +188,13 @@ namespace EasySave.Views
         /// <returns>return the selected folder full path</returns>
         public static string ReadFolder(string pDescription)
         {
-            string lSelectedFolder = null;
-            FileChooserDialog lDialog = null;
+            string lSelectedFolder = null;         
             try
             {
                 Console.WriteLine(pDescription);
-                if (CheckIfGuiExist())
+                if (CDialog.CheckIfGuiExist())
                 {
-                    lDialog = new FileChooserDialog(
-                       title: pDescription,
-                       parent: null,
-                       action: FileChooserAction.SelectFolder
-                    );
-                    lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
-                    lDialog.AddButton(Strings.ResourceManager.GetObject("Select").ToString(), ResponseType.Ok);
-                    lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
-                    if (lDialog.Run() == (int)ResponseType.Ok)
-                    {
-                        lSelectedFolder = lDialog.Filename;
-                    }
-                    else
-                        lSelectedFolder = "-1";
-                    lDialog.Destroy();
+                    CDialog.ReadFolder(pDescription);
                 }
                 else
                 {
@@ -231,35 +217,14 @@ namespace EasySave.Views
         public static string ReadFile(string pDescription, Regex pRegexExtentions = null, string pCurrentFolder = null)
         {
             string lSelectedFile = null;
-            FileChooserDialog lDialog = null;
             try
             {
                 if (pCurrentFolder == null)
                     pCurrentFolder = Directory.GetCurrentDirectory();
                 Console.WriteLine(pDescription);
-                if (CheckIfGuiExist())
+                if (CDialog.CheckIfGuiExist())
                 {
-                    lDialog = new FileChooserDialog(
-                           title: pDescription,
-                           parent: null,
-                           action: FileChooserAction.Open);
-                    if (pRegexExtentions != null && pRegexExtentions.ToString().Contains("json"))
-                    {
-                        FileFilter lFilter = new FileFilter();
-                        lFilter.Name = pDescription;
-                        lFilter.AddPattern("*.json");
-                        lDialog.AddFilter(lFilter);
-                    }
-                    lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
-                    lDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
-                    lDialog.SetCurrentFolder(pCurrentFolder);
-                    if (lDialog.Run() == (int)ResponseType.Ok)
-                    {
-                        lSelectedFile = lDialog.Filename;
-                    }
-                    else
-                        lSelectedFile = "-1";
-                    lDialog.Destroy();
+                    CDialog.ReadFile(pDescription,pRegexExtentions,pCurrentFolder);
                 }
                 else
                 {
@@ -278,11 +243,7 @@ namespace EasySave.Views
         /// Check if GTK can init GUI or not
         /// </summary>
         /// <returns>true if GTK can init the GUI</returns>
-        private static bool CheckIfGuiExist()
-        {
-            string[] argrs = new string[] { };
-            return Gtk.Application.InitCheck("", ref argrs);
-        }
+
         /// <summary>
         /// Wait path from the console input
         /// </summary>

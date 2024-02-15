@@ -11,7 +11,15 @@ namespace ViewModels
         /// <summary>
         /// JobManager
         /// </summary>
-        public CJobManager JobManager { get => _jobManager; set => _jobManager = value; }
+        public CJobManager JobManager
+        {
+            get => _jobManager;
+            set 
+            { 
+                _jobManager = value;
+                NotifyPropertyChanged();
+            }
+        }
         #endregion
 
         #region CTOR

@@ -46,6 +46,7 @@ namespace Stockage.Save
                 // cm - Check if the directory exist
                 if (Directory.Exists(_path) || IsFullPath)
                 {
+
                     // cm - Serialize data to json
                     string jsonString = JsonConvert.SerializeObject(pData, Formatting.Indented, Options);
 

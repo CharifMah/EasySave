@@ -9,12 +9,10 @@ variables:
   BasePath: 'EasySave-2.0/'
   CLIPath: 'EasySave-1.0/'
   GUIPath: 'EasySaveGUI/'
-  CLISolution: '$(BasePath)$(CLIPath)**/*.sln'
-  GUISolution: '$(BasePath)$(GUIPath)**/*.sln'
+  Solution: '$(BasePath)**/*.sln'
   RestoreBuildProjects: '$(BasePath)**/*.csproj'
+  PublishProjects: '$(BasePath)**/!(*UnitTest*)/*.csproj'
   PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
-  CLIPublishFolder: '$(PublishFolder)'
-  GUIPublishFolder: '$(PublishFolder)'
 
 name: Release-2.0.$(Build.BuildId)
 
@@ -32,18 +30,10 @@ steps:
 
 # Construction pour la solution CLI
 - task: DotNetCoreCLI@2
-  displayName: 'Build CLI Solution'
+  displayName: 'Build Solution'
   inputs:
     command: 'build'
-    projects: '$(CLISolution)'
-    arguments: '--configuration $(BuildConfiguration)'
-
-# Construction pour la solution GUI
-- task: DotNetCoreCLI@2
-  displayName: 'Build GUI Solution'
-  inputs:
-    command: 'build'
-    projects: '$(GUISolution)'
+    projects: '$(Solution)'
     arguments: '--configuration $(BuildConfiguration)'
 
 # Tests unitaires
@@ -54,23 +44,13 @@ steps:
     projects: '$(BasePath)**/UnitTest*/*.csproj'
     arguments: '--configuration $(BuildConfiguration)'
 
-# Publication pour CLI
 - task: DotNetCoreCLI@2
-  displayName: 'Publish CLI Projects'
+  displayName: 'Publish Projects'
   inputs:
     command: 'publish'
-    projects: '$(CLISolution)'
+    projects: '$(PublishProjects)'
     publishWebProjects: false
-    arguments: '--configuration $(BuildConfiguration) --output $(CLIPublishFolder)'
-    zipAfterPublish: false
-
-- task: DotNetCoreCLI@2
-  displayName: 'Publish GUI Projects'
-  inputs:
-    command: 'publish'
-    projects: '$(GUISolution)'
-    publishWebProjects: false
-    arguments: '--configuration $(BuildConfiguration) --output $(GUIPublishFolder)'
+    arguments: '--configuration $(BuildConfiguration) --output $(PublishFolder)'
     zipAfterPublish: false
 
 - task: ArchiveFiles@2

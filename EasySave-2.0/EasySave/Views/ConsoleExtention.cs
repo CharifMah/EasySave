@@ -155,7 +155,7 @@ namespace EasySave.Views
                         _Input = _Input[0..^1];
                 }
             } while (lsInput.KeyChar != (char)ConsoleKey.Enter); // cm - Until the user presses the Enter key, the console waits to read a new character.
-            // cm - Don't show Succes message if the user cancel the action
+            // cm - Don't show Success message if the user cancel the action
             if (_Input != "-1" || String.IsNullOrEmpty(_Input))
                 WriteLineSelected(_Input);
             if (lsInput.KeyChar == (char)ConsoleKey.Enter && (!pRegex.IsMatch(_Input) || !pIsValid(_Input)))

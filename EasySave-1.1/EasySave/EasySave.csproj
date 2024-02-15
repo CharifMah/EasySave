@@ -8,7 +8,7 @@
 		<ApplicationIcon>EasySave.ico</ApplicationIcon>
 		<StartupObject>EasySave.Program</StartupObject>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<PackageIcon>EasySave.png</PackageIcon>
+		<PackageIcon></PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://dev.azure.com/faikmehmeti/G4-FISA-24</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
@@ -27,17 +27,13 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-		<None Include="..\Ressources\Images\EasySave.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="TextCopy" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\OpenDialog\OpenDialog.csproj" />
-		<ProjectReference Include="..\Ressources\Ressources.csproj" />
+		<ProjectReference Include="..\..\EasySave-2.0\EasySaveGUI\OpenDialog\OpenDialog.csproj" />
+		<ProjectReference Include="..\..\EasySave-2.0\EasySaveGUI\Ressources\Ressources.csproj" />
 		<ProjectReference Include="..\ViewModels\ViewModels.csproj" />
 	</ItemGroup>
 </Project>

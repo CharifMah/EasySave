@@ -1,5 +1,4 @@
-﻿using Gtk;
-using OpenDialog;
+﻿using OpenDialog;
 using Ressources;
 using System.Text.RegularExpressions;
 namespace EasySave.Views
@@ -188,7 +187,7 @@ namespace EasySave.Views
         /// <returns>return the selected folder full path</returns>
         public static string ReadFolder(string pDescription)
         {
-            string lSelectedFolder = null;         
+            string lSelectedFolder = null;
             try
             {
                 Console.WriteLine(pDescription);
@@ -224,7 +223,7 @@ namespace EasySave.Views
                 Console.WriteLine(pDescription);
                 if (CDialog.CheckIfGuiExist())
                 {
-                    CDialog.ReadFile(pDescription,pRegexExtentions,pCurrentFolder);
+                    CDialog.ReadFile(pDescription, pRegexExtentions, pCurrentFolder);
                 }
                 else
                 {

@@ -56,7 +56,7 @@ namespace Stockage.Save
 
                 Directory.CreateDirectory(pTargetDir.FullName);
                 FileInfo[] lFiles = pSourceDir.GetFiles();
-                CLogDaily lLogFilesDaily = new CLogDaily();
+                
                 // cm - Get files in the source directory and copy to the destination directory
                 for (int i = 0; i < lFiles.Length; i++)
                 {
@@ -79,13 +79,14 @@ namespace Stockage.Save
                             pLogState.TargetDirectory = lTargetFilePath;
                             pLogState.RemainingFiles = pLogState.EligibleFileCount - _TransferedFiles;
                             UpdateLog(pLogState);
+                            CLogDaily lLogFilesDaily = new CLogDaily();
                             lLogFilesDaily.Name = "Update : " + lFiles[i].Name;
                             lLogFilesDaily.SourceDirectory = lFiles[i].FullName;
                             lLogFilesDaily.TargetDirectory = lTargetFilePath;
                             lLogFilesDaily.Date = DateTime.Now;
                             lLogFilesDaily.TotalSize = lFiles[i].Length;
                             lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
-                            CLogger<CLogBase>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName);
+                            CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName);
                         }
                     }
                     else
@@ -98,7 +99,7 @@ namespace Stockage.Save
                         pLogState.TargetDirectory = lTargetFilePath;
                         pLogState.RemainingFiles = pLogState.EligibleFileCount - _TransferedFiles;
                         UpdateLog(pLogState);
-
+                        CLogDaily lLogFilesDaily = new CLogDaily();
                         lLogFilesDaily.Name = lFiles[i].Name;
                         lLogFilesDaily.SourceDirectory = lFiles[i].FullName;
                         lLogFilesDaily.TargetDirectory = lTargetFilePath;
@@ -106,7 +107,7 @@ namespace Stockage.Save
                         lLogFilesDaily.TotalSize = lFiles[i].Length;
                         lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
 
-                        CLogger<CLogBase>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName);
+                        CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName);
                     }
                 }
 
@@ -122,7 +123,7 @@ namespace Stockage.Save
             }
             catch (Exception ex)
             {
-                //CLogger<CLogBase>.Instance.Instance.StringLogger.Log(ex.Message, false, true, lName);
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false, true, lName);
             }
         }
 

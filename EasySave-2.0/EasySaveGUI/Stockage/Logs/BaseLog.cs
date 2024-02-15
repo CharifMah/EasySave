@@ -11,8 +11,10 @@ namespace Stockage.Logs
     /// Classe de base abstraite pour les loggers.
     /// </summary>
     /// <typeparam name="T">Type des objets loggés</typeparam>
-    public abstract class BaseLogger<T> : ILogger<T>, INotifyCollectionChanged
+    public abstract class BaseLogger<T> : ILogger<T>
     {
+        private readonly object _lock = new object();
+
         private ObservableCollection<T> _Datas;
         /// <summary>
         /// Collection de données observables
@@ -38,8 +40,11 @@ namespace Stockage.Logs
                 ISauve lSave = new SauveCollection(lPath);
                 lSave.Sauver(pData, pFileName, pAppend);
             }
-            Datas.Add(pData);
-            NotifyCollectionChanged();
+
+            lock (_lock)
+            {
+                _Datas.Add(pData);
+            }
         }
         /// <summary>
         /// Vide la collection de données
@@ -47,14 +52,6 @@ namespace Stockage.Logs
         public virtual void Clear()
         {
             _Datas.Clear();
-        }
-
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
-        protected virtual void NotifyCollectionChanged([CallerMemberName] string propertyName = "")
-        {
-            NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
-
-            CollectionChanged?.Invoke(this, args);
         }
     }
 }

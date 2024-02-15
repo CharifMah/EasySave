@@ -1,5 +1,4 @@
-﻿using Gtk;
-using LogsModels;
+﻿using LogsModels;
 using Models.Backup;
 using OpenDialog;
 using Ressources;
@@ -11,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModels;
-using ListBox = System.Windows.Controls.ListBox;
 
 namespace EasySaveGUI.Views
 {
@@ -30,21 +28,25 @@ namespace EasySaveGUI.Views
             _MainVm = new MainViewModel();
             ListElements.IsVisible = false;
 
-            this.DataContext = _MainVm;
+            DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
             ListLogs.DataContext = CLogger<CLogBase>.StringLogger;
-            ListLogsState.DataContext = CLogger<CLogBase>.GenericLogger;
-
-
-            CLogger<CLogBase>.StringLogger.Datas.CollectionChanged += Datas_CollectionChanged;
+            ListLogsDaily.DataContext = CLogger<CLogBase>.GenericLogger;
         }
 
-
-        private void Datas_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
-            ListLogs.SelectedIndex = ListLogs.Items.Count - 1;
-            ListLogs.ScrollIntoView(ListLogs.SelectedItem);
+            if (JobsList.SelectedItems.Count > 0)
+            {
+
+                System.Collections.IList lJobs = JobsList.SelectedItems;
+
+                List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
+
+                _MainVm.JobVm.RunJobs(lSelectedJobs);
+            }
         }
+
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -62,17 +64,7 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), System.IO.Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
         }
 
-        private void RunJobsButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (JobsList.SelectedItems.Count > 0)
-            {
-                System.Collections.IList lJobs = JobsList.SelectedItems;
-            
-                List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
 
-                _MainVm.JobVm.RunJobs(lSelectedJobs);
-            }
-        }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -82,7 +74,16 @@ namespace EasySaveGUI.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            CLogger<CLogBase>.StringLogger.Log("Update failed", false);
             _MainVm.JobVm.SaveJobs();
+        }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ListLogs.Items.IsInUse)
+                ListLogs.Items.Clear();
+
+            CLogger<CLogBase>.GenericLogger.Clear();
         }
     }
 }

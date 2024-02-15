@@ -1,4 +1,5 @@
 ﻿using Stockage.Save;
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 namespace Models.Backup
 {
@@ -98,7 +99,7 @@ namespace Models.Backup
         /// <returns>
         /// La liste des jobs, mise à jour avec leur état après exécution
         /// </returns>
-        public List<CJob> RunJobs(List<CJob> pJobs)
+        public void RunJobs(ObservableCollection<CJob> pJobs)
         {
             SauveJobs lSauveJobs = new SauveJobs();
             // cm - Lance les jobs
@@ -107,7 +108,6 @@ namespace Models.Backup
                 lSauveJobs.TransferedFiles = 0;
                 lJob.Run(lSauveJobs);
             }
-            return pJobs;
         }
 
         /// <summary>

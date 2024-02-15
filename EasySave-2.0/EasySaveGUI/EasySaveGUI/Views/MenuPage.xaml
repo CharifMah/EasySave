@@ -61,8 +61,14 @@
                                         Content="{x:Static Ressources:Strings.SelectConfigurationFile}"
                                         Style="{StaticResource CustomButton}" />
                                     <Button
+                                        x:Name="ButtonRunJobs"
                                         Click="RunJobsButton_Click"
                                         Content="{x:Static Ressources:Strings.RunJobs}"
+                                        Style="{StaticResource CustomButton}" />
+                                    <Button
+                                        x:Name="Clear"
+                                        Click="Clear_Click"
+                                        Content="{x:Static Ressources:Strings.ClearConsole}"
                                         Style="{StaticResource CustomButton}" />
                                 </StackPanel>
                             </LayoutAnchorable>
@@ -149,7 +155,7 @@
                                                 <!--  job running  -->
                                                 <LayoutDocument Title="JobsRunning" CanClose="False">
 
-                                                    <ListBox x:Name="JobsRunningList" ItemsSource="{Binding JobManager.Jobs, Mode=TwoWay}">
+                                                    <ListBox x:Name="JobsRunningList" ItemsSource="{Binding JobVm.JobsRunning, Mode=TwoWay}">
                                                         <ListBox.ItemTemplate>
                                                             <DataTemplate>
                                                                 <StackPanel>
@@ -165,6 +171,11 @@
                                                                     <TextBlock>
                                                                         <Run Text="{x:Static Ressources:Strings.TargetDirectory}" />
                                                                         <Run Text="{Binding TargetDirectory}" />
+                                                                    </TextBlock>
+                                                                    <TextBlock>
+                                                                        <Run Text="{x:Static Ressources:Strings.IsActive}" />
+                                                                        <Run Text=" : " />
+                                                                        <Run Text="{Binding LogState.IsActive, Mode=OneWay}" />
                                                                     </TextBlock>
                                                                 </StackPanel>
 
@@ -226,9 +237,9 @@
                                 <!--  Logs  -->
                                 <LayoutAnchorablePane>
 
-                                    <LayoutAnchorable Title="LogsState">
+                                    <LayoutAnchorable Title="LogsDaily">
                                         <DataGrid
-                                            x:Name="ListLogsState"
+                                            x:Name="ListLogsDaily"
                                             IsReadOnly="True"
                                             ItemsSource="{Binding Datas, Mode=OneWay}" />
                                     </LayoutAnchorable>

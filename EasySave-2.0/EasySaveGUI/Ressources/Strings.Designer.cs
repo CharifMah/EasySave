@@ -243,6 +243,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string IsActive {
+            get {
+                return ResourceManager.GetString("IsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string JobCreated {
             get {
                 return ResourceManager.GetString("JobCreated", resourceCulture);

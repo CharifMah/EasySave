@@ -1,4 +1,6 @@
 ﻿using Models.Backup;
+using System.Collections.ObjectModel;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ViewModels
 {
@@ -33,6 +35,10 @@ namespace ViewModels
             }
         }
 
+        public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; NotifyPropertyChanged(); } }
+
+        private ObservableCollection<CJob> _jobsRunning;
+
         #endregion
 
         #region CTOR
@@ -48,7 +54,7 @@ namespace ViewModels
                 lPath = Path.Combine(lFolderPath, "JobManager.json");
             else
                 lPath = Models.CSettings.Instance.JobDefaultConfigPath;
-
+            _jobsRunning = new ObservableCollection<CJob>();
             _jobManager = Models.CSettings.Instance.LoadJobsFile(lPath);
         }
 
@@ -59,9 +65,11 @@ namespace ViewModels
         /// </summary>
         /// <param name="pJobs">Liste des jobs à lancer</param>
         /// <returns> Liste mise à jour des jobs avec leur état après exécution </returns>
-        public List<CJob> RunJobs(List<CJob> pJobs)
+        public void RunJobs(List<CJob> pJobs)
         {
-            return _jobManager.RunJobs(pJobs);
+            _jobsRunning = new ObservableCollection<CJob>(pJobs);
+            NotifyPropertyChanged("JobsRunning");
+            _jobManager.RunJobs(_jobsRunning);           
         }
 
         /// <summary>

@@ -266,4 +266,7 @@
   <data name="Type" xml:space="preserve">
     <value></value>
   </data>
+  <data name="IsActive" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

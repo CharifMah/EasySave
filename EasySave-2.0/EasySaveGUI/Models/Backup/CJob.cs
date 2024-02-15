@@ -44,6 +44,10 @@ namespace Models.Backup
         /// Type de sauvegarde
         /// </summary>
         public ETypeBackup BackupType { get => _BackupType; set => _BackupType = value; }
+        /// <summary>
+        /// LogState
+        /// </summary>
+        public CLogState LogState { get => _LogState; set => _LogState = value; }
 
         #endregion
 

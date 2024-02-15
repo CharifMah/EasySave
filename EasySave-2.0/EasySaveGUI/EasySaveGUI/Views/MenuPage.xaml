@@ -141,11 +141,8 @@
                                                                         </TextBlock>
                                                                     </StackPanel>
 
-
-
                                                                 </WrapPanel>
                                                                 <!--</CheckBox>-->
-
 
                                                             </DataTemplate>
                                                         </ListBox.ItemTemplate>
@@ -237,14 +234,20 @@
                                 <!--  Logs  -->
                                 <LayoutAnchorablePane>
 
-                                    <LayoutAnchorable Title="LogsDaily">
+                                    <LayoutAnchorable
+                                        Title="LogsDaily"
+                                        CanClose="False"
+                                        CanHide="False">
                                         <DataGrid
                                             x:Name="ListLogsDaily"
                                             IsReadOnly="True"
                                             ItemsSource="{Binding Datas, Mode=OneWay}" />
                                     </LayoutAnchorable>
 
-                                    <LayoutAnchorable Title="Logs">
+                                    <LayoutAnchorable
+                                        Title="Logs"
+                                        CanClose="False"
+                                        CanHide="False">
                                         <ListBox x:Name="ListLogs" ItemsSource="{Binding Datas, Mode=OneWay}" />
                                     </LayoutAnchorable>
 

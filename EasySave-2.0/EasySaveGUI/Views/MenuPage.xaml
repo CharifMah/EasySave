@@ -9,6 +9,11 @@
       Title="MenuPage">
 
     <Grid>
-        <DataGrid x:Name="JobDataGrid" ItemsSource="{Binding JobManager}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        
+        <DataGrid x:Name="JobDataGrid" ItemsSource="{Binding JobManager}" Grid.Row="1"/>
     </Grid>
 </Page>

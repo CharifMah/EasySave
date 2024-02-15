@@ -78,3 +78,21 @@ steps:
     publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) --output $(GUIPublishFolder)'
     zipAfterPublish: false
+
+# Zipper le dossier Publish contenant CLI et GUI
+- task: ArchiveFiles@2
+  displayName: 'Zip CLI and GUI Applications'
+  inputs:
+    rootFolderOrFile: '$(PublishFolder)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/EasySave2.0.zip'
+    replaceExistingArchive: true
+
+# Publier le fichier zip comme artifact
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: EasySave2.0.zip'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/EasySave2.0.zip'
+    ArtifactName: 'EasySave2.0'
+    publishLocation: 'Contai

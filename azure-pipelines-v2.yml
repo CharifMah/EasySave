@@ -45,10 +45,10 @@ steps:
     arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish GUI Projects'
+  displayName: 'Publish Projects'
   inputs:
     command: 'publish'
-    projects: '$(Solution)'
+    projects: '$(PublishProjects)'
     publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) --output $(PublishFolder)'
     zipAfterPublish: false

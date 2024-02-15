@@ -1,0 +1,44 @@
+trigger: none
+
+pool:
+  name: 'my-agent-pool'
+
+variables:
+  BuildPlatform: 'Any CPU'
+  BuildConfiguration: 'Release'
+  BasePath: 'EasySave-2.0/'
+  Solution: '$(BasePath)**/*.sln'
+  RestoreBuildProjects: '$(BasePath)**/*.csproj'
+  PublishProjects: '$(BasePath)**/!(*UnitTest*)/*.csproj'
+  TestProjects: '$(BasePath)**/UnitTest*/*.csproj'
+  PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
+
+name: Release-2.0.$(Build.BuildId)
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    version: '6.x'
+    includePreviewVersions: false
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '$(RestoreBuildProjects)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
+  inputs:
+    command: 'build'
+    projects: '$(Solution)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Unit Tests'
+  inputs:
+    command: 'test'
+    projects: '$(TestProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Projects'

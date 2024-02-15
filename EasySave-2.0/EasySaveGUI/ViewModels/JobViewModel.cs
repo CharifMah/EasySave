@@ -90,6 +90,7 @@ namespace ViewModels
         public void SaveJobs()
         {
             _jobManager.SaveJobs();
+            NotifyPropertyChanged("JobManager");
         }
 
         /// <summary>

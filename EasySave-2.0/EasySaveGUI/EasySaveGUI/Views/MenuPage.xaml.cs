@@ -29,13 +29,16 @@ namespace EasySaveGUI.Views
             InitializeComponent();
             _MainVm = new MainViewModel();
             ListElements.IsVisible = false;
+
+            this.DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
             ListLogs.DataContext = CLogger<CLogBase>.StringLogger;
-            CLogger<CLogBase>.StringLogger.Datas.CollectionChanged += Datas_CollectionChanged;
             ListLogsState.DataContext = CLogger<CLogBase>.GenericLogger;
 
-            //CLogger<CLogBase>.StringLogger.Datas.CollectionChanged
+
+            CLogger<CLogBase>.StringLogger.Datas.CollectionChanged += Datas_CollectionChanged;
         }
+
 
         private void Datas_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -69,6 +72,17 @@ namespace EasySaveGUI.Views
 
                 _MainVm.JobVm.RunJobs(lSelectedJobs);
             }
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;
+            PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            _MainVm.JobVm.SaveJobs();
         }
     }
 }

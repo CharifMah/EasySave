@@ -94,7 +94,10 @@
                                                                 <Setter Property="Template">
                                                                     <Setter.Value>
                                                                         <ControlTemplate TargetType="ListBoxItem">
-                                                                            <CheckBox Margin="5,2" IsChecked="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}">
+                                                                            <CheckBox
+                                                                                Margin="5,2"
+                                                                                Checked="CheckBox_Checked"
+                                                                                IsChecked="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}">
                                                                                 <ContentPresenter />
                                                                             </CheckBox>
                                                                         </ControlTemplate>
@@ -124,6 +127,11 @@
                                                                         <TextBlock>
                                                                             <Run Text="{x:Static Ressources:Strings.TargetDirectory}" />
                                                                             <Run Text="{Binding TargetDirectory}" />
+                                                                        </TextBlock>
+                                                                        <TextBlock>
+                                                                            <Run Text="{x:Static Ressources:Strings.Type}" />
+                                                                            <Run Text=" : " />
+                                                                            <Run Text="{Binding BackupType}" />
                                                                         </TextBlock>
                                                                     </StackPanel>
 
@@ -184,7 +192,28 @@
                                             x:Name="PropertyPane"
                                             Title="Property"
                                             CanClose="False"
-                                            CanHide="False" />
+                                            CanHide="False">
+
+                                            <StackPanel DataContext="{Binding JobVm}">
+
+                                                <TextBox Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
+
+                                                <TextBox Text="{Binding SelectedJob.SourceDirectory, Mode=TwoWay}" />
+
+                                                <TextBox Text="{Binding SelectedJob.TargetDirectory, Mode=TwoWay}" />
+
+                                                <ComboBox x:Name="PropertyComboBox" SelectedItem="{Binding SelectedJob.BackupType, Mode=TwoWay}">
+                                                    <ComboBoxItem>Full</ComboBoxItem>
+                                                    <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
+                                                </ComboBox>
+
+                                                <Button Click="SaveButton_Click">Save</Button>
+
+                                            </StackPanel>
+
+                                        </LayoutAnchorable>
+
+
 
                                     </LayoutAnchorablePane>
 

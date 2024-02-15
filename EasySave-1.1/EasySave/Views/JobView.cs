@@ -24,8 +24,8 @@ namespace EasySave.Views
         public JobView(JobViewModel pJobVm)
         {
             _JobVm = pJobVm;
-            CLogger<CLogBase>.GenericLogger.Datas.CollectionChanged += LogGenericData_CollectionChanged;
-            CLogger<CLogBase>.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged;
+            CLogger<CLogBase>.Instance.GenericLogger.Datas.CollectionChanged += LogGenericData_CollectionChanged;
+            CLogger<CLogBase>.Instance.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged;
         }
         #endregion
 
@@ -54,7 +54,7 @@ namespace EasySave.Views
                 List<CJob> lJobsRunning = _JobVm.RunJobs(lJobsToRun);
                 foreach (CJob lJobRunning in lJobsRunning)
                     ConsoleExtention.WriteLineSucces($"Job {lJobRunning.Name} " + Strings.ResourceManager.GetObject("CopyEnd"));
-                ShowSummary(CLogger<List<CLogState>>.GenericLogger.Datas.Last());
+                ShowSummary(CLogger<List<CLogState>>.Instance.GenericLogger.Datas.Last());
             }
         }
 

@@ -28,7 +28,9 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: '$(RestoreBuildProjects)'
+    projects: |
+     $(BasePath)$(CLIPath)**/*.csproj
+     $(BasePath)$(GUIPath)**/*.csproj
 
 
 

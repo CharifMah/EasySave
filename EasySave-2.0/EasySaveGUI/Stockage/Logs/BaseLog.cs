@@ -1,5 +1,7 @@
-﻿using Stockage.Save;
+﻿using LogsModels;
+using Stockage.Save;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -9,7 +11,7 @@ namespace Stockage.Logs
     /// Classe de base abstraite pour les loggers.
     /// </summary>
     /// <typeparam name="T">Type des objets loggés</typeparam>
-    public abstract class BaseLogger<T> : ILogger<T>, INotifyPropertyChanged
+    public abstract class BaseLogger<T> : ILogger<T>, INotifyCollectionChanged
     {
         private ObservableCollection<T> _Datas;
         /// <summary>
@@ -36,8 +38,8 @@ namespace Stockage.Logs
                 ISauve lSave = new SauveCollection(lPath);
                 lSave.Sauver(pData, pFileName, pAppend);
             }
-            _Datas.Add(pData);
-            NotifyPropertyChanged("Datas");
+            Datas.Add(pData);
+            NotifyCollectionChanged();
         }
         /// <summary>
         /// Vide la collection de données
@@ -47,13 +49,12 @@ namespace Stockage.Logs
             _Datas.Clear();
         }
 
-        /// <summary> Événement de modification d'une property </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-        /// <summary> Méthode à appeler pour avertir d'une modification </summary>
-        /// <param name="propertyName">Nom de la property modifiée (automatiquement déterminé si appelé directement dans le setter une property) </param>
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+        protected virtual void NotifyCollectionChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
+
+            CollectionChanged?.Invoke(this, args);
         }
     }
 }

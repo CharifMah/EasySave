@@ -67,8 +67,7 @@ namespace ViewModels
         /// <returns> Liste mise à jour des jobs avec leur état après exécution </returns>
         public void RunJobs(List<CJob> pJobs)
         {
-            _jobsRunning = new ObservableCollection<CJob>(pJobs);
-            NotifyPropertyChanged("JobsRunning");
+            JobsRunning = new ObservableCollection<CJob>(pJobs);
             _jobManager.RunJobs(_jobsRunning);           
         }
 

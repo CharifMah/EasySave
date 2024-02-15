@@ -30,10 +30,10 @@ namespace Stockage.Save
         /// <param name="logState">Log a jour</param>
         public void UpdateLog(CLogState logState)
         {
-            if (_LogStates.Contains(logState))
-                _LogStates.Remove(logState);
-            _LogStates.Add(logState);
-            CLogger<List<CLogState>>.GenericLogger.Log(_LogStates, true, false);
+            //if (_LogStates.Contains(logState))
+            //    _LogStates.Remove(logState);
+            //_LogStates.Add(logState);
+            //CLogger<List<CLogState>>.Instance.Instance.GenericLogger.Log(_LogStates, true, false);
         }
 
         /// <summary>
@@ -85,24 +85,28 @@ namespace Stockage.Save
                             lLogFilesDaily.Date = DateTime.Now;
                             lLogFilesDaily.TotalSize = lFiles[i].Length;
                             lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
-                            CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
+                            CLogger<CLogBase>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName);
                         }
                     }
                     else
                     {
                         lFiles[i].CopyTo(lTargetFilePath, true);
+
+
                         lSw.Stop();
                         pLogState.SourceDirectory = lFiles[i].FullName;
                         pLogState.TargetDirectory = lTargetFilePath;
                         pLogState.RemainingFiles = pLogState.EligibleFileCount - _TransferedFiles;
                         UpdateLog(pLogState);
+
                         lLogFilesDaily.Name = lFiles[i].Name;
                         lLogFilesDaily.SourceDirectory = lFiles[i].FullName;
                         lLogFilesDaily.TargetDirectory = lTargetFilePath;
                         lLogFilesDaily.Date = DateTime.Now;
                         lLogFilesDaily.TotalSize = lFiles[i].Length;
                         lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
-                        CLogger<CLogBase>.GenericLogger.Log(lLogFilesDaily, true, true, lName);
+
+                        CLogger<CLogBase>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName);
                     }
                 }
 
@@ -118,7 +122,7 @@ namespace Stockage.Save
             }
             catch (Exception ex)
             {
-                CLogger<CLogBase>.StringLogger.Log(ex.Message, false, true, lName);
+                //CLogger<CLogBase>.Instance.Instance.StringLogger.Log(ex.Message, false, true, lName);
             }
         }
 

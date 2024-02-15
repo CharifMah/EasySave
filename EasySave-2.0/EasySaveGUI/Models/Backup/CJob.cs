@@ -128,7 +128,7 @@ namespace Models.Backup
             }
             catch (Exception ex)
             {
-                CLogger<CLogBase>.StringLogger.Log(ex.Message,false);
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message,false);
             }
         }
         public override bool Equals(object? obj)

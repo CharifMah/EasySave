@@ -30,8 +30,8 @@ namespace EasySaveGUI.Views
 
             DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
-            ListLogs.DataContext = CLogger<CLogBase>.StringLogger;
-            ListLogsDaily.DataContext = CLogger<CLogBase>.GenericLogger;
+            //ListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
+            ListLogsDaily.DataContext = CLogger<CLogBase>.Instance.GenericLogger;
         }
 
         private void RunJobsButton_Click(object sender, RoutedEventArgs e)
@@ -42,7 +42,7 @@ namespace EasySaveGUI.Views
                 System.Collections.IList lJobs = JobsList.SelectedItems;
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
-
+                CLogger<CLogBase>.Instance.Clear();
                 _MainVm.JobVm.RunJobs(lSelectedJobs);
             }
         }
@@ -74,7 +74,7 @@ namespace EasySaveGUI.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            CLogger<CLogBase>.StringLogger.Log("Update failed", false);
+            CLogger<CLogBase>.Instance.StringLogger.Log("Update failed", false);
             _MainVm.JobVm.SaveJobs();
         }
 
@@ -83,7 +83,7 @@ namespace EasySaveGUI.Views
             if (!ListLogs.Items.IsInUse)
                 ListLogs.Items.Clear();
 
-            CLogger<CLogBase>.GenericLogger.Clear();
+            CLogger<CLogBase>.Instance.GenericLogger.Clear();
         }
     }
 }

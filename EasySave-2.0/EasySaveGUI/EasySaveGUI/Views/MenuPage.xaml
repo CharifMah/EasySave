@@ -196,9 +196,18 @@
 
                                 <!--  Logs  -->
                                 <LayoutAnchorablePane>
+
+                                    <LayoutAnchorable Title="LogsState">
+                                        <DataGrid
+                                            x:Name="ListLogsState"
+                                            IsReadOnly="True"
+                                            ItemsSource="{Binding Datas, Mode=OneWay}" />
+                                    </LayoutAnchorable>
+
                                     <LayoutAnchorable Title="Logs">
                                         <ListBox x:Name="ListLogs" ItemsSource="{Binding Datas, Mode=OneWay}" />
                                     </LayoutAnchorable>
+
                                 </LayoutAnchorablePane>
 
                             </LayoutAnchorablePaneGroup>

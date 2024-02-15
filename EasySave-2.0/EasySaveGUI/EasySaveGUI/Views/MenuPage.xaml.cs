@@ -32,12 +32,15 @@ namespace EasySaveGUI.Views
             JobsList.DataContext = _MainVm.JobVm;
             ListLogs.DataContext = CLogger<CLogBase>.StringLogger;
             CLogger<CLogBase>.StringLogger.Datas.CollectionChanged += Datas_CollectionChanged;
+            ListLogsState.DataContext = CLogger<CLogBase>.GenericLogger;
+
             //CLogger<CLogBase>.StringLogger.Datas.CollectionChanged
         }
 
         private void Datas_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            ListLogs.ScrollIntoView(ListLogs.Items[ListLogs.Items.Count - 1]);
+            ListLogs.SelectedIndex = ListLogs.Items.Count - 1;
+            ListLogs.ScrollIntoView(ListLogs.SelectedItem);
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)

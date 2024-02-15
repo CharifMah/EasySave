@@ -65,10 +65,10 @@ namespace ViewModels
         /// </summary>
         /// <param name="pJobs">Liste des jobs à lancer</param>
         /// <returns> Liste mise à jour des jobs avec leur état après exécution </returns>
-        public void RunJobs(List<CJob> pJobs)
+        public async Task RunJobs(List<CJob> pJobs)
         {
             JobsRunning = new ObservableCollection<CJob>(pJobs);
-            _jobManager.RunJobs(_jobsRunning);           
+            await _jobManager.RunJobs(_jobsRunning);           
         }
 
         /// <summary>

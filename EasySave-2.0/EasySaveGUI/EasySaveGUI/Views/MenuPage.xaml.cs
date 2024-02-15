@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ViewModels;
-using WpfApp1;
 
 namespace EasySaveGUI.Views
 {
@@ -35,19 +34,16 @@ namespace EasySaveGUI.Views
             ListLogsDaily.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 
-        private void RunJobsButton_Click(object sender, RoutedEventArgs e)
+        private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
-            App.Current.Dispatcher.Invoke(() =>
+            if (JobsList.SelectedItems.Count > 0)
             {
-                if (JobsList.SelectedItems.Count > 0)
-                {
-                    System.Collections.IList lJobs = JobsList.SelectedItems;
+                System.Collections.IList lJobs = JobsList.SelectedItems;
 
-                    List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
-                    CLogger<CLogBase>.Instance.Clear();
-                    _MainVm.JobVm.RunJobs(lSelectedJobs);
-                }
-            });       
+                List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
+                CLogger<CLogBase>.Instance.Clear();
+                await _MainVm.JobVm.RunJobs(lSelectedJobs);
+            }
         }
 
 

@@ -75,15 +75,15 @@ namespace Models.Backup
         /// Lance l'exécution du job de sauvegarde
         /// </summary>
         /// <param name="pSauveJobs">Objet de sauvegarde des données de jobs</param>
-        public void Run(SauveJobs pSauveJobs)
+        public async Task Run(SauveJobsAsync pSauveJobs)
         {
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:
-                    Backup(pSauveJobs);
+                    await Backup(pSauveJobs);
                     break;
                 case ETypeBackup.DIFFERENTIEL:
-                    Backup(pSauveJobs, true);
+                    await Backup(pSauveJobs, true);
                     break;
             }
         }
@@ -93,7 +93,7 @@ namespace Models.Backup
         /// </summary>
         /// <param name="pDifferentiel = false">Indique une recopie forcée</param>
         /// <param name="pSauveJobs">Objet de sauvegarde des jobs</param>
-        private void Backup(SauveJobs pSauveJobs, bool pDifferentiel = false)
+        private async Task Backup(SauveJobsAsync pSauveJobs, bool pDifferentiel = false)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace Models.Backup
                 pSauveJobs.UpdateLog(_LogState);
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    pSauveJobs.CopyDirectory(lSourceDir, lTargetDir, true, ref _LogState, pDifferentiel);
+                    await pSauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, true, pDifferentiel);
                     lSw.Stop();
                     _LogState.Date = DateTime.Now;
                     _LogState.RemainingFiles = 0;

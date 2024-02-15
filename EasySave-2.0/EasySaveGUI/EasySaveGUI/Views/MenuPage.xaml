@@ -155,69 +155,7 @@
                                                     </ListBox>
 
                                                 </LayoutDocument>
-                                                <!--  job running  -->
-                                                <LayoutDocument Title="JobsRunning" CanClose="False">
-
-                                                    <DataGrid
-                                                        x:Name="dataGrid"
-                                                        AutoGenerateColumns="False"
-                                                        ItemsSource="{Binding JobVm.JobsRunning}">
-
-                                                        <DataGrid.Columns>
-
-                                                            <DataGridTextColumn Binding="{Binding Path=Name}" Header="Nom" />
-
-                                                            <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="Répertoire source" />
-
-                                                            <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
-
-                                                            <DataGridTemplateColumn Header="LogState">
-
-                                                                <DataGridTemplateColumn.CellTemplate>
-                                                                    <DataTemplate>
-
-                                                                        <StackPanel>
-                                                                            <StackPanel Orientation="Horizontal">
-                                                                                <TextBlock FontWeight="Bold" Text="Fichiers restants : " />
-
-                                                                                <TextBlock Text="{Binding Path=LogState.RemainingFiles}" />
-                                                                            </StackPanel>
-
-                                                                            <StackPanel Orientation="Horizontal">
-                                                                                <TextBlock FontWeight="Bold" Text="Octets copiés : " />
-
-                                                                                <TextBlock Text="{Binding Path=LogState.BytesCopied}" />
-                                                                            </StackPanel>
-
-                                                                        </StackPanel>
-
-
-                                                                    </DataTemplate>
-                                                                </DataGridTemplateColumn.CellTemplate>
-
-                                                            </DataGridTemplateColumn>
-
-                                                            <DataGridTemplateColumn Header="Progress">
-                                                                <DataGridTemplateColumn.CellTemplate>
-                                                                    <DataTemplate>
-                                                                        <ProgressBar
-                                                                            MinWidth="200"
-                                                                            HorizontalAlignment="Stretch"
-                                                                            VerticalAlignment="Stretch"
-                                                                            Maximum="100"
-                                                                            Value="{Binding JobVm}" />
-                                                                    </DataTemplate>
-                                                                </DataGridTemplateColumn.CellTemplate>
-
-                                                            </DataGridTemplateColumn>
-
-                                                        </DataGrid.Columns>
-
-                                                    </DataGrid>
-                                                </LayoutDocument>
                                             </LayoutDocumentPane>
-
-
 
                                         </LayoutDocumentPaneGroup>
 
@@ -263,6 +201,77 @@
 
                             </LayoutPanel>
 
+                            <LayoutAnchorablePaneGroup DockHeight="120">
+
+                                <!--  JobsRunning  -->
+                                <LayoutAnchorablePane>
+                                    <!--  JobsRunning  -->
+                                    <LayoutAnchorable
+                                        Title="JobsRunning"
+                                        CanClose="False"
+                                        CanHide="False">
+                                        <DataGrid
+                                            x:Name="dataGrid"
+                                            AutoGenerateColumns="False"
+                                            ItemsSource="{Binding JobVm.JobsRunning}">
+
+                                            <DataGrid.Columns>
+
+                                                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Nom" />
+
+                                                <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="Répertoire source" />
+
+                                                <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
+
+                                                <DataGridTemplateColumn Header="LogState">
+
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+
+                                                            <StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="Fichiers restants : " />
+
+                                                                    <TextBlock Text="{Binding Path=LogState.RemainingFiles}" />
+                                                                </StackPanel>
+
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="Octets copiés : " />
+
+                                                                    <TextBlock Text="{Binding Path=LogState.BytesCopied}" />
+                                                                </StackPanel>
+
+                                                            </StackPanel>
+
+
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+
+                                                </DataGridTemplateColumn>
+
+                                                <DataGridTemplateColumn Header="Progress">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ProgressBar
+                                                                MinWidth="200"
+                                                                HorizontalAlignment="Stretch"
+                                                                VerticalAlignment="Stretch"
+                                                                Maximum="100"
+                                                                Value="{Binding JobVm}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+
+                                                </DataGridTemplateColumn>
+
+                                            </DataGrid.Columns>
+
+                                        </DataGrid>
+                                    </LayoutAnchorable>
+
+                                </LayoutAnchorablePane>
+
+                            </LayoutAnchorablePaneGroup>
+                            <!--  Logs  -->
                             <LayoutAnchorablePaneGroup DockHeight="120">
 
                                 <!--  Logs  -->

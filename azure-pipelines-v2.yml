@@ -7,11 +7,14 @@ variables:
   BuildPlatform: 'Any CPU'
   BuildConfiguration: 'Release'
   BasePath: 'EasySave-2.0/'
-  Solution: '$(BasePath)**/*.sln'
-  RestoreBuildProjects: '$(BasePath)**/*.csproj'
-  PublishProjects: '$(BasePath)**/!(*UnitTest*)/*.csproj'
-  TestProjects: '$(BasePath)**/UnitTest*/*.csproj'
+  CLIPath: 'EasySave-1.0/'
+  GUIPath: 'EasySaveGUI/'
+  CLISolution: '$(BasePath)$(CLIPath)**/*.sln'
+  GUISolution: '$(BasePath)$(GUIPath)**/*.sln'
+  RestoreBuildProjects: '$(BasePath)$(CLIPath)**/*.csproj;$(BasePath)$(GUIPath)**/*.csproj'
   PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
+  CLIPublishFolder: '$(PublishFolder)/CLI'
+  GUIPublishFolder: '$(PublishFolder)/GUI'
 
 name: Release-2.0.$(Build.BuildId)
 
@@ -21,24 +24,57 @@ steps:
     version: '6.x'
     includePreviewVersions: false
 
+# Restauration pour CLI et GUI
 - task: DotNetCoreCLI@2
+  displayName: 'Restore projects'
   inputs:
     command: 'restore'
-    projects: '$(RestoreBuildProjects)'
+    projects: |
+     $(BasePath)$(CLIPath)**/*.csproj
+     $(BasePath)$(GUIPath)**/*.csproj
 
+
+
+# Construction pour la solution CLI
 - task: DotNetCoreCLI@2
-  displayName: 'Build Solution'
+  displayName: 'Build CLI Solution'
   inputs:
     command: 'build'
-    projects: '$(Solution)'
+    projects: '$(CLISolution)'
     arguments: '--configuration $(BuildConfiguration)'
 
+# Construction pour la solution GUI
+- task: DotNetCoreCLI@2
+  displayName: 'Build GUI Solution'
+  inputs:
+    command: 'build'
+    projects: '$(GUISolution)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+# Tests unitaires
 - task: DotNetCoreCLI@2
   displayName: 'Run Unit Tests'
   inputs:
     command: 'test'
-    projects: '$(TestProjects)'
+    projects: '$(BasePath)**/UnitTest*/*.csproj'
     arguments: '--configuration $(BuildConfiguration)'
 
+# Publication pour CLI
 - task: DotNetCoreCLI@2
-  displayName: 'Publish Projects'
+  displayName: 'Publish CLI Projects'
+  inputs:
+    command: 'publish'
+    projects: '$(CLISolution)'
+    publishWebProjects: false
+    arguments: '--configuration $(BuildConfiguration) --output $(CLIPublishFolder)'
+    zipAfterPublish: false
+
+# Publication pour GUI
+- task: DotNetCoreCLI@2
+  displayName: 'Publish GUI Projects'
+  inputs:
+    command: 'publish'
+    projects: '$(GUISolution)'
+    publishWebProjects: false
+    arguments: '--configuration $(BuildConfiguration) --output $(GUIPublishFolder)'
+    zipAfterPublish: false

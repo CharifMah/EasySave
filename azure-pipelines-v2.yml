@@ -26,6 +26,7 @@ steps:
 
 # Restauration pour CLI et GUI
 - task: DotNetCoreCLI@2
+  displayName: 'Restore projects'
   inputs:
     command: 'restore'
     projects: |

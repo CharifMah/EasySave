@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestStorage", "UnitTestStorage\UnitTestStorage.csproj", "{91602F58-36F3-4538-9826-4D3330352208}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasySave", "EasySave\EasySave.csproj", "{A20C3CA1-6726-4820-B8FD-C4D74833C3B0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogsModels", "Logs\LogsModels.csproj", "{334B09B1-F615-46CE-868C-678E1E2CA01A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestJobs", "UnitTestJobs\UnitTestJobs.csproj", "{CF0222CE-32FB-43B3-BF87-53D4CF4A8A81}"
@@ -19,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModels", "ViewModels\Vi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ressources", "Ressources\Ressources.csproj", "{796169F2-950C-4875-A74F-16B5EE9284B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySaveGUI", "EasySaveGUI\EasySaveGUI.csproj", "{91348D0A-C4CE-4B1E-985D-0E275BE7B606}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasySaveGUI", "EasySaveGUI\EasySaveGUI.csproj", "{91348D0A-C4CE-4B1E-985D-0E275BE7B606}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenDialog", "OpenDialog\OpenDialog.csproj", "{795E1866-A275-4110-ABE2-78D4128D8B97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenDialog", "OpenDialog\OpenDialog.csproj", "{795E1866-A275-4110-ABE2-78D4128D8B97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,6 @@ Global
 		{91602F58-36F3-4538-9826-4D3330352208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91602F58-36F3-4538-9826-4D3330352208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91602F58-36F3-4538-9826-4D3330352208}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A20C3CA1-6726-4820-B8FD-C4D74833C3B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A20C3CA1-6726-4820-B8FD-C4D74833C3B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A20C3CA1-6726-4820-B8FD-C4D74833C3B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A20C3CA1-6726-4820-B8FD-C4D74833C3B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{334B09B1-F615-46CE-868C-678E1E2CA01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{334B09B1-F615-46CE-868C-678E1E2CA01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{334B09B1-F615-46CE-868C-678E1E2CA01A}.Release|Any CPU.ActiveCfg = Release|Any CPU

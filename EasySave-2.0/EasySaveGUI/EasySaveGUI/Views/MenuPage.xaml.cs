@@ -31,7 +31,7 @@ namespace EasySaveGUI.Views
 
             DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
-            //ListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
+            ListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             ListLogsDaily.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 

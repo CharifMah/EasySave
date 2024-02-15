@@ -95,4 +95,4 @@ steps:
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/EasySave2.0.zip'
     ArtifactName: 'EasySave2.0'
-    publishLocation: 'Contai
+    publishLocation: 'Container'

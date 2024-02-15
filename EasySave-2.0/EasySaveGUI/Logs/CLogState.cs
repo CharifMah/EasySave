@@ -44,10 +44,15 @@ namespace LogsModels
         /// </summary>
         public bool IsActive { get => _IsActive; set => _IsActive = value; }
 
-        public string CurrentFile { get; set; }
-
         public long BytesCopied { get; set; }
-        public long TotalBytes { get; set; }
+
+        public double Progress
+        {
+            get 
+            {
+                return BytesCopied / TotalSize * 100;
+            }            
+        }
 
         /// <summary>
         /// Constructeur de CLogState

@@ -241,6 +241,18 @@
                                                                     <TextBlock Text="{Binding Path=LogState.BytesCopied}" />
                                                                 </StackPanel>
 
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="SourceDirectory : " />
+
+                                                                    <TextBlock Text="{Binding Path=LogState.SourceDirectory}" />
+                                                                </StackPanel>
+
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="TargetDirectory : " />
+
+                                                                    <TextBlock Text="{Binding Path=LogState.TargetDirectory}" />
+                                                                </StackPanel>
+
                                                             </StackPanel>
 
 
@@ -257,7 +269,7 @@
                                                                 HorizontalAlignment="Stretch"
                                                                 VerticalAlignment="Stretch"
                                                                 Maximum="100"
-                                                                Value="{Binding JobVm}" />
+                                                                Value="{Binding Path=LogState.Progress, Mode=OneWay}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
 

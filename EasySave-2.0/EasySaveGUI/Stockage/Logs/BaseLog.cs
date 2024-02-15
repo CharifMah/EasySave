@@ -30,7 +30,7 @@ namespace Stockage.Logs
             if (pSerialize)
             {
                 string lFolderName = "Logs";
-                string lPath = Path.Combine(Environment.CurrentDirectory, lFolderName);
+                string lPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), lFolderName);
                 ISauve lSave = new SauveCollection(lPath);
                 lSave.Sauver(pData, pFileName, pAppend);
             }

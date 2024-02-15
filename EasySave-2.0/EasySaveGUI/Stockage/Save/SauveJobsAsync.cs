@@ -1,6 +1,8 @@
 ﻿using LogsModels;
 using Stockage.Logs;
 using System.Diagnostics;
+using System.Drawing;
+
 namespace Stockage.Save
 {
     /// <summary>
@@ -10,14 +12,11 @@ namespace Stockage.Save
     {
         private int _TransferedFiles;
         private List<CLogState> _LogStates;
-        private CLogState _LogState;
 
         /// <summary>
         /// Le nombre de fichier transférer
         /// </summary>
         public int TransferedFiles { get => _TransferedFiles; set => _TransferedFiles = value; }
-        public CLogState LogState { get => _LogState; set => _LogState = value; }
-
         /// <summary>
         /// Constructeur de SauveJobs
         /// </summary>
@@ -26,7 +25,7 @@ namespace Stockage.Save
         {
             _LogStates = new List<CLogState>();
             _TransferedFiles = 0;
-            _LogState = new CLogState();
+
         }
 
         /// <summary>
@@ -55,13 +54,17 @@ namespace Stockage.Save
 
             try
             {
+
                 // cm - Check if the source directory exists
                 if (!pSourceDir.Exists)
                     throw new DirectoryNotFoundException($"Source directory not found: {pSourceDir.FullName}");
 
                 Directory.CreateDirectory(pTargetDir.FullName);
                 FileInfo[] lFiles = pSourceDir.GetFiles();
-                
+                CLogState _LogState = new CLogState();
+                _LogState.BytesCopied = 0;
+                _LogState.TotalSize = Directory.GetFiles(pSourceDir.FullName, "*", SearchOption.AllDirectories)
+                   .Sum(file => new FileInfo(file).Length);
                 // cm - Get files in the source directory and copy to the destination directory
                 for (int i = 0; i < lFiles.Length; i++)
                 {
@@ -80,9 +83,12 @@ namespace Stockage.Save
                         {
                             await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
                             lSw.Stop();
+      
                             _LogState.SourceDirectory = lFiles[i].FullName;
                             _LogState.TargetDirectory = lTargetFilePath;
                             _LogState.RemainingFiles = _LogState.EligibleFileCount - _TransferedFiles;
+                            _LogState.BytesCopied += lFiles[i].Length;
+
                             UpdateLog(_LogState);
                             CLogDaily lLogFilesDaily = new CLogDaily();
                             lLogFilesDaily.Name = "Update : " + lFiles[i].Name;
@@ -102,6 +108,7 @@ namespace Stockage.Save
                         _LogState.SourceDirectory = lFiles[i].FullName;
                         _LogState.TargetDirectory = lTargetFilePath;
                         _LogState.RemainingFiles = _LogState.EligibleFileCount - _TransferedFiles;
+                        _LogState.BytesCopied += lFiles[i].Length;
                         UpdateLog(_LogState);
                         CLogDaily lLogFilesDaily = new CLogDaily();
                         lLogFilesDaily.Name = lFiles[i].Name;

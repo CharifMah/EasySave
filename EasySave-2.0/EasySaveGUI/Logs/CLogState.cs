@@ -43,6 +43,12 @@ namespace LogsModels
         /// Indique si le job est actif ou non
         /// </summary>
         public bool IsActive { get => _IsActive; set => _IsActive = value; }
+
+        public string CurrentFile { get; set; }
+
+        public long BytesCopied { get; set; }
+        public long TotalBytes { get; set; }
+
         /// <summary>
         /// Constructeur de CLogState
         /// </summary>

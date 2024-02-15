@@ -108,6 +108,7 @@ namespace Models.Backup
                 lSauveJobs.TransferedFiles = 0;
                 await lJob.Run(lSauveJobs);
             }
+            pJobs.Clear();
         }
 
         /// <summary>

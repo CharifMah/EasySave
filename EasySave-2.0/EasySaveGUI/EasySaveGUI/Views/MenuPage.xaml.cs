@@ -63,8 +63,6 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), System.IO.Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
         }
 
-
-
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;

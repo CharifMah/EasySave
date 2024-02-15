@@ -289,4 +289,7 @@
   <data name="IsActive" xml:space="preserve">
     <value>Est en cours</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
 </root>

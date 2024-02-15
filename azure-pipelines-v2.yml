@@ -11,10 +11,10 @@ variables:
   GUIPath: 'EasySaveGUI/'
   CLISolution: '$(BasePath)$(CLIPath)**/*.sln'
   GUISolution: '$(BasePath)$(GUIPath)**/*.sln'
-  RestoreBuildProjects: '$(BasePath)$(CLIPath)**/*.csproj;$(BasePath)$(GUIPath)**/*.csproj'
+  RestoreBuildProjects: '$(BasePath)**/*.csproj'
   PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
-  CLIPublishFolder: '$(PublishFolder)/CLI'
-  GUIPublishFolder: '$(PublishFolder)/GUI'
+  CLIPublishFolder: '$(PublishFolder)'
+  GUIPublishFolder: '$(PublishFolder)'
 
 name: Release-2.0.$(Build.BuildId)
 
@@ -26,14 +26,9 @@ steps:
 
 # Restauration pour CLI et GUI
 - task: DotNetCoreCLI@2
-  displayName: 'Restore projects'
   inputs:
     command: 'restore'
-    projects: |
-     $(BasePath)$(CLIPath)**/*.csproj
-     $(BasePath)$(GUIPath)**/*.csproj
-
-
+    projects: '$(RestoreBuildProjects)'
 
 # Construction pour la solution CLI
 - task: DotNetCoreCLI@2
@@ -69,7 +64,6 @@ steps:
     arguments: '--configuration $(BuildConfiguration) --output $(CLIPublishFolder)'
     zipAfterPublish: false
 
-# Publication pour GUI
 - task: DotNetCoreCLI@2
   displayName: 'Publish GUI Projects'
   inputs:
@@ -78,3 +72,19 @@ steps:
     publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) --output $(GUIPublishFolder)'
     zipAfterPublish: false
+
+- task: ArchiveFiles@2
+  displayName: 'Zip CLI and GUI Applications'
+  inputs:
+    rootFolderOrFile: '$(PublishFolder)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/EasySave2.0.zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: EasySave2.0.zip'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/EasySave2.0.zip'
+    ArtifactName: 'EasySave2.0'
+    publishLocation: 'Container'

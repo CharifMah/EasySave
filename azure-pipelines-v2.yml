@@ -7,10 +7,11 @@ variables:
   BuildPlatform: 'Any CPU'
   BuildConfiguration: 'Release'
   BasePath: 'EasySave-2.0/'
-  CLIPath: 'EasySave-2.0/EasySave-1.0/'
-  GUIPath: 'EasySave-2.0/EasySaveGUI/'
-  CLISolution: '$(CLIPath)EasySave-1.0.sln'
-  GUISolution: '$(GUIPath)EasySave-GUI.sln'
+  CLIPath: 'EasySave-1.0/'
+  GUIPath: 'EasySaveGUI/'
+  CLISolution: '$(BasePath)$(CLIPath)**/*.sln'
+  GUISolution: '$(BasePath)$(GUIPath)**/*.sln'
+  RestoreBuildProjects: '$(BasePath)$(CLIPath)**/*.csproj;$(BasePath)$(GUIPath)**/*.csproj'
   PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
   CLIPublishFolder: '$(PublishFolder)/CLI'
   GUIPublishFolder: '$(PublishFolder)/GUI'
@@ -27,9 +28,11 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: '$(CLIPath)**/*.csproj;$(GUIPath)**/*.csproj'
+    projects: '$(RestoreBuildProjects)'
 
-# Construction pour CLI
+
+
+# Construction pour la solution CLI
 - task: DotNetCoreCLI@2
   displayName: 'Build CLI Solution'
   inputs:
@@ -37,7 +40,7 @@ steps:
     projects: '$(CLISolution)'
     arguments: '--configuration $(BuildConfiguration)'
 
-# Construction pour GUI
+# Construction pour la solution GUI
 - task: DotNetCoreCLI@2
   displayName: 'Build GUI Solution'
   inputs:
@@ -45,7 +48,7 @@ steps:
     projects: '$(GUISolution)'
     arguments: '--configuration $(BuildConfiguration)'
 
-# Tests unitaires (ajustez selon besoin)
+# Tests unitaires
 - task: DotNetCoreCLI@2
   displayName: 'Run Unit Tests'
   inputs:

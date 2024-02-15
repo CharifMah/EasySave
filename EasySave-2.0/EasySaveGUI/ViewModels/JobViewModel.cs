@@ -1,4 +1,6 @@
 ﻿using Models.Backup;
+using System.Collections.ObjectModel;
+
 namespace ViewModels
 {
     /// <summary>
@@ -7,6 +9,7 @@ namespace ViewModels
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
+        private CJob _SelectedJob;
         private CJobManager _jobManager;
         /// <summary>
         /// JobManager
@@ -14,12 +17,23 @@ namespace ViewModels
         public CJobManager JobManager
         {
             get => _jobManager;
-            set 
-            { 
+            set
+            {
                 _jobManager = value;
                 NotifyPropertyChanged();
             }
         }
+
+        public CJob SelectedJob
+        {
+            get { return _SelectedJob; }
+            set
+            {
+                _SelectedJob = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region CTOR
@@ -90,6 +104,8 @@ namespace ViewModels
                 _jobManager = Models.CSettings.Instance.LoadJobsFile();
             else
                 _jobManager = Models.CSettings.Instance.LoadJobsFile(pPath);
+
+            NotifyPropertyChanged("JobManager");
         }
     }
 }

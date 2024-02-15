@@ -7,8 +7,11 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+
 namespace Ressources {
     using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -20,11 +23,15 @@ namespace Ressources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
+        
         private static global::System.Resources.ResourceManager resourceMan;
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Strings() {
         }
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -38,12 +45,13 @@ namespace Ressources {
                 return resourceMan;
             }
         }
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -51,12 +59,544 @@ namespace Ressources {
                 resourceCulture = value;
             }
         }
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string Name {
+        public static string AdditionalJobs {
+            get {
+                return ResourceManager.GetString("AdditionalJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string bytes {
+            get {
+                return ResourceManager.GetString("bytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ChooseLang {
+            get {
+                return ResourceManager.GetString("ChooseLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ClearConsole {
+            get {
+                return ResourceManager.GetString("ClearConsole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CombineIndexes {
+            get {
+                return ResourceManager.GetString("CombineIndexes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CopyEnd {
+            get {
+                return ResourceManager.GetString("CopyEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CreateJob {
+            get {
+                return ResourceManager.GetString("CreateJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DefaultFile {
+            get {
+                return ResourceManager.GetString("DefaultFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DeleteJob {
+            get {
+                return ResourceManager.GetString("DeleteJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DeletingJobs {
+            get {
+                return ResourceManager.GetString("DeletingJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string EnterFilePath {
+            get {
+                return ResourceManager.GetString("EnterFilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string EnterFolderPath {
+            get {
+                return ResourceManager.GetString("EnterFolderPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string IndividualIndex {
+            get {
+                return ResourceManager.GetString("IndividualIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string InputFormat {
+            get {
+                return ResourceManager.GetString("InputFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string InvalideSelection {
+            get {
+                return ResourceManager.GetString("InvalideSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string InvalidIndexRange {
+            get {
+                return ResourceManager.GetString("InvalidIndexRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string InvalidIndice {
+            get {
+                return ResourceManager.GetString("InvalidIndice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string JobCreated {
+            get {
+                return ResourceManager.GetString("JobCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string JobCreation {
+            get {
+                return ResourceManager.GetString("JobCreation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string JobDeleteError {
+            get {
+                return ResourceManager.GetString("JobDeleteError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string JobNotCreated {
+            get {
+                return ResourceManager.GetString("JobNotCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string JobsDeleted {
+            get {
+                return ResourceManager.GetString("JobsDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Lang {
+            get {
+                return ResourceManager.GetString("Lang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ListJobs {
+            get {
+                return ResourceManager.GetString("ListJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Loaded {
+            get {
+                return ResourceManager.GetString("Loaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LoadJobConfig {
+            get {
+                return ResourceManager.GetString("LoadJobConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LoadJobs {
+            get {
+                return ResourceManager.GetString("LoadJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MultipleIndexes {
+            get {
+                return ResourceManager.GetString("MultipleIndexes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string NoJobCreated {
+            get {
+                return ResourceManager.GetString("NoJobCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string OtherFile {
+            get {
+                return ResourceManager.GetString("OtherFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string PasteClipboard {
+            get {
+                return ResourceManager.GetString("PasteClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string PathNotReachable {
+            get {
+                return ResourceManager.GetString("PathNotReachable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string PossibleTypeBackup {
+            get {
+                return ResourceManager.GetString("PossibleTypeBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Quit {
+            get {
+                return ResourceManager.GetString("Quit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string RangeIndexes {
+            get {
+                return ResourceManager.GetString("RangeIndexes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string RunJobs {
+            get {
+                return ResourceManager.GetString("RunJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SamePath {
+            get {
+                return ResourceManager.GetString("SamePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Saved {
+            get {
+                return ResourceManager.GetString("Saved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SelectChoice {
+            get {
+                return ResourceManager.GetString("SelectChoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SelectConfigurationFile {
+            get {
+                return ResourceManager.GetString("SelectConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SelectedLanguage {
+            get {
+                return ResourceManager.GetString("SelectedLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SelectRangeJobs {
+            get {
+                return ResourceManager.GetString("SelectRangeJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SingleIndex {
+            get {
+                return ResourceManager.GetString("SingleIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SourceDir {
+            get {
+                return ResourceManager.GetString("SourceDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SourceDirectory {
+            get {
+                return ResourceManager.GetString("SourceDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string StartIndex {
+            get {
+                return ResourceManager.GetString("StartIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Summary {
+            get {
+                return ResourceManager.GetString("Summary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TargetDir {
+            get {
+                return ResourceManager.GetString("TargetDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TargetDirectory {
+            get {
+                return ResourceManager.GetString("TargetDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TimeElapsed {
+            get {
+                return ResourceManager.GetString("TimeElapsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TotalSize {
+            get {
+                return ResourceManager.GetString("TotalSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string WithoutJobLoaded {
+            get {
+                return ResourceManager.GetString("WithoutJobLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string YouSelected {
+            get {
+                return ResourceManager.GetString("YouSelected", resourceCulture);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace EasySaveGUI
+namespace WpfApp1
 {
     /// <summary>
     /// Interaction logic for App.xaml

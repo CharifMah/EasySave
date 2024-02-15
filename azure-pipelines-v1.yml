@@ -39,6 +39,22 @@ steps:
     command: 'test'
     projects: '$(TestProjects)'
     arguments: '--configuration $(BuildConfiguration)'
-
+  
 - task: DotNetCoreCLI@2
   displayName: 'Publish Projects'
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    # variable PublishProjects pour exclure les tests de la publication
+    projects: '$(PublishProjects)'
+    arguments: '--configuration $(BuildConfiguration) --output $(PublishFolder)'
+    zipAfterPublish: false
+
+- task: ArchiveFiles@2
+  displayName: 'Archive Published Projects'
+  inputs:
+    rootFolderOrFile: '$(PublishFolder)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/EasySaveComplete.zip'
+    replaceExistingArchive: true

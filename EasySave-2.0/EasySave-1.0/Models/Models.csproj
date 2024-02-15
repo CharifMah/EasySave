@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\EasySaveGUI\Stockage\Stockage.csproj" />
     <ProjectReference Include="..\Logs\LogsModels.csproj" />
-    <ProjectReference Include="..\Stockage\Stockage.csproj" />
   </ItemGroup>
 </Project>

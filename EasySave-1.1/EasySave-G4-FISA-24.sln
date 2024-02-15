@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestJobs", "UnitTestJob
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModels", "ViewModels\ViewModels.csproj", "{BA089C29-0347-452B-A820-67A5BB765108}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ressources", "Ressources\Ressources.csproj", "{796169F2-950C-4875-A74F-16B5EE9284B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ressources", "Ressources\Ressources.csproj", "{796169F2-950C-4875-A74F-16B5EE9284B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenDialog", "OpenDialog\OpenDialog.csproj", "{C1C2E8BE-0B66-465F-9C15-68EF0D4A5ED2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{796169F2-950C-4875-A74F-16B5EE9284B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{796169F2-950C-4875-A74F-16B5EE9284B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{796169F2-950C-4875-A74F-16B5EE9284B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1C2E8BE-0B66-465F-9C15-68EF0D4A5ED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1C2E8BE-0B66-465F-9C15-68EF0D4A5ED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1C2E8BE-0B66-465F-9C15-68EF0D4A5ED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1C2E8BE-0B66-465F-9C15-68EF0D4A5ED2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

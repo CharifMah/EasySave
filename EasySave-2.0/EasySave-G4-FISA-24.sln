@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ressources", "Ressources\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySaveGUI", "EasySaveGUI\EasySaveGUI.csproj", "{91348D0A-C4CE-4B1E-985D-0E275BE7B606}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenDialog", "OpenDialog\OpenDialog.csproj", "{795E1866-A275-4110-ABE2-78D4128D8B97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{91348D0A-C4CE-4B1E-985D-0E275BE7B606}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91348D0A-C4CE-4B1E-985D-0E275BE7B606}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91348D0A-C4CE-4B1E-985D-0E275BE7B606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{795E1866-A275-4110-ABE2-78D4128D8B97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{795E1866-A275-4110-ABE2-78D4128D8B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{795E1866-A275-4110-ABE2-78D4128D8B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{795E1866-A275-4110-ABE2-78D4128D8B97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

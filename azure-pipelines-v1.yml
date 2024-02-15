@@ -45,7 +45,6 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    # variable PublishProjects pour exclure les tests de la publication
     projects: '$(PublishProjects)'
     arguments: '--configuration $(BuildConfiguration) --output $(PublishFolder)'
     zipAfterPublish: false
@@ -56,11 +55,11 @@ steps:
     rootFolderOrFile: '$(PublishFolder)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/EasySaveComplete.zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/EasySave.zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: EasySaveComplete'
+  displayName: 'Publish Artifact: EasySave'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/EasySaveComplete.zip'
-    ArtifactName: 'EasySaveComplete'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/EasySave.zip'
+    ArtifactName: 'EasySave'

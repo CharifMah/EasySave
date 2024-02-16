@@ -14,8 +14,8 @@ namespace ViewModels
         public CJobManager JobManager
         {
             get => _jobManager;
-            set 
-            { 
+            set
+            {
                 _jobManager = value;
                 NotifyPropertyChanged();
             }

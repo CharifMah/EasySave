@@ -5,7 +5,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="ChargerCollection.cs~RF2c52552.TMP" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\LogsModels\LogsModels.csproj" />
-    <ProjectReference Include="..\UnitTestStorage\UnitTestStorage.csproj" />
   </ItemGroup>
 </Project>

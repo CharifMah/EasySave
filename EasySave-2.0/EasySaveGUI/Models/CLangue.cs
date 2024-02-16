@@ -39,7 +39,7 @@ namespace Models
         public bool SetLanguage(string pCultureInfo)
         {
             bool result = false;
-            _SelectedCulture = _Languages.FirstOrDefault(l => l.Value == pCultureInfo);
+            _SelectedCulture = _Languages.First(l => l.Value.Contains(pCultureInfo));
             CultureInfo lCultureInfo = CultureInfo.GetCultureInfo(_SelectedCulture.Value);
             if (Thread.CurrentThread.CurrentUICulture != lCultureInfo)
             {

@@ -2,6 +2,7 @@
     x:Class="EasySaveGUI.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="clr-namespace:EasySaveGUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EasySaveGUI"
     xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
@@ -28,6 +29,10 @@
         </Style>
 
     </Window.Style>
+
+    <Window.Resources>
+        <Converter:LangueConvert x:Key="LangueConvert" />
+    </Window.Resources>
 
     <Window.Template>
         <ControlTemplate TargetType="{x:Type Window}">
@@ -115,7 +120,7 @@
                                     Width="90"
                                     Height="20"
                                     IsHitTestVisible="True"
-                                    ItemsSource="{Binding LangueVm.Langue.Languages}"
+                                    ItemsSource="{Binding LangueVm.Langue.Languages, Converter={StaticResource LangueConvert}}"
                                     MouseEnter="ComboBox_MouseEnter"
                                     MouseLeave="ComboBox_MouseLeave"
                                     SelectedIndex="{Binding LangueVm.Langue.SelectedCulture.Key, Mode=OneWay}"

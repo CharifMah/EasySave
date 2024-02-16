@@ -30,8 +30,9 @@ namespace Stockage.Save
         /// <param name="pData">Data a sauvegarde</param>
         /// <param name="pFileName">Name of the file</param>
         /// <param name="pExtention">Extension of the file can be null</param>
+        /// <param name="pIsFullPath">vrai si le premier parametre est un chemin complet et non le nom du fichier</param>
         /// <Author>Mahmoud Charif - 31/12/2022 - Création</Author>
-        public virtual void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json", bool IsFullPath = false)
+        public virtual void Sauver<T>(T pData, string pFileName, bool pAppend = false, string pExtention = "json", bool pIsFullPath = false)
         {
             try
             {
@@ -40,17 +41,16 @@ namespace Stockage.Save
                 if (string.IsNullOrEmpty(_path))
                     throw new ArgumentNullException("Path is null");
 
-                if (IsFullPath)
+                if (pIsFullPath)
                     _path = pFileName;
 
                 // cm - Check if the directory exist
-                if (Directory.Exists(_path) || IsFullPath)
+                if (Directory.Exists(_path) || pIsFullPath)
                 {
-
                     // cm - Serialize data to json
                     string jsonString = JsonConvert.SerializeObject(pData, Formatting.Indented, Options);
 
-                    if (!IsFullPath)
+                    if (!pIsFullPath)
                         lPath = Path.Combine(_path, $"{pFileName}.{pExtention}");
                     else
                         lPath = _path;

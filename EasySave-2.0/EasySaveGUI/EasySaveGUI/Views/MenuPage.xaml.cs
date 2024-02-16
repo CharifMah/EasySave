@@ -51,7 +51,6 @@ namespace EasySaveGUI.Views
             ListElements.Show();
         }
 
-
         private void LoadConfigDefaultFileButton_Click(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.LoadJobs();

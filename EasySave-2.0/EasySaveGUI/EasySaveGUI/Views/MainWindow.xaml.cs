@@ -98,11 +98,10 @@ namespace EasySaveGUI
 
         private void ComboBoxLang_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
-            if (e.AddedItems[0] != null)
+          
+            if (e.AddedItems.Count > 0)
             {
-                KeyValuePair<int, string>? lLang = e.AddedItems[0] as KeyValuePair<int, string>?;
-               _MainVm.LangueVm.SetLanguage(lLang.Value.Value);
+                _MainVm.LangueVm.SetLanguage(e.AddedItems[0].ToString()[0..2]);
                 // cm - Recharger la page
                 frame.Navigate(new MenuPage(_MainVm));
             }

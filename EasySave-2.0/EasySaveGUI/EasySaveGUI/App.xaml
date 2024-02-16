@@ -12,6 +12,11 @@
                 <ResourceDictionary Source="Styles\CustomButton.xaml" />
                 <ResourceDictionary Source="Styles\CustomListBox.xaml" />
                 <ResourceDictionary Source="Styles\CustomComboBox.xaml" />
+                <ResourceDictionary Source="Styles\CustomCheckBox.xaml" />
+                <ResourceDictionary Source="Styles\CustomSlider1.xaml" />
+                <ResourceDictionary Source="Styles\CustomTextBox.xaml" />
+                <ResourceDictionary Source="Styles\CustomDataGrid.xaml" />
+                <ResourceDictionary Source="Styles\CustomScrollBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

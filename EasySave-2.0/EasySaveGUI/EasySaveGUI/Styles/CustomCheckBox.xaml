@@ -1,0 +1,54 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="CustomCheckBox" TargetType="CheckBox">
+        <Setter Property="Background" Value="Red"/>
+        <Setter Property="TextBlock.FontFamily" Value="/Polices/#Fruit Days"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <Border x:Name="checkBackground" Width="60" Height="20" CornerRadius="10" Background="{TemplateBinding Background}"/>
+
+                        <TextBlock x:Name="checkLabel" Text="Off" TextWrapping="Wrap" Margin="12,0,12,0" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="White"/>
+                        <Ellipse x:Name="checkMark" Width="18" Height="18" Fill="White" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="1 0 1 0">
+                            <Ellipse.RenderTransform>
+                                <TranslateTransform X="0"/>
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="checkLabel" Property="Text" Value="On"/>
+                            <Setter TargetName="checkLabel" Property="HorizontalAlignment" Value="Left"/>
+                            <Setter TargetName="checkBackground" Property="Background" Value="Green"/>
+                            <!--<Setter TargetName="checkMark" Property="HorizontalAlignment" Value="Right"/>-->
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="checkMark" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="40" Duration="00:00:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="checkMark" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="0" Duration="00:00:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="PreviewMouseDown">
+                <SoundPlayerAction Source="Sounds/slidersound.wav" />
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+   
+</ResourceDictionary>

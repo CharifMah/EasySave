@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:EasySaveGUI"
     xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
+    Title="EasySave"
     MinWidth="1300"
     MinHeight="550"
     ResizeMode="CanResizeWithGrip"
@@ -72,42 +72,6 @@
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal">
                                 <TextBlock Height="20" Margin="5">|</TextBlock>
-                                <materialIcons:MaterialIcon
-                                    Width="15"
-                                    Height="15"
-                                    Margin="5"
-                                    Kind="Home" />
-                                <TextBlock Height="20" Margin="5">|</TextBlock>
-                                <materialIcons:MaterialIcon
-                                    Width="15"
-                                    Height="15"
-                                    Margin="5"
-                                    Kind="Home" />
-                                <materialIcons:MaterialIcon
-                                    Width="15"
-                                    Height="15"
-                                    Margin="5"
-                                    Kind="Home" />
-                                <materialIcons:MaterialIcon
-                                    Width="15"
-                                    Height="15"
-                                    Margin="5"
-                                    Kind="Home" />
-                                <materialIcons:MaterialIcon
-                                    Width="15"
-                                    Height="15"
-                                    Margin="5"
-                                    Kind="Home" />
-                                <materialIcons:MaterialIcon
-                                    Width="15"
-                                    Height="15"
-                                    Margin="5"
-                                    Kind="Home" />
-                                <materialIcons:MaterialIcon
-                                    Width="15"
-                                    Height="15"
-                                    Margin="5"
-                                    Kind="Home" />
                                 <materialIcons:MaterialIcon
                                     Width="15"
                                     Height="15"

@@ -6,7 +6,6 @@ namespace OpenDialog
 {
     public static class CDialog
     {
-        private static FileChooserDialog _FileDialog = null;
         private readonly static object _lock = new object();
         /// <summary>
         /// Read a file with GTK CrossPlatform interface if it fail open classic Console Interface
@@ -20,35 +19,32 @@ namespace OpenDialog
 
             try
             {
-                if (_FileDialog != null)
-                    _FileDialog.Destroy();
-
                 Application.Init();
 
-                _FileDialog = new FileChooserDialog(
+                FileChooserDialog lFileDialog = new FileChooserDialog(
                        title: pDescription,
                        parent: null,
                        action: FileChooserAction.Open);
-
+                lFileDialog.FontOptions = null;
                 if (pRegexExtentions != null && pRegexExtentions.ToString().Contains("json"))
                 {
                     FileFilter lFilter = new FileFilter();
                     lFilter.Name = pDescription;
                     lFilter.AddPattern("*.json");
-                    _FileDialog.AddFilter(lFilter);
+                    lFileDialog.AddFilter(lFilter);
                 }
-                _FileDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
-                _FileDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
-                _FileDialog.SetCurrentFolder(pCurrentFolder);
+                lFileDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
+                lFileDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
+                lFileDialog.SetCurrentFolder(pCurrentFolder);
 
 
-                if (_FileDialog.Run() == (int)ResponseType.Ok)
+                if (lFileDialog.Run() == (int)ResponseType.Ok)
                 {
-                    lSelectedFile = _FileDialog.Filename;
+                    lSelectedFile = lFileDialog.Filename;
                 }
                 else
                     lSelectedFile = "-1";
-                _FileDialog.Destroy();
+                lFileDialog.Destroy();
 
             }
             catch (Exception)
@@ -73,7 +69,7 @@ namespace OpenDialog
                    parent: null,
                    action: FileChooserAction.SelectFolder
                 );
-
+                lDialog.FontOptions = null;
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Select").ToString(), ResponseType.Ok);
                 lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
@@ -84,8 +80,8 @@ namespace OpenDialog
                 }
                 else
                     lSelectedFolder = "-1";
+                lDialog.Dispose();
                 lDialog.Destroy();
-
             }
             catch (Exception)
             {

@@ -93,7 +93,7 @@
 
                                                     <ListBox
                                                         x:Name="JobsList"
-                                                        ItemsSource="{Binding JobManager.Jobs, Mode=TwoWay}"
+                                                        ItemsSource="{Binding Jobs, Mode=TwoWay}"
                                                         SelectionMode="Multiple">
                                                         <ListBox.Resources>
                                                             <Style TargetType="ListBoxItem">

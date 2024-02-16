@@ -1,5 +1,6 @@
 ﻿using LogsModels;
 using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace Stockage.Save
 {
@@ -47,8 +48,21 @@ namespace Stockage.Save
                 // cm - Check if the directory exist
                 if (Directory.Exists(_path) || pIsFullPath)
                 {
-                    // cm - Serialize data to json
-                    string jsonString = JsonConvert.SerializeObject(pData, Formatting.Indented, Options);
+                    string dataString = "";
+
+                    if (pExtention == "xml")
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(T));
+                        StringWriter stringWriter = new StringWriter();
+                        serializer.Serialize(stringWriter, pData);
+                        dataString = stringWriter.ToString();
+                        stringWriter.Close();
+                    }
+                    else
+                    {
+                        // cm - Serialize data to json
+                        dataString = JsonConvert.SerializeObject(pData, Formatting.Indented, Options);
+                    }
 
                     if (!pIsFullPath)
                         lPath = Path.Combine(_path, $"{pFileName}.{pExtention}");
@@ -58,11 +72,11 @@ namespace Stockage.Save
                     // cm - delete the file if exist
                     if (!pAppend)
                     {
-                        // cm - Write json data into the file
-                        File.WriteAllText(lPath, jsonString);
+                        // cm - Write json or xml data into the file
+                        File.WriteAllText(lPath, dataString);
                     }
                     if (pAppend)
-                        File.AppendAllText(lPath, jsonString);
+                        File.AppendAllText(lPath, dataString);
                 }
             }
             catch (Exception ex)

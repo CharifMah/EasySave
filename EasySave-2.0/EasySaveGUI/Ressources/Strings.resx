@@ -270,6 +270,18 @@
     <value></value>
   </data>
   <data name="Date" xml:space="preserve">
+      <value></value>
+   </data>
+  <data name="ChangeFormatLogs" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="FormatLogs" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SelectedFormatLogs" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="CurrentFormat" xml:space="preserve">
     <value></value>
   </data>
 </root>

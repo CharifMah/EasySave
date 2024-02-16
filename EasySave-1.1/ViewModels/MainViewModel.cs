@@ -7,10 +7,15 @@
     {
         private LangueViewModel _LangueVm;
         private JobViewModel _JobVm;
+        private FormatLogViewModel _FormatLogVm;
         /// <summary>
         /// View Model de la langue
         /// </summary>
         public LangueViewModel LangueVm { get => _LangueVm; set => _LangueVm = value; }
+        /// <summary>
+        /// View model des jobs
+        /// </summary>
+        public FormatLogViewModel FormatLogVm { get => _FormatLogVm; set => _FormatLogVm = value; }
         /// <summary>
         /// View model des jobs
         /// </summary>
@@ -22,6 +27,7 @@
         {
             Models.CSettings.Instance.LoadSettings();
             _LangueVm = new LangueViewModel();
+            _FormatLogVm = new FormatLogViewModel();
             _JobVm = new JobViewModel();
         }
     }

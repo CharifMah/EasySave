@@ -13,6 +13,7 @@ namespace Stockage.Save
         private int _TransferedFiles;
         private List<CLogState> _LogStates;
         private CLogState _LogState;
+        private string _FormatLog;
 
         /// <summary>
         /// Le nombre de fichier transférer
@@ -24,11 +25,12 @@ namespace Stockage.Save
         /// Constructeur de SauveJobs
         /// </summary>
         /// <param name="pPath">Le chemin du dossier</param>
-        public SauveJobsAsync(string pPath = null) : base(pPath)
+        public SauveJobsAsync(string pPath = null, string pFormatLog = "json") : base(pPath)
         {
             _LogStates = new List<CLogState>();
             _TransferedFiles = 0;
             _LogState = new CLogState();
+            _FormatLog = pFormatLog;
         }
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace Stockage.Save
             if (_LogStates.Contains(logState))
                 _LogStates.Remove(logState);
             _LogStates.Add(logState);
-            CLogger<List<CLogState>>.Instance.GenericLogger.Log(_LogStates, true, false);
+            CLogger<List<CLogState>>.Instance.GenericLogger.Log(_LogStates, true, false, "Logs", "", _FormatLog);
         }
 
         /// <summary>
@@ -98,7 +100,7 @@ namespace Stockage.Save
                             lLogFilesDaily.Date = DateTime.Now;
                             lLogFilesDaily.TotalSize = lFiles[i].Length;
                             lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
-                            CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName);
+                            CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName, "DailyLogs", _FormatLog);
                         }
                     }
                     else
@@ -120,7 +122,7 @@ namespace Stockage.Save
                         lLogFilesDaily.TotalSize = lFiles[i].Length;
                         lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
 
-                        CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName);
+                        CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName, "DailyLogs", _FormatLog);
                     }
                 }
 
@@ -136,7 +138,7 @@ namespace Stockage.Save
             }
             catch (Exception ex)
             {
-                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false, true, lName);
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false, true, lName, "", _FormatLog);
             }
         }
 

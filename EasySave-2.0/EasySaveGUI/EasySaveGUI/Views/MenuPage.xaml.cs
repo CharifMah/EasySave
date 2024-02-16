@@ -29,6 +29,7 @@ namespace EasySaveGUI.Views
             _MainVm = pMainVm;
             ListElements.IsVisible = false;
             LayoutAnchorableCreateJob.ToggleAutoHide();
+
             DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
             ListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;

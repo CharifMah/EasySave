@@ -182,6 +182,7 @@
                                             <StackPanel DataContext="{Binding JobVm}">
 
                                                 <TextBox x:Name="TextBoxName" Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
+                                                <!--  CustomTextBox+ButtonFolder  -->
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*" />
@@ -219,7 +220,6 @@
                                                         Style="{StaticResource CustomButtonFolder}" />
                                                 </Grid>
 
-
                                                 <ComboBox x:Name="PropertyComboBox" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=OneWay}">
                                                     <ComboBoxItem>COMPLET</ComboBoxItem>
                                                     <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
@@ -239,18 +239,53 @@
                                             Title="CreateJob"
                                             AutoHideMinWidth="400"
                                             CanClose="False"
-                                            CanHide="True"
+                                            CanHide="False"
                                             CanShowOnHover="False">
 
                                             <StackPanel DataContext="{Binding JobVm}">
 
-                                                <TextBox x:Name="TextBoxJobName" Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
+                                                <TextBox x:Name="TextBoxJobName" />
 
-                                                <TextBox x:Name="TextBoxJobSourceDirectory" Text="{Binding SelectedJob.SourceDirectory, Mode=TwoWay}" />
+                                                <!--  CustomTextBox+ButtonFolder  -->
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="0.1*" />
+                                                    </Grid.ColumnDefinitions>
 
-                                                <TextBox x:Name="TextBoxJobTargetDirectory" Text="{Binding SelectedJob.TargetDirectory, Mode=TwoWay}" />
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="*" />
+                                                    </Grid.RowDefinitions>
 
-                                                <ComboBox x:Name="PropertyJobType" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=TwoWay}">
+
+                                                    <TextBox
+                                                        x:Name="TextBoxJobSourceDirectory"
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Text="{Binding SelectedJob.SourceDirectory, Mode=OneTime}" />
+
+                                                    <Button
+                                                        Grid.Row="0"
+                                                        Grid.Column="1"
+                                                        Click="FolderSourcePropertyButton_Click"
+                                                        Style="{StaticResource CustomButtonFolder}" />
+
+                                                    <TextBox
+                                                        x:Name="TextBoxJobTargetDirectory"
+                                                        Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        Text="{Binding SelectedJob.TargetDirectory, Mode=OneTime}" />
+
+                                                    <Button
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Click="FolderTargetPropertyButton_Click"
+                                                        Style="{StaticResource CustomButtonFolder}" />
+                                                </Grid>
+
+
+                                                <ComboBox x:Name="PropertyJobType" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=OneTime}">
                                                     <ComboBoxItem>COMPLET</ComboBoxItem>
                                                     <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
                                                 </ComboBox>

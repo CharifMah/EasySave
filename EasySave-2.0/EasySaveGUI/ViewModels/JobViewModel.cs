@@ -35,7 +35,20 @@ namespace ViewModels
             }
         }
 
+        public ObservableCollection<CJob> Jobs
+        {
+            get
+            {
+                return _jobManager.Jobs;
+            }
+            set
+            {
+                _jobManager.Jobs = value;
+                NotifyPropertyChanged();
+            }
+        }
         public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; NotifyPropertyChanged(); } }
+
 
         private ObservableCollection<CJob> _jobsRunning;
 
@@ -65,10 +78,11 @@ namespace ViewModels
         /// </summary>
         /// <param name="pJobs">Liste des jobs à lancer</param>
         /// <returns> Liste mise à jour des jobs avec leur état après exécution </returns>
-        public async Task RunJobs(List<CJob> pJobs)
+        public async Task RunJobs(ObservableCollection<CJob> pJobs)
         {
-            JobsRunning = new ObservableCollection<CJob>(pJobs);
-            await _jobManager.RunJobs(_jobsRunning);           
+            JobsRunning = pJobs;
+            await _jobManager.RunJobs(pJobs);
+            NotifyPropertyChanged("Jobs");
         }
 
         /// <summary>
@@ -79,7 +93,7 @@ namespace ViewModels
         public bool CreateBackupJob(CJob lJob)
         {
             bool lResult = _jobManager.CreateBackupJob(lJob);
-            NotifyPropertyChanged("JobManager");
+            NotifyPropertyChanged("Jobs");
             return lResult;
         }
         /// <summary>
@@ -98,7 +112,7 @@ namespace ViewModels
         public void SaveJobs()
         {
             _jobManager.SaveJobs();
-            NotifyPropertyChanged("JobManager");
+            NotifyPropertyChanged("Jobs");
             NotifyPropertyChanged("SelectedJob");
         }
 
@@ -114,7 +128,7 @@ namespace ViewModels
             else
                 _jobManager = Models.CSettings.Instance.LoadJobsFile(pPath);
 
-            NotifyPropertyChanged("JobManager");
+            NotifyPropertyChanged("Jobs");
         }
     }
 }

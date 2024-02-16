@@ -1,7 +1,6 @@
 ﻿using LogsModels;
 using Stockage.Logs;
 using System.Diagnostics;
-using System.Drawing;
 
 namespace Stockage.Save
 {
@@ -34,18 +33,6 @@ namespace Stockage.Save
         }
 
         /// <summary>
-        /// UpdateLog
-        /// </summary>
-        /// <param name="logState">Log a jour</param>
-        public void UpdateLog(CLogState logState)
-        {
-            if (_LogStates.Contains(logState))
-                _LogStates.Remove(logState);
-            _LogStates.Add(logState);
-            CLogger<List<CLogState>>.Instance.GenericLogger.Log(_LogStates, true, false, "Logs", "", _FormatLog);
-        }
-
-        /// <summary>
         /// Copy files and directory from the source path to the destinationPath
         /// </summary>
         /// <param name="pSourceDir">Path of the directory you want tot copy</param>
@@ -67,8 +54,6 @@ namespace Stockage.Save
                 Directory.CreateDirectory(pTargetDir.FullName);
                 FileInfo[] lFiles = pSourceDir.GetFiles();
 
-
-
                 // cm - Get files in the source directory and copy to the destination directory
                 for (int i = 0; i < lFiles.Length; i++)
                 {
@@ -85,14 +70,15 @@ namespace Stockage.Save
 
                         if (lFiles[i].LastWriteTime > destInfo.LastWriteTime)
                         {
+                            // cm -  Copy the file async if the target file is newer
                             await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
+
                             lSw.Stop();
                             _LogState.SourceDirectory = lFiles[i].FullName;
                             _LogState.TargetDirectory = lTargetFilePath;
                             _LogState.RemainingFiles = _LogState.EligibleFileCount - _TransferedFiles;
                             _LogState.BytesCopied += lFiles[i].Length;
-                            _LogState.Progress = (_LogState.BytesCopied / _LogState.TotalSize) * 100;
-                            UpdateLog(_LogState);
+                            _LogState.Progress = _LogState.BytesCopied / _LogState.TotalSize * 100;
                             CLogDaily lLogFilesDaily = new CLogDaily();
                             lLogFilesDaily.Name = "Update : " + lFiles[i].Name;
                             lLogFilesDaily.SourceDirectory = lFiles[i].FullName;
@@ -100,11 +86,17 @@ namespace Stockage.Save
                             lLogFilesDaily.Date = DateTime.Now;
                             lLogFilesDaily.TotalSize = lFiles[i].Length;
                             lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
+                            await Task.Run(() =>
+                            {
+                                CLogger<List<CLogState>>.Instance.GenericLogger.Log(_LogStates, true, false, "Logs", "", _FormatLog);
+
+                            });
                             CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName, "DailyLogs", _FormatLog);
                         }
                     }
                     else
                     {
+                        // cm -  Copy the file async
                         await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
 
                         lSw.Stop();
@@ -112,8 +104,7 @@ namespace Stockage.Save
                         _LogState.TargetDirectory = lTargetFilePath;
                         _LogState.RemainingFiles = _LogState.EligibleFileCount - _TransferedFiles;
                         _LogState.BytesCopied += lFiles[i].Length;
-                        _LogState.Progress = (_LogState.BytesCopied / _LogState.TotalSize) * 100;
-                        UpdateLog(_LogState);
+                        _LogState.Progress = _LogState.BytesCopied / _LogState.TotalSize * 100;
                         CLogDaily lLogFilesDaily = new CLogDaily();
                         lLogFilesDaily.Name = lFiles[i].Name;
                         lLogFilesDaily.SourceDirectory = lFiles[i].FullName;
@@ -122,7 +113,13 @@ namespace Stockage.Save
                         lLogFilesDaily.TotalSize = lFiles[i].Length;
                         lLogFilesDaily.TransfertTime = lSw.Elapsed.TotalMilliseconds;
 
+                        await Task.Run(() => 
+                        { 
+                            CLogger<List<CLogState>>.Instance.GenericLogger.Log(_LogStates, true, false, "Logs", "", _FormatLog);
+
+                        });
                         CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, lName, "DailyLogs", _FormatLog);
+
                     }
                 }
 
@@ -144,13 +141,9 @@ namespace Stockage.Save
 
         public async Task CopyFileAsync(string sourcePath, string destinationPath)
         {
-            using (Stream source = File.OpenRead(sourcePath))
-            {
-                using (Stream destination = File.Create(destinationPath))
-                {
-                    await source.CopyToAsync(destination);
-                }
-            }
+            using Stream source = File.OpenRead(sourcePath);
+            using Stream destination = File.Create(destinationPath);
+            await source.CopyToAsync(destination);
         }
 
         /// <summary>

@@ -3,8 +3,8 @@ using Models.Backup;
 using OpenDialog;
 using Ressources;
 using Stockage.Logs;
-using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -44,7 +44,7 @@ namespace EasySaveGUI.Views
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
                 ClearList();
-                await _MainVm.JobVm.RunJobs(lSelectedJobs);
+                await _MainVm.JobVm.RunJobs(new ObservableCollection<CJob>(lSelectedJobs));
             }
         }
 
@@ -67,8 +67,6 @@ namespace EasySaveGUI.Views
         {
             _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;
             PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
-
-            PropertyButtonCreateJob.Visibility = Visibility.Hidden;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -89,25 +87,21 @@ namespace EasySaveGUI.Views
             CLogger<CLogBase>.Instance.GenericLogger.Clear();
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
-        {
-            PropertyButtonCreateJob.Visibility = Visibility.Visible;
-        }
-
         private void CreateJobButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainVm.JobVm.CreateBackupJob(new CJob(TextBoxName.Text, TextBoxSourceDirectory.Text, TextBoxTargetDirectory.Text, (ETypeBackup)PropertyComboBox.SelectedIndex));
+            _MainVm.JobVm.CreateBackupJob(new CJob(TextBoxJobName.Text,
+                TextBoxJobSourceDirectory.Text, TextBoxJobTargetDirectory.Text, (ETypeBackup)ComboboxCreateJob.SelectedIndex));
             LayoutAnchorableCreateJob.ToggleAutoHide();
         }
 
         private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)
         {
-            TextBoxSourceDirectory.Text = CDialog.ReadFolder("SourceDir");
+            TextBoxJobSourceDirectory.Text = CDialog.ReadFolder("SourceDir");
         }
 
         private void FolderTargetPropertyButton_Click(object sender, RoutedEventArgs e)
         {
-            TextBoxTargetDirectory.Text = CDialog.ReadFolder("TargetDir");
+            TextBoxJobTargetDirectory.Text = CDialog.ReadFolder("TargetDir");
         }
     }
 }

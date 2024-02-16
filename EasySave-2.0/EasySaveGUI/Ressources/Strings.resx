@@ -269,6 +269,9 @@
   <data name="IsActive" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Date" xml:space="preserve">
+      <value></value>
+   </data>
   <data name="ChangeFormatLogs" xml:space="preserve">
     <value></value>
   </data>

@@ -98,6 +98,7 @@ namespace ViewModels
         {
             _jobManager.SaveJobs();
             NotifyPropertyChanged("JobManager");
+            NotifyPropertyChanged("SelectedJob");
         }
 
         /// <summary>

@@ -1,6 +1,8 @@
 ﻿using LogsModels;
 using Stockage.Logs;
 using System.Diagnostics;
+using System.Drawing;
+
 namespace Stockage.Save
 {
     /// <summary>
@@ -57,13 +59,16 @@ namespace Stockage.Save
 
             try
             {
+
                 // cm - Check if the source directory exists
                 if (!pSourceDir.Exists)
                     throw new DirectoryNotFoundException($"Source directory not found: {pSourceDir.FullName}");
 
                 Directory.CreateDirectory(pTargetDir.FullName);
                 FileInfo[] lFiles = pSourceDir.GetFiles();
-                
+
+
+
                 // cm - Get files in the source directory and copy to the destination directory
                 for (int i = 0; i < lFiles.Length; i++)
                 {
@@ -85,6 +90,8 @@ namespace Stockage.Save
                             _LogState.SourceDirectory = lFiles[i].FullName;
                             _LogState.TargetDirectory = lTargetFilePath;
                             _LogState.RemainingFiles = _LogState.EligibleFileCount - _TransferedFiles;
+                            _LogState.BytesCopied += lFiles[i].Length;
+                            _LogState.Progress = (_LogState.BytesCopied / _LogState.TotalSize) * 100;
                             UpdateLog(_LogState);
                             CLogDaily lLogFilesDaily = new CLogDaily();
                             lLogFilesDaily.Name = "Update : " + lFiles[i].Name;
@@ -104,6 +111,8 @@ namespace Stockage.Save
                         _LogState.SourceDirectory = lFiles[i].FullName;
                         _LogState.TargetDirectory = lTargetFilePath;
                         _LogState.RemainingFiles = _LogState.EligibleFileCount - _TransferedFiles;
+                        _LogState.BytesCopied += lFiles[i].Length;
+                        _LogState.Progress = (_LogState.BytesCopied / _LogState.TotalSize) * 100;
                         UpdateLog(_LogState);
                         CLogDaily lLogFilesDaily = new CLogDaily();
                         lLogFilesDaily.Name = lFiles[i].Name;

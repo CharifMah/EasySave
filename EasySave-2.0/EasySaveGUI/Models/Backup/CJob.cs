@@ -44,10 +44,9 @@ namespace Models.Backup
         /// Type de sauvegarde
         /// </summary>
         public ETypeBackup BackupType { get => _BackupType; set => _BackupType = value; }
-        /// <summary>
-        /// LogState
-        /// </summary>
-        public CLogState LogState { get => _LogState; set => _LogState = value; }
+        public SauveJobsAsync SauveJobs { get => _SauveJobs; set => _SauveJobs = value; }
+
+        private SauveJobsAsync _SauveJobs;
 
         #endregion
 
@@ -77,6 +76,7 @@ namespace Models.Backup
         /// <param name="pSauveJobs">Objet de sauvegarde des données de jobs</param>
         public async Task Run(SauveJobsAsync pSauveJobs)
         {
+            _SauveJobs = pSauveJobs;
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:

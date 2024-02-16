@@ -14,7 +14,7 @@ namespace ViewModels
         public CLangue Langue
         {
             get => _Langue;
-            set => _Langue = value;
+            set { _Langue = value; NotifyPropertyChanged(); }
         }
         /// <summary>
         /// Constructeur de la LangueViewModel
@@ -22,7 +22,8 @@ namespace ViewModels
         public LangueViewModel()
         {
             _Langue = CSettings.Instance.Langue;
-            SetLanguage(_Langue.SelectedCulture);
+            SetLanguage(_Langue.SelectedCulture.Value);
+            NotifyPropertyChanged("Langue");
         }
         /// <summary>
         /// Set the current language
@@ -33,6 +34,7 @@ namespace ViewModels
         {
             bool result = _Langue.SetLanguage(pCultureInfo);
             Models.CSettings.Instance.SaveSettings();
+            NotifyPropertyChanged("Langue");
             return result;
         }
     }

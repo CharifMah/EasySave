@@ -289,6 +289,9 @@
   <data name="IsActive" xml:space="preserve">
     <value>Est en cours</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+     </data>
   <data name="ChangeFormatLogs" xml:space="preserve">
     <value>Changer le format des fichiers de logs en JSON/XML</value>
   </data>

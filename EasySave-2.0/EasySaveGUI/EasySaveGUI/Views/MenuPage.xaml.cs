@@ -22,10 +22,10 @@ namespace EasySaveGUI.Views
         private MainViewModel _MainVm;
         #endregion
 
-        public MenuPage()
+        public MenuPage(MainViewModel pMainVm)
         {
             InitializeComponent();
-            _MainVm = new MainViewModel();
+            _MainVm = pMainVm;
             ListElements.IsVisible = false;
 
             DataContext = _MainVm;
@@ -41,17 +41,15 @@ namespace EasySaveGUI.Views
                 System.Collections.IList lJobs = JobsList.SelectedItems;
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
-                CLogger<CLogBase>.Instance.Clear();
+                ClearList();
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
             }
         }
-
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
             ListElements.Show();
         }
-
 
         private void LoadConfigDefaultFileButton_Click(object sender, RoutedEventArgs e)
         {
@@ -63,8 +61,6 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), System.IO.Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
         }
 
-
-
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;
@@ -73,11 +69,20 @@ namespace EasySaveGUI.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            CLogger<CLogBase>.Instance.StringLogger.Log("Update failed", false);
+            _MainVm.JobVm.SelectedJob.Name = TextBoxName.Text;
+            _MainVm.JobVm.SelectedJob.SourceDirectory = TextBoxSourceDirectory.Text;
+            _MainVm.JobVm.SelectedJob.TargetDirectory = TextBoxTargetDirectory.Text;
+            _MainVm.JobVm.SelectedJob.BackupType = (ETypeBackup)PropertyComboBox.SelectedIndex;
+
             _MainVm.JobVm.SaveJobs();
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            ClearList();
+        }
+
+        private void ClearList()
         {
             if (!ListLogs.Items.IsInUse)
                 ListLogs.Items.Clear();

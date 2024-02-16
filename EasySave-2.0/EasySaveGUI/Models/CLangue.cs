@@ -7,16 +7,16 @@ namespace Models
     /// Classe de la langue de l'application
     /// </summary>
     [DataContract]
-    public class CLangue
+    public class CLangue 
     {
         private Dictionary<int, string> _Languages;
         [DataMember]
-        private string _SelectedCulture;
+        private KeyValuePair<int, string> _SelectedCulture;
         /// <summary>
         /// Dictionnaire de langues disponible dans l'application
         /// </summary>
         public Dictionary<int, string> Languages { get => _Languages; set => _Languages = value; }
-        public string SelectedCulture { get => _SelectedCulture; set => _SelectedCulture = value; }
+        public KeyValuePair<int,string> SelectedCulture { get => _SelectedCulture; set => _SelectedCulture = value; }
 
         /// <summary>
         /// Initialize the language with the installed culture of the operating system
@@ -25,10 +25,10 @@ namespace Models
         {
             _Languages = new Dictionary<int, string>()
             {
-              {1, "fr"},
-              {2, "en-US"}
+              {0, "fr"},
+              {1, "en-US"}
             };
-            _SelectedCulture = CultureInfo.InstalledUICulture.ToString();
+            _SelectedCulture = _Languages.First(l => l.Value.Contains(CultureInfo.InstalledUICulture.ToString()[0..2]));
         }
 
         /// <summary>
@@ -39,8 +39,8 @@ namespace Models
         public bool SetLanguage(string pCultureInfo)
         {
             bool result = false;
-            _SelectedCulture = pCultureInfo;
-            CultureInfo lCultureInfo = CultureInfo.GetCultureInfo(pCultureInfo);
+            _SelectedCulture = _Languages.First(l => l.Value.Contains(pCultureInfo));
+            CultureInfo lCultureInfo = CultureInfo.GetCultureInfo(_SelectedCulture.Value);
             if (Thread.CurrentThread.CurrentUICulture != lCultureInfo)
             {
                 Thread.CurrentThread.CurrentUICulture = lCultureInfo;

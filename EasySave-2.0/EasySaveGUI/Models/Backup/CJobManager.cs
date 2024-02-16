@@ -1,4 +1,6 @@
-﻿using Stockage.Save;
+﻿using LogsModels;
+using Stockage.Logs;
+using Stockage.Save;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 namespace Models.Backup
@@ -48,6 +50,7 @@ namespace Models.Backup
             _Name = "JobManager";
             _Jobs = new List<CJob>();
             _MaxJobs = 5;
+            SauveJobsAsync _SauveJobs = new SauveJobsAsync();
             if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
             {
                 _SauveCollection = new SauveCollection(new FileInfo(CSettings.Instance.JobDefaultConfigPath).DirectoryName);
@@ -101,13 +104,24 @@ namespace Models.Backup
         /// </returns>
         public async Task RunJobs(ObservableCollection<CJob> pJobs)
         {
-            SauveJobsAsync lSauveJobs = new SauveJobsAsync();
-            // cm - Lance les jobs
-            foreach (CJob lJob in pJobs)
+            try
             {
-                lSauveJobs.TransferedFiles = 0;
-                await lJob.Run(lSauveJobs);
+                // cm - Lance les jobs
+                foreach (CJob lJob in pJobs)
+                {
+                    SauveJobsAsync _SauveJobs = new SauveJobsAsync();
+                    _SauveJobs.TransferedFiles = 0;
+                    _SauveJobs.LogState.BytesCopied = 0;
+                    _SauveJobs.LogState.TotalSize = Directory.GetFiles(lJob.SourceDirectory, "*", SearchOption.AllDirectories)
+                       .Sum(file => new FileInfo(file).Length);
+                    await lJob.Run(_SauveJobs);
+                }
             }
+            catch (Exception ex)
+            {
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+            }
+
         }
 
         /// <summary>

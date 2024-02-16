@@ -24,7 +24,7 @@ namespace EasySave.Views
         public JobView(JobViewModel pJobVm)
         {
             _JobVm = pJobVm;
-            CLogger<CLogBase>.Instance.GenericLogger.Datas.CollectionChanged += LogGenericData_CollectionChanged;
+            CLogger<CLogDaily>.Instance.GenericLogger.Datas.CollectionChanged += LogGenericData_CollectionChanged;
             CLogger<CLogBase>.Instance.StringLogger.Datas.CollectionChanged += LogStringData_CollectionChanged;
         }
         #endregion
@@ -467,7 +467,7 @@ namespace EasySave.Views
         {
             if (e.NewItems.Count >= 1)
             {
-                CLogBase lLogFileState = (sender as ObservableCollection<CLogBase>).Last();
+                CLogBase lLogFileState = (sender as ObservableCollection<CLogDaily>).Last();
                 ConsoleExtention.WriteTitle(lLogFileState.Name);
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write($"\n{Strings.ResourceManager.GetObject("SourceDirectory")}");

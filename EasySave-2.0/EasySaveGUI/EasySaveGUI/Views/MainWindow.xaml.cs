@@ -1,8 +1,12 @@
 ﻿using EasySaveGUI.Views;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Navigation;
+using ViewModels;
 
 namespace EasySaveGUI
 {
@@ -18,11 +22,13 @@ namespace EasySaveGUI
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
         #endregion
-
+        private MainViewModel _MainVm;
         public MainWindow()
         {
             InitializeComponent();
-            frame.Navigate(new MenuPage());
+            _MainVm = new MainViewModel();
+            this.DataContext = _MainVm;
+            frame.Navigate(new MenuPage(_MainVm));
         }
 
         // Event handler for title bar mouse left button down event
@@ -73,6 +79,31 @@ namespace EasySaveGUI
                     WindowState = WindowState.Normal;
                 else
                     WindowState = WindowState.Maximized;
+            }
+        }
+
+        private void ComboBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ComboBox lComboBox = (sender as ComboBox);
+
+            lComboBox.IsDropDownOpen = true;
+        }
+
+        private void ComboBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ComboBox lComboBox = (sender as ComboBox);
+
+            lComboBox.IsDropDownOpen = false;
+        }
+
+        private void ComboBoxLang_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+          
+            if (e.AddedItems.Count > 0)
+            {
+                _MainVm.LangueVm.SetLanguage(e.AddedItems[0].ToString()[0..2]);
+                // cm - Recharger la page
+                frame.Navigate(new MenuPage(_MainVm));
             }
         }
     }

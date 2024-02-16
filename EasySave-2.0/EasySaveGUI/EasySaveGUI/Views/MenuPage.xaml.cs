@@ -71,7 +71,11 @@ namespace EasySaveGUI.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            CLogger<CLogBase>.Instance.StringLogger.Log("Update failed", false);
+            _MainVm.JobVm.SelectedJob.Name = TextBoxName.Text;
+            _MainVm.JobVm.SelectedJob.SourceDirectory = TextBoxSourceDirectory.Text;
+            _MainVm.JobVm.SelectedJob.TargetDirectory = TextBoxTargetDirectory.Text;
+            _MainVm.JobVm.SelectedJob.BackupType = (ETypeBackup)PropertyComboBox.SelectedIndex;
+
             _MainVm.JobVm.SaveJobs();
         }
 

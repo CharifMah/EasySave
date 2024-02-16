@@ -176,11 +176,11 @@
 
                                             <StackPanel DataContext="{Binding JobVm}">
 
-                                                <TextBox Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
+                                                <TextBox x:Name="TextBoxName" Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
 
-                                                <TextBox Text="{Binding SelectedJob.SourceDirectory, Mode=TwoWay}" />
+                                                <TextBox x:Name="TextBoxSourceDirectory" Text="{Binding SelectedJob.SourceDirectory, Mode=TwoWay}" />
 
-                                                <TextBox Text="{Binding SelectedJob.TargetDirectory, Mode=TwoWay}" />
+                                                <TextBox x:Name="TextBoxTargetDirectory" Text="{Binding SelectedJob.TargetDirectory, Mode=TwoWay}" />
 
                                                 <ComboBox x:Name="PropertyComboBox" SelectedItem="{Binding SelectedJob.BackupType, Mode=TwoWay}">
                                                     <ComboBoxItem>Full</ComboBoxItem>
@@ -232,25 +232,25 @@
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock FontWeight="Bold" Text="Fichiers restants : " />
 
-                                                                    <TextBlock Text="{Binding Path=LogState.RemainingFiles}" />
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.RemainingFiles}" />
                                                                 </StackPanel>
 
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock FontWeight="Bold" Text="Octets copiés : " />
 
-                                                                    <TextBlock Text="{Binding Path=LogState.BytesCopied}" />
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.BytesCopied}" />
                                                                 </StackPanel>
 
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock FontWeight="Bold" Text="SourceDirectory : " />
 
-                                                                    <TextBlock Text="{Binding Path=LogState.SourceDirectory}" />
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory}" />
                                                                 </StackPanel>
 
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock FontWeight="Bold" Text="TargetDirectory : " />
 
-                                                                    <TextBlock Text="{Binding Path=LogState.TargetDirectory}" />
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory}" />
                                                                 </StackPanel>
 
                                                             </StackPanel>
@@ -269,7 +269,8 @@
                                                                 HorizontalAlignment="Stretch"
                                                                 VerticalAlignment="Stretch"
                                                                 Maximum="100"
-                                                                Value="{Binding Path=LogState.Progress, Mode=OneWay}" />
+                                                                x:Name="MyProgressBar"
+                                                                Value="{Binding Path=SauveJobs.LogState.Progress, Mode=TwoWay}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
 

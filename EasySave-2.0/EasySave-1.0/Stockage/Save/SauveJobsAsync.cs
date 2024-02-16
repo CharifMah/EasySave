@@ -89,8 +89,6 @@ namespace Stockage.Save
                             _LogState.SourceDirectory = lFiles[i].FullName;
                             _LogState.TargetDirectory = lTargetFilePath;
                             _LogState.RemainingFiles = _LogState.EligibleFileCount - _TransferedFiles;
-                            _LogState.BytesCopied += lFiles[i].Length;
-                            _LogState.Progress = _LogState.BytesCopied / _LogState.TotalSize * 100;
                             UpdateLog(_LogState);
                             CLogDaily lLogFilesDaily = new CLogDaily();
                             lLogFilesDaily.Name = "Update : " + lFiles[i].Name;
@@ -110,8 +108,6 @@ namespace Stockage.Save
                         _LogState.SourceDirectory = lFiles[i].FullName;
                         _LogState.TargetDirectory = lTargetFilePath;
                         _LogState.RemainingFiles = _LogState.EligibleFileCount - _TransferedFiles;
-                        _LogState.BytesCopied += lFiles[i].Length;
-                        _LogState.Progress = _LogState.BytesCopied / _LogState.TotalSize * 100;
                         UpdateLog(_LogState);
                         CLogDaily lLogFilesDaily = new CLogDaily();
                         lLogFilesDaily.Name = lFiles[i].Name;

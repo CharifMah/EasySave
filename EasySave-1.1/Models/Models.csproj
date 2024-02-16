@@ -6,6 +6,5 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EasySave-2.0\EasySaveGUI\Stockage\Stockage.csproj" />
-    <ProjectReference Include="..\Logs\LogsModels.csproj" />
   </ItemGroup>
 </Project>

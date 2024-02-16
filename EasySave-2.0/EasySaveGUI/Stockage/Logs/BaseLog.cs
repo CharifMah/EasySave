@@ -32,7 +32,7 @@ namespace Stockage.Logs
             if (pSerialize)
             {
                 string lAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                string lLogsFolder = Path.Combine(lAppDataFolder, "Logs");
+                string lLogsFolder = Path.Combine(lAppDataFolder, "EasySave");
                 string lPath = string.IsNullOrEmpty(pFolderName) ? lLogsFolder : Path.Combine(lLogsFolder, pFolderName);
 
 

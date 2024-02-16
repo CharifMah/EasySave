@@ -41,7 +41,7 @@ namespace EasySaveGUI.Views
                 System.Collections.IList lJobs = JobsList.SelectedItems;
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
-                CLogger<CLogBase>.Instance.Clear();
+                ClearList();
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
             }
         }
@@ -80,6 +80,11 @@ namespace EasySaveGUI.Views
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            ClearList();
+        }
+
+        private void ClearList()
         {
             if (!ListLogs.Items.IsInUse)
                 ListLogs.Items.Clear();

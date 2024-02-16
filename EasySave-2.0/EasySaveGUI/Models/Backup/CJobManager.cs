@@ -116,7 +116,6 @@ namespace Models.Backup
                        .Sum(file => new FileInfo(file).Length);
                     await lJob.Run(_SauveJobs);
                 }
-                pJobs.Clear();
             }
             catch (Exception ex)
             {

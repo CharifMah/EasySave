@@ -219,6 +219,21 @@
 
                                                 <DataGridTextColumn Binding="{Binding Path=Name}" Header="Nom" />
 
+                                                <DataGridTemplateColumn Header="Progress">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ProgressBar
+                       MinWidth="200"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       Maximum="100"
+                       x:Name="MyProgressBar"
+                       Value="{Binding Path=SauveJobs.LogState.Progress, Mode=TwoWay}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+
+                                                </DataGridTemplateColumn>
+
                                                 <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="Répertoire source" />
 
                                                 <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
@@ -261,20 +276,7 @@
 
                                                 </DataGridTemplateColumn>
 
-                                                <DataGridTemplateColumn Header="Progress">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ProgressBar
-                                                                MinWidth="200"
-                                                                HorizontalAlignment="Stretch"
-                                                                VerticalAlignment="Stretch"
-                                                                Maximum="100"
-                                                                x:Name="MyProgressBar"
-                                                                Value="{Binding Path=SauveJobs.LogState.Progress, Mode=TwoWay}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
 
-                                                </DataGridTemplateColumn>
 
                                             </DataGrid.Columns>
 

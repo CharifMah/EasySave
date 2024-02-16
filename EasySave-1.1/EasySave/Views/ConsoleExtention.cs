@@ -193,7 +193,7 @@ namespace EasySave.Views
                 Console.WriteLine(pDescription);
                 if (CDialog.CheckIfGuiExist())
                 {
-                    CDialog.ReadFolder(pDescription);
+                    lSelectedFolder = CDialog.ReadFolder(pDescription);
                 }
                 else
                 {
@@ -223,7 +223,7 @@ namespace EasySave.Views
                 Console.WriteLine(pDescription);
                 if (CDialog.CheckIfGuiExist())
                 {
-                    CDialog.ReadFile(pDescription, pRegexExtentions, pCurrentFolder);
+                    lSelectedFile = CDialog.ReadFile(pDescription, pRegexExtentions, pCurrentFolder);
                 }
                 else
                 {

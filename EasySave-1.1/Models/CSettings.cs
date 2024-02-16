@@ -21,13 +21,19 @@ namespace Models
         private string _JobConfigFolderPath;
         [DataMember]
         private CLangue _Langue;
-
+        [DataMember]
+        private CFormatLog _FormatLog;
         #endregion
 
         /// <summary>
         /// Langue préférer de l'utilisateur
         /// </summary>
         public CLangue Langue { get => _Langue; set => _Langue = value; }
+
+        /// <summary>
+        /// Format de logs
+        /// </summary>
+        public CFormatLog FormatLog { get => _FormatLog; set => _FormatLog = value; }
 
         /// <summary>
         /// Emplacement du répertoire dans lequel le fichier de configuration du travail est stocké
@@ -97,6 +103,9 @@ namespace Models
             {
                 if (_Instance.Langue == null)
                     _Instance.Langue = new CLangue();
+
+                if(_Instance.FormatLog == null)
+                    _Instance.FormatLog = new CFormatLog();
             }
         }
 

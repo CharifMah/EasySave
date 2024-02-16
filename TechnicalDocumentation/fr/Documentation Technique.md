@@ -18,6 +18,13 @@ Cette version initie le développement d'une application console .NET Core pour 
 * .NET Core 6.0
 * Visual Studio 2022
 
+## Restorer le projet 
+
+![alt text](images/imageError.png)
+
+Pour résoudre ce problème, veuillez restaurer tous les projets.
+1. Ouvrir powershell
+2. utiliser la commande suivante dans le répertoire du projet ```dotnet restore .```
 ## Executer Easy Save
 #### Windows
 Lancer EasySave.exe dans le répertoire ``../G4-FISA-24/EasySave-G4-FISA-24/EasySave/bin/Debug/net6.0/EasySave.exe``.

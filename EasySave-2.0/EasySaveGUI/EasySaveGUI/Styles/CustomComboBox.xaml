@@ -9,13 +9,14 @@
             <Border
                 x:Name="Border"
                 Grid.ColumnSpan="2"
-                Background="Transparent"
+                Background="Black"
                 BorderBrush="#658EE6"
                 CornerRadius="0" />
             <Border
                 Grid.Column="0"
                 Margin="1"
-                Background="Transparent" />
+                Background="AliceBlue"
+                Opacity="0.9" />
             <Path
                 x:Name="Arrow"
                 Grid.Column="1"
@@ -154,10 +155,11 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="Wheat" />
+                            <Setter TargetName="Border" Property="Background" Value="AliceBlue" />
+                            <Setter Property="Foreground" Value="Black" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="Wheat" />
+                            <Setter Property="Foreground" Value="Black" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

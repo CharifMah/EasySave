@@ -3,6 +3,7 @@ using Models.Backup;
 using OpenDialog;
 using Ressources;
 using Stockage.Logs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -27,7 +28,7 @@ namespace EasySaveGUI.Views
             InitializeComponent();
             _MainVm = pMainVm;
             ListElements.IsVisible = false;
-
+            LayoutAnchorableCreateJob.ToggleAutoHide();
             DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
             ListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
@@ -65,15 +66,12 @@ namespace EasySaveGUI.Views
         {
             _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;
             PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
+
+            PropertyButtonCreateJob.Visibility = Visibility.Hidden;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainVm.JobVm.SelectedJob.Name = TextBoxName.Text;
-            _MainVm.JobVm.SelectedJob.SourceDirectory = TextBoxSourceDirectory.Text;
-            _MainVm.JobVm.SelectedJob.TargetDirectory = TextBoxTargetDirectory.Text;
-            _MainVm.JobVm.SelectedJob.BackupType = (ETypeBackup)PropertyComboBox.SelectedIndex;
-
             _MainVm.JobVm.SaveJobs();
         }
 
@@ -88,6 +86,27 @@ namespace EasySaveGUI.Views
                 ListLogs.Items.Clear();
 
             CLogger<CLogBase>.Instance.GenericLogger.Clear();
+        }
+
+        private void Create_Click(object sender, RoutedEventArgs e)
+        {
+            PropertyButtonCreateJob.Visibility = Visibility.Visible;
+        }
+
+        private void CreateJobButton_Click(object sender, RoutedEventArgs e)
+        {
+            _MainVm.JobVm.CreateBackupJob(new CJob(TextBoxName.Text, TextBoxSourceDirectory.Text, TextBoxTargetDirectory.Text, (ETypeBackup)PropertyComboBox.SelectedIndex));
+            LayoutAnchorableCreateJob.ToggleAutoHide();
+        }
+
+        private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxSourceDirectory.Text = CDialog.ReadFolder("SourceDir");
+        }
+
+        private void FolderTargetPropertyButton_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxTargetDirectory.Text = CDialog.ReadFolder("TargetDir");
         }
     }
 }

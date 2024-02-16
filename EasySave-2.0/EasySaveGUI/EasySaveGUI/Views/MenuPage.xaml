@@ -48,7 +48,7 @@
                 <LayoutRoot>
                     <LayoutPanel Orientation="Horizontal">
 
-                        <!--  Elements Pane  -->
+                        <!--  Elements Pane Left  -->
                         <LayoutAnchorablePane AllowDuplicateContent="False" DockMinWidth="150">
 
                             <LayoutAnchorable
@@ -56,15 +56,16 @@
                                 Title="Elements"
                                 CanAutoHide="True"
                                 CanClose="False">
+                                <!--  MenuButtons  -->
                                 <StackPanel VerticalAlignment="Center">
                                     <Button
                                         Click="LoadConfigDefaultFileButton_Click"
                                         Content="{x:Static Ressources:Strings.DefaultFile}"
-                                        Style="{StaticResource CustomButton}" />
+                                        Style="{StaticResource CustomButtonFile}" />
                                     <Button
                                         Click="LoadConfigFileButton_Click"
                                         Content="{x:Static Ressources:Strings.SelectConfigurationFile}"
-                                        Style="{StaticResource CustomButton}" />
+                                        Style="{StaticResource CustomButtonFile}" />
                                     <Button
                                         x:Name="ButtonRunJobs"
                                         Click="RunJobsButton_Click"
@@ -75,6 +76,11 @@
                                         Click="Clear_Click"
                                         Content="{x:Static Ressources:Strings.ClearConsole}"
                                         Style="{StaticResource CustomButton}" />
+                                    <Button
+                                        x:Name="Create"
+                                        Click="Create_Click"
+                                        Content="{x:Static Ressources:Strings.CreateJob}"
+                                        Style="{StaticResource CustomButton}" />
                                 </StackPanel>
                             </LayoutAnchorable>
 
@@ -82,8 +88,9 @@
 
                         <LayoutPanel Orientation="Vertical">
 
+                            <!--  Jobs Pane  -->
                             <LayoutPanel Orientation="Horizontal">
-
+                                <!--  Jobs Pane  -->
                                 <LayoutDocumentPaneGroup Orientation="Horizontal">
 
                                     <LayoutDocumentPaneGroup DockWidth="200" Orientation="Vertical">
@@ -160,10 +167,11 @@
 
                                 </LayoutDocumentPaneGroup>
 
+                                <!--  Property Pane  -->
                                 <LayoutAnchorablePaneGroup DockWidth="120">
 
                                     <!--  Property Pane  -->
-                                    <LayoutAnchorablePane>
+                                    <LayoutAnchorablePane DockMinWidth="200">
 
                                         <LayoutAnchorable
                                             x:Name="PropertyPane"
@@ -174,23 +182,88 @@
                                             <StackPanel DataContext="{Binding JobVm}">
 
                                                 <TextBox x:Name="TextBoxName" Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="0.1*" />
+                                                    </Grid.ColumnDefinitions>
 
-                                                <TextBox x:Name="TextBoxSourceDirectory" Text="{Binding SelectedJob.SourceDirectory, Mode=TwoWay}" />
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="*" />
+                                                    </Grid.RowDefinitions>
 
-                                                <TextBox x:Name="TextBoxTargetDirectory" Text="{Binding SelectedJob.TargetDirectory, Mode=TwoWay}" />
 
-                                                <ComboBox x:Name="PropertyComboBox" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=TwoWay}">
+                                                    <TextBox
+                                                        x:Name="TextBoxSourceDirectory"
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Text="{Binding SelectedJob.SourceDirectory, Mode=OneWay}" />
+
+                                                    <Button
+                                                        Grid.Row="0"
+                                                        Grid.Column="1"
+                                                        Click="FolderSourcePropertyButton_Click"
+                                                        Style="{StaticResource CustomButtonFolder}" />
+
+                                                    <TextBox
+                                                        x:Name="TextBoxTargetDirectory"
+                                                        Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        Text="{Binding SelectedJob.TargetDirectory, Mode=OneWay}" />
+
+                                                    <Button
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Click="FolderTargetPropertyButton_Click"
+                                                        Style="{StaticResource CustomButtonFolder}" />
+                                                </Grid>
+
+
+                                                <ComboBox x:Name="PropertyComboBox" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=OneWay}">
                                                     <ComboBoxItem>COMPLET</ComboBoxItem>
                                                     <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
                                                 </ComboBox>
-
-                                                <Button Click="SaveButton_Click">Save</Button>
 
                                             </StackPanel>
 
                                         </LayoutAnchorable>
 
+                                    </LayoutAnchorablePane>
 
+                                    <!--  CreateJob Pane  -->
+                                    <LayoutAnchorablePane DockMinWidth="200">
+
+                                        <LayoutAnchorable
+                                            x:Name="LayoutAnchorableCreateJob"
+                                            Title="CreateJob"
+                                            AutoHideMinWidth="400"
+                                            CanClose="False"
+                                            CanHide="True"
+                                            CanShowOnHover="False">
+
+                                            <StackPanel DataContext="{Binding JobVm}">
+
+                                                <TextBox x:Name="TextBoxJobName" Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
+
+                                                <TextBox x:Name="TextBoxJobSourceDirectory" Text="{Binding SelectedJob.SourceDirectory, Mode=TwoWay}" />
+
+                                                <TextBox x:Name="TextBoxJobTargetDirectory" Text="{Binding SelectedJob.TargetDirectory, Mode=TwoWay}" />
+
+                                                <ComboBox x:Name="PropertyJobType" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=TwoWay}">
+                                                    <ComboBoxItem>COMPLET</ComboBoxItem>
+                                                    <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
+                                                </ComboBox>
+
+                                                <Button
+                                                    x:Name="PropertyButtonCreateJob"
+                                                    Click="CreateJobButton_Click"
+                                                    Content="{x:Static Ressources:Strings.CreateJob}"
+                                                    Visibility="Hidden" />
+
+                                            </StackPanel>
+
+                                        </LayoutAnchorable>
 
                                     </LayoutAnchorablePane>
 
@@ -198,10 +271,11 @@
 
                             </LayoutPanel>
 
+                            <!--  JobsRunning  -->
                             <LayoutAnchorablePaneGroup DockHeight="120">
-
                                 <!--  JobsRunning  -->
                                 <LayoutAnchorablePane>
+
                                     <!--  JobsRunning  -->
                                     <LayoutAnchorable
                                         Title="JobsRunning"
@@ -211,9 +285,7 @@
                                             x:Name="dataGrid"
                                             AutoGenerateColumns="False"
                                             ItemsSource="{Binding JobVm.JobsRunning}">
-
                                             <DataGrid.Columns>
-
                                                 <DataGridTextColumn Binding="{Binding Path=Name}" Header="Nom" />
 
                                                 <DataGridTemplateColumn Header="Progress">
@@ -236,10 +308,9 @@
                                                 <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
 
                                                 <DataGridTemplateColumn Header="LogState">
-
                                                     <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
 
+                                                        <DataTemplate>
                                                             <StackPanel>
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock FontWeight="Bold" Text="Fichiers restants : " />
@@ -264,33 +335,26 @@
 
                                                                     <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory}" />
                                                                 </StackPanel>
-
                                                             </StackPanel>
-
-
                                                         </DataTemplate>
+
                                                     </DataGridTemplateColumn.CellTemplate>
-
                                                 </DataGridTemplateColumn>
-
-
-
                                             </DataGrid.Columns>
-
                                         </DataGrid>
                                     </LayoutAnchorable>
 
                                 </LayoutAnchorablePane>
-
                             </LayoutAnchorablePaneGroup>
+
                             <!--  Logs  -->
-                            <LayoutAnchorablePaneGroup DockHeight="120">
+                            <LayoutAnchorablePaneGroup DockHeight="120" Orientation="Horizontal">
 
                                 <!--  Logs  -->
                                 <LayoutAnchorablePane>
 
                                     <LayoutAnchorable
-                                        Title="LogsDaily"
+                                        Title="Daily Logs"
                                         CanClose="False"
                                         CanHide="False">
                                         <DataGrid
@@ -298,9 +362,12 @@
                                             IsReadOnly="True"
                                             ItemsSource="{Binding Datas, Mode=OneWay}" />
                                     </LayoutAnchorable>
+                                </LayoutAnchorablePane>
+
+                                <LayoutAnchorablePane>
 
                                     <LayoutAnchorable
-                                        Title="Logs"
+                                        Title="All Logs"
                                         CanClose="False"
                                         CanHide="False">
                                         <ListBox x:Name="ListLogs" ItemsSource="{Binding Datas, Mode=OneWay}" />

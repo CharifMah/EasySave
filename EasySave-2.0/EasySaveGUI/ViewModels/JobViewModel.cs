@@ -78,9 +78,10 @@ namespace ViewModels
         /// <returns>Succès de la création</returns>
         public bool CreateBackupJob(CJob lJob)
         {
-            return _jobManager.CreateBackupJob(lJob);
+            bool lResult = _jobManager.CreateBackupJob(lJob);
+            NotifyPropertyChanged("JobManager");
+            return lResult;
         }
-
         /// <summary>
         /// Supprimer un ou plusieurs jobs
         /// </summary>

@@ -289,4 +289,16 @@
   <data name="IsActive" xml:space="preserve">
     <value>Est en cours</value>
   </data>
+  <data name="ChangeFormatLogs" xml:space="preserve">
+    <value>Changer le format des fichiers de logs en JSON/XML</value>
+  </data>
+  <data name="FormatLogs" xml:space="preserve">
+    <value>Format des logs</value>
+  </data>
+  <data name="SelectedFormatLogs" xml:space="preserve">
+    <value>Vous avez choisi le format des fichiers de logs :</value>
+  </data>
+  <data name="CurrentFormat" xml:space="preserve">
+    <value>Format actuel :</value>
+  </data>
 </root>

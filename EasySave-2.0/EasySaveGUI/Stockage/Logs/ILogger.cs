@@ -19,7 +19,10 @@ namespace Stockage.Logs
         /// <param name="pSerialize">Indique si les données doivent être sérialisées avant d'être loggées</param>
         /// <param name="pAppend">Indique si on ajoute le logging au fichier existant ou si on recrée le fichier</param>
         /// <param name="pFileName">Nom du fichier où sont loggées les données</param>
+        /// <param name="pExtension">Extension du fichier de log</param>
+        /// <param name="pFolderName">Nom du sous dossier de sauvegarde</param>
         /// <remarks>Mahmoud Charif - 10/02/2024 - Création</remarks>
-        void Log(T pData, bool pSerialize, bool pAppend = true, string pFileName = "Logs");
+        /// <remarks>Mehmeti faik - 16/02/2024 - Ajout de params</remarks>
+        void Log(T pData, bool pSerialize, bool pAppend = true, string pFileName = "Logs", string pFolderName = "", string pExtension = "json");
     }
 }

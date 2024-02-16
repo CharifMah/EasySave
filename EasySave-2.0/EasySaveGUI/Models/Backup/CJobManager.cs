@@ -99,14 +99,14 @@ namespace Models.Backup
         /// <returns>
         /// La liste des jobs, mise à jour avec leur état après exécution
         /// </returns>
-        public void RunJobs(ObservableCollection<CJob> pJobs)
+        public async Task RunJobs(ObservableCollection<CJob> pJobs)
         {
-            SauveJobs lSauveJobs = new SauveJobs();
+            SauveJobsAsync lSauveJobs = new SauveJobsAsync();
             // cm - Lance les jobs
             foreach (CJob lJob in pJobs)
             {
                 lSauveJobs.TransferedFiles = 0;
-                lJob.Run(lSauveJobs);
+                await lJob.Run(lSauveJobs);
             }
         }
 

@@ -100,7 +100,8 @@ namespace Models.Backup
         /// </returns>
         public List<CJob> RunJobs(List<CJob> pJobs)
         {
-            SauveJobs lSauveJobs = new SauveJobs();
+            SauveJobs lSauveJobs = new SauveJobs(null , CSettings.Instance.FormatLog.SelectedLogFormat);
+
             // cm - Lance les jobs
             foreach (CJob lJob in pJobs)
             {

@@ -1,9 +1,5 @@
-﻿using LogsModels;
-using Stockage.Save;
+﻿using Stockage.Save;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace Stockage.Logs
 {
@@ -31,14 +27,18 @@ namespace Stockage.Logs
         /// <param name="pSerialize">Indique si les données doivent être sérialisées avant d'être loggées</param>
         /// <param name="pAppend">Indique si on ajoute le logging au fichier existant ou si on recrée le fichier</param>
         /// <param name="pFileName">Nom du fichier où sont loggées les données</param>
-        public virtual void Log(T pData, bool pSerialize = true, bool pAppend = true, string pFileName = "Logs")
+        public virtual void Log(T pData, bool pSerialize = true, bool pAppend = true, string pFileName = "Logs", string pFolderName = "", string pExtension = "json")
         {
             if (pSerialize)
             {
-                string lFolderName = "Logs";
-                string lPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), lFolderName);
+                string lAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string lLogsFolder = Path.Combine(lAppDataFolder, "Logs");
+                string lPath = string.IsNullOrEmpty(pFolderName) ? lLogsFolder : Path.Combine(lLogsFolder, pFolderName);
+
+
                 ISauve lSave = new SauveCollection(lPath);
-                lSave.Sauver(pData, pFileName, pAppend);
+
+                lSave.Sauver(pData, pFileName, pAppend, pExtension);
             }
 
             lock (_lock)

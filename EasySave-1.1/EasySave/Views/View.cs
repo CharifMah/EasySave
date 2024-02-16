@@ -10,7 +10,9 @@ namespace EasySave.Views
     {
         private MainViewModel _MainVm;
         private LangueView _LangView;
+        private FormatLogView _FormatLogView;
         private JobView _JobView;
+
         /// <summary>
         /// Titre affiché pour l'application
         /// </summary>
@@ -26,7 +28,8 @@ namespace EasySave.Views
                     $"3 - {Strings.ResourceManager.GetObject("CreateJob")}\n" +
                     $"4 - {Strings.ResourceManager.GetObject("DeleteJob")}\n" +
                     $"5 - {Strings.ResourceManager.GetObject("RunJobs")}\n" +
-                    $"6 - {Strings.ResourceManager.GetObject("Quit")}\n";
+                    $"6 - {Strings.ResourceManager.GetObject("ChangeFormatLogs")}\n" +
+                    $"7 - {Strings.ResourceManager.GetObject("Quit")}\n";
         }
 
         #region CTOR
@@ -34,6 +37,7 @@ namespace EasySave.Views
         {
             _MainVm = new MainViewModel();
             _LangView = new LangueView(_MainVm.LangueVm);
+            _FormatLogView = new FormatLogView(_MainVm.FormatLogVm);
             _JobView = new JobView(_MainVm.JobVm);
             Console.CancelKeyPress += Console_CancelKeyPress;
         }
@@ -50,7 +54,7 @@ namespace EasySave.Views
             {
                 ConsoleExtention.WriteTitle(Title);
                 ConsoleExtention.WriteSubtitle("CTRL+C => " + $"{Strings.ResourceManager.GetObject("ClearConsole")}" + " | " + "CTRL+V => " + $"{Strings.ResourceManager.GetObject("PasteClipboard")}");
-                lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")}", new Regex("^[0-6]$"));
+                lInput = ConsoleExtention.ReadResponse(Menu + $"\n{Strings.ResourceManager.GetObject("SelectChoice")}", new Regex("^[0-7]$"));
                 switch (lInput)
                 {
                     case "-1": // cm - Restart the program if the user press CTRL+C
@@ -75,6 +79,9 @@ namespace EasySave.Views
                         _JobView.Run();
                         break;
                     case "6":
+                        _FormatLogView.Run();
+                        break;
+                    case "7":
                         Environment.Exit(0);
                         break;
                 }

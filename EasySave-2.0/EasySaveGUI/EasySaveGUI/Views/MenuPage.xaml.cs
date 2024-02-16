@@ -22,10 +22,10 @@ namespace EasySaveGUI.Views
         private MainViewModel _MainVm;
         #endregion
 
-        public MenuPage()
+        public MenuPage(MainViewModel pMainVm)
         {
             InitializeComponent();
-            _MainVm = new MainViewModel();
+            _MainVm = pMainVm;
             ListElements.IsVisible = false;
 
             DataContext = _MainVm;
@@ -45,7 +45,6 @@ namespace EasySaveGUI.Views
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
             }
         }
-
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {

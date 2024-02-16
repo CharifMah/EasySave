@@ -111,17 +111,18 @@
                                 <TextBlock Height="20" Margin="5">|</TextBlock>
 
                                 <ComboBox
+                                    x:Name="ComboBoxLang"
                                     Width="90"
                                     Height="20"
-                                    Focusable="True"
-                                    FontSize="10">
-                                    <ComboBoxItem IsSelected="True">Quick Action</ComboBoxItem>
-                                    <ComboBoxItem>Quick Acqsdtion</ComboBoxItem>
-                                    <ComboBoxItem>Quick qsdAction</ComboBoxItem>
-                                    <ComboBoxItem>Quick Aqction</ComboBoxItem>
-                                </ComboBox>
+                                    IsHitTestVisible="True"
+                                    ItemsSource="{Binding LangueVm.Langue.Languages}"
+                                    MouseEnter="ComboBox_MouseEnter"
+                                    MouseLeave="ComboBox_MouseLeave"
+                                    SelectedIndex="{Binding LangueVm.Langue.SelectedCulture.Key, Mode=OneWay}"
+                                    SelectionChanged="ComboBoxLang_SelectionChanged" />
 
                             </StackPanel>
+
                             <!--  Window control buttons  -->
                             <StackPanel
                                 Grid.Column="2"

@@ -106,11 +106,6 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.SaveJobs();
         }
 
-        private void Clear_Click(object sender, RoutedEventArgs e)
-        {
-            ClearList();
-        }
-
         private void CreateJobButton_Click(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.CreateBackupJob(new CJob(TextBoxJobName.Text,

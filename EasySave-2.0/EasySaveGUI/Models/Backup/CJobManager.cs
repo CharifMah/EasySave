@@ -109,7 +109,7 @@ namespace Models.Backup
                 // cm - Lance les jobs
                 foreach (CJob lJob in pJobs)
                 {
-                    SauveJobsAsync _SauveJobs = new SauveJobsAsync();
+                    SauveJobsAsync _SauveJobs = new SauveJobsAsync("", CSettings.Instance.FormatLog.SelectedLogFormat);
                     _SauveJobs.LogState.TotalTransferedFile = 0;
                     _SauveJobs.LogState.BytesCopied = 0;
                     string[] lFiles = Directory.GetFiles(lJob.SourceDirectory, "*", SearchOption.AllDirectories);

@@ -24,7 +24,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 Width="35"
-                                Kind="SquareRoundedBadge" />
+                                Kind="{TemplateBinding Property=Kind}" />
                             <TextBlock
                                 Grid.Row="2"
                                 HorizontalAlignment="Center"

@@ -290,4 +290,7 @@
   <data name="SaveConf" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

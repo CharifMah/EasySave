@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converter="clr-namespace:EasySaveGUI.Converters"
     xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
+    xmlns:Usr="clr-namespace:EasySaveGUI.UserControls"
+    xmlns:Validator="clr-namespace:EasySaveGUI.ValidationRules"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EasySaveGUI.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,7 +17,6 @@
     <Page.Resources>
         <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
         <Converter:BytesValueConverter x:Key="BytesValueConverter" />
-
     </Page.Resources>
 
     <!--  Main Content  -->
@@ -25,7 +26,15 @@
             <ColumnDefinition Width="0.059*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
+        <Usr:ValidationPopupControl
+            x:Name="PopupError"
+            Grid.ColumnSpan="2"
+            Width="500"
+            Height="300"
+            MinWidth="500"
+            MinHeight="300"
+            Panel.ZIndex="2"
+            DataContext="{Binding PopupVm}" />
         <Grid
             Grid.Row="1"
             Grid.Column="0"
@@ -49,6 +58,7 @@
             <DockingManager.Theme>
                 <Vs2013LightTheme />
             </DockingManager.Theme>
+
             <DockingManager.Layout>
                 <LayoutRoot>
                     <LayoutPanel Orientation="Horizontal">
@@ -152,7 +162,10 @@
                                         </LayoutDocument>
 
                                         <!--  JobsRunning  -->
-                                        <LayoutDocument Title="JobsRunning" x:Name="JobsRunningDocument" CanClose="False">
+                                        <LayoutDocument
+                                            x:Name="JobsRunningDocument"
+                                            Title="JobsRunning"
+                                            CanClose="False">
                                             <DataGrid
                                                 x:Name="dataGrid"
                                                 AutoGenerateColumns="False"
@@ -293,7 +306,21 @@
                                                             x:Name="TextBoxSourceDirectory"
                                                             Grid.Row="0"
                                                             Grid.Column="0"
-                                                            Text="{Binding SelectedJob.SourceDirectory, Mode=OneWay}" />
+                                                            Validation.Error="TextBoxSourceDirectory_Error"
+                                                            Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+
+                                                            <TextBox.Text>
+                                                                <Binding
+                                                                    Mode="TwoWay"
+                                                                    NotifyOnValidationError="True"
+                                                                    Path="SelectedJob.SourceDirectory">
+                                                                    <Binding.ValidationRules>
+                                                                        <Validator:FolderPathValidator />
+                                                                    </Binding.ValidationRules>
+                                                                </Binding>
+
+                                                            </TextBox.Text>
+                                                        </TextBox>
 
                                                         <Button
                                                             Grid.Row="0"

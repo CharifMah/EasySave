@@ -36,7 +36,7 @@ namespace EasySaveGUI.Views
             DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
-            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;   
         }
 
         #region Events
@@ -127,6 +127,12 @@ namespace EasySaveGUI.Views
             CLogger<CLogDaily>.Instance.Clear();
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+        }
+
+        private void TextBoxSourceDirectory_Error(object sender, ValidationErrorEventArgs e)
+        {
+            _MainVm.PopupVm.Message = e.Error.ErrorContent.ToString();
+            PopupError.Show();
         }
     }
 }

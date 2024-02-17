@@ -72,6 +72,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string ApplyDefaultStyle {
+            get {
+                return ResourceManager.GetString("ApplyDefaultStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string bytes {
             get {
                 return ResourceManager.GetString("bytes", resourceCulture);
@@ -480,6 +489,15 @@ namespace Ressources {
         public static string SamePath {
             get {
                 return ResourceManager.GetString("SamePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SaveConf {
+            get {
+                return ResourceManager.GetString("SaveConf", resourceCulture);
             }
         }
         

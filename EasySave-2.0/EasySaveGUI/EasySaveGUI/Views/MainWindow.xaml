@@ -71,12 +71,54 @@
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal">
+
                                 <TextBlock Height="20" Margin="5">|</TextBlock>
-                                <materialIcons:MaterialIcon
-                                    Width="15"
-                                    Height="15"
+
+                                <Button
+                                    Width="20"
+                                    Height="20"
                                     Margin="5"
-                                    Kind="Home" />
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Click="Vs2013BlueThemeButton_Click">
+                                    <materialIcons:MaterialIcon
+                                        Width="15"
+                                        Height="15"
+                                        Kind="ShapeOutline" />
+                                </Button>
+
+                                <TextBlock Height="20" Margin="5">|</TextBlock>
+
+                                <Button
+                                    Width="20"
+                                    Height="20"
+                                    Margin="5"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Click="Vs2013LightThemeButton_Click">
+                                    <materialIcons:MaterialIcon
+                                        Width="15"
+                                        Height="15"
+                                        Kind="Shape" />
+                                </Button>
+
+
+                                <TextBlock Height="20" Margin="5">|</TextBlock>
+
+                                <Button
+                                    Width="20"
+                                    Height="20"
+                                    Margin="5"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Click="GenericThemeButton_Click">
+                                    <materialIcons:MaterialIcon
+                                        Width="15"
+                                        Height="15"
+                                        Kind="ShapePlus" />
+                                </Button>
+
+
                                 <TextBlock Height="20" Margin="5">|</TextBlock>
 
                                 <ComboBox

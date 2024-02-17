@@ -46,6 +46,9 @@
             Grid.Row="1"
             Grid.Column="1"
             Background="#EDF5FD">
+            <DockingManager.Theme>
+                <Vs2013LightTheme />
+            </DockingManager.Theme>
             <DockingManager.Layout>
                 <LayoutRoot>
                     <LayoutPanel Orientation="Horizontal">
@@ -69,10 +72,19 @@
                                         Content="{x:Static Ressources:Strings.SelectConfigurationFile}"
                                         Style="{StaticResource CustomButtonFile}" />
                                     <Button
+                                        Click="SaveConfigFileButton_Click"
+                                        Content="{x:Static Ressources:Strings.SaveConf}"
+                                        Style="{StaticResource CustomButtonFile}" />
+                                    <Button
                                         x:Name="Clear"
                                         Click="Clear_Click"
                                         Content="{x:Static Ressources:Strings.ClearConsole}"
                                         Style="{StaticResource CustomButtonClear}" />
+                                    <Button
+                                        x:Name="ApplyDefaultStyle"
+                                        Click="ApplyDefaultStyle_Click"
+                                        Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
+                                        Style="{StaticResource CustomButtonApplyDefaultStyle}" />
                                 </StackPanel>
                             </LayoutAnchorable>
 

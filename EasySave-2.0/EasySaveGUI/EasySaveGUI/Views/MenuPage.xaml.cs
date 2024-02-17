@@ -1,4 +1,7 @@
-﻿using LogsModels;
+﻿using AvalonDock.Layout;
+using AvalonDock.Layout.Serialization;
+using Gtk;
+using LogsModels;
 using Models.Backup;
 using OpenDialog;
 using Ressources;
@@ -29,13 +32,16 @@ namespace EasySaveGUI.Views
             _MainVm = pMainVm;
             ListElements.IsVisible = false;
             LayoutAnchorableCreateJob.ToggleAutoHide();
-
+            Dock.OverridesDefaultStyle = true;
             DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 
+        #region Events
+
+        #region Button
         private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
             if (JobsList.SelectedItems.Count > 0)
@@ -67,10 +73,9 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), System.IO.Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;
-            PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
+            _MainVm.JobVm.SaveJobs();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -83,13 +88,6 @@ namespace EasySaveGUI.Views
             ClearList();
         }
 
-        private void ClearList()
-        {
-            CLogger<CLogBase>.Instance.Clear();
-            CLogger<CLogDaily>.Instance.Clear();
-            DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
-            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
-        }
 
         private void CreateJobButton_Click(object sender, RoutedEventArgs e)
         {
@@ -106,6 +104,29 @@ namespace EasySaveGUI.Views
         private void FolderTargetPropertyButton_Click(object sender, RoutedEventArgs e)
         {
             TextBoxJobTargetDirectory.Text = CDialog.ReadFolder("TargetDir");
+        }
+
+        private void ApplyDefaultStyle_Click(object sender, RoutedEventArgs e)
+        {
+            Dock.UpdateLayout();
+        }
+
+        #endregion
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;
+            PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
+        }
+
+        #endregion
+
+        private void ClearList()
+        {
+            CLogger<CLogBase>.Instance.Clear();
+            CLogger<CLogDaily>.Instance.Clear();
+            DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
+            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
     }
 }

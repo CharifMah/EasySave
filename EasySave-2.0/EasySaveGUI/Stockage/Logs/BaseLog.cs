@@ -40,8 +40,8 @@ namespace Stockage.Logs
             }
 
 
-                _Datas.Add(pData);
-            
+            _Datas.Add(pData);
+
         }
         /// <summary>
         /// Vide la collection de données

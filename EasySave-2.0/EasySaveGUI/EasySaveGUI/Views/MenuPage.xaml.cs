@@ -1,14 +1,10 @@
-﻿using AvalonDock.Layout;
-using AvalonDock.Layout.Serialization;
-using Gtk;
-using LogsModels;
+﻿using LogsModels;
 using Models;
 using Models.Backup;
 using OpenDialog;
 using Ressources;
 using Stockage.Logs;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -37,7 +33,7 @@ namespace EasySaveGUI.Views
             DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
-            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;   
+            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 
         #region Events
@@ -58,7 +54,7 @@ namespace EasySaveGUI.Views
                 JobsPaneGroup.SelectedContentIndex = JobsPaneGroup.Children.IndexOf(JobsRunningDocument);
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
 
-                ButtonRunJobs.IsEnabled = true;          
+                ButtonRunJobs.IsEnabled = true;
             }
         }
 

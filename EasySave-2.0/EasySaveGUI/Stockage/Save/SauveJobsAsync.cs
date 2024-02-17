@@ -1,7 +1,6 @@
 ﻿using LogsModels;
 using Stockage.Logs;
 using System.Diagnostics;
-using System.Xml.Linq;
 
 namespace Stockage.Save
 {
@@ -96,7 +95,7 @@ namespace Stockage.Save
             }
         }
 
-        private async Task UpdateLog(FileInfo pFileInfo,string pTargetFilePath,Stopwatch pSw,string pName)
+        private async Task UpdateLog(FileInfo pFileInfo, string pTargetFilePath, Stopwatch pSw, string pName)
         {
             _LogState.TotalTransferedFile++;
             _LogState.SourceDirectory = pFileInfo.FullName;

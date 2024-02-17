@@ -137,7 +137,7 @@ namespace Models
 
         public void ResetJobConfigPath()
         {
-            this._JobConfigFolderPath = new FileInfo(_JobDefaultConfigPath).DirectoryName;
+            _JobConfigFolderPath = new FileInfo(_JobDefaultConfigPath).DirectoryName;
         }
         #endregion
     }

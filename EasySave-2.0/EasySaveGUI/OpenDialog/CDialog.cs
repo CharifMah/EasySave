@@ -86,9 +86,9 @@ namespace OpenDialog
                         lSelectedFolder = "-1";
                     lDialog.Dispose();
                     lDialog.Destroy();
-                }         
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

@@ -10,8 +10,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles\CustomButton.xaml" />
-                <ResourceDictionary Source="Styles\CustomListBox.xaml" />
                 <ResourceDictionary Source="Styles\CustomComboBox.xaml" />
+                <ResourceDictionary Source="Styles\CustomSeparator.xaml" />
                 <ResourceDictionary Source="Styles\CustomCheckBox.xaml" />
                 <ResourceDictionary Source="Styles\CustomSlider1.xaml" />
                 <ResourceDictionary Source="Styles\CustomTextBox.xaml" />

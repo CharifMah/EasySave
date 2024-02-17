@@ -6,6 +6,7 @@
     xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
     xmlns:Usr="clr-namespace:EasySaveGUI.UserControls"
     xmlns:Validator="clr-namespace:EasySaveGUI.ValidationRules"
+    xmlns:WpfToolKit="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EasySaveGUI.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -91,25 +92,19 @@
                         </LayoutAnchorablePane>
 
                         <LayoutPanel Orientation="Vertical">
-
                             <!--  Jobs Pane  -->
                             <LayoutPanel Orientation="Horizontal">
-
                                 <!--  Jobs Pane  -->
                                 <LayoutDocumentPaneGroup DockWidth="200" Orientation="Vertical">
-
                                     <!--  jobs list  -->
                                     <LayoutDocumentPane x:Name="JobsPaneGroup">
                                         <LayoutDocument Title="Jobs" CanClose="False">
-
                                             <ListBox
                                                 x:Name="JobsList"
                                                 ItemsSource="{Binding Jobs, Mode=TwoWay}"
                                                 SelectionMode="Multiple">
                                                 <ListBox.Resources>
                                                     <Style TargetType="ListBoxItem">
-                                                        <Setter Property="OverridesDefaultStyle" Value="true" />
-                                                        <Setter Property="SnapsToDevicePixels" Value="true" />
                                                         <Setter Property="Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate TargetType="ListBoxItem">
@@ -126,10 +121,7 @@
                                                 </ListBox.Resources>
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
-
-
                                                         <WrapPanel Orientation="Horizontal">
-
                                                             <StackPanel>
                                                                 <TextBlock>
                                                                     <Run Text="{x:Static Ressources:Strings.Name}" />
@@ -149,16 +141,12 @@
                                                                     <Run Text=" : " />
                                                                     <Run Text="{Binding BackupType, Mode=TwoWay, Converter={StaticResource ETypeBackupConverter}}" />
                                                                 </TextBlock>
-
                                                             </StackPanel>
-
                                                         </WrapPanel>
                                                         <!--</CheckBox>-->
-
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
                                             </ListBox>
-
                                         </LayoutDocument>
 
                                         <!--  JobsRunning  -->
@@ -286,6 +274,8 @@
                                             CanHide="False">
 
                                             <Grid>
+
+
                                                 <StackPanel DataContext="{Binding JobVm}">
 
                                                     <TextBox x:Name="TextBoxName" Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
@@ -345,9 +335,6 @@
                                                         <ComboBoxItem>COMPLET</ComboBoxItem>
                                                         <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
                                                     </ComboBox>
-
-
-
                                                 </StackPanel>
 
                                                 <StackPanel VerticalAlignment="Bottom">
@@ -388,7 +375,11 @@
 
                                             <StackPanel DataContext="{Binding JobVm}">
 
-                                                <TextBox x:Name="TextBoxJobName" />
+                                                <Separator Height="20" />
+
+                                                <TextBox x:Name="TextBoxJobName" MinHeight="15" />
+
+                                                <Separator Height="20" />
 
                                                 <!--  CustomTextBox+ButtonFolder  -->
                                                 <Grid>
@@ -402,41 +393,49 @@
                                                         <RowDefinition Height="*" />
                                                     </Grid.RowDefinitions>
 
-
                                                     <TextBox
                                                         x:Name="TextBoxJobSourceDirectory"
                                                         Grid.Row="0"
                                                         Grid.Column="0" />
-
                                                     <Button
                                                         Grid.Row="0"
                                                         Grid.Column="1"
                                                         Click="FolderSourcePropertyButton_Click"
                                                         Style="{StaticResource CustomButtonFolder}" />
 
+
+
                                                     <TextBox
                                                         x:Name="TextBoxJobTargetDirectory"
                                                         Grid.Row="1"
                                                         Grid.Column="0" />
-
                                                     <Button
                                                         Grid.Row="1"
                                                         Grid.Column="1"
                                                         Click="FolderTargetPropertyButton_Click"
                                                         Style="{StaticResource CustomButtonFolder}" />
+
                                                 </Grid>
 
+                                                <Separator Height="20" />
 
                                                 <ComboBox x:Name="ComboboxCreateJob">
                                                     <ComboBoxItem>COMPLET</ComboBoxItem>
                                                     <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
                                                 </ComboBox>
-
+                                                <Separator Height="20" />
                                                 <Button
                                                     x:Name="PropertyComboboxCreateJob"
                                                     Click="CreateJobButton_Click"
                                                     Content="{x:Static Ressources:Strings.CreateJob}"
                                                     Style="{StaticResource CustomButton}" />
+
+                                                <Separator Height="20" />
+
+                                                <Button
+                                                    Click="SaveConfigFileButton_Click"
+                                                    Content="{x:Static Ressources:Strings.SaveConf}"
+                                                    Style="{StaticResource CustomButtonFile}" />
 
                                             </StackPanel>
 

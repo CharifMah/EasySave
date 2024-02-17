@@ -42,6 +42,8 @@ namespace EasySaveGUI.Views
         #region Events
 
         #region Button
+
+        #region Property
         private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
             if (JobsList.SelectedItems.Count > 0)
@@ -56,6 +58,26 @@ namespace EasySaveGUI.Views
                 ButtonRunJobs.IsEnabled = true;
             }
         }
+
+        private void ButtonDeletesJobs_Click(object sender, RoutedEventArgs e)
+        {
+            if (JobsList.SelectedItems.Count > 0)
+            {
+                ButtonRunJobs.IsEnabled = false;
+                System.Collections.IList lJobs = JobsList.SelectedItems;
+
+                List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
+
+                _MainVm.JobVm.DeleteJobs(lSelectedJobs);
+            }
+        }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            ClearList();
+        }
+        #endregion
+
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
 
@@ -81,11 +103,6 @@ namespace EasySaveGUI.Views
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.SaveJobs();
-        }
-
-        private void Clear_Click(object sender, RoutedEventArgs e)
-        {
-            ClearList();
         }
 
 

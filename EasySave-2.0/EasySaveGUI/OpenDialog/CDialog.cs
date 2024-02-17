@@ -73,15 +73,18 @@ namespace OpenDialog
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Select").ToString(), ResponseType.Ok);
                 lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
-                if (lDialog.Run() == (int)ResponseType.Ok)
+                unsafe
                 {
+                    if (lDialog.Run() == (int)ResponseType.Ok)
+                    {
 
-                    lSelectedFolder = lDialog.Filename;
-                }
-                else
-                    lSelectedFolder = "-1";
-                lDialog.Dispose();
-                lDialog.Destroy();
+                        lSelectedFolder = lDialog.Filename;
+                    }
+                    else
+                        lSelectedFolder = "-1";
+                    lDialog.Dispose();
+                    lDialog.Destroy();
+                }         
             }
             catch (Exception)
             {

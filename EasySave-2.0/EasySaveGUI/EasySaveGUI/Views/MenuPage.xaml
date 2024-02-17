@@ -20,7 +20,6 @@
 
     <!--  Main Content  -->
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.059*" />
             <ColumnDefinition Width="*" />
@@ -49,11 +48,13 @@
             <DockingManager.Theme>
                 <Vs2013LightTheme />
             </DockingManager.Theme>
+            <!--  Content  -->
             <DockingManager.Layout>
                 <LayoutRoot>
                     <LayoutPanel Orientation="Horizontal">
 
                         <!--  Elements Pane Left  -->
+                        <!--  MenuButtons  -->
                         <LayoutAnchorablePane AllowDuplicateContent="False" DockMinWidth="150">
 
                             <LayoutAnchorable
@@ -84,6 +85,7 @@
 
                             <!--  Jobs Pane  -->
                             <LayoutPanel Orientation="Horizontal">
+
                                 <!--  Jobs Pane  -->
                                 <LayoutDocumentPaneGroup Orientation="Horizontal">
 
@@ -166,7 +168,7 @@
 
                                     <!--  Property Pane  -->
                                     <LayoutAnchorablePane DockMinWidth="200">
-
+                                        <!--  Property Pane  -->
                                         <LayoutAnchorable
                                             x:Name="PropertyPane"
                                             Title="Property"
@@ -223,6 +225,7 @@
 
 
                                                 </StackPanel>
+
                                                 <StackPanel VerticalAlignment="Bottom">
                                                     <Button
                                                         x:Name="ButtonRunJobs"
@@ -232,7 +235,7 @@
 
                                                     <Button
                                                         x:Name="ButtonDeletesJobs"
-                                                        Click="RunJobsButton_Click"
+                                                        Click="ButtonDeletesJobs_Click"
                                                         Content="{x:Static Ressources:Strings.DeleteJob}"
                                                         Style="{StaticResource CustomButtonDelete}" />
 
@@ -242,8 +245,6 @@
                                                         Content="{x:Static Ressources:Strings.ClearConsole}"
                                                         Style="{StaticResource CustomButtonClear}" />
                                                 </StackPanel>
-
-
                                             </Grid>
 
                                         </LayoutAnchorable>
@@ -491,7 +492,9 @@
                     </LayoutPanel>
                 </LayoutRoot>
             </DockingManager.Layout>
+
         </DockingManager>
 
     </Grid>
+
 </Page>

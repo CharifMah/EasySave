@@ -51,9 +51,12 @@ namespace EasySaveGUI.Views
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
                 ClearList();
+
+                JobsPaneGroup.SelectedContentIndex = JobsPaneGroup.Children.IndexOf(JobsRunningDocument);
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
 
                 ButtonRunJobs.IsEnabled = true;
+           
             }
         }
 

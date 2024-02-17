@@ -40,15 +40,19 @@ namespace EasySaveGUI.Views
         {
             if (JobsList.SelectedItems.Count > 0)
             {
+                ButtonRunJobs.IsEnabled = false;
                 System.Collections.IList lJobs = JobsList.SelectedItems;
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
                 ClearList();
-                await _MainVm.JobVm.RunJobs(new ObservableCollection<CJob>(lSelectedJobs));
+                await _MainVm.JobVm.RunJobs(lSelectedJobs);
+
+                ButtonRunJobs.IsEnabled = true;
             }
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
+
         {
             ListElements.Show();
         }

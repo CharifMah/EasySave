@@ -116,6 +116,7 @@ namespace Models.Backup
                     _SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
                     _SauveJobs.LogState.EligibleFileCount = lFiles.Length;
                     await lJob.Run(_SauveJobs);
+                    _SauveJobs.LogState.Date = DateTime.Now;
                 }
             }
             catch (Exception ex)

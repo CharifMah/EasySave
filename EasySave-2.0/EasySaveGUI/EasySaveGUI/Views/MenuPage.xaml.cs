@@ -55,13 +55,11 @@ namespace EasySaveGUI.Views
                 JobsPaneGroup.SelectedContentIndex = JobsPaneGroup.Children.IndexOf(JobsRunningDocument);
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
 
-                ButtonRunJobs.IsEnabled = true;
-           
+                ButtonRunJobs.IsEnabled = true;          
             }
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
-
         {
             ListElements.Show();
         }
@@ -90,7 +88,6 @@ namespace EasySaveGUI.Views
         {
             ClearList();
         }
-
 
         private void CreateJobButton_Click(object sender, RoutedEventArgs e)
         {

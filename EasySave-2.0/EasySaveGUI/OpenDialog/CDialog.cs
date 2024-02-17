@@ -37,15 +37,17 @@ namespace OpenDialog
                 lFileDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
                 lFileDialog.SetCurrentFolder(pCurrentFolder);
 
-
-                if (lFileDialog.Run() == (int)ResponseType.Ok)
+                unsafe
                 {
-                    lSelectedFile = lFileDialog.Filename;
+                    if (lFileDialog.Run() == (int)ResponseType.Ok)
+                    {
+                        lSelectedFile = lFileDialog.Filename;
+                    }
+                    else
+                        lSelectedFile = "-1";
+                    lFileDialog.Dispose();
+                    lFileDialog.Destroy();
                 }
-                else
-                    lSelectedFile = "-1";
-                lFileDialog.Destroy();
-
             }
             catch (Exception)
             {
@@ -86,7 +88,7 @@ namespace OpenDialog
                     lDialog.Destroy();
                 }         
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }

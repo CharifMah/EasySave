@@ -110,12 +110,13 @@ namespace Models.Backup
                 foreach (CJob lJob in pJobs)
                 {
                     SauveJobsAsync _SauveJobs = new SauveJobsAsync();
-                    _SauveJobs.TransferedFiles = 0;
+                    _SauveJobs.LogState.TotalTransferedFile = 0;
                     _SauveJobs.LogState.BytesCopied = 0;
                     string[] lFiles = Directory.GetFiles(lJob.SourceDirectory, "*", SearchOption.AllDirectories);
                     _SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
                     _SauveJobs.LogState.EligibleFileCount = lFiles.Length;
                     await lJob.Run(_SauveJobs);
+                    _SauveJobs.LogState.Date = DateTime.Now;
                 }
             }
             catch (Exception ex)

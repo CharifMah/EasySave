@@ -52,7 +52,5 @@
             _GenericLogger.Clear();
            _StringLogger.Clear();
         }
-
-
     }
 }

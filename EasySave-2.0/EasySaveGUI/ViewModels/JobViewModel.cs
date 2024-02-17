@@ -1,6 +1,5 @@
 ﻿using Models.Backup;
 using System.Collections.ObjectModel;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ViewModels
 {
@@ -49,7 +48,6 @@ namespace ViewModels
         }
         public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; NotifyPropertyChanged(); } }
 
-
         private ObservableCollection<CJob> _jobsRunning;
 
         #endregion
@@ -78,10 +76,10 @@ namespace ViewModels
         /// </summary>
         /// <param name="pJobs">Liste des jobs à lancer</param>
         /// <returns> Liste mise à jour des jobs avec leur état après exécution </returns>
-        public async Task RunJobs(ObservableCollection<CJob> pJobs)
+        public async Task RunJobs(List<CJob> pJobs)
         {
-            JobsRunning = pJobs;
-            await _jobManager.RunJobs(pJobs);
+            JobsRunning = new ObservableCollection<CJob>(pJobs);
+            await _jobManager.RunJobs(JobsRunning);
             NotifyPropertyChanged("Jobs");
         }
 
@@ -94,6 +92,7 @@ namespace ViewModels
         {
             bool lResult = _jobManager.CreateBackupJob(lJob);
             NotifyPropertyChanged("Jobs");
+            NotifyPropertyChanged("JobsRunning");
             return lResult;
         }
         /// <summary>
@@ -114,6 +113,7 @@ namespace ViewModels
             _jobManager.SaveJobs();
             NotifyPropertyChanged("Jobs");
             NotifyPropertyChanged("SelectedJob");
+            NotifyPropertyChanged("JobsRunning");
         }
 
         /// <summary>

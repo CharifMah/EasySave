@@ -15,10 +15,12 @@ namespace LogsModels
         private long _ElapsedMilisecond;
         [DataMember]
         private bool _IsActive;
-
+        [DataMember]
         private double _BytesCopied;
-
+        [DataMember]
         private double _Progress;
+        [DataMember]
+        private int _TotalTransfered;
 
         public override string Name
         {
@@ -76,6 +78,10 @@ namespace LogsModels
         }
 
         public double BytesCopied { get => _BytesCopied; set { _BytesCopied = value; NotifyPropertyChanged(); } }
+        /// <summary>
+        /// Le nombre de fichier transférer
+        /// </summary>
+        public int TotalTransferedFile { get => _TotalTransfered; set { _TotalTransfered = value; NotifyPropertyChanged(); } }
 
         /// <summary>
         /// Constructeur de CLogState

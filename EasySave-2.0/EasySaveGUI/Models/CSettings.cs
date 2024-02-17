@@ -71,10 +71,6 @@ namespace Models
         {
             _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs", "JobManager.json");
         }
-        ~CSettings()
-        {
-            SaveSettings();
-        }
 
         #endregion
 

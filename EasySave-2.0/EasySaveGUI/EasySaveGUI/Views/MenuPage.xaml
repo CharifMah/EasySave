@@ -14,6 +14,8 @@
 
     <Page.Resources>
         <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
+        <Converter:BytesValueConverter x:Key="BytesValueConverter" />
+
     </Page.Resources>
 
     <!--  Main Content  -->
@@ -349,9 +351,10 @@
 
                                                 <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
 
+                                                <!--  LogSstate Column Datagrid JobsRunning  -->
                                                 <DataGridTemplateColumn Header="LogState">
                                                     <DataGridTemplateColumn.CellTemplate>
-
+                                                        <!--  LogSstate  -->
                                                         <DataTemplate>
                                                             <StackPanel>
                                                                 <StackPanel Orientation="Horizontal">
@@ -363,7 +366,7 @@
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock FontWeight="Bold" Text="Octets copiés : " />
 
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay}" />
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
                                                                 </StackPanel>
 
                                                                 <StackPanel Orientation="Horizontal">
@@ -403,9 +406,16 @@
                                                                 </StackPanel>
 
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="Date : " />
+                                                                    <TextBlock FontWeight="Bold" Text="Derniere activitée : " />
 
                                                                     <TextBlock Text="{Binding Path=SauveJobs.LogState.Date, Mode=OneWay}" />
+                                                                </StackPanel>
+
+
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="TotalTransferedFile : " />
+
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.TotalTransferedFile, Mode=OneWay}" />
                                                                 </StackPanel>
                                                             </StackPanel>
                                                         </DataTemplate>
@@ -429,10 +439,18 @@
                                         Title="Daily Logs"
                                         CanClose="False"
                                         CanHide="False">
-                                        <DataGrid
-                                            x:Name="ListLogsDaily"
-                                            IsReadOnly="True"
-                                            ItemsSource="{Binding Datas, Mode=OneWay}" />
+
+                                        <DockPanel x:Name="DockPanelListDailyLogs">
+                                            <TextBlock DockPanel.Dock="Top" FontWeight="Bold">
+                                                <Run Text="Count Logs : " />
+                                                <Run Text="{Binding Datas.Count, Mode=OneWay}" />
+                                            </TextBlock>
+                                            <DataGrid
+                                                x:Name="ListLogsDaily"
+                                                IsReadOnly="True"
+                                                ItemsSource="{Binding Datas, Mode=OneWay}" />
+                                        </DockPanel>
+
                                     </LayoutAnchorable>
                                 </LayoutAnchorablePane>
 
@@ -442,7 +460,16 @@
                                         Title="All Logs"
                                         CanClose="False"
                                         CanHide="False">
-                                        <ListBox x:Name="ListLogs" ItemsSource="{Binding Datas, Mode=OneWay}" />
+
+                                        <DockPanel x:Name="DockPanelListLogs">
+                                            <TextBlock DockPanel.Dock="Top" FontWeight="Bold">
+                                                <Run Text="Count Logs : " />
+                                                <Run Text="{Binding Datas.Count, Mode=OneWay}" />
+                                            </TextBlock>
+                                            <ListBox x:Name="ListLogs" ItemsSource="{Binding Datas, Mode=OneWay}" />
+                                        </DockPanel>
+
+
                                     </LayoutAnchorable>
 
                                 </LayoutAnchorablePane>

@@ -36,7 +36,7 @@ namespace EasySaveGUI.Views
             DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
-            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;   
         }
 
         #region Events
@@ -53,9 +53,11 @@ namespace EasySaveGUI.Views
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
                 ClearList();
+
+                JobsPaneGroup.SelectedContentIndex = JobsPaneGroup.Children.IndexOf(JobsRunningDocument);
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
 
-                ButtonRunJobs.IsEnabled = true;
+                ButtonRunJobs.IsEnabled = true;          
             }
         }
 
@@ -80,7 +82,6 @@ namespace EasySaveGUI.Views
 
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
-
         {
             ListElements.Show();
         }
@@ -105,6 +106,10 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.SaveJobs();
         }
 
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            ClearList();
+        }
 
         private void CreateJobButton_Click(object sender, RoutedEventArgs e)
         {
@@ -144,6 +149,12 @@ namespace EasySaveGUI.Views
             CLogger<CLogDaily>.Instance.Clear();
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+        }
+
+        private void TextBoxSourceDirectory_Error(object sender, ValidationErrorEventArgs e)
+        {
+            _MainVm.PopupVm.Message = e.Error.ErrorContent.ToString();
+            PopupError.Show();
         }
     }
 }

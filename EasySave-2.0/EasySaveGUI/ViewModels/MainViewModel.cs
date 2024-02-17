@@ -7,6 +7,7 @@
     {
         private LangueViewModel _LangueVm;
         private JobViewModel _JobVm;
+        private PopupViewModel _PopupVm;
         /// <summary>
         /// View Model de la langue
         /// </summary>
@@ -15,6 +16,8 @@
         /// View model des jobs
         /// </summary>
         public JobViewModel JobVm { get => _JobVm; set => _JobVm = value; }
+        public PopupViewModel PopupVm { get => _PopupVm; set => _PopupVm = value; }
+
         /// <summary>
         /// Le constructeur MainViewModel initialise les modèles de vue et charge les paramètres de l'utilisateur
         /// </summary>
@@ -23,6 +26,7 @@
             Models.CSettings.Instance.LoadSettings();
             _LangueVm = new LangueViewModel();
             _JobVm = new JobViewModel();
+            _PopupVm = new PopupViewModel();
         }
     }
 }

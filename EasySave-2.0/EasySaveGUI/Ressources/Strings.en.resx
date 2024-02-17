@@ -310,4 +310,7 @@
   <data name="SaveConf" xml:space="preserve">
     <value>Save config file</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>close</value>
+  </data>
 </root>

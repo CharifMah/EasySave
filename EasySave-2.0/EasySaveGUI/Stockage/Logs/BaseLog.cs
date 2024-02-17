@@ -9,8 +9,6 @@ namespace Stockage.Logs
     /// <typeparam name="T">Type des objets loggés</typeparam>
     public abstract class BaseLogger<T> : ILogger<T>
     {
-        private readonly object _lock = new object();
-
         private ObservableCollection<T> _Datas;
         /// <summary>
         /// Collection de données observables
@@ -41,10 +39,9 @@ namespace Stockage.Logs
                 lSave.Sauver(pData, pFileName, pAppend, pExtension);
             }
 
-            lock (_lock)
-            {
+
                 _Datas.Add(pData);
-            }
+            
         }
         /// <summary>
         /// Vide la collection de données

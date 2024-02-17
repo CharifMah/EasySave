@@ -1,6 +1,5 @@
 ﻿using Models.Backup;
 using System.Collections.ObjectModel;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ViewModels
 {
@@ -35,6 +34,18 @@ namespace ViewModels
             }
         }
 
+        public ObservableCollection<CJob> Jobs
+        {
+            get
+            {
+                return _jobManager.Jobs;
+            }
+            set
+            {
+                _jobManager.Jobs = value;
+                NotifyPropertyChanged();
+            }
+        }
         public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; NotifyPropertyChanged(); } }
 
         private ObservableCollection<CJob> _jobsRunning;
@@ -68,7 +79,8 @@ namespace ViewModels
         public async Task RunJobs(List<CJob> pJobs)
         {
             JobsRunning = new ObservableCollection<CJob>(pJobs);
-            await _jobManager.RunJobs(_jobsRunning);           
+            await _jobManager.RunJobs(JobsRunning);
+            NotifyPropertyChanged("Jobs");
         }
 
         /// <summary>
@@ -78,9 +90,11 @@ namespace ViewModels
         /// <returns>Succès de la création</returns>
         public bool CreateBackupJob(CJob lJob)
         {
-            return _jobManager.CreateBackupJob(lJob);
+            bool lResult = _jobManager.CreateBackupJob(lJob);
+            NotifyPropertyChanged("Jobs");
+            NotifyPropertyChanged("JobsRunning");
+            return lResult;
         }
-
         /// <summary>
         /// Supprimer un ou plusieurs jobs
         /// </summary>
@@ -97,8 +111,9 @@ namespace ViewModels
         public void SaveJobs()
         {
             _jobManager.SaveJobs();
-            NotifyPropertyChanged("JobManager");
+            NotifyPropertyChanged("Jobs");
             NotifyPropertyChanged("SelectedJob");
+            NotifyPropertyChanged("JobsRunning");
         }
 
         /// <summary>
@@ -113,7 +128,7 @@ namespace ViewModels
             else
                 _jobManager = Models.CSettings.Instance.LoadJobsFile(pPath);
 
-            NotifyPropertyChanged("JobManager");
+            NotifyPropertyChanged("Jobs");
         }
     }
 }

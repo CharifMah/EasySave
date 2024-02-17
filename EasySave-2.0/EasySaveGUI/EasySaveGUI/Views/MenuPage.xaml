@@ -46,6 +46,9 @@
             Grid.Row="1"
             Grid.Column="1"
             Background="#EDF5FD">
+            <DockingManager.Theme>
+                <Vs2013LightTheme />
+            </DockingManager.Theme>
             <DockingManager.Layout>
                 <LayoutRoot>
                     <LayoutPanel Orientation="Horizontal">
@@ -69,10 +72,9 @@
                                         Content="{x:Static Ressources:Strings.SelectConfigurationFile}"
                                         Style="{StaticResource CustomButtonFile}" />
                                     <Button
-                                        x:Name="Clear"
-                                        Click="Clear_Click"
-                                        Content="{x:Static Ressources:Strings.ClearConsole}"
-                                        Style="{StaticResource CustomButtonClear}" />
+                                        Click="SaveConfigFileButton_Click"
+                                        Content="{x:Static Ressources:Strings.SaveConf}"
+                                        Style="{StaticResource CustomButtonFile}" />
                                 </StackPanel>
                             </LayoutAnchorable>
 
@@ -233,6 +235,12 @@
                                                         Click="RunJobsButton_Click"
                                                         Content="{x:Static Ressources:Strings.DeleteJob}"
                                                         Style="{StaticResource CustomButtonDelete}" />
+
+                                                    <Button
+                                                        x:Name="Clear"
+                                                        Click="Clear_Click"
+                                                        Content="{x:Static Ressources:Strings.ClearConsole}"
+                                                        Style="{StaticResource CustomButtonClear}" />
                                                 </StackPanel>
 
 
@@ -328,7 +336,8 @@
                                         <DataGrid
                                             x:Name="dataGrid"
                                             AutoGenerateColumns="False"
-                                            ItemsSource="{Binding JobVm.JobsRunning}">
+                                            ItemsSource="{Binding JobVm.JobsRunning}"
+                                            Style="{StaticResource CustomDataGrid}">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Binding="{Binding Path=Name}" Header="Nom" />
 
@@ -448,7 +457,8 @@
                                             <DataGrid
                                                 x:Name="ListLogsDaily"
                                                 IsReadOnly="True"
-                                                ItemsSource="{Binding Datas, Mode=OneWay}" />
+                                                ItemsSource="{Binding Datas, Mode=OneWay}"
+                                                Style="{StaticResource CustomDataGrid}" />
                                         </DockPanel>
 
                                     </LayoutAnchorable>

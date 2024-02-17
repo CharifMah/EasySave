@@ -304,4 +304,10 @@
   <data name="CurrentFormat" xml:space="preserve">
     <value>Format actuel :</value>
   </data>
+  <data name="ApplyDefaultStyle" xml:space="preserve">
+    <value>Appliquer le style par défaut</value>
+  </data>
+  <data name="SaveConf" xml:space="preserve">
+    <value>Sauvegarder le fichier de configuration</value>
+  </data>
 </root>

@@ -81,6 +81,7 @@ namespace ViewModels
             JobsRunning = new ObservableCollection<CJob>(pJobs);
             await _jobManager.RunJobs(JobsRunning);
             NotifyPropertyChanged("Jobs");
+            NotifyPropertyChanged("JobsRunning");
         }
 
         /// <summary>

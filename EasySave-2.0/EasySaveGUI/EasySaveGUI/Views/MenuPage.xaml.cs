@@ -151,5 +151,10 @@ namespace EasySaveGUI.Views
             _MainVm.PopupVm.Message = e.Error.ErrorContent.ToString();
             PopupError.Show();
         }
+
+        private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
+        {
+            (System.Windows.Window.GetWindow(App.Current.MainWindow) as MainWindow).frame.NavigationService.Navigate(new MenuPage(_MainVm));
+        }
     }
 }

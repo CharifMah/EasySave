@@ -81,6 +81,10 @@
                                         Click="SaveConfigFileButton_Click"
                                         Content="{x:Static Ressources:Strings.SaveConf}"
                                         Style="{StaticResource CustomButtonFile}" />
+                                    <Button
+                                        Click="ApplyDefaultStyleButton_Click"
+                                        Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
+                                        Style="{StaticResource CustomButtonApplyDefaultStyle}" />
                                 </StackPanel>
                             </LayoutAnchorable>
 

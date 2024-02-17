@@ -2,6 +2,7 @@
 using AvalonDock.Layout.Serialization;
 using Gtk;
 using LogsModels;
+using Models;
 using Models.Backup;
 using OpenDialog;
 using Ressources;
@@ -43,7 +44,7 @@ namespace EasySaveGUI.Views
 
         #region Button
 
-        #region Property
+        #region PropertyPane
         private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
             if (JobsList.SelectedItems.Count > 0)
@@ -80,20 +81,21 @@ namespace EasySaveGUI.Views
         }
         #endregion
 
-
-        private void Button_MouseEnter(object sender, MouseEventArgs e)
+        #region ListElementsPane
+        private void ListElementsButton_MouseEnter(object sender, MouseEventArgs e)
         {
             ListElements.Show();
         }
 
         private void LoadConfigDefaultFileButton_Click(object sender, RoutedEventArgs e)
         {
+            CSettings.Instance.ResetJobConfigPath();
             _MainVm.JobVm.LoadJobs();
         }
 
         private void LoadConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), System.IO.Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
+            _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Models.CSettings.Instance.JobConfigFolderPath));
         }
 
         private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
@@ -101,10 +103,14 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.SaveJobs();
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void ApplyDefaultStyle_Click(object sender, RoutedEventArgs e)
         {
-            _MainVm.JobVm.SaveJobs();
+            Dock.UpdateLayout();
         }
+
+        #endregion
+
+        #region CreateJob
 
         private void CreateJobButton_Click(object sender, RoutedEventArgs e)
         {
@@ -112,7 +118,6 @@ namespace EasySaveGUI.Views
                 TextBoxJobSourceDirectory.Text, TextBoxJobTargetDirectory.Text, (ETypeBackup)ComboboxCreateJob.SelectedIndex));
             LayoutAnchorableCreateJob.ToggleAutoHide();
         }
-
         private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)
         {
             TextBoxJobSourceDirectory.Text = CDialog.ReadFolder("SourceDir");
@@ -123,10 +128,7 @@ namespace EasySaveGUI.Views
             TextBoxJobTargetDirectory.Text = CDialog.ReadFolder("TargetDir");
         }
 
-        private void ApplyDefaultStyle_Click(object sender, RoutedEventArgs e)
-        {
-            Dock.UpdateLayout();
-        }
+        #endregion
 
         #endregion
 

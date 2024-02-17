@@ -41,7 +41,7 @@
             <Button
                 Grid.Row="0"
                 Content="{x:Static Ressources:Strings.LoadJobs}"
-                MouseEnter="Button_MouseEnter"
+                MouseEnter="ListElementsButton_MouseEnter"
                 Style="{StaticResource CustomButton}" />
         </Grid>
 

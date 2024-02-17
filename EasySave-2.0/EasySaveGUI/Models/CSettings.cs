@@ -45,12 +45,12 @@ namespace Models
             {
                 return _JobConfigFolderPath;
             }
-            set => _JobConfigFolderPath = value;
+            set { _JobConfigFolderPath = value; SaveSettings(); }
         }
         /// <summary>
         /// Emplacement par défaut du répertoire dans lequel le fichier de configuration du travail est stocké
         /// </summary>
-        public string JobDefaultConfigPath { get => _JobDefaultConfigPath; set => _JobDefaultConfigPath = value; }
+        public string JobDefaultConfigPath { get => _JobDefaultConfigPath; }
 
 
         #region CTOR
@@ -133,6 +133,11 @@ namespace Models
             SaveSettings();
 
             return lJobManager;
+        }
+
+        public void ResetJobConfigPath()
+        {
+            this._JobConfigFolderPath = new FileInfo(_JobDefaultConfigPath).DirectoryName;
         }
         #endregion
     }

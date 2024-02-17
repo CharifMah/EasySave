@@ -32,8 +32,8 @@ namespace EasySaveGUI.Views
 
             DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
-            ListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
-            ListLogsDaily.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+            DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
+            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 
         private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
@@ -85,10 +85,10 @@ namespace EasySaveGUI.Views
 
         private void ClearList()
         {
-            if (!ListLogs.Items.IsInUse)
-                ListLogs.Items.Clear();
-
-            CLogger<CLogBase>.Instance.GenericLogger.Clear();
+            CLogger<CLogBase>.Instance.Clear();
+            CLogger<CLogDaily>.Instance.Clear();
+            DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
+            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 
         private void CreateJobButton_Click(object sender, RoutedEventArgs e)

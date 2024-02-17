@@ -29,10 +29,6 @@
         <Usr:ValidationPopupControl
             x:Name="PopupError"
             Grid.ColumnSpan="2"
-            Width="500"
-            Height="300"
-            MinWidth="500"
-            MinHeight="300"
             Panel.ZIndex="2"
             DataContext="{Binding PopupVm}" />
         <Grid

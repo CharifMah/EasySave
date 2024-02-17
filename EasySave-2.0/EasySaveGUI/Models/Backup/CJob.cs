@@ -20,8 +20,6 @@ namespace Models.Backup
         private string _TargetDirectory;
         [DataMember]
         private ETypeBackup _BackupType;
-
-        private CLogState _LogState;
         #endregion
 
         #region Property
@@ -65,7 +63,6 @@ namespace Models.Backup
             _SourceDirectory = pSourceDirectory;
             _TargetDirectory = pTargetDirectory;
             _BackupType = pTypeBackup;
-            _LogState = new CLogState();
         }
         #endregion
 
@@ -99,27 +96,10 @@ namespace Models.Backup
             {
                 DirectoryInfo lSourceDir = new DirectoryInfo(_SourceDirectory);
                 DirectoryInfo lTargetDir = new DirectoryInfo(_TargetDirectory);
-                _LogState.TotalSize = pSauveJobs.GetDirSize(lSourceDir.FullName);
-                _LogState.Name = Name + " - " + lSourceDir.Name;
-                _LogState.SourceDirectory = lSourceDir.FullName;
-                _LogState.TargetDirectory = lTargetDir.FullName;
-                _LogState.EligibleFileCount = lSourceDir.GetFiles("*", SearchOption.AllDirectories).Length;
-                Stopwatch lSw = Stopwatch.StartNew();
-                lSw.Start();
-                _LogState.RemainingFiles = _LogState.EligibleFileCount;
-                _LogState.Date = DateTime.Now;
-                _LogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
-                _LogState.IsActive = true;
-                pSauveJobs.UpdateLog(_LogState);
+
                 if (_SourceDirectory != _TargetDirectory)
                 {
                     await pSauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, true, pDifferentiel);
-                    lSw.Stop();
-                    _LogState.Date = DateTime.Now;
-                    _LogState.RemainingFiles = 0;
-                    _LogState.ElapsedMilisecond = lSw.ElapsedMilliseconds;
-                    _LogState.IsActive = false;
-                    pSauveJobs.UpdateLog(_LogState);
                 }
                 else
                 {
@@ -138,7 +118,7 @@ namespace Models.Backup
             if (lJob == null)
                 return false;
 
-            return lJob.Name == _Name && lJob.SourceDirectory == _SourceDirectory && lJob.TargetDirectory == TargetDirectory;
+            return lJob.Name == _Name && (lJob.SourceDirectory == _SourceDirectory && lJob.TargetDirectory == TargetDirectory);
         }
         #endregion
     }

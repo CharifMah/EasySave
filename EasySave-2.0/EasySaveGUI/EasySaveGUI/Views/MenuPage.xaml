@@ -71,11 +71,6 @@
                                         Click="Clear_Click"
                                         Content="{x:Static Ressources:Strings.ClearConsole}"
                                         Style="{StaticResource CustomButtonClear}" />
-                                    <Button
-                                        x:Name="Create"
-                                        Click="Create_Click"
-                                        Content="{x:Static Ressources:Strings.CreateJob}"
-                                        Style="{StaticResource CustomButton}" />
                                 </StackPanel>
                             </LayoutAnchorable>
 
@@ -98,7 +93,7 @@
 
                                                     <ListBox
                                                         x:Name="JobsList"
-                                                        ItemsSource="{Binding JobManager.Jobs, Mode=TwoWay}"
+                                                        ItemsSource="{Binding Jobs, Mode=TwoWay}"
                                                         SelectionMode="Multiple">
                                                         <ListBox.Resources>
                                                             <Style TargetType="ListBoxItem">
@@ -276,8 +271,7 @@
                                                     <TextBox
                                                         x:Name="TextBoxJobSourceDirectory"
                                                         Grid.Row="0"
-                                                        Grid.Column="0"
-                                                        Text="{Binding SelectedJob.SourceDirectory, Mode=OneTime}" />
+                                                        Grid.Column="0" />
 
                                                     <Button
                                                         Grid.Row="0"
@@ -288,8 +282,7 @@
                                                     <TextBox
                                                         x:Name="TextBoxJobTargetDirectory"
                                                         Grid.Row="1"
-                                                        Grid.Column="0"
-                                                        Text="{Binding SelectedJob.TargetDirectory, Mode=OneTime}" />
+                                                        Grid.Column="0" />
 
                                                     <Button
                                                         Grid.Row="1"
@@ -299,16 +292,16 @@
                                                 </Grid>
 
 
-                                                <ComboBox x:Name="PropertyJobType" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=OneTime}">
+                                                <ComboBox x:Name="ComboboxCreateJob">
                                                     <ComboBoxItem>COMPLET</ComboBoxItem>
                                                     <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
                                                 </ComboBox>
 
                                                 <Button
-                                                    x:Name="PropertyButtonCreateJob"
+                                                    x:Name="PropertyComboboxCreateJob"
                                                     Click="CreateJobButton_Click"
                                                     Content="{x:Static Ressources:Strings.CreateJob}"
-                                                    Visibility="Hidden" />
+                                                    Style="{StaticResource CustomButton}" />
 
                                             </StackPanel>
 
@@ -364,25 +357,55 @@
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock FontWeight="Bold" Text="Fichiers restants : " />
 
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.RemainingFiles}" />
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.RemainingFiles, Mode=OneWay}" />
                                                                 </StackPanel>
 
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock FontWeight="Bold" Text="Octets copiés : " />
 
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.BytesCopied}" />
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay}" />
                                                                 </StackPanel>
 
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock FontWeight="Bold" Text="SourceDirectory : " />
 
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory}" />
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory, Mode=OneWay}" />
                                                                 </StackPanel>
 
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock FontWeight="Bold" Text="TargetDirectory : " />
 
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory}" />
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory, Mode=OneWay}" />
+                                                                </StackPanel>
+
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="EligibleFileCount : " />
+
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.EligibleFileCount, Mode=OneWay}" />
+                                                                </StackPanel>
+
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="ElapsedMilisecond : " />
+
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.ElapsedMilisecond, Mode=OneWay}" />
+                                                                </StackPanel>
+
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="IsActive : " />
+
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.IsActive, Mode=OneWay}" />
+                                                                </StackPanel>
+
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="TotalSize : " />
+
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.TotalSize, Mode=OneWay}" />
+                                                                </StackPanel>
+
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock FontWeight="Bold" Text="Date : " />
+
+                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.Date, Mode=OneWay}" />
                                                                 </StackPanel>
                                                             </StackPanel>
                                                         </DataTemplate>

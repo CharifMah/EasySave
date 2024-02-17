@@ -15,7 +15,7 @@ namespace Models.Backup
         [DataMember]
         private readonly int _MaxJobs;
         [DataMember]
-        private List<CJob> _Jobs;
+        private ObservableCollection<CJob> _Jobs;
         [DataMember]
         private string _Name;
 
@@ -27,7 +27,7 @@ namespace Models.Backup
         /// <summary>
         /// Liste des jobs gérés
         /// </summary>
-        public List<CJob> Jobs { get => _Jobs; set { _Jobs = value; } }
+        public ObservableCollection<CJob> Jobs { get => _Jobs; set { _Jobs = value; } }
 
         /// <summary>
         /// Nom du gestionnaire
@@ -48,7 +48,7 @@ namespace Models.Backup
         public CJobManager()
         {
             _Name = "JobManager";
-            _Jobs = new List<CJob>();
+            _Jobs = new ObservableCollection<CJob>();
             _MaxJobs = 5;
             SauveJobsAsync _SauveJobs = new SauveJobsAsync();
             if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
@@ -112,8 +112,9 @@ namespace Models.Backup
                     SauveJobsAsync _SauveJobs = new SauveJobsAsync();
                     _SauveJobs.TransferedFiles = 0;
                     _SauveJobs.LogState.BytesCopied = 0;
-                    _SauveJobs.LogState.TotalSize = Directory.GetFiles(lJob.SourceDirectory, "*", SearchOption.AllDirectories)
-                       .Sum(file => new FileInfo(file).Length);
+                    string[] lFiles = Directory.GetFiles(lJob.SourceDirectory, "*", SearchOption.AllDirectories);
+                    _SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
+                    _SauveJobs.LogState.EligibleFileCount = lFiles.Length;
                     await lJob.Run(_SauveJobs);
                 }
             }

@@ -72,6 +72,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string ApplyDefaultStyle {
+            get {
+                return ResourceManager.GetString("ApplyDefaultStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string bytes {
             get {
                 return ResourceManager.GetString("bytes", resourceCulture);
@@ -485,6 +494,15 @@ namespace Ressources {
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string SaveConf {
+            get {
+                return ResourceManager.GetString("SaveConf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string Saved {
             get {

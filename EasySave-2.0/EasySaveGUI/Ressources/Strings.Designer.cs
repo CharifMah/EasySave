@@ -79,7 +79,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string bytes {
             get {
@@ -133,7 +133,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string CombineIndexes {
             get {
@@ -511,7 +511,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string Saved {
             get {

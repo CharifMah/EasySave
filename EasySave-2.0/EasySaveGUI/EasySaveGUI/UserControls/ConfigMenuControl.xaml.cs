@@ -1,4 +1,6 @@
-﻿using Models;
+﻿using AvalonDock.Layout;
+using Gtk;
+using Models;
 using OpenDialog;
 using Ressources;
 using System.Text.RegularExpressions;
@@ -18,7 +20,7 @@ namespace EasySaveGUI.UserControls
         public ConfigMenuControl()
         {
             InitializeComponent();
-            _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
+            _MainWindow = System.Windows.Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
         }
 
@@ -41,6 +43,11 @@ namespace EasySaveGUI.UserControls
         private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.SaveJobs();
+        }
+
+        private void InfoConfigButton_Click(object sender, RoutedEventArgs e)
+        {
+            _MainWindow.MenuPage.ConfigInfoDocument.IsActive = true;
         }
     }
 }

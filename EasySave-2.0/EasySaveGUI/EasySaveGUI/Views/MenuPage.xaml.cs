@@ -42,10 +42,10 @@ namespace EasySaveGUI.Views
         #region PropertyPane
         private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (JobsList.SelectedItems.Count > 0)
+            if (JobUsr.JobsList.SelectedItems.Count > 0)
             {
                 ButtonRunJobs.IsEnabled = false;
-                System.Collections.IList lJobs = JobsList.SelectedItems;
+                System.Collections.IList lJobs = JobUsr.JobsList.SelectedItems;
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
                 ClearList();
@@ -59,10 +59,10 @@ namespace EasySaveGUI.Views
 
         private void ButtonDeletesJobs_Click(object sender, RoutedEventArgs e)
         {
-            if (JobsList.SelectedItems.Count > 0)
+            if (JobUsr.JobsList.SelectedItems.Count > 0)
             {
                 ButtonRunJobs.IsEnabled = false;
-                System.Collections.IList lJobs = JobsList.SelectedItems;
+                System.Collections.IList lJobs = JobUsr.JobsList.SelectedItems;
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
 
@@ -92,11 +92,7 @@ namespace EasySaveGUI.Views
 
         #endregion
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;
-            JobPropertyUsr.PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
-        }
+
 
         #endregion
 

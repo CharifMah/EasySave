@@ -319,4 +319,7 @@
   <data name="Config" xml:space="preserve">
     <value>Configuration</value>
   </data>
+  <data name="Info" xml:space="preserve">
+    <value>Information</value>
+  </data>
 </root>

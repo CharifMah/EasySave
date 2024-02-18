@@ -89,54 +89,7 @@
                                     <!--  jobs list  -->
                                     <LayoutDocumentPane x:Name="JobsPaneGroup">
                                         <LayoutDocument Title="Jobs" CanClose="False">
-                                            <ListBox
-                                                x:Name="JobsList"
-                                                ItemsSource="{Binding JobVm.Jobs, Mode=TwoWay}"
-                                                SelectionMode="Multiple">
-                                                <ListBox.Resources>
-                                                    <Style TargetType="ListBoxItem">
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="ListBoxItem">
-                                                                    <CheckBox
-                                                                        Margin="5,2"
-                                                                        Checked="CheckBox_Checked"
-                                                                        IsChecked="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}">
-                                                                        <ContentPresenter />
-                                                                    </CheckBox>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Style>
-                                                </ListBox.Resources>
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <WrapPanel Orientation="Horizontal">
-                                                            <StackPanel>
-                                                                <TextBlock>
-                                                                    <Run Text="{x:Static Ressources:Strings.Name}" />
-                                                                    <Run Text=" : " />
-                                                                    <Run Text="{Binding Name}" />
-                                                                </TextBlock>
-                                                                <TextBlock>
-                                                                    <Run Text="{x:Static Ressources:Strings.SourceDirectory}" />
-                                                                    <Run Text="{Binding SourceDirectory}" />
-                                                                </TextBlock>
-                                                                <TextBlock>
-                                                                    <Run Text="{x:Static Ressources:Strings.TargetDirectory}" />
-                                                                    <Run Text="{Binding TargetDirectory}" />
-                                                                </TextBlock>
-                                                                <TextBlock>
-                                                                    <Run Text="{x:Static Ressources:Strings.Type}" />
-                                                                    <Run Text=" : " />
-                                                                    <Run Text="{Binding BackupType, Mode=TwoWay, Converter={StaticResource ETypeBackupConverter}}" />
-                                                                </TextBlock>
-                                                            </StackPanel>
-                                                        </WrapPanel>
-                                                        <!--</CheckBox>-->
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
+                                            <Usr:JobListControl x:Name="JobUsr" />
                                         </LayoutDocument>
 
                                         <!--  JobsRunning  -->
@@ -247,6 +200,8 @@
 
                                             </DataGrid>
                                         </LayoutDocument>
+                                        <!--  ConfigInfo  -->
+                                        <LayoutDocument x:Name="ConfigInfoDocument" IsActive="False" />
 
                                     </LayoutDocumentPane>
 

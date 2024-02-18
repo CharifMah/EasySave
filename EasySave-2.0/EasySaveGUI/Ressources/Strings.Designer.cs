@@ -270,6 +270,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Info {
+            get {
+                return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string InputFormat {
             get {
                 return ResourceManager.GetString("InputFormat", resourceCulture);

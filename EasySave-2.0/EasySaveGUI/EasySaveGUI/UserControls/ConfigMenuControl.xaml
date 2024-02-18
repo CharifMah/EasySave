@@ -22,5 +22,9 @@
             Click="SaveConfigFileButton_Click"
             Content="{x:Static Ressources:Strings.SaveConf}"
             Style="{StaticResource CustomButtonFile}" />
+        <Button
+            Click="InfoConfigButton_Click"
+            Content="{x:Static Ressources:Strings.Info}"
+            Style="{StaticResource CustomButtonInfo}" />
     </StackPanel>
 </UserControl>

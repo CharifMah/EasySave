@@ -106,32 +106,13 @@ namespace EasySaveGUI.Views
 
         #endregion
 
-        #region CreateJob
-
-        private void CreateJobButton_Click(object sender, RoutedEventArgs e)
-        {
-            _MainVm.JobVm.CreateBackupJob(new CJob(TextBoxJobName.Text,
-                TextBoxJobSourceDirectory.Text, TextBoxJobTargetDirectory.Text, (ETypeBackup)ComboboxCreateJob.SelectedIndex));
-            LayoutAnchorableCreateJob.ToggleAutoHide();
-        }
-        private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)
-        {
-            TextBoxJobSourceDirectory.Text = CDialog.ReadFolder("SourceDir");
-        }
-
-        private void FolderTargetPropertyButton_Click(object sender, RoutedEventArgs e)
-        {
-            TextBoxJobTargetDirectory.Text = CDialog.ReadFolder("TargetDir");
-        }
-
-        #endregion
 
         #endregion
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;
-            PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
+            JobPropertyUsr.PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
         }
 
         #endregion
@@ -144,15 +125,13 @@ namespace EasySaveGUI.Views
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 
-        private void TextBoxSourceDirectory_Error(object sender, ValidationErrorEventArgs e)
-        {
-            _MainVm.PopupVm.Message = e.Error.ErrorContent.ToString();
-            PopupError.Show();
-        }
+
 
         private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
         {
             (System.Windows.Window.GetWindow(App.Current.MainWindow) as MainWindow).frame.NavigationService.Navigate(new MenuPage(_MainVm));
         }
+
+
     }
 }

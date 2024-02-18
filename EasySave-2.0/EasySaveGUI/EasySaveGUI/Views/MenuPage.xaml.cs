@@ -31,7 +31,6 @@ namespace EasySaveGUI.Views
             LayoutAnchorableCreateJob.ToggleAutoHide();
             Dock.OverridesDefaultStyle = true;
             DataContext = _MainVm;
-            JobsList.DataContext = _MainVm.JobVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
@@ -121,17 +120,14 @@ namespace EasySaveGUI.Views
         {
             CLogger<CLogBase>.Instance.Clear();
             CLogger<CLogDaily>.Instance.Clear();
+            _MainVm.JobVm.JobsRunning.Clear();
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
-
-
 
         private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
         {
             (System.Windows.Window.GetWindow(App.Current.MainWindow) as MainWindow).frame.NavigationService.Navigate(new MenuPage(_MainVm));
         }
-
-
     }
 }

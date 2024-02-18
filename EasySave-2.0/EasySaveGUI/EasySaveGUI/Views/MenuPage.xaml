@@ -102,7 +102,7 @@
                                         <LayoutDocument Title="Jobs" CanClose="False">
                                             <ListBox
                                                 x:Name="JobsList"
-                                                ItemsSource="{Binding Jobs, Mode=TwoWay}"
+                                                ItemsSource="{Binding JobVm.Jobs, Mode=TwoWay}"
                                                 SelectionMode="Multiple">
                                                 <ListBox.Resources>
                                                     <Style TargetType="ListBoxItem">

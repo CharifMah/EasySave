@@ -1,11 +1,10 @@
-﻿using EasySaveGUI.Views;
+﻿using AvalonDock.Themes;
+using EasySaveGUI.Views;
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using ViewModels;
 
 namespace EasySaveGUI
@@ -23,12 +22,14 @@ namespace EasySaveGUI
         public static extern bool ReleaseCapture();
         #endregion
         private MainViewModel _MainVm;
+        MenuPage _MenuPage;
         public MainWindow()
         {
             InitializeComponent();
             _MainVm = new MainViewModel();
-            this.DataContext = _MainVm;
-            frame.Navigate(new MenuPage(_MainVm));
+            DataContext = _MainVm;
+            _MenuPage = new MenuPage(_MainVm);
+            frame.Navigate(_MenuPage);
         }
 
         // Event handler for title bar mouse left button down event
@@ -84,27 +85,42 @@ namespace EasySaveGUI
 
         private void ComboBox_MouseEnter(object sender, MouseEventArgs e)
         {
-            ComboBox lComboBox = (sender as ComboBox);
+            ComboBox lComboBox = sender as ComboBox;
 
             lComboBox.IsDropDownOpen = true;
         }
 
         private void ComboBox_MouseLeave(object sender, MouseEventArgs e)
         {
-            ComboBox lComboBox = (sender as ComboBox);
+            ComboBox lComboBox = sender as ComboBox;
 
             lComboBox.IsDropDownOpen = false;
         }
 
         private void ComboBoxLang_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-          
             if (e.AddedItems.Count > 0)
             {
                 _MainVm.LangueVm.SetLanguage(e.AddedItems[0].ToString()[0..2]);
+                _MenuPage = new MenuPage(_MainVm);
                 // cm - Recharger la page
-                frame.Navigate(new MenuPage(_MainVm));
+                frame.Navigate(_MenuPage);
             }
+        }
+
+        private void Vs2013BlueThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _MenuPage.Dock.Theme = new Vs2013BlueTheme();
+        }
+
+        private void Vs2013LightThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _MenuPage.Dock.Theme = new Vs2013LightTheme();
+        }
+
+        private void GenericThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _MenuPage.Dock.Theme = new AvalonDock.Themes.GenericTheme();
         }
     }
 }

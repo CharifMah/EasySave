@@ -1,10 +1,10 @@
 ﻿using LogsModels;
+using Models;
 using Models.Backup;
 using OpenDialog;
 using Ressources;
 using Stockage.Logs;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -29,13 +29,18 @@ namespace EasySaveGUI.Views
             _MainVm = pMainVm;
             ListElements.IsVisible = false;
             LayoutAnchorableCreateJob.ToggleAutoHide();
-
+            Dock.OverridesDefaultStyle = true;
             DataContext = _MainVm;
             JobsList.DataContext = _MainVm.JobVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 
+        #region Events
+
+        #region Button
+
+        #region PropertyPane
         private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
             if (JobsList.SelectedItems.Count > 0)
@@ -45,27 +50,83 @@ namespace EasySaveGUI.Views
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
                 ClearList();
+
+                JobsPaneGroup.SelectedContentIndex = JobsPaneGroup.Children.IndexOf(JobsRunningDocument);
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
 
                 ButtonRunJobs.IsEnabled = true;
             }
         }
 
-        private void Button_MouseEnter(object sender, MouseEventArgs e)
+        private void ButtonDeletesJobs_Click(object sender, RoutedEventArgs e)
+        {
+            if (JobsList.SelectedItems.Count > 0)
+            {
+                ButtonRunJobs.IsEnabled = false;
+                System.Collections.IList lJobs = JobsList.SelectedItems;
 
+                List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
+
+                _MainVm.JobVm.DeleteJobs(lSelectedJobs);
+            }
+        }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            ClearList();
+        }
+        #endregion
+
+        #region ListElementsPane
+        private void ListElementsButton_MouseEnter(object sender, MouseEventArgs e)
         {
             ListElements.Show();
         }
 
         private void LoadConfigDefaultFileButton_Click(object sender, RoutedEventArgs e)
         {
+            CSettings.Instance.ResetJobConfigPath();
             _MainVm.JobVm.LoadJobs();
         }
 
         private void LoadConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), System.IO.Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
+            _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Models.CSettings.Instance.JobConfigFolderPath));
         }
+
+        private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            _MainVm.JobVm.SaveJobs();
+        }
+
+        private void ApplyDefaultStyle_Click(object sender, RoutedEventArgs e)
+        {
+            Dock.UpdateLayout();
+        }
+
+        #endregion
+
+        #region CreateJob
+
+        private void CreateJobButton_Click(object sender, RoutedEventArgs e)
+        {
+            _MainVm.JobVm.CreateBackupJob(new CJob(TextBoxJobName.Text,
+                TextBoxJobSourceDirectory.Text, TextBoxJobTargetDirectory.Text, (ETypeBackup)ComboboxCreateJob.SelectedIndex));
+            LayoutAnchorableCreateJob.ToggleAutoHide();
+        }
+        private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxJobSourceDirectory.Text = CDialog.ReadFolder("SourceDir");
+        }
+
+        private void FolderTargetPropertyButton_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxJobTargetDirectory.Text = CDialog.ReadFolder("TargetDir");
+        }
+
+        #endregion
+
+        #endregion
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -73,15 +134,7 @@ namespace EasySaveGUI.Views
             PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            _MainVm.JobVm.SaveJobs();
-        }
-
-        private void Clear_Click(object sender, RoutedEventArgs e)
-        {
-            ClearList();
-        }
+        #endregion
 
         private void ClearList()
         {
@@ -91,21 +144,15 @@ namespace EasySaveGUI.Views
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 
-        private void CreateJobButton_Click(object sender, RoutedEventArgs e)
+        private void TextBoxSourceDirectory_Error(object sender, ValidationErrorEventArgs e)
         {
-            _MainVm.JobVm.CreateBackupJob(new CJob(TextBoxJobName.Text,
-                TextBoxJobSourceDirectory.Text, TextBoxJobTargetDirectory.Text, (ETypeBackup)ComboboxCreateJob.SelectedIndex));
-            LayoutAnchorableCreateJob.ToggleAutoHide();
+            _MainVm.PopupVm.Message = e.Error.ErrorContent.ToString();
+            PopupError.Show();
         }
 
-        private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)
+        private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
         {
-            TextBoxJobSourceDirectory.Text = CDialog.ReadFolder("SourceDir");
-        }
-
-        private void FolderTargetPropertyButton_Click(object sender, RoutedEventArgs e)
-        {
-            TextBoxJobTargetDirectory.Text = CDialog.ReadFolder("TargetDir");
+            (System.Windows.Window.GetWindow(App.Current.MainWindow) as MainWindow).frame.NavigationService.Navigate(new MenuPage(_MainVm));
         }
     }
 }

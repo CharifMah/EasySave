@@ -1,5 +1,6 @@
 ﻿using LogsModels;
 using Newtonsoft.Json;
+using Stockage.Logs;
 using System.Xml.Serialization;
 
 namespace Stockage.Save
@@ -81,7 +82,7 @@ namespace Stockage.Save
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
         }
         public virtual void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false)

@@ -5,10 +5,13 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Dirkster.AvalonDock" Version="4.72.1" />
+    <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.72.1" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
     <PackageReference Include="Material.Icons.WPF" Version="2.1.0" />
   </ItemGroup>
 
@@ -16,10 +19,6 @@
     <ProjectReference Include="..\OpenDialog\OpenDialog.csproj" />
     <ProjectReference Include="..\Ressources\Ressources.csproj" />
     <ProjectReference Include="..\ViewModels\ViewModels.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="UserControls\" />
   </ItemGroup>
 
 </Project>

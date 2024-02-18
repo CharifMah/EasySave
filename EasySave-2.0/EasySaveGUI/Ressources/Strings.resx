@@ -284,4 +284,13 @@
   <data name="CurrentFormat" xml:space="preserve">
     <value></value>
   </data>
+  <data name="ApplyDefaultStyle" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SaveConf" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

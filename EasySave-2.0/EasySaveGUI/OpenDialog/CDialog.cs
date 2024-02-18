@@ -37,15 +37,17 @@ namespace OpenDialog
                 lFileDialog.AddButton(Strings.ResourceManager.GetObject("Open").ToString(), ResponseType.Ok);
                 lFileDialog.SetCurrentFolder(pCurrentFolder);
 
-
-                if (lFileDialog.Run() == (int)ResponseType.Ok)
+                unsafe
                 {
-                    lSelectedFile = lFileDialog.Filename;
+                    if (lFileDialog.Run() == (int)ResponseType.Ok)
+                    {
+                        lSelectedFile = lFileDialog.Filename;
+                    }
+                    else
+                        lSelectedFile = "-1";
+                    lFileDialog.Dispose();
+                    lFileDialog.Destroy();
                 }
-                else
-                    lSelectedFile = "-1";
-                lFileDialog.Destroy();
-
             }
             catch (Exception)
             {
@@ -73,15 +75,18 @@ namespace OpenDialog
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Select").ToString(), ResponseType.Ok);
                 lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
-                if (lDialog.Run() == (int)ResponseType.Ok)
+                unsafe
                 {
+                    if (lDialog.Run() == (int)ResponseType.Ok)
+                    {
 
-                    lSelectedFolder = lDialog.Filename;
+                        lSelectedFolder = lDialog.Filename;
+                    }
+                    else
+                        lSelectedFolder = "-1";
+                    lDialog.Dispose();
+                    lDialog.Destroy();
                 }
-                else
-                    lSelectedFolder = "-1";
-                lDialog.Dispose();
-                lDialog.Destroy();
             }
             catch (Exception)
             {

@@ -77,7 +77,8 @@ namespace EasySaveGUI.Views
         #endregion
 
         #region ListElementsPane
-        private void MenuButtons_MouseEnter(object sender, MouseEventArgs e)
+
+        private void MenuButtons_MouseClick(object sender, RoutedEventArgs e)
         {
             ListElements.Show();
             Button lButton = sender as Button;
@@ -87,24 +88,7 @@ namespace EasySaveGUI.Views
                 ListElements.Content = new OptionsMenuControl();
         }
 
-        private void LoadConfigDefaultFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            CSettings.Instance.ResetJobConfigPath();
-            _MainVm.JobVm.LoadJobs();
-        }
-
-        private void LoadConfigFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Models.CSettings.Instance.JobConfigFolderPath));
-        }
-
-        private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            _MainVm.JobVm.SaveJobs();
-        }
-
         #endregion
-
 
         #endregion
 

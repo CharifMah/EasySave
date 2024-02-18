@@ -30,7 +30,12 @@ namespace EasySaveGUI.UserControls
 
         private void LoadConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Models.CSettings.Instance.JobConfigFolderPath));
+            string lConfigPath = CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Models.CSettings.Instance.JobConfigFolderPath);
+            if (lConfigPath != "-1")
+            {
+                CSettings.Instance.SetJobConfigPath(lConfigPath);
+                _MainVm.JobVm.LoadJobs(false, lConfigPath);
+            } 
         }
 
         private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)

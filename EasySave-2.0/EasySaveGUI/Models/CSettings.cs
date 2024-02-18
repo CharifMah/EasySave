@@ -139,6 +139,11 @@ namespace Models
         {
             _JobConfigFolderPath = new FileInfo(_JobDefaultConfigPath).DirectoryName;
         }
+
+        public void SetJobConfigPath(string pFullPath)
+        {
+            _JobConfigFolderPath = new FileInfo(pFullPath).DirectoryName;
+        }
         #endregion
     }
 }

@@ -22,30 +22,11 @@
 
     <!--  Main Content  -->
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.059*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Usr:ValidationPopupControl
             x:Name="PopupError"
             Grid.ColumnSpan="2"
             Panel.ZIndex="2"
             DataContext="{Binding PopupVm}" />
-        <Grid
-            Grid.Row="1"
-            Grid.Column="0"
-            Background="#CEE6FD">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Button
-                Grid.Row="0"
-                Content="{x:Static Ressources:Strings.LoadJobs}"
-                MouseEnter="ListElementsButton_MouseEnter"
-                Style="{StaticResource CustomButton}" />
-        </Grid>
-
         <DockingManager
             x:Name="Dock"
             Grid.Row="1"
@@ -58,6 +39,36 @@
             <DockingManager.Layout>
                 <LayoutRoot>
                     <LayoutPanel Orientation="Horizontal">
+                        <LayoutAnchorablePane AllowDuplicateContent="False" DockMinWidth="70">
+                            <LayoutAnchorable
+                                Title="Menu"
+                                CanAutoHide="False"
+                                CanClose="False"
+                                CanHide="False">
+                                <Grid Grid.Row="1" Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <Button
+                                        Grid.Row="0"
+                                        Click="MenuButtons_MouseClick"
+                                        Content="{x:Static Ressources:Strings.Settings}"
+                                        Style="{StaticResource CustomButtonSettings}" />
+                                    <Button
+                                        Grid.Row="1"
+                                        Click="MenuButtons_MouseClick"
+                                        Content="{x:Static Ressources:Strings.Config}"
+                                        Style="{StaticResource CustomButtonFile}" />
+                                </Grid>
+
+                            </LayoutAnchorable>
+                        </LayoutAnchorablePane>
 
                         <!--  Elements Pane Left  -->
                         <!--  MenuButtons  -->
@@ -67,86 +78,20 @@
                                 x:Name="ListElements"
                                 Title="Elements"
                                 CanAutoHide="False"
-                                CanClose="False">
-                                <!--  MenuButtons  -->
-                                <StackPanel VerticalAlignment="Center">
-                                    <Button
-                                        Click="LoadConfigDefaultFileButton_Click"
-                                        Content="{x:Static Ressources:Strings.DefaultFile}"
-                                        Style="{StaticResource CustomButtonFile}" />
-                                    <Button
-                                        Click="LoadConfigFileButton_Click"
-                                        Content="{x:Static Ressources:Strings.SelectConfigurationFile}"
-                                        Style="{StaticResource CustomButtonFile}" />
-                                    <Button
-                                        Click="SaveConfigFileButton_Click"
-                                        Content="{x:Static Ressources:Strings.SaveConf}"
-                                        Style="{StaticResource CustomButtonFile}" />
-                                    <Button
-                                        Click="ApplyDefaultStyleButton_Click"
-                                        Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
-                                        Style="{StaticResource CustomButtonApplyDefaultStyle}" />
-                                </StackPanel>
-                            </LayoutAnchorable>
+                                CanClose="False" />
 
                         </LayoutAnchorablePane>
 
                         <LayoutPanel Orientation="Vertical">
                             <!--  Jobs Pane  -->
                             <LayoutPanel Orientation="Horizontal">
+
                                 <!--  Jobs Pane  -->
                                 <LayoutDocumentPaneGroup DockWidth="200" Orientation="Vertical">
                                     <!--  jobs list  -->
                                     <LayoutDocumentPane x:Name="JobsPaneGroup">
                                         <LayoutDocument Title="Jobs" CanClose="False">
-                                            <ListBox
-                                                x:Name="JobsList"
-                                                ItemsSource="{Binding Jobs, Mode=TwoWay}"
-                                                SelectionMode="Multiple">
-                                                <ListBox.Resources>
-                                                    <Style TargetType="ListBoxItem">
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="ListBoxItem">
-                                                                    <CheckBox
-                                                                        Margin="5,2"
-                                                                        Checked="CheckBox_Checked"
-                                                                        IsChecked="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}">
-                                                                        <ContentPresenter />
-                                                                    </CheckBox>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Style>
-                                                </ListBox.Resources>
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <WrapPanel Orientation="Horizontal">
-                                                            <StackPanel>
-                                                                <TextBlock>
-                                                                    <Run Text="{x:Static Ressources:Strings.Name}" />
-                                                                    <Run Text=" : " />
-                                                                    <Run Text="{Binding Name}" />
-                                                                </TextBlock>
-                                                                <TextBlock>
-                                                                    <Run Text="{x:Static Ressources:Strings.SourceDirectory}" />
-                                                                    <Run Text="{Binding SourceDirectory}" />
-                                                                </TextBlock>
-                                                                <TextBlock>
-                                                                    <Run Text="{x:Static Ressources:Strings.TargetDirectory}" />
-                                                                    <Run Text="{Binding TargetDirectory}" />
-                                                                </TextBlock>
-                                                                <TextBlock>
-                                                                    <Run Text="{x:Static Ressources:Strings.Type}" />
-                                                                    <Run Text=" : " />
-                                                                    <Run Text="{Binding BackupType, Mode=TwoWay, Converter={StaticResource ETypeBackupConverter}}" />
-                                                                </TextBlock>
-                                                            </StackPanel>
-                                                        </WrapPanel>
-                                                        <!--</CheckBox>-->
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
+                                            <Usr:JobListControl x:Name="JobUsr" />
                                         </LayoutDocument>
 
                                         <!--  JobsRunning  -->
@@ -176,10 +121,6 @@
                                                         </DataGridTemplateColumn.CellTemplate>
 
                                                     </DataGridTemplateColumn>
-
-                                                    <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="Répertoire source" />
-
-                                                    <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
 
                                                     <!--  LogSstate Column Datagrid JobsRunning  -->
                                                     <DataGridTemplateColumn Header="LogState">
@@ -252,17 +193,30 @@
 
                                                         </DataGridTemplateColumn.CellTemplate>
                                                     </DataGridTemplateColumn>
+
+                                                    <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="Répertoire source" />
+
+                                                    <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
+
                                                 </DataGrid.Columns>
+
                                             </DataGrid>
+                                        </LayoutDocument>
+                                        <!--  ConfigInfo  -->
+                                        <LayoutDocument
+                                            x:Name="ConfigInfoDocument"
+                                            Title="ConfigInfo"
+                                            CanClose="True">
+                                            <Usr:ConfigInfoControl />
+
                                         </LayoutDocument>
 
                                     </LayoutDocumentPane>
 
                                 </LayoutDocumentPaneGroup>
 
-
                                 <!--  Property Pane  -->
-                                <LayoutAnchorablePaneGroup DockWidth="120">
+                                <LayoutAnchorablePaneGroup DockWidth="200">
 
                                     <!--  Property Pane  -->
                                     <LayoutAnchorablePane DockMinWidth="200">
@@ -274,68 +228,7 @@
                                             CanHide="False">
 
                                             <Grid>
-
-
-                                                <StackPanel DataContext="{Binding JobVm}">
-
-                                                    <TextBox x:Name="TextBoxName" Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
-                                                    <!--  CustomTextBox+ButtonFolder  -->
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*" />
-                                                            <ColumnDefinition Width="0.1*" />
-                                                        </Grid.ColumnDefinitions>
-
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="*" />
-                                                            <RowDefinition Height="*" />
-                                                        </Grid.RowDefinitions>
-
-
-                                                        <TextBox
-                                                            x:Name="TextBoxSourceDirectory"
-                                                            Grid.Row="0"
-                                                            Grid.Column="0"
-                                                            Validation.Error="TextBoxSourceDirectory_Error"
-                                                            Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
-
-                                                            <TextBox.Text>
-                                                                <Binding
-                                                                    Mode="TwoWay"
-                                                                    NotifyOnValidationError="True"
-                                                                    Path="SelectedJob.SourceDirectory">
-                                                                    <Binding.ValidationRules>
-                                                                        <Validator:FolderPathValidator />
-                                                                    </Binding.ValidationRules>
-                                                                </Binding>
-
-                                                            </TextBox.Text>
-                                                        </TextBox>
-
-                                                        <Button
-                                                            Grid.Row="0"
-                                                            Grid.Column="1"
-                                                            Click="FolderSourcePropertyButton_Click"
-                                                            Style="{StaticResource CustomButtonFolder}" />
-
-                                                        <TextBox
-                                                            x:Name="TextBoxTargetDirectory"
-                                                            Grid.Row="1"
-                                                            Grid.Column="0"
-                                                            Text="{Binding SelectedJob.TargetDirectory, Mode=OneWay}" />
-
-                                                        <Button
-                                                            Grid.Row="1"
-                                                            Grid.Column="1"
-                                                            Click="FolderTargetPropertyButton_Click"
-                                                            Style="{StaticResource CustomButtonFolder}" />
-                                                    </Grid>
-
-                                                    <ComboBox x:Name="PropertyComboBox" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=OneWay}">
-                                                        <ComboBoxItem>COMPLET</ComboBoxItem>
-                                                        <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
-                                                    </ComboBox>
-                                                </StackPanel>
+                                                <Usr:JobPropertyControl x:Name="JobPropertyUsr" />
 
                                                 <StackPanel VerticalAlignment="Bottom">
                                                     <Button
@@ -368,77 +261,11 @@
                                         <LayoutAnchorable
                                             x:Name="LayoutAnchorableCreateJob"
                                             Title="CreateJob"
-                                            AutoHideMinWidth="400"
+                                            AutoHideMinWidth="200"
                                             CanClose="False"
                                             CanHide="False"
                                             CanShowOnHover="False">
-
-                                            <StackPanel DataContext="{Binding JobVm}">
-
-                                                <Separator Height="20" />
-
-                                                <TextBox x:Name="TextBoxJobName" MinHeight="15" />
-
-                                                <Separator Height="20" />
-
-                                                <!--  CustomTextBox+ButtonFolder  -->
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="0.1*" />
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="*" />
-                                                        <RowDefinition Height="*" />
-                                                    </Grid.RowDefinitions>
-
-                                                    <TextBox
-                                                        x:Name="TextBoxJobSourceDirectory"
-                                                        Grid.Row="0"
-                                                        Grid.Column="0" />
-                                                    <Button
-                                                        Grid.Row="0"
-                                                        Grid.Column="1"
-                                                        Click="FolderSourcePropertyButton_Click"
-                                                        Style="{StaticResource CustomButtonFolder}" />
-
-
-
-                                                    <TextBox
-                                                        x:Name="TextBoxJobTargetDirectory"
-                                                        Grid.Row="1"
-                                                        Grid.Column="0" />
-                                                    <Button
-                                                        Grid.Row="1"
-                                                        Grid.Column="1"
-                                                        Click="FolderTargetPropertyButton_Click"
-                                                        Style="{StaticResource CustomButtonFolder}" />
-
-                                                </Grid>
-
-                                                <Separator Height="20" />
-
-                                                <ComboBox x:Name="ComboboxCreateJob">
-                                                    <ComboBoxItem>COMPLET</ComboBoxItem>
-                                                    <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
-                                                </ComboBox>
-                                                <Separator Height="20" />
-                                                <Button
-                                                    x:Name="PropertyComboboxCreateJob"
-                                                    Click="CreateJobButton_Click"
-                                                    Content="{x:Static Ressources:Strings.CreateJob}"
-                                                    Style="{StaticResource CustomButton}" />
-
-                                                <Separator Height="20" />
-
-                                                <Button
-                                                    Click="SaveConfigFileButton_Click"
-                                                    Content="{x:Static Ressources:Strings.SaveConf}"
-                                                    Style="{StaticResource CustomButtonFile}" />
-
-                                            </StackPanel>
-
+                                            <Usr:CreateJobControl />
                                         </LayoutAnchorable>
 
                                     </LayoutAnchorablePane>

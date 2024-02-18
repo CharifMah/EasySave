@@ -293,4 +293,13 @@
   <data name="Close" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Config" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

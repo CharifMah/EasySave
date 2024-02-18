@@ -1,4 +1,5 @@
-﻿using LogsModels;
+﻿using EasySaveGUI.UserControls;
+using LogsModels;
 using Models;
 using Models.Backup;
 using OpenDialog;
@@ -28,12 +29,12 @@ namespace EasySaveGUI.Views
             InitializeComponent();
             _MainVm = pMainVm;
             ListElements.IsVisible = false;
-            LayoutAnchorableCreateJob.ToggleAutoHide();
-            Dock.OverridesDefaultStyle = true;
             DataContext = _MainVm;
-            JobsList.DataContext = _MainVm.JobVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+
+            LayoutAnchorableCreateJob.ToggleAutoHide();
+            ConfigInfoDocument.Close();
         }
 
         #region Events
@@ -43,15 +44,15 @@ namespace EasySaveGUI.Views
         #region PropertyPane
         private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (JobsList.SelectedItems.Count > 0)
+            if (JobUsr.JobsList.SelectedItems.Count > 0)
             {
                 ButtonRunJobs.IsEnabled = false;
-                System.Collections.IList lJobs = JobsList.SelectedItems;
+                System.Collections.IList lJobs = JobUsr.JobsList.SelectedItems;
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
                 ClearList();
 
-                JobsPaneGroup.SelectedContentIndex = JobsPaneGroup.Children.IndexOf(JobsRunningDocument);
+                JobsRunningDocument.IsActive = true;
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
 
                 ButtonRunJobs.IsEnabled = true;
@@ -60,10 +61,10 @@ namespace EasySaveGUI.Views
 
         private void ButtonDeletesJobs_Click(object sender, RoutedEventArgs e)
         {
-            if (JobsList.SelectedItems.Count > 0)
+            if (JobUsr.JobsList.SelectedItems.Count > 0)
             {
                 ButtonRunJobs.IsEnabled = false;
-                System.Collections.IList lJobs = JobsList.SelectedItems;
+                System.Collections.IList lJobs = JobUsr.JobsList.SelectedItems;
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
 
@@ -78,61 +79,20 @@ namespace EasySaveGUI.Views
         #endregion
 
         #region ListElementsPane
-        private void ListElementsButton_MouseEnter(object sender, MouseEventArgs e)
+
+        private void MenuButtons_MouseClick(object sender, RoutedEventArgs e)
         {
             ListElements.Show();
-        }
-
-        private void LoadConfigDefaultFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            CSettings.Instance.ResetJobConfigPath();
-            _MainVm.JobVm.LoadJobs();
-        }
-
-        private void LoadConfigFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Models.CSettings.Instance.JobConfigFolderPath));
-        }
-
-        private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            _MainVm.JobVm.SaveJobs();
-        }
-
-        private void ApplyDefaultStyle_Click(object sender, RoutedEventArgs e)
-        {
-            Dock.UpdateLayout();
-        }
-
-        #endregion
-
-        #region CreateJob
-
-        private void CreateJobButton_Click(object sender, RoutedEventArgs e)
-        {
-            _MainVm.JobVm.CreateBackupJob(new CJob(TextBoxJobName.Text,
-                TextBoxJobSourceDirectory.Text, TextBoxJobTargetDirectory.Text, (ETypeBackup)ComboboxCreateJob.SelectedIndex));
-            LayoutAnchorableCreateJob.ToggleAutoHide();
-        }
-        private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)
-        {
-            TextBoxJobSourceDirectory.Text = CDialog.ReadFolder("SourceDir");
-        }
-
-        private void FolderTargetPropertyButton_Click(object sender, RoutedEventArgs e)
-        {
-            TextBoxJobTargetDirectory.Text = CDialog.ReadFolder("TargetDir");
+            Button lButton = sender as Button;
+            if (lButton.Content == Strings.Config)
+                ListElements.Content = new ConfigMenuControl();
+            if (lButton.Content == Strings.Settings)
+                ListElements.Content = new OptionsMenuControl();
         }
 
         #endregion
 
         #endregion
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;
-            PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
-        }
 
         #endregion
 
@@ -140,19 +100,9 @@ namespace EasySaveGUI.Views
         {
             CLogger<CLogBase>.Instance.Clear();
             CLogger<CLogDaily>.Instance.Clear();
+            _MainVm.JobVm.JobsRunning.Clear();
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
-        }
-
-        private void TextBoxSourceDirectory_Error(object sender, ValidationErrorEventArgs e)
-        {
-            _MainVm.PopupVm.Message = e.Error.ErrorContent.ToString();
-            PopupError.Show();
-        }
-
-        private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
-        {
-            (System.Windows.Window.GetWindow(App.Current.MainWindow) as MainWindow).frame.NavigationService.Navigate(new MenuPage(_MainVm));
         }
     }
 }

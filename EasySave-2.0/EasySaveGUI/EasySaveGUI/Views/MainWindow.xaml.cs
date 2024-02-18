@@ -1,4 +1,5 @@
-﻿using AvalonDock.Themes;
+﻿using AvalonDock.Layout;
+using AvalonDock.Themes;
 using EasySaveGUI.Views;
 using System;
 using System.Runtime.InteropServices;
@@ -22,7 +23,11 @@ namespace EasySaveGUI
         public static extern bool ReleaseCapture();
         #endregion
         private MainViewModel _MainVm;
-        MenuPage _MenuPage;
+        private MenuPage _MenuPage;
+        public MainViewModel MainVm { get => _MainVm; set => _MainVm = value; }
+        public MenuPage MenuPage { get => _MenuPage; set => _MenuPage = value; }
+
+
         public MainWindow()
         {
             InitializeComponent();

@@ -9,7 +9,7 @@ namespace Models.Backup
     /// Gestionnaire de jobs
     /// </summary>
     [DataContract]
-    public class CJobManager
+    public class CJobManager : BaseModel
     {
         #region Attribute
         [DataMember]
@@ -18,6 +18,8 @@ namespace Models.Backup
         private ObservableCollection<CJob> _Jobs;
         [DataMember]
         private string _Name;
+
+        private ObservableCollection<CJob> _jobsRunning;
 
         private ISauve _SauveCollection;
 
@@ -39,6 +41,9 @@ namespace Models.Backup
         /// </summary>
         public ISauve SauveCollection { get => _SauveCollection; set => _SauveCollection = value; }
 
+        public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; } }
+
+
         #endregion
 
         #region CTOR
@@ -49,6 +54,7 @@ namespace Models.Backup
         {
             _Name = "JobManager";
             _Jobs = new ObservableCollection<CJob>();
+            _jobsRunning = new ObservableCollection<CJob>();
             _MaxJobs = 5;
             SauveJobsAsync _SauveJobs = new SauveJobsAsync();
             if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
@@ -102,7 +108,7 @@ namespace Models.Backup
         /// <returns>
         /// La liste des jobs, mise à jour avec leur état après exécution
         /// </returns>
-        public async Task RunJobs(ObservableCollection<CJob> pJobs)
+        public async Task RunJobs(List<CJob> pJobs)
         {
             try
             {
@@ -115,9 +121,11 @@ namespace Models.Backup
                     string[] lFiles = Directory.GetFiles(lJob.SourceDirectory, "*", SearchOption.AllDirectories);
                     _SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
                     _SauveJobs.LogState.EligibleFileCount = lFiles.Length;
+                    _jobsRunning.Add(lJob);
                     await lJob.Run(_SauveJobs);
                     _SauveJobs.LogState.Date = DateTime.Now;
                 }
+
             }
             catch (Exception ex)
             {

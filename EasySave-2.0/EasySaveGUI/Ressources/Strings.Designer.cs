@@ -144,6 +144,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string Config {
+            get {
+                return ResourceManager.GetString("Config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Confirm {
             get {
                 return ResourceManager.GetString("Confirm", resourceCulture);
@@ -260,6 +269,15 @@ namespace Ressources {
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string Info {
+            get {
+                return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string InputFormat {
             get {
@@ -575,6 +593,15 @@ namespace Ressources {
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string SingleIndex {
             get {

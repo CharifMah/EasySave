@@ -9,6 +9,7 @@
         private FormatLogViewModel _FormatLogVm;
         private JobViewModel _JobVm;
         private PopupViewModel _PopupVm;
+        private SettingsViewModel _SettingsVm;
         /// <summary>
         /// View Model de la langue
         /// </summary>
@@ -22,6 +23,9 @@
         /// </summary>
         public JobViewModel JobVm { get => _JobVm; set => _JobVm = value; }
         public PopupViewModel PopupVm { get => _PopupVm; set => _PopupVm = value; }
+        public SettingsViewModel SettingsVm { get => _SettingsVm; set => _SettingsVm = value; }
+
+
 
         /// <summary>
         /// Le constructeur MainViewModel initialise les modèles de vue et charge les paramètres de l'utilisateur
@@ -33,6 +37,7 @@
             _FormatLogVm = new FormatLogViewModel();
             _JobVm = new JobViewModel();
             _PopupVm = new PopupViewModel();
+            _SettingsVm = new SettingsViewModel();
         }
     }
 }

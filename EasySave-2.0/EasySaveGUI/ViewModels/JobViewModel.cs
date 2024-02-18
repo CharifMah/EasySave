@@ -11,6 +11,9 @@ namespace ViewModels
         #region Attribute
         private CJob _SelectedJob;
         private CJobManager _jobManager;
+        #endregion
+
+        #region Property
         /// <summary>
         /// JobManager
         /// </summary>
@@ -46,10 +49,7 @@ namespace ViewModels
                 NotifyPropertyChanged();
             }
         }
-        public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; NotifyPropertyChanged(); } }
-
-        private ObservableCollection<CJob> _jobsRunning;
-
+        public ObservableCollection<CJob> JobsRunning { get => _jobManager.JobsRunning; set { _jobManager.JobsRunning = value; NotifyPropertyChanged(); } }
         #endregion
 
         #region CTOR
@@ -65,7 +65,7 @@ namespace ViewModels
                 lPath = Path.Combine(lFolderPath, "JobManager.json");
             else
                 lPath = Models.CSettings.Instance.JobDefaultConfigPath;
-            _jobsRunning = new ObservableCollection<CJob>();
+
             _jobManager = Models.CSettings.Instance.LoadJobsFile(lPath);
         }
 
@@ -78,8 +78,7 @@ namespace ViewModels
         /// <returns> Liste mise à jour des jobs avec leur état après exécution </returns>
         public async Task RunJobs(List<CJob> pJobs)
         {
-            JobsRunning = new ObservableCollection<CJob>(pJobs);
-            await _jobManager.RunJobs(JobsRunning);
+            await _jobManager.RunJobs(pJobs);
             NotifyPropertyChanged("Jobs");
             NotifyPropertyChanged("JobsRunning");
         }
@@ -96,6 +95,7 @@ namespace ViewModels
             NotifyPropertyChanged("JobsRunning");
             return lResult;
         }
+
         /// <summary>
         /// Supprimer un ou plusieurs jobs
         /// </summary>

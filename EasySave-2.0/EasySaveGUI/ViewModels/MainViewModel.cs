@@ -6,6 +6,7 @@
     public class MainViewModel
     {
         private LangueViewModel _LangueVm;
+        private FormatLogViewModel _FormatLogVm;
         private JobViewModel _JobVm;
         private PopupViewModel _PopupVm;
         private SettingsViewModel _SettingsVm;
@@ -13,6 +14,10 @@
         /// View Model de la langue
         /// </summary>
         public LangueViewModel LangueVm { get => _LangueVm; set => _LangueVm = value; }
+        /// <summary>
+        /// Format Log View Model
+        /// </summary>
+        public FormatLogViewModel FormatLogVm { get => _FormatLogVm; set => _FormatLogVm = value; }
         /// <summary>
         /// View model des jobs
         /// </summary>
@@ -29,6 +34,7 @@
         {
             Models.CSettings.Instance.LoadSettings();
             _LangueVm = new LangueViewModel();
+            _FormatLogVm = new FormatLogViewModel();
             _JobVm = new JobViewModel();
             _PopupVm = new PopupViewModel();
             _SettingsVm = new SettingsViewModel();

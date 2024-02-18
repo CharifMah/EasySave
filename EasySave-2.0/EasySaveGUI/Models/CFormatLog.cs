@@ -10,37 +10,40 @@ namespace Models
     {
         private Dictionary<int, string> _FormatsLogs;
         [DataMember]
-        private string _SelectedLogFormat;
+        private KeyValuePair<int, string> _SelectedFormatLog;
 
         /// <summary>
-        /// Dictionnaire de formats de logs dans l'application
+        /// Dictionary of available log formats in the application
         /// </summary>
         public Dictionary<int, string> FormatsLogs { get => _FormatsLogs; set => _FormatsLogs = value; }
-        public string SelectedLogFormat { get => _SelectedLogFormat; set => _SelectedLogFormat = value; }
+        public KeyValuePair<int, string> SelectedFormatLog { get => _SelectedFormatLog; set => _SelectedFormatLog = value; }
 
         /// <summary>
-        /// Initialize the language with the installed culture of the operating system
+        /// Initializes the log format with the default format
         /// </summary>
         public CFormatLog()
         {
             _FormatsLogs = new Dictionary<int, string>()
             {
-              {1, "json"},
-              {2, "xml"}
+              {0, "json"},
+              {1, "xml"}
             };
-            _SelectedLogFormat = "json";
+            _SelectedFormatLog = _FormatsLogs.First();
         }
 
         /// <summary>
-        /// Set the current logs format
+        /// Sets the current log format
         /// </summary>
-        /// <param name="pFormatLogInfo">give a number</param>
+        /// <param name="pFormatLogInfo">Format log identifier</param>
         /// <returns>true if the logs format was changed</returns>
-        public bool SetLogFormat(string pFormatLogInfo)
+        public bool SetFormatLog(string pFormatLogInfo)
         {
-
-            SelectedLogFormat = pFormatLogInfo;
-            return true;
+            if (_FormatsLogs.Any(f => f.Value.Contains(pFormatLogInfo)))
+            {
+                _SelectedFormatLog = _FormatsLogs.First(f => f.Value.Contains(pFormatLogInfo));
+                return true;
+            }
+            return false;
         }
     }
 }

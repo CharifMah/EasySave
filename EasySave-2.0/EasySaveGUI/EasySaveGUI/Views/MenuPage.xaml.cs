@@ -103,11 +103,6 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.SaveJobs();
         }
 
-        private void ApplyDefaultStyle_Click(object sender, RoutedEventArgs e)
-        {
-            Dock.UpdateLayout();
-        }
-
         #endregion
 
 
@@ -128,11 +123,6 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.JobsRunning.Clear();
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
-        }
-
-        private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
-        {
-            (System.Windows.Window.GetWindow(App.Current.MainWindow) as MainWindow).frame.NavigationService.Navigate(new MenuPage(_MainVm));
         }
     }
 }

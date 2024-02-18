@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using EasySaveGUI.Views;
+using System.Windows;
 using System.Windows.Controls;
 using ViewModels;
 
@@ -20,7 +21,7 @@ namespace EasySaveGUI.UserControls
 
         private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainWindow.MenuPage.Dock.UpdateLayout();
+            _MainWindow.frame.NavigationService.Navigate(new MenuPage(_MainVm));
         }
     }
 }

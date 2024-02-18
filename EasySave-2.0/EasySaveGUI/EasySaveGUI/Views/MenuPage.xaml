@@ -90,7 +90,12 @@
                                 <LayoutDocumentPaneGroup DockWidth="200" Orientation="Vertical">
                                     <!--  jobs list  -->
                                     <LayoutDocumentPane x:Name="JobsPaneGroup">
-                                        <LayoutDocument Title="Jobs" CanClose="False">
+
+                                        <LayoutDocument
+                                            x:Name="JobsListDocument"
+                                            Title="Jobs"
+                                            CanClose="False"
+                                            IsSelected="True">
                                             <Usr:JobListControl x:Name="JobUsr" />
                                         </LayoutDocument>
 
@@ -173,7 +178,7 @@
                                                                     <StackPanel Orientation="Horizontal">
                                                                         <TextBlock FontWeight="Bold" Text="TotalSize : " />
 
-                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.TotalSize, Mode=OneWay}" />
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.TotalSize, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
                                                                     </StackPanel>
 
                                                                     <StackPanel Orientation="Horizontal">

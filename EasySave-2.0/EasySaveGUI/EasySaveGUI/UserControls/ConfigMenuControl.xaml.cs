@@ -50,6 +50,7 @@ namespace EasySaveGUI.UserControls
             if (!_MainWindow.MenuPage.JobsPaneGroup.Children.Contains(_MainWindow.MenuPage.ConfigInfoDocument))
             {
                 _MainWindow.MenuPage.ConfigInfoDocument.Dock();
+                _MainWindow.MenuPage.ConfigInfoDocument.Content = new ConfigInfoControl();
             }
             else
             {

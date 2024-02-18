@@ -29,11 +29,12 @@ namespace EasySaveGUI.Views
             InitializeComponent();
             _MainVm = pMainVm;
             ListElements.IsVisible = false;
-            LayoutAnchorableCreateJob.ToggleAutoHide();
-
             DataContext = _MainVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+
+            LayoutAnchorableCreateJob.ToggleAutoHide();
+            ConfigInfoDocument.Close();
         }
 
         #region Events

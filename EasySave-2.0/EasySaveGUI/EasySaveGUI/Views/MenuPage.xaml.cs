@@ -30,7 +30,7 @@ namespace EasySaveGUI.Views
             _MainVm = pMainVm;
             ListElements.IsVisible = false;
             LayoutAnchorableCreateJob.ToggleAutoHide();
-            ConfigInfoDocument.Close();
+
             DataContext = _MainVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
@@ -92,8 +92,6 @@ namespace EasySaveGUI.Views
         #endregion
 
         #endregion
-
-
 
         #endregion
 

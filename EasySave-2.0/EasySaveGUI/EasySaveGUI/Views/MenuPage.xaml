@@ -204,7 +204,10 @@
                                         <LayoutDocument
                                             x:Name="ConfigInfoDocument"
                                             Title="ConfigInfo"
-                                            CanClose="True" />
+                                            CanClose="True">
+                                            <Usr:ConfigInfoControl />
+
+                                        </LayoutDocument>
 
                                     </LayoutDocumentPane>
 

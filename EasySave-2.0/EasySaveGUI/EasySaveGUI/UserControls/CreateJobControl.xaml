@@ -11,7 +11,7 @@
     mc:Ignorable="d">
     <StackPanel>
 
-        <Separator Height="20" />
+
         <TextBlock>
             <Run Text="{x:Static Ressources:Strings.Name}" />
             <Run Text=" : " />
@@ -19,7 +19,6 @@
 
         <TextBox x:Name="TextBoxJobName" MinHeight="15" />
 
-        <Separator Height="20" />
 
         <!--  CustomTextBox+ButtonFolder  -->
 
@@ -67,7 +66,6 @@
 
         </Grid>
 
-        <Separator Height="20" />
         <TextBlock>
             <Run Text="{x:Static Ressources:Strings.Type}" />
             <Run Text=" : " />
@@ -77,15 +75,12 @@
             <ComboBoxItem>COMPLET</ComboBoxItem>
             <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
         </ComboBox>
-
         <Separator Height="20" />
         <Button
             x:Name="PropertyComboboxCreateJob"
             Click="CreateJobButton_Click"
             Content="{x:Static Ressources:Strings.CreateJob}"
             Style="{StaticResource CustomButtonCreate}" />
-
-        <Separator Height="20" />
 
         <Button
             Click="SaveConfigFileButton_Click"

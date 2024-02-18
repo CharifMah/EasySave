@@ -26,24 +26,33 @@
             <ColumnDefinition Width="0.059*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+
         <Usr:ValidationPopupControl
             x:Name="PopupError"
             Grid.ColumnSpan="2"
             Panel.ZIndex="2"
             DataContext="{Binding PopupVm}" />
-        <Grid
-            Grid.Row="1"
-            Grid.Column="0"
-            Background="#CEE6FD">
+
+        <Grid Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Button
                 Grid.Row="0"
-                Content="{x:Static Ressources:Strings.LoadJobs}"
-                MouseEnter="ListElementsButton_MouseEnter"
-                Style="{StaticResource CustomButton}" />
+                Content="{x:Static Ressources:Strings.Settings}"
+                MouseEnter="MenuButtons_MouseEnter"
+                Style="{StaticResource CustomButtonSettings}" />
+            <Button
+                Grid.Row="1"
+                Content="{x:Static Ressources:Strings.Config}"
+                MouseEnter="MenuButtons_MouseEnter"
+                Style="{StaticResource CustomButtonFile}" />
         </Grid>
 
         <DockingManager
@@ -67,27 +76,7 @@
                                 x:Name="ListElements"
                                 Title="Elements"
                                 CanAutoHide="False"
-                                CanClose="False">
-                                <!--  MenuButtons  -->
-                                <StackPanel VerticalAlignment="Center">
-                                    <Button
-                                        Click="LoadConfigDefaultFileButton_Click"
-                                        Content="{x:Static Ressources:Strings.DefaultFile}"
-                                        Style="{StaticResource CustomButtonFile}" />
-                                    <Button
-                                        Click="LoadConfigFileButton_Click"
-                                        Content="{x:Static Ressources:Strings.SelectConfigurationFile}"
-                                        Style="{StaticResource CustomButtonFile}" />
-                                    <Button
-                                        Click="SaveConfigFileButton_Click"
-                                        Content="{x:Static Ressources:Strings.SaveConf}"
-                                        Style="{StaticResource CustomButtonFile}" />
-                                    <Button
-                                        Click="ApplyDefaultStyleButton_Click"
-                                        Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
-                                        Style="{StaticResource CustomButtonApplyDefaultStyle}" />
-                                </StackPanel>
-                            </LayoutAnchorable>
+                                CanClose="False" />
 
                         </LayoutAnchorablePane>
 

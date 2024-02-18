@@ -1,4 +1,5 @@
-﻿using LogsModels;
+﻿using EasySaveGUI.UserControls;
+using LogsModels;
 using Models;
 using Models.Backup;
 using OpenDialog;
@@ -29,7 +30,6 @@ namespace EasySaveGUI.Views
             _MainVm = pMainVm;
             ListElements.IsVisible = false;
             LayoutAnchorableCreateJob.ToggleAutoHide();
-            Dock.OverridesDefaultStyle = true;
             DataContext = _MainVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
@@ -77,9 +77,14 @@ namespace EasySaveGUI.Views
         #endregion
 
         #region ListElementsPane
-        private void ListElementsButton_MouseEnter(object sender, MouseEventArgs e)
+        private void MenuButtons_MouseEnter(object sender, MouseEventArgs e)
         {
             ListElements.Show();
+            Button lButton = sender as Button;
+            if (lButton.Content == Strings.Config)
+                ListElements.Content = new ConfigMenuControl();
+            if (lButton.Content == Strings.Settings)
+                ListElements.Content = new OptionsMenuControl();
         }
 
         private void LoadConfigDefaultFileButton_Click(object sender, RoutedEventArgs e)

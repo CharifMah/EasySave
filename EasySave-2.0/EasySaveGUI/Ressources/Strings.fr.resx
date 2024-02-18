@@ -313,4 +313,10 @@
   <data name="Close" xml:space="preserve">
     <value>fermer</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Config" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
 </root>

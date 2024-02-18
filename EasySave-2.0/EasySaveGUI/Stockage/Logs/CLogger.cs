@@ -50,7 +50,7 @@
         public void Clear()
         {
             _GenericLogger.Clear();
-           _StringLogger.Clear();
+            _StringLogger.Clear();
         }
     }
 }

@@ -1,13 +1,10 @@
-﻿using AvalonDock.Layout;
-using AvalonDock.Layout.Serialization;
-using Gtk;
-using LogsModels;
+﻿using LogsModels;
+using Models;
 using Models.Backup;
 using OpenDialog;
 using Ressources;
 using Stockage.Logs;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -43,7 +40,7 @@ namespace EasySaveGUI.Views
 
         #region Button
 
-        #region Property
+        #region PropertyPane
         private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
             if (JobsList.SelectedItems.Count > 0)
@@ -53,6 +50,8 @@ namespace EasySaveGUI.Views
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
                 ClearList();
+
+                JobsPaneGroup.SelectedContentIndex = JobsPaneGroup.Children.IndexOf(JobsRunningDocument);
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
 
                 ButtonRunJobs.IsEnabled = true;
@@ -78,21 +77,21 @@ namespace EasySaveGUI.Views
         }
         #endregion
 
-
-        private void Button_MouseEnter(object sender, MouseEventArgs e)
-
+        #region ListElementsPane
+        private void ListElementsButton_MouseEnter(object sender, MouseEventArgs e)
         {
             ListElements.Show();
         }
 
         private void LoadConfigDefaultFileButton_Click(object sender, RoutedEventArgs e)
         {
+            CSettings.Instance.ResetJobConfigPath();
             _MainVm.JobVm.LoadJobs();
         }
 
         private void LoadConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), System.IO.Path.GetDirectoryName(Models.CSettings.Instance.JobConfigFolderPath)));
+            _MainVm.JobVm.LoadJobs(false, CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Models.CSettings.Instance.JobConfigFolderPath));
         }
 
         private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
@@ -100,11 +99,14 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.SaveJobs();
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void ApplyDefaultStyle_Click(object sender, RoutedEventArgs e)
         {
-            _MainVm.JobVm.SaveJobs();
+            Dock.UpdateLayout();
         }
 
+        #endregion
+
+        #region CreateJob
 
         private void CreateJobButton_Click(object sender, RoutedEventArgs e)
         {
@@ -112,7 +114,6 @@ namespace EasySaveGUI.Views
                 TextBoxJobSourceDirectory.Text, TextBoxJobTargetDirectory.Text, (ETypeBackup)ComboboxCreateJob.SelectedIndex));
             LayoutAnchorableCreateJob.ToggleAutoHide();
         }
-
         private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)
         {
             TextBoxJobSourceDirectory.Text = CDialog.ReadFolder("SourceDir");
@@ -123,10 +124,7 @@ namespace EasySaveGUI.Views
             TextBoxJobTargetDirectory.Text = CDialog.ReadFolder("TargetDir");
         }
 
-        private void ApplyDefaultStyle_Click(object sender, RoutedEventArgs e)
-        {
-            Dock.UpdateLayout();
-        }
+        #endregion
 
         #endregion
 
@@ -144,6 +142,17 @@ namespace EasySaveGUI.Views
             CLogger<CLogDaily>.Instance.Clear();
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+        }
+
+        private void TextBoxSourceDirectory_Error(object sender, ValidationErrorEventArgs e)
+        {
+            _MainVm.PopupVm.Message = e.Error.ErrorContent.ToString();
+            PopupError.Show();
+        }
+
+        private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
+        {
+            (System.Windows.Window.GetWindow(App.Current.MainWindow) as MainWindow).frame.NavigationService.Navigate(new MenuPage(_MainVm));
         }
     }
 }

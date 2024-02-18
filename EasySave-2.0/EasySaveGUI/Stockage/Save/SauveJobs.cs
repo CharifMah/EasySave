@@ -11,7 +11,7 @@ namespace Stockage.Save
         private int _TransferedFiles;
         private List<CLogState> _LogStates;
         private string _FormatLog;
-       
+
         /// <summary>
         /// Le nombre de fichier transférer
         /// </summary>
@@ -127,7 +127,7 @@ namespace Stockage.Save
             }
             catch (Exception ex)
             {
-                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false, true, lName) ;
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false, true, lName);
             }
         }
 

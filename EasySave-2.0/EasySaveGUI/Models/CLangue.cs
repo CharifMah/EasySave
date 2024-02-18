@@ -7,7 +7,7 @@ namespace Models
     /// Classe de la langue de l'application
     /// </summary>
     [DataContract]
-    public class CLangue 
+    public class CLangue
     {
         private Dictionary<int, string> _Languages;
         [DataMember]
@@ -16,7 +16,7 @@ namespace Models
         /// Dictionnaire de langues disponible dans l'application
         /// </summary>
         public Dictionary<int, string> Languages { get => _Languages; set => _Languages = value; }
-        public KeyValuePair<int,string> SelectedCulture { get => _SelectedCulture; set => _SelectedCulture = value; }
+        public KeyValuePair<int, string> SelectedCulture { get => _SelectedCulture; set => _SelectedCulture = value; }
 
         /// <summary>
         /// Initialize the language with the installed culture of the operating system

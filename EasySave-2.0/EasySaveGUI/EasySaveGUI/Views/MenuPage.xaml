@@ -4,6 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converter="clr-namespace:EasySaveGUI.Converters"
     xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
+    xmlns:Usr="clr-namespace:EasySaveGUI.UserControls"
+    xmlns:Validator="clr-namespace:EasySaveGUI.ValidationRules"
+    xmlns:WpfToolKit="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EasySaveGUI.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,7 +18,6 @@
     <Page.Resources>
         <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
         <Converter:BytesValueConverter x:Key="BytesValueConverter" />
-
     </Page.Resources>
 
     <!--  Main Content  -->
@@ -24,7 +26,11 @@
             <ColumnDefinition Width="0.059*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
+        <Usr:ValidationPopupControl
+            x:Name="PopupError"
+            Grid.ColumnSpan="2"
+            Panel.ZIndex="2"
+            DataContext="{Binding PopupVm}" />
         <Grid
             Grid.Row="1"
             Grid.Column="0"
@@ -36,7 +42,7 @@
             <Button
                 Grid.Row="0"
                 Content="{x:Static Ressources:Strings.LoadJobs}"
-                MouseEnter="Button_MouseEnter"
+                MouseEnter="ListElementsButton_MouseEnter"
                 Style="{StaticResource CustomButton}" />
         </Grid>
 
@@ -60,7 +66,7 @@
                             <LayoutAnchorable
                                 x:Name="ListElements"
                                 Title="Elements"
-                                CanAutoHide="True"
+                                CanAutoHide="False"
                                 CanClose="False">
                                 <!--  MenuButtons  -->
                                 <StackPanel VerticalAlignment="Center">
@@ -76,92 +82,184 @@
                                         Click="SaveConfigFileButton_Click"
                                         Content="{x:Static Ressources:Strings.SaveConf}"
                                         Style="{StaticResource CustomButtonFile}" />
+                                    <Button
+                                        Click="ApplyDefaultStyleButton_Click"
+                                        Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
+                                        Style="{StaticResource CustomButtonApplyDefaultStyle}" />
                                 </StackPanel>
                             </LayoutAnchorable>
 
                         </LayoutAnchorablePane>
 
                         <LayoutPanel Orientation="Vertical">
-
                             <!--  Jobs Pane  -->
                             <LayoutPanel Orientation="Horizontal">
-
                                 <!--  Jobs Pane  -->
-                                <LayoutDocumentPaneGroup Orientation="Horizontal">
+                                <LayoutDocumentPaneGroup DockWidth="200" Orientation="Vertical">
+                                    <!--  jobs list  -->
+                                    <LayoutDocumentPane x:Name="JobsPaneGroup">
+                                        <LayoutDocument Title="Jobs" CanClose="False">
+                                            <ListBox
+                                                x:Name="JobsList"
+                                                ItemsSource="{Binding Jobs, Mode=TwoWay}"
+                                                SelectionMode="Multiple">
+                                                <ListBox.Resources>
+                                                    <Style TargetType="ListBoxItem">
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="ListBoxItem">
+                                                                    <CheckBox
+                                                                        Margin="5,2"
+                                                                        Checked="CheckBox_Checked"
+                                                                        IsChecked="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}">
+                                                                        <ContentPresenter />
+                                                                    </CheckBox>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </ListBox.Resources>
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <WrapPanel Orientation="Horizontal">
+                                                            <StackPanel>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.Name}" />
+                                                                    <Run Text=" : " />
+                                                                    <Run Text="{Binding Name}" />
+                                                                </TextBlock>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.SourceDirectory}" />
+                                                                    <Run Text="{Binding SourceDirectory}" />
+                                                                </TextBlock>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.TargetDirectory}" />
+                                                                    <Run Text="{Binding TargetDirectory}" />
+                                                                </TextBlock>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.Type}" />
+                                                                    <Run Text=" : " />
+                                                                    <Run Text="{Binding BackupType, Mode=TwoWay, Converter={StaticResource ETypeBackupConverter}}" />
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                        </WrapPanel>
+                                                        <!--</CheckBox>-->
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </LayoutDocument>
 
-                                    <LayoutDocumentPaneGroup DockWidth="200" Orientation="Vertical">
+                                        <!--  JobsRunning  -->
+                                        <LayoutDocument
+                                            x:Name="JobsRunningDocument"
+                                            Title="JobsRunning"
+                                            CanClose="False">
+                                            <DataGrid
+                                                x:Name="dataGrid"
+                                                AutoGenerateColumns="False"
+                                                ItemsSource="{Binding JobVm.JobsRunning}"
+                                                Style="{StaticResource CustomDataGrid}">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Binding="{Binding Path=Name}" Header="Nom" />
 
-                                        <!--  Jobs Pane  -->
-                                        <LayoutDocumentPaneGroup Orientation="Horizontal">
-                                            <!--  jobs list  -->
-                                            <LayoutDocumentPane>
-                                                <LayoutDocument Title="Jobs" CanClose="False">
-
-                                                    <ListBox
-                                                        x:Name="JobsList"
-                                                        ItemsSource="{Binding Jobs, Mode=TwoWay}"
-                                                        SelectionMode="Multiple">
-                                                        <ListBox.Resources>
-                                                            <Style TargetType="ListBoxItem">
-                                                                <Setter Property="OverridesDefaultStyle" Value="true" />
-                                                                <Setter Property="SnapsToDevicePixels" Value="true" />
-                                                                <Setter Property="Template">
-                                                                    <Setter.Value>
-                                                                        <ControlTemplate TargetType="ListBoxItem">
-                                                                            <CheckBox
-                                                                                Margin="5,2"
-                                                                                Checked="CheckBox_Checked"
-                                                                                IsChecked="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}">
-                                                                                <ContentPresenter />
-                                                                            </CheckBox>
-                                                                        </ControlTemplate>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Style>
-                                                        </ListBox.Resources>
-                                                        <ListBox.ItemTemplate>
+                                                    <DataGridTemplateColumn Header="Progress">
+                                                        <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
+                                                                <ProgressBar
+                                                                    x:Name="MyProgressBar"
+                                                                    MinWidth="200"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    VerticalAlignment="Stretch"
+                                                                    Maximum="100"
+                                                                    Value="{Binding Path=SauveJobs.LogState.Progress, Mode=TwoWay}" />
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
 
+                                                    </DataGridTemplateColumn>
 
-                                                                <WrapPanel Orientation="Horizontal">
+                                                    <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="Répertoire source" />
 
-                                                                    <StackPanel>
-                                                                        <TextBlock>
-                                                                            <Run Text="{x:Static Ressources:Strings.Name}" />
-                                                                            <Run Text=" : " />
-                                                                            <Run Text="{Binding Name}" />
-                                                                        </TextBlock>
-                                                                        <TextBlock>
-                                                                            <Run Text="{x:Static Ressources:Strings.SourceDirectory}" />
-                                                                            <Run Text="{Binding SourceDirectory}" />
-                                                                        </TextBlock>
-                                                                        <TextBlock>
-                                                                            <Run Text="{x:Static Ressources:Strings.TargetDirectory}" />
-                                                                            <Run Text="{Binding TargetDirectory}" />
-                                                                        </TextBlock>
-                                                                        <TextBlock>
-                                                                            <Run Text="{x:Static Ressources:Strings.Type}" />
-                                                                            <Run Text=" : " />
-                                                                            <Run Text="{Binding BackupType, Mode=TwoWay, Converter={StaticResource ETypeBackupConverter}}" />
-                                                                        </TextBlock>
+                                                    <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
 
+                                                    <!--  LogSstate Column Datagrid JobsRunning  -->
+                                                    <DataGridTemplateColumn Header="LogState">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <!--  LogSstate  -->
+                                                            <DataTemplate>
+                                                                <StackPanel>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock FontWeight="Bold" Text="Fichiers restants : " />
+
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.RemainingFiles, Mode=OneWay}" />
                                                                     </StackPanel>
 
-                                                                </WrapPanel>
-                                                                <!--</CheckBox>-->
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock FontWeight="Bold" Text="Octets copiés : " />
 
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
+                                                                    </StackPanel>
+
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock FontWeight="Bold" Text="SourceDirectory : " />
+
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory, Mode=OneWay}" />
+                                                                    </StackPanel>
+
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock FontWeight="Bold" Text="TargetDirectory : " />
+
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory, Mode=OneWay}" />
+                                                                    </StackPanel>
+
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock FontWeight="Bold" Text="EligibleFileCount : " />
+
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.EligibleFileCount, Mode=OneWay}" />
+                                                                    </StackPanel>
+
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock FontWeight="Bold" Text="ElapsedMilisecond : " />
+
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.ElapsedMilisecond, Mode=OneWay}" />
+                                                                    </StackPanel>
+
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock FontWeight="Bold" Text="IsActive : " />
+
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.IsActive, Mode=OneWay}" />
+                                                                    </StackPanel>
+
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock FontWeight="Bold" Text="TotalSize : " />
+
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.TotalSize, Mode=OneWay}" />
+                                                                    </StackPanel>
+
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock FontWeight="Bold" Text="Derniere activitée : " />
+
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.Date, Mode=OneWay}" />
+                                                                    </StackPanel>
+
+
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock FontWeight="Bold" Text="TotalTransferedFile : " />
+
+                                                                        <TextBlock Text="{Binding Path=SauveJobs.LogState.TotalTransferedFile, Mode=OneWay}" />
+                                                                    </StackPanel>
+                                                                </StackPanel>
                                                             </DataTemplate>
-                                                        </ListBox.ItemTemplate>
-                                                    </ListBox>
 
-                                                </LayoutDocument>
-                                            </LayoutDocumentPane>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </LayoutDocument>
 
-                                        </LayoutDocumentPaneGroup>
-
-                                    </LayoutDocumentPaneGroup>
+                                    </LayoutDocumentPane>
 
                                 </LayoutDocumentPaneGroup>
+
 
                                 <!--  Property Pane  -->
                                 <LayoutAnchorablePaneGroup DockWidth="120">
@@ -176,6 +274,8 @@
                                             CanHide="False">
 
                                             <Grid>
+
+
                                                 <StackPanel DataContext="{Binding JobVm}">
 
                                                     <TextBox x:Name="TextBoxName" Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
@@ -196,7 +296,21 @@
                                                             x:Name="TextBoxSourceDirectory"
                                                             Grid.Row="0"
                                                             Grid.Column="0"
-                                                            Text="{Binding SelectedJob.SourceDirectory, Mode=OneWay}" />
+                                                            Validation.Error="TextBoxSourceDirectory_Error"
+                                                            Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+
+                                                            <TextBox.Text>
+                                                                <Binding
+                                                                    Mode="TwoWay"
+                                                                    NotifyOnValidationError="True"
+                                                                    Path="SelectedJob.SourceDirectory">
+                                                                    <Binding.ValidationRules>
+                                                                        <Validator:FolderPathValidator />
+                                                                    </Binding.ValidationRules>
+                                                                </Binding>
+
+                                                            </TextBox.Text>
+                                                        </TextBox>
 
                                                         <Button
                                                             Grid.Row="0"
@@ -221,9 +335,6 @@
                                                         <ComboBoxItem>COMPLET</ComboBoxItem>
                                                         <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
                                                     </ComboBox>
-
-
-
                                                 </StackPanel>
 
                                                 <StackPanel VerticalAlignment="Bottom">
@@ -264,7 +375,11 @@
 
                                             <StackPanel DataContext="{Binding JobVm}">
 
-                                                <TextBox x:Name="TextBoxJobName" />
+                                                <Separator Height="20" />
+
+                                                <TextBox x:Name="TextBoxJobName" MinHeight="15" />
+
+                                                <Separator Height="20" />
 
                                                 <!--  CustomTextBox+ButtonFolder  -->
                                                 <Grid>
@@ -278,41 +393,49 @@
                                                         <RowDefinition Height="*" />
                                                     </Grid.RowDefinitions>
 
-
                                                     <TextBox
                                                         x:Name="TextBoxJobSourceDirectory"
                                                         Grid.Row="0"
                                                         Grid.Column="0" />
-
                                                     <Button
                                                         Grid.Row="0"
                                                         Grid.Column="1"
                                                         Click="FolderSourcePropertyButton_Click"
                                                         Style="{StaticResource CustomButtonFolder}" />
 
+
+
                                                     <TextBox
                                                         x:Name="TextBoxJobTargetDirectory"
                                                         Grid.Row="1"
                                                         Grid.Column="0" />
-
                                                     <Button
                                                         Grid.Row="1"
                                                         Grid.Column="1"
                                                         Click="FolderTargetPropertyButton_Click"
                                                         Style="{StaticResource CustomButtonFolder}" />
+
                                                 </Grid>
 
+                                                <Separator Height="20" />
 
                                                 <ComboBox x:Name="ComboboxCreateJob">
                                                     <ComboBoxItem>COMPLET</ComboBoxItem>
                                                     <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
                                                 </ComboBox>
-
+                                                <Separator Height="20" />
                                                 <Button
                                                     x:Name="PropertyComboboxCreateJob"
                                                     Click="CreateJobButton_Click"
                                                     Content="{x:Static Ressources:Strings.CreateJob}"
                                                     Style="{StaticResource CustomButton}" />
+
+                                                <Separator Height="20" />
+
+                                                <Button
+                                                    Click="SaveConfigFileButton_Click"
+                                                    Content="{x:Static Ressources:Strings.SaveConf}"
+                                                    Style="{StaticResource CustomButtonFile}" />
 
                                             </StackPanel>
 
@@ -323,121 +446,6 @@
                                 </LayoutAnchorablePaneGroup>
 
                             </LayoutPanel>
-
-                            <!--  JobsRunning  -->
-                            <LayoutAnchorablePaneGroup DockHeight="120">
-                                <!--  JobsRunning  -->
-                                <LayoutAnchorablePane>
-
-                                    <!--  JobsRunning  -->
-                                    <LayoutAnchorable
-                                        Title="JobsRunning"
-                                        CanClose="False"
-                                        CanHide="False">
-                                        <DataGrid
-                                            x:Name="dataGrid"
-                                            AutoGenerateColumns="False"
-                                            ItemsSource="{Binding JobVm.JobsRunning}"
-                                            Style="{StaticResource CustomDataGrid}">
-                                            <DataGrid.Columns>
-                                                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Nom" />
-
-                                                <DataGridTemplateColumn Header="Progress">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ProgressBar
-                                                                x:Name="MyProgressBar"
-                                                                MinWidth="200"
-                                                                HorizontalAlignment="Stretch"
-                                                                VerticalAlignment="Stretch"
-                                                                Maximum="100"
-                                                                Value="{Binding Path=SauveJobs.LogState.Progress, Mode=TwoWay}" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-
-                                                </DataGridTemplateColumn>
-
-                                                <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="Répertoire source" />
-
-                                                <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
-
-                                                <!--  LogSstate Column Datagrid JobsRunning  -->
-                                                <DataGridTemplateColumn Header="LogState">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <!--  LogSstate  -->
-                                                        <DataTemplate>
-                                                            <StackPanel>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="Fichiers restants : " />
-
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.RemainingFiles, Mode=OneWay}" />
-                                                                </StackPanel>
-
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="Octets copiés : " />
-
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
-                                                                </StackPanel>
-
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="SourceDirectory : " />
-
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory, Mode=OneWay}" />
-                                                                </StackPanel>
-
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="TargetDirectory : " />
-
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory, Mode=OneWay}" />
-                                                                </StackPanel>
-
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="EligibleFileCount : " />
-
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.EligibleFileCount, Mode=OneWay}" />
-                                                                </StackPanel>
-
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="ElapsedMilisecond : " />
-
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.ElapsedMilisecond, Mode=OneWay}" />
-                                                                </StackPanel>
-
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="IsActive : " />
-
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.IsActive, Mode=OneWay}" />
-                                                                </StackPanel>
-
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="TotalSize : " />
-
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.TotalSize, Mode=OneWay}" />
-                                                                </StackPanel>
-
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="Derniere activitée : " />
-
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.Date, Mode=OneWay}" />
-                                                                </StackPanel>
-
-
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock FontWeight="Bold" Text="TotalTransferedFile : " />
-
-                                                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.TotalTransferedFile, Mode=OneWay}" />
-                                                                </StackPanel>
-                                                            </StackPanel>
-                                                        </DataTemplate>
-
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                </DataGridTemplateColumn>
-                                            </DataGrid.Columns>
-                                        </DataGrid>
-                                    </LayoutAnchorable>
-
-                                </LayoutAnchorablePane>
-                            </LayoutAnchorablePaneGroup>
 
                             <!--  Logs  -->
                             <LayoutAnchorablePaneGroup DockHeight="120" Orientation="Horizontal">

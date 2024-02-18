@@ -1,7 +1,6 @@
 ﻿using LogsModels;
 using Stockage.Logs;
 using Stockage.Save;
-using System.Diagnostics;
 using System.Runtime.Serialization;
 namespace Models.Backup
 {
@@ -108,7 +107,7 @@ namespace Models.Backup
             }
             catch (Exception ex)
             {
-                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message,false);
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
         }
         public override bool Equals(object? obj)
@@ -118,7 +117,7 @@ namespace Models.Backup
             if (lJob == null)
                 return false;
 
-            return lJob.Name == _Name && (lJob.SourceDirectory == _SourceDirectory && lJob.TargetDirectory == TargetDirectory);
+            return lJob.Name == _Name && lJob.SourceDirectory == _SourceDirectory && lJob.TargetDirectory == TargetDirectory;
         }
         #endregion
     }

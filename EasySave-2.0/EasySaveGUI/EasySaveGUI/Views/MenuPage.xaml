@@ -201,7 +201,10 @@
                                             </DataGrid>
                                         </LayoutDocument>
                                         <!--  ConfigInfo  -->
-                                        <LayoutDocument x:Name="ConfigInfoDocument" IsActive="False" />
+                                        <LayoutDocument
+                                            x:Name="ConfigInfoDocument"
+                                            Title="ConfigInfo"
+                                            CanClose="True" />
 
                                     </LayoutDocumentPane>
 

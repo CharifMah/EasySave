@@ -47,7 +47,14 @@ namespace EasySaveGUI.UserControls
 
         private void InfoConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainWindow.MenuPage.ConfigInfoDocument.IsActive = true;
+            if (!_MainWindow.MenuPage.JobsPaneGroup.Children.Contains(_MainWindow.MenuPage.ConfigInfoDocument))
+            {
+                _MainWindow.MenuPage.ConfigInfoDocument.Dock();
+            }
+            else
+            {
+                _MainWindow.MenuPage.ConfigInfoDocument.IsActive = true;
+            }
         }
     }
 }

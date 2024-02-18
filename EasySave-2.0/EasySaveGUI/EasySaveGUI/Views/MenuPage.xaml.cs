@@ -30,6 +30,7 @@ namespace EasySaveGUI.Views
             _MainVm = pMainVm;
             ListElements.IsVisible = false;
             LayoutAnchorableCreateJob.ToggleAutoHide();
+            ConfigInfoDocument.Close();
             DataContext = _MainVm;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
@@ -50,7 +51,7 @@ namespace EasySaveGUI.Views
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
                 ClearList();
 
-                JobsPaneGroup.SelectedContentIndex = JobsPaneGroup.Children.IndexOf(JobsRunningDocument);
+                JobsRunningDocument.IsActive = true;
                 await _MainVm.JobVm.RunJobs(lSelectedJobs);
 
                 ButtonRunJobs.IsEnabled = true;

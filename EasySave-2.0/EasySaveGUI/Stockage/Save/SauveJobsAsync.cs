@@ -13,7 +13,6 @@ namespace Stockage.Save
         private CLogState _LogState;
         private string _FormatLog;
 
-
         public CLogState LogState { get => _LogState; set => _LogState = value; }
 
         /// <summary>

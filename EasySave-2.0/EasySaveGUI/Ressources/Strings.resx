@@ -302,4 +302,7 @@
   <data name="Info" xml:space="preserve">
     <value></value>
   </data>
+  <data name="BackupTypeEmpty" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

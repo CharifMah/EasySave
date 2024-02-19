@@ -322,4 +322,7 @@
   <data name="Info" xml:space="preserve">
     <value>Information</value>
   </data>
+  <data name="BackupTypeEmpty" xml:space="preserve">
+    <value>Type de sauvegarde non sélectionné</value>
+  </data>
 </root>

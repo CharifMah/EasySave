@@ -18,7 +18,8 @@ namespace Models.Backup
         [DataMember]
         private string _TargetDirectory;
         [DataMember]
-        private ETypeBackup _BackupType;
+        private ETypeBackup _BackupType; 
+        private SauveJobsAsync _SauveJobs;
         #endregion
 
         #region Property
@@ -43,7 +44,7 @@ namespace Models.Backup
         public ETypeBackup BackupType { get => _BackupType; set => _BackupType = value; }
         public SauveJobsAsync SauveJobs { get => _SauveJobs; set => _SauveJobs = value; }
 
-        private SauveJobsAsync _SauveJobs;
+
 
         #endregion
 
@@ -62,6 +63,7 @@ namespace Models.Backup
             _SourceDirectory = pSourceDirectory;
             _TargetDirectory = pTargetDirectory;
             _BackupType = pTypeBackup;
+            _SauveJobs = new SauveJobsAsync();
         }
         #endregion
 
@@ -70,16 +72,15 @@ namespace Models.Backup
         /// Lance l'exécution du job de sauvegarde
         /// </summary>
         /// <param name="pSauveJobs">Objet de sauvegarde des données de jobs</param>
-        public async Task Run(SauveJobsAsync pSauveJobs)
+        public async Task Run(List<CLogState> pLogState)
         {
-            _SauveJobs = pSauveJobs;
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:
-                    await Backup(pSauveJobs);
+                    await Backup(pLogState);
                     break;
                 case ETypeBackup.DIFFERENTIEL:
-                    await Backup(pSauveJobs, true);
+                    await Backup(pLogState, true);
                     break;
             }
         }
@@ -89,7 +90,7 @@ namespace Models.Backup
         /// </summary>
         /// <param name="pDifferentiel = false">Indique une recopie forcée</param>
         /// <param name="pSauveJobs">Objet de sauvegarde des jobs</param>
-        private async Task Backup(SauveJobsAsync pSauveJobs, bool pDifferentiel = false)
+        private async Task Backup(List<CLogState> pLogStates, bool pDifferentiel = false)
         {
             try
             {
@@ -98,7 +99,7 @@ namespace Models.Backup
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    await pSauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, true, pDifferentiel);
+                    await _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, true, pLogStates, pDifferentiel);
                 }
                 else
                 {

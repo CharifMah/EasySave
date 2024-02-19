@@ -59,6 +59,18 @@ namespace LogsModels
 
         /// <summary> Événement de modification d'une property </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public override bool Equals(object? obj)
+        {
+            return obj is CLogBase @base &&
+                   _Name == @base._Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_Name);
+        }
+
         /// <summary> Méthode à appeler pour avertir d'une modification </summary>
         /// <param name="propertyName">Nom de la property modifiée (automatiquement déterminé si appelé directement dans le setter une property) </param>
         public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

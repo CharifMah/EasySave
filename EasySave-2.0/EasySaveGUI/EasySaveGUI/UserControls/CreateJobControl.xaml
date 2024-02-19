@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
+    xmlns:Validator="clr-namespace:EasySaveGUI.ValidationRules"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EasySaveGUI.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -42,7 +43,8 @@
             <TextBox
                 x:Name="TextBoxJobSourceDirectory"
                 Grid.Row="1"
-                Grid.Column="0" />
+                Grid.Column="0"
+                LostFocus="TextBoxJobSourceDirectory_LostFocus" />
             <Button
                 Grid.Row="1"
                 Grid.Column="1"
@@ -57,7 +59,23 @@
             <TextBox
                 x:Name="TextBoxJobTargetDirectory"
                 Grid.Row="3"
-                Grid.Column="0" />
+                Grid.Column="0"
+                Validation.Error="TextBoxJobDirectory_Error"
+                Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+                <TextBox.Text>
+                    <Binding
+                        Mode="TwoWay"
+                        NotifyOnValidationError="True"
+                        Path="Text"
+                        RelativeSource="{RelativeSource Self}"
+                        UpdateSourceTrigger="LostFocus">
+                        <Binding.ValidationRules>
+                            <Validator:FolderPathValidator />
+                        </Binding.ValidationRules>
+                    </Binding>
+
+                </TextBox.Text>
+            </TextBox>
             <Button
                 Grid.Row="3"
                 Grid.Column="1"

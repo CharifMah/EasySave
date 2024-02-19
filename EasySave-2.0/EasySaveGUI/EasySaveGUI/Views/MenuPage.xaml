@@ -27,6 +27,7 @@
             Grid.ColumnSpan="2"
             Panel.ZIndex="2"
             DataContext="{Binding PopupVm}" />
+        
         <DockingManager
             x:Name="Dock"
             Grid.Row="1"

@@ -18,6 +18,7 @@
                 <ResourceDictionary Source="Styles\CustomTextBox.xaml" />
                 <ResourceDictionary Source="Styles\CustomDataGrid.xaml" />
                 <ResourceDictionary Source="Styles\CustomScrollBar.xaml" />
+                <ResourceDictionary Source="Styles\CustomTextBlock.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

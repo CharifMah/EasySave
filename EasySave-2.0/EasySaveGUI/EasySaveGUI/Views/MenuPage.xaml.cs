@@ -1,4 +1,5 @@
-﻿using EasySaveGUI.UserControls;
+﻿using AvalonDock.Layout;
+using EasySaveGUI.UserControls;
 using LogsModels;
 using Models.Backup;
 using Ressources;
@@ -102,6 +103,27 @@ namespace EasySaveGUI.Views
             _MainVm.JobVm.JobsRunning.Clear();
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+        }
+
+        private void LayoutAnchorable_FloatingPropertiesUpdated(object sender, System.EventArgs e)
+        {
+            
+        }
+
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Grid lGrid = sender as Grid;
+
+            if (lGrid.ActualWidth >= lGrid.ActualHeight)
+            {
+                HorizontalMenu.Visibility = Visibility.Visible;
+                VerticalMenu.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                VerticalMenu.Visibility = Visibility.Visible;
+                HorizontalMenu.Visibility = Visibility.Hidden;
+            }
         }
     }
 }

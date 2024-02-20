@@ -1,16 +1,12 @@
 ﻿using EasySaveGUI.UserControls;
 using LogsModels;
-using Models;
 using Models.Backup;
-using OpenDialog;
 using Ressources;
 using Stockage.Logs;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using ViewModels;
 
 namespace EasySaveGUI.Views
@@ -28,8 +24,9 @@ namespace EasySaveGUI.Views
         {
             InitializeComponent();
             _MainVm = pMainVm;
-            ListElements.IsVisible = false;
             DataContext = _MainVm;
+            ListElements.IsVisible = false;
+            LayoutAnchorableCreateJob.IsVisible = false;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
 
@@ -79,8 +76,6 @@ namespace EasySaveGUI.Views
         }
         #endregion
 
-        #region ListElementsPane
-
         private void MenuButtons_MouseClick(object sender, RoutedEventArgs e)
         {
             ListElements.Show();
@@ -91,7 +86,10 @@ namespace EasySaveGUI.Views
                 ListElements.Content = new OptionsMenuControl();
         }
 
-        #endregion
+        private void MenuButtonsCreateJob_MouseClick(object sender, RoutedEventArgs e)
+        {
+            LayoutAnchorableCreateJob.Show();
+        }
 
         #endregion
 

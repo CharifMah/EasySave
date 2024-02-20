@@ -22,11 +22,7 @@
                                     HorizontalAlignment="Left"
                                     Fill="{TemplateBinding Foreground}"
                                     RadiusX="10"
-                                    RadiusY="10">
-                                    <Rectangle.LayoutTransform>
-                                        <ScaleTransform ScaleX="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PourcentConverter}}" />
-                                    </Rectangle.LayoutTransform>
-                                </Rectangle>
+                                    RadiusY="10" />
                             </Grid>
                         </Border>
                         <TextBlock

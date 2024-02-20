@@ -26,7 +26,7 @@ namespace EasySaveGUI.Views
             InitializeComponent();
             _MainVm = pMainVm;
             DataContext = _MainVm;
-            ListElements.IsVisible = false;
+            ListElements.Content = new JobMenuControl();
             LayoutAnchorableCreateJob.IsVisible = false;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;

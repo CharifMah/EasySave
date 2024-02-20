@@ -289,11 +289,7 @@
 
                                             </LayoutAnchorable>
 
-                                        </LayoutAnchorablePane>
-
-                                        <!--  CreateJob Pane  -->
-                                        <LayoutAnchorablePane DockMinWidth="150">
-
+                                            <!--  CreateJob Pane  -->
                                             <LayoutAnchorable
                                                 x:Name="LayoutAnchorableCreateJob"
                                                 Title="CreateJob"
@@ -305,6 +301,9 @@
                                             </LayoutAnchorable>
 
                                         </LayoutAnchorablePane>
+
+
+
 
                                     </LayoutAnchorablePaneGroup>
 

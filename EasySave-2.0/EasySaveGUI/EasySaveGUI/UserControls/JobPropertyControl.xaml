@@ -15,94 +15,99 @@
     <UserControl.Resources>
         <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
     </UserControl.Resources>
-
-    <StackPanel DataContext="{Binding JobVm}">
-        <TextBlock>
-            <Run Text="{x:Static Ressources:Strings.Name}" />
-            <Run Text=" : " />
-        </TextBlock>
-        <TextBox x:Name="TextBoxName" Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
-        <!--  CustomTextBox+ButtonFolder  -->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="0.1*" />
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <!--  SourceDir  -->
-            <TextBlock Grid.Row="0">
-                <Run Text="{x:Static Ressources:Strings.SourceDir}" />
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel DataContext="{Binding JobVm}">
+            <TextBlock>
+                <Run Text="{x:Static Ressources:Strings.Name}" />
                 <Run Text=" : " />
             </TextBlock>
-            <TextBox
-                x:Name="TextBoxJobSourceDirectory"
-                Grid.Row="1"
-                Grid.Column="0"
-                Validation.Error="TextBoxDirectory_Error"
-                Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
-                <TextBox.Text>
+            <TextBox x:Name="TextBoxName" Text="{Binding SelectedJob.Name, Mode=TwoWay}" />
+            <!--  CustomTextBox+ButtonFolder  -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0.1*" />
+                </Grid.ColumnDefinitions>
 
-                    <Binding
-                        Mode="TwoWay"
-                        NotifyOnValidationError="True"
-                        Path="SelectedJob.SourceDirectory">
-                        <Binding.ValidationRules>
-                            <Validator:FolderPathValidator />
-                        </Binding.ValidationRules>
-                    </Binding>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                </TextBox.Text>
-            </TextBox>
-            <Button
-                Grid.Row="1"
-                Grid.Column="1"
-                Click="FolderSourcePropertyButton_Click"
-                Style="{StaticResource CustomButtonFolder}" />
-            <!--  TargetDir  -->
-            <TextBlock Grid.Row="2">
-                <Run Text="{x:Static Ressources:Strings.TargetDir}" />
+                <!--  SourceDir  -->
+                <TextBlock Grid.Row="0">
+                    <Run Text="{x:Static Ressources:Strings.SourceDir}" />
+                    <Run Text=" : " />
+                </TextBlock>
+                <TextBox
+                    x:Name="TextBoxJobSourceDirectory"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Validation.Error="TextBoxDirectory_Error"
+                    Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+                    <TextBox.Text>
+
+                        <Binding
+                            Mode="TwoWay"
+                            NotifyOnValidationError="True"
+                            Path="SelectedJob.SourceDirectory">
+                            <Binding.ValidationRules>
+                                <Validator:FolderPathValidator />
+                            </Binding.ValidationRules>
+                        </Binding>
+
+                    </TextBox.Text>
+                </TextBox>
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Click="FolderSourcePropertyButton_Click"
+                    Style="{StaticResource CustomButtonFolder}" />
+                <!--  TargetDir  -->
+                <TextBlock Grid.Row="2">
+                    <Run Text="{x:Static Ressources:Strings.TargetDir}" />
+                    <Run Text=" : " />
+                </TextBlock>
+                <TextBox
+                    x:Name="TextBoxJobTargetDirectory"
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Validation.Error="TextBoxDirectory_Error"
+                    Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+                    <TextBox.Text>
+                        <Binding
+                            Mode="TwoWay"
+                            NotifyOnValidationError="True"
+                            Path="SelectedJob.TargetDirectory">
+                            <Binding.ValidationRules>
+                                <Validator:FolderPathValidator />
+                            </Binding.ValidationRules>
+                        </Binding>
+
+                    </TextBox.Text>
+                </TextBox>
+
+                <Button
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Click="FolderTargetPropertyButton_Click"
+                    Style="{StaticResource CustomButtonFolder}" />
+            </Grid>
+
+            <TextBlock>
+                <Run Text="{x:Static Ressources:Strings.Type}" />
                 <Run Text=" : " />
             </TextBlock>
-            <TextBox
-                x:Name="TextBoxJobTargetDirectory"
-                Grid.Row="3"
-                Grid.Column="0"
-                Validation.Error="TextBoxDirectory_Error"
-                Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
-                <TextBox.Text>
-                    <Binding
-                        Mode="TwoWay"
-                        NotifyOnValidationError="True"
-                        Path="SelectedJob.TargetDirectory">
-                        <Binding.ValidationRules>
-                            <Validator:FolderPathValidator />
-                        </Binding.ValidationRules>
-                    </Binding>
+            <ComboBox x:Name="PropertyComboBox" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=OneWay}">
+                <ComboBoxItem>COMPLET</ComboBoxItem>
+                <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
+            </ComboBox>
 
-                </TextBox.Text>
-            </TextBox>
+        </StackPanel>
+    </ScrollViewer>
 
-            <Button
-                Grid.Row="3"
-                Grid.Column="1"
-                Click="FolderTargetPropertyButton_Click"
-                Style="{StaticResource CustomButtonFolder}" />
-        </Grid>
-        <TextBlock>
-            <Run Text="{x:Static Ressources:Strings.Type}" />
-            <Run Text=" : " />
-        </TextBlock>
-        <ComboBox x:Name="PropertyComboBox" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=OneWay}">
-            <ComboBoxItem>COMPLET</ComboBoxItem>
-            <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
-        </ComboBox>
 
-    </StackPanel>
 
 </UserControl>

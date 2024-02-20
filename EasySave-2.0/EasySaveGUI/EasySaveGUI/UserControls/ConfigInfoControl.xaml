@@ -10,52 +10,55 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <GroupBox Grid.ColumnSpan="2" Header="Paths">
+                <StackPanel>
+                    <TextBlock Grid.Row="0">
+                        <Run Text="{x:Static Ressources:Strings.DefaultFile}" />
+                        <Run Text=" : " />
+                    </TextBlock>
+                    <TextBox Text="{Binding SettingsVm.Settings.JobDefaultConfigPath, Mode=OneWay}" />
+                    <TextBlock Grid.Row="0">
+                        <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
+                        <Run Text=" : " />
+                    </TextBlock>
+                    <TextBox Text="{Binding SettingsVm.Settings.JobConfigFolderPath, Mode=OneWay}" />
+                </StackPanel>
 
+            </GroupBox>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <GroupBox Grid.ColumnSpan="2" Header="Paths">
-            <StackPanel>
-                <TextBlock Grid.Row="0">
-                    <Run Text="{x:Static Ressources:Strings.DefaultFile}" />
-                    <Run Text=" : " />
-                </TextBlock>
-                <TextBox Text="{Binding SettingsVm.Settings.JobDefaultConfigPath, Mode=OneWay}" />
-                <TextBlock Grid.Row="0">
-                    <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
-                    <Run Text=" : " />
-                </TextBlock>
-                <TextBox Text="{Binding SettingsVm.Settings.JobConfigFolderPath, Mode=OneWay}" />
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="1"
+                VerticalAlignment="Bottom">
+                <GroupBox Header="BlackList">
+                    <ListBox ItemsSource="{Binding SettingsVm.Settings.FormatLog.FormatsLogs}" />
+                </GroupBox>
+
+                <GroupBox Header="Supported format">
+                    <ListBox ItemsSource="{Binding SettingsVm.Settings.FormatLog.FormatsLogs}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Value, Mode=OneWay}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
             </StackPanel>
+        </Grid>
+    </ScrollViewer>
 
-        </GroupBox>
 
-        <StackPanel
-            Grid.Row="1"
-            Grid.Column="1"
-            VerticalAlignment="Bottom">
-            <GroupBox Header="BlackList">
-                <ListBox ItemsSource="{Binding SettingsVm.Settings.FormatLog.FormatsLogs}" />
-            </GroupBox>
 
-            <GroupBox Header="Supported format">
-                <ListBox ItemsSource="{Binding SettingsVm.Settings.FormatLog.FormatsLogs}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <Run Text="{Binding Value, Mode=OneWay}" />
-                            </TextBlock>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </GroupBox>
-        </StackPanel>
-    </Grid>
 </UserControl>

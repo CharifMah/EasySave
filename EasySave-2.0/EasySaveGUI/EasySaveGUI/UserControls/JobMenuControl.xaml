@@ -1,0 +1,64 @@
+﻿<UserControl
+    x:Class="EasySaveGUI.UserControls.JobMenuControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:EasySaveGUI.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <Grid SizeChanged="Grid_SizeChanged">
+        <Grid x:Name="HorizontalMenu" Visibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                Click="CreateJobButton_Click"
+                Content="{x:Static Ressources:Strings.CreateJob}"
+                Style="{StaticResource CustomButtonCreate}" />
+            <Button
+                Grid.Column="1"
+                Click="RunJobsButton_Click"
+                Content="{x:Static Ressources:Strings.RunJobs}"
+                Style="{StaticResource CustomButtonRun}" />
+            <Button
+                Grid.Column="2"
+                Click="ButtonDeletesJobs_Click"
+                Content="{x:Static Ressources:Strings.DeleteJob}"
+                Style="{StaticResource CustomButtonDelete}" />
+        </Grid>
+
+        <Grid x:Name="VerticalMenu" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button
+                Grid.Row="0"
+                Click="CreateJobButton_Click"
+                Content="{x:Static Ressources:Strings.CreateJob}"
+                Style="{StaticResource CustomButtonCreate}" />
+            <Button
+                Grid.Row="1"
+                Click="RunJobsButton_Click"
+                Content="{x:Static Ressources:Strings.RunJobs}"
+                Style="{StaticResource CustomButtonRun}" />
+            <Button
+                Grid.Row="2"
+                Click="ButtonDeletesJobs_Click"
+                Content="{x:Static Ressources:Strings.DeleteJob}"
+                Style="{StaticResource CustomButtonDelete}" />
+        </Grid>
+
+    </Grid>
+
+</UserControl>

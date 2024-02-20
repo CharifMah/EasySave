@@ -26,7 +26,6 @@ namespace EasySaveGUI.UserControls
             _MainWindow.MenuPage.PopupError.Show();
         }
 
-
         private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)
         {
             TextBoxJobSourceDirectory.Text = CDialog.ReadFolder("SourceDir");

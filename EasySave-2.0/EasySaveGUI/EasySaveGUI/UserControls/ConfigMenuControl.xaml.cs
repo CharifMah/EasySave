@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using ViewModels;
+using Grid = System.Windows.Controls.Grid;
 
 namespace EasySaveGUI.UserControls
 {
@@ -55,6 +56,22 @@ namespace EasySaveGUI.UserControls
             else
             {
                 _MainWindow.MenuPage.ConfigInfoDocument.IsActive = true;
+            }
+        }
+
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Grid lGrid = sender as Grid;
+
+            if (lGrid.ActualWidth >= lGrid.ActualHeight)
+            {
+                HorizontalMenu.Visibility = Visibility.Visible;
+                VerticalMenu.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                VerticalMenu.Visibility = Visibility.Visible;
+                HorizontalMenu.Visibility = Visibility.Hidden;
             }
         }
     }

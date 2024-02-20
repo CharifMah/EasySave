@@ -23,5 +23,26 @@ namespace EasySaveGUI.UserControls
         {
             _MainWindow.frame.NavigationService.Navigate(new MenuPage(_MainVm));
         }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            _MainWindow.MenuPage.ClearLists();
+        }
+
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Grid lGrid = sender as Grid;
+
+            if (lGrid.ActualWidth >= lGrid.ActualHeight)
+            {
+                HorizontalMenu.Visibility = Visibility.Visible;
+                VerticalMenu.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                VerticalMenu.Visibility = Visibility.Visible;
+                HorizontalMenu.Visibility = Visibility.Hidden;
+            }
+        }
     }
 }

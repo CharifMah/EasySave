@@ -40,19 +40,17 @@
             <DockingManager.Layout>
                 <LayoutRoot>
                     <LayoutPanel Orientation="Vertical">
-
                         <LayoutAnchorablePane
                             AllowDuplicateContent="False"
                             DockHeight="70"
                             DockMinHeight="70"
-                            DockMinWidth="70"
-                            DockWidth="70">
+                            DockMinWidth="80"
+                            DockWidth="80">
                             <LayoutAnchorable
                                 Title="Menu"
                                 CanAutoHide="False"
                                 CanClose="False"
-                                CanHide="False"
-                                FloatingPropertiesUpdated="LayoutAnchorable_FloatingPropertiesUpdated">
+                                CanHide="False">
 
                                 <Grid SizeChanged="Grid_SizeChanged">
                                     <Grid
@@ -64,17 +62,12 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
 
                                         <Button
                                             Grid.Column="0"
-                                            Click="MenuButtonsCreateJob_MouseClick"
-                                            Content="{x:Static Ressources:Strings.CreateJob}"
+                                            Click="MenuButtons_MouseClick"
+                                            Content="{x:Static Ressources:Strings.Jobs}"
                                             Style="{StaticResource CustomButtonCreate}" />
                                         <Button
                                             Grid.Column="1"
@@ -97,17 +90,12 @@
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
                                         </Grid.RowDefinitions>
 
                                         <Button
                                             Grid.Row="0"
-                                            Click="MenuButtonsCreateJob_MouseClick"
-                                            Content="{x:Static Ressources:Strings.CreateJob}"
+                                            Click="MenuButtons_MouseClick"
+                                            Content="{x:Static Ressources:Strings.Jobs}"
                                             Style="{StaticResource CustomButtonCreate}" />
                                         <Button
                                             Grid.Row="1"
@@ -130,7 +118,12 @@
 
                             <!--  Elements Pane Left  -->
                             <!--  MenuButtons  -->
-                            <LayoutAnchorablePane AllowDuplicateContent="False" DockMinWidth="150">
+                            <LayoutAnchorablePane
+                                AllowDuplicateContent="False"
+                                DockHeight="80"
+                                DockMinHeight="80"
+                                DockMinWidth="90"
+                                DockWidth="90">
 
                                 <LayoutAnchorable
                                     x:Name="ListElements"
@@ -261,6 +254,7 @@
                                                     </DataGrid.Columns>
 
                                                 </DataGrid>
+
                                             </LayoutDocument>
 
                                             <!--  ConfigInfo  -->
@@ -277,10 +271,10 @@
                                     </LayoutDocumentPaneGroup>
 
                                     <!--  Property Pane  -->
-                                    <LayoutAnchorablePaneGroup DockWidth="150">
+                                    <LayoutAnchorablePaneGroup DockWidth="200">
 
                                         <!--  Property Pane  -->
-                                        <LayoutAnchorablePane DockMinWidth="150">
+                                        <LayoutAnchorablePane DockMinWidth="200">
 
                                             <!--  Property Pane  -->
                                             <LayoutAnchorable
@@ -289,29 +283,7 @@
                                                 CanClose="False"
                                                 CanHide="False">
 
-                                                <Grid>
-                                                    <Usr:JobPropertyControl x:Name="JobPropertyUsr" />
-
-                                                    <StackPanel VerticalAlignment="Bottom">
-                                                        <Button
-                                                            x:Name="ButtonRunJobs"
-                                                            Click="RunJobsButton_Click"
-                                                            Content="{x:Static Ressources:Strings.RunJobs}"
-                                                            Style="{StaticResource CustomButtonRun}" />
-
-                                                        <Button
-                                                            x:Name="ButtonDeletesJobs"
-                                                            Click="ButtonDeletesJobs_Click"
-                                                            Content="{x:Static Ressources:Strings.DeleteJob}"
-                                                            Style="{StaticResource CustomButtonDelete}" />
-
-                                                        <Button
-                                                            x:Name="Clear"
-                                                            Click="Clear_Click"
-                                                            Content="{x:Static Ressources:Strings.ClearConsole}"
-                                                            Style="{StaticResource CustomButtonClear}" />
-                                                    </StackPanel>
-                                                </Grid>
+                                                <Usr:JobPropertyControl x:Name="JobPropertyUsr" />
 
                                             </LayoutAnchorable>
 

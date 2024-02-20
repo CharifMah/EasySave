@@ -17,17 +17,17 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
             <Button
                 Grid.Column="0"
-                Click="CreateJobButton_Click"
-                Content="{x:Static Ressources:Strings.CreateJob}"
-                Style="{StaticResource CustomButtonCreate}" />
-            <Button
-                Grid.Column="1"
                 Click="RunJobsButton_Click"
                 Content="{x:Static Ressources:Strings.RunJobs}"
                 Style="{StaticResource CustomButtonRun}" />
+            <Button
+                Grid.Column="1"
+                Click="CreateJobButton_Click"
+                Content="{x:Static Ressources:Strings.CreateJob}"
+                Style="{StaticResource CustomButtonCreate}" />
+
             <Button
                 Grid.Column="2"
                 Click="ButtonDeletesJobs_Click"
@@ -41,17 +41,17 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
             <Button
                 Grid.Row="0"
-                Click="CreateJobButton_Click"
-                Content="{x:Static Ressources:Strings.CreateJob}"
-                Style="{StaticResource CustomButtonCreate}" />
-            <Button
-                Grid.Row="1"
                 Click="RunJobsButton_Click"
                 Content="{x:Static Ressources:Strings.RunJobs}"
                 Style="{StaticResource CustomButtonRun}" />
+            <Button
+                Grid.Row="1"
+                Click="CreateJobButton_Click"
+                Content="{x:Static Ressources:Strings.CreateJob}"
+                Style="{StaticResource CustomButtonCreate}" />
+
             <Button
                 Grid.Row="2"
                 Click="ButtonDeletesJobs_Click"

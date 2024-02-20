@@ -35,6 +35,7 @@ namespace EasySaveGUI.Views
 
             LayoutAnchorableCreateJob.ToggleAutoHide();
             ConfigInfoDocument.Close();
+            JobsPaneGroup.SelectedContentIndex = 0;
         }
 
         #region Events

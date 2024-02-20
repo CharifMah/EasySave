@@ -112,10 +112,9 @@ namespace Stockage.Save
             lLogFilesDaily.TotalSize = pFileInfo.Length;
             lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
 
-            await Task.Run(() =>
-            {
+
                 CLogger<List<CLogState>>.Instance.GenericLogger.Log(pLogStates, true, false, "Logs", "", _FormatLog);
-            });
+
             CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, pName, "DailyLogs", _FormatLog);
         }
 

@@ -36,47 +36,6 @@ namespace EasySaveGUI.Views
             JobsListDocument.IsSelected = true;
         }
 
-        #region Events
-
-        #region Button
-
-        #region PropertyPane
-        private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (JobUsr.JobsList.SelectedItems.Count > 0)
-            {
-                ButtonRunJobs.IsEnabled = false;
-                System.Collections.IList lJobs = JobUsr.JobsList.SelectedItems;
-
-                List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
-                ClearList();
-
-                JobsRunningDocument.IsActive = true;
-                await _MainVm.JobVm.RunJobs(lSelectedJobs);
-
-                ButtonRunJobs.IsEnabled = true;
-            }
-        }
-
-        private void ButtonDeletesJobs_Click(object sender, RoutedEventArgs e)
-        {
-            if (JobUsr.JobsList.SelectedItems.Count > 0)
-            {
-                ButtonRunJobs.IsEnabled = false;
-                System.Collections.IList lJobs = JobUsr.JobsList.SelectedItems;
-
-                List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
-
-                _MainVm.JobVm.DeleteJobs(lSelectedJobs);
-            }
-        }
-
-        private void Clear_Click(object sender, RoutedEventArgs e)
-        {
-            ClearList();
-        }
-        #endregion
-
         private void MenuButtons_MouseClick(object sender, RoutedEventArgs e)
         {
             ListElements.Show();
@@ -85,18 +44,11 @@ namespace EasySaveGUI.Views
                 ListElements.Content = new ConfigMenuControl();
             if (lButton.Content == Strings.Settings)
                 ListElements.Content = new OptionsMenuControl();
+            if (lButton.Content == Strings.Jobs)
+                ListElements.Content = new JobMenuControl();
         }
 
-        private void MenuButtonsCreateJob_MouseClick(object sender, RoutedEventArgs e)
-        {
-            LayoutAnchorableCreateJob.Show();
-        }
-
-        #endregion
-
-        #endregion
-
-        private void ClearList()
+        public void ClearLists()
         {
             CLogger<CLogBase>.Instance.Clear();
             CLogger<CLogDaily>.Instance.Clear();
@@ -111,11 +63,13 @@ namespace EasySaveGUI.Views
 
             if (lGrid.ActualWidth >= lGrid.ActualHeight)
             {
-                HorizontalMenu.Orientation = Orientation.Horizontal;
+                HorizontalMenu.Visibility = Visibility.Visible;
+                VerticalMenu.Visibility = Visibility.Hidden;
             }
             else
             {
-                HorizontalMenu.Orientation = Orientation.Vertical;
+                VerticalMenu.Visibility = Visibility.Visible;
+                HorizontalMenu.Visibility = Visibility.Hidden;
             }
         }
     }

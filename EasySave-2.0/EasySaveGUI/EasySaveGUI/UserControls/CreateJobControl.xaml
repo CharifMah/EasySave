@@ -10,101 +10,105 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <StackPanel>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel>
 
 
-        <TextBlock>
-            <Run Text="{x:Static Ressources:Strings.Name}" />
-            <Run Text=" : " />
-        </TextBlock>
-
-        <TextBox x:Name="TextBoxJobName" MinHeight="15" />
-
-
-        <!--  CustomTextBox+ButtonFolder  -->
-
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="0.1*" />
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.Row="0">
-                <Run Text="{x:Static Ressources:Strings.SourceDir}" />
-                <Run Text=" : " />
-            </TextBlock>
-            <TextBox
-                x:Name="TextBoxJobSourceDirectory"
-                Grid.Row="1"
-                Grid.Column="0"
-                LostFocus="TextBoxJobSourceDirectory_LostFocus" />
-            <Button
-                Grid.Row="1"
-                Grid.Column="1"
-                Click="FolderSourcePropertyButton_Click"
-                Style="{StaticResource CustomButtonFolder}" />
-
-            <TextBlock Grid.Row="2">
-                <Run Text="{x:Static Ressources:Strings.TargetDir}" />
+            <TextBlock>
+                <Run Text="{x:Static Ressources:Strings.Name}" />
                 <Run Text=" : " />
             </TextBlock>
 
-            <TextBox
-                x:Name="TextBoxJobTargetDirectory"
-                Grid.Row="3"
-                Grid.Column="0"
-                Validation.Error="TextBoxJobDirectory_Error"
-                Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
-                <TextBox.Text>
-                    <Binding
-                        Mode="TwoWay"
-                        NotifyOnValidationError="True"
-                        Path="Text"
-                        RelativeSource="{RelativeSource Self}"
-                        UpdateSourceTrigger="LostFocus">
-                        <Binding.ValidationRules>
-                            <Validator:FolderPathValidator />
-                        </Binding.ValidationRules>
-                    </Binding>
+            <TextBox x:Name="TextBoxJobName" MinHeight="15" />
 
-                </TextBox.Text>
-            </TextBox>
+
+            <!--  CustomTextBox+ButtonFolder  -->
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0.1*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0">
+                    <Run Text="{x:Static Ressources:Strings.SourceDir}" />
+                    <Run Text=" : " />
+                </TextBlock>
+                <TextBox
+                    x:Name="TextBoxJobSourceDirectory"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    LostFocus="TextBoxJobSourceDirectory_LostFocus" />
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Click="FolderSourcePropertyButton_Click"
+                    Style="{StaticResource CustomButtonFolder}" />
+
+                <TextBlock Grid.Row="2">
+                    <Run Text="{x:Static Ressources:Strings.TargetDir}" />
+                    <Run Text=" : " />
+                </TextBlock>
+
+                <TextBox
+                    x:Name="TextBoxJobTargetDirectory"
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Validation.Error="TextBoxJobDirectory_Error"
+                    Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
+                    <TextBox.Text>
+                        <Binding
+                            Mode="TwoWay"
+                            NotifyOnValidationError="True"
+                            Path="Text"
+                            RelativeSource="{RelativeSource Self}"
+                            UpdateSourceTrigger="LostFocus">
+                            <Binding.ValidationRules>
+                                <Validator:FolderPathValidator />
+                            </Binding.ValidationRules>
+                        </Binding>
+
+                    </TextBox.Text>
+                </TextBox>
+                <Button
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Click="FolderTargetPropertyButton_Click"
+                    Style="{StaticResource CustomButtonFolder}" />
+
+            </Grid>
+
+            <TextBlock>
+                <Run Text="{x:Static Ressources:Strings.Type}" />
+                <Run Text=" : " />
+            </TextBlock>
+
+            <ComboBox x:Name="ComboboxCreateJob">
+                <ComboBoxItem>COMPLET</ComboBoxItem>
+                <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
+            </ComboBox>
+            <Separator Height="20" />
             <Button
-                Grid.Row="3"
-                Grid.Column="1"
-                Click="FolderTargetPropertyButton_Click"
-                Style="{StaticResource CustomButtonFolder}" />
+                x:Name="PropertyComboboxCreateJob"
+                Click="CreateJobButton_Click"
+                Content="{x:Static Ressources:Strings.CreateJob}"
+                Style="{StaticResource CustomButtonCreate}" />
 
-        </Grid>
+            <Button
+                Click="SaveConfigFileButton_Click"
+                Content="{x:Static Ressources:Strings.SaveConf}"
+                Style="{StaticResource CustomButtonFile}" />
 
-        <TextBlock>
-            <Run Text="{x:Static Ressources:Strings.Type}" />
-            <Run Text=" : " />
-        </TextBlock>
+        </StackPanel>
 
-        <ComboBox x:Name="ComboboxCreateJob">
-            <ComboBoxItem>COMPLET</ComboBoxItem>
-            <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
-        </ComboBox>
-        <Separator Height="20" />
-        <Button
-            x:Name="PropertyComboboxCreateJob"
-            Click="CreateJobButton_Click"
-            Content="{x:Static Ressources:Strings.CreateJob}"
-            Style="{StaticResource CustomButtonCreate}" />
-
-        <Button
-            Click="SaveConfigFileButton_Click"
-            Content="{x:Static Ressources:Strings.SaveConf}"
-            Style="{StaticResource CustomButtonFile}" />
-
-    </StackPanel>
+    </ScrollViewer>
 
 </UserControl>

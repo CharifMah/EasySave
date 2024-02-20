@@ -325,4 +325,7 @@
   <data name="BackupTypeEmpty" xml:space="preserve">
     <value>Backup type not selected</value>
   </data>
+  <data name="Jobs" xml:space="preserve">
+    <value>Jobs</value>
+  </data>
 </root>

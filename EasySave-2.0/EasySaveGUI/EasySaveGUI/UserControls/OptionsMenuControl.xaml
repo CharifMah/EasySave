@@ -9,11 +9,47 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
     <!--  MenuButtons  -->
-    <StackPanel VerticalAlignment="Center">
-        <Button
-            Click="ApplyDefaultStyleButton_Click"
-            Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
-            Style="{StaticResource CustomButtonApplyDefaultStyle}" />
-    </StackPanel>
+    <Grid SizeChanged="Grid_SizeChanged">
+        <Grid x:Name="HorizontalMenu" Visibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                Click="ApplyDefaultStyleButton_Click"
+                Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
+                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+            <Button
+                x:Name="Clear"
+                Grid.Column="1"
+                Click="Clear_Click"
+                Content="{x:Static Ressources:Strings.ClearConsole}"
+                Style="{StaticResource CustomButtonClear}" />
+        </Grid>
+
+        <Grid x:Name="VerticalMenu" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button
+                Grid.Row="0"
+                Click="ApplyDefaultStyleButton_Click"
+                Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
+                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+            <Button
+                Grid.Row="1"
+                Click="Clear_Click"
+                Content="{x:Static Ressources:Strings.ClearConsole}"
+                Style="{StaticResource CustomButtonClear}" />
+        </Grid>
+
+    </Grid>
+
+
 </UserControl>

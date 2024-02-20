@@ -25,7 +25,7 @@ namespace Models
         public string SelectedLogFormat { get => _SelectedLogFormat; set => _SelectedLogFormat = value; }
 
         /// <summary>
-        /// Initialize the language with the installed culture of the operating system
+        /// Initialize the format logs
         /// </summary>
         public CFormatLog()
         {

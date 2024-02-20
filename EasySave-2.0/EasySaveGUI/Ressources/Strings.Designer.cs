@@ -81,6 +81,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string BackupTypeEmpty {
+            get {
+                return ResourceManager.GetString("BackupTypeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string bytes {
             get {
                 return ResourceManager.GetString("bytes", resourceCulture);

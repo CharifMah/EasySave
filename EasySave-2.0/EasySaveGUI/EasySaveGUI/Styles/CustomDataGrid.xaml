@@ -39,7 +39,7 @@
         <Setter Property="HeadersVisibility" Value="Column" />
 
         <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="FontSize" Value="9" />
+        <Setter Property="FontSize" Value="13" />
 
         <Setter Property="CanUserAddRows" Value="False" />
 

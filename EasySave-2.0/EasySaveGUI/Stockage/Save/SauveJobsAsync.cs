@@ -13,7 +13,6 @@ namespace Stockage.Save
         private CLogState _LogState;
         private string _FormatLog;
 
-
         public CLogState LogState { get => _LogState; set => _LogState = value; }
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace Stockage.Save
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pDiffertielle">true if the backup is differential</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public override async Task CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pDiffertielle = false)
+        public override async Task CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, List<CLogState> pLogStates, bool pDiffertielle = false)
         {
             string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
 
@@ -67,7 +66,7 @@ namespace Stockage.Save
                             // cm -  Copy the file async if the target file is newer
                             await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
                             lSw.Stop();
-                            await UpdateLog(lFiles[i], lTargetFilePath, lSw, lName);
+                            await UpdateLog(lFiles[i], lTargetFilePath, lSw, lName,pLogStates);
                         }
                     }
                     else
@@ -75,7 +74,7 @@ namespace Stockage.Save
                         // cm -  Copy the file async
                         await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
                         lSw.Stop();
-                        await UpdateLog(lFiles[i], lTargetFilePath, lSw, lName);
+                        await UpdateLog(lFiles[i], lTargetFilePath, lSw, lName, pLogStates);
                     }
                 }
 
@@ -85,7 +84,7 @@ namespace Stockage.Save
                     foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
                     {
                         DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
-                        await CopyDirectoryAsync(lSubDir, lNewDestinationDir, true, pDiffertielle);
+                        await CopyDirectoryAsync(lSubDir, lNewDestinationDir, true, pLogStates, pDiffertielle);
                     }
                 }
             }
@@ -95,7 +94,7 @@ namespace Stockage.Save
             }
         }
 
-        private async Task UpdateLog(FileInfo pFileInfo, string pTargetFilePath, Stopwatch pSw, string pName)
+        private async Task UpdateLog(FileInfo pFileInfo, string pTargetFilePath, Stopwatch pSw, string pName, List<CLogState> pLogStates)
         {
             _LogState.TotalTransferedFile++;
             _LogState.SourceDirectory = pFileInfo.FullName;
@@ -113,11 +112,9 @@ namespace Stockage.Save
             lLogFilesDaily.TotalSize = pFileInfo.Length;
             lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
 
-            await Task.Run(() =>
-            {
-                CLogger<List<CLogState>>.Instance.GenericLogger.Log(_LogStates, true, false, "Logs", "", _FormatLog);
 
-            });
+                CLogger<List<CLogState>>.Instance.GenericLogger.Log(pLogStates, true, false, "Logs", "", _FormatLog);
+
             CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, pName, "DailyLogs", _FormatLog);
         }
 

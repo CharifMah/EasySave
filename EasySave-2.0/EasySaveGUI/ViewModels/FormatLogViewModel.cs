@@ -9,18 +9,29 @@ namespace ViewModels
         /// <summary>
         /// Classe model FormatLog
         /// </summary>
-        public CFormatLog FormatLog { get => _FormatLog; set => _FormatLog = value; }
+        public CFormatLog FormatLog 
+        { 
+            get => _FormatLog; 
+            set { _FormatLog = value; NotifyPropertyChanged(); }
+        }
 
         public FormatLogViewModel()
         {
             _FormatLog = CSettings.Instance.FormatLog;
-
+            SetFormatLog(_FormatLog.SelectedFormatLog.Value);
+            NotifyPropertyChanged("FormatLog");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pFormatLogInfo"></param>
+        /// <returns></returns>
         public bool SetFormatLog(string pFormatLogInfo)
         {
-            bool result = _FormatLog.SetLogFormat(pFormatLogInfo);
+            bool result = _FormatLog.SetFormatLog(pFormatLogInfo);
             Models.CSettings.Instance.SaveSettings();
+            NotifyPropertyChanged("FormatLog");
             return result;
         }
     }

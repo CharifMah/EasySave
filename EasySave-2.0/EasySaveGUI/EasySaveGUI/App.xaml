@@ -9,6 +9,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\CustomProgressBar.xaml" />
                 <ResourceDictionary Source="Styles\CustomButton.xaml" />
                 <ResourceDictionary Source="Styles\CustomComboBox.xaml" />
                 <ResourceDictionary Source="Styles\CustomSeparator.xaml" />
@@ -17,7 +18,7 @@
                 <ResourceDictionary Source="Styles\CustomTextBox.xaml" />
                 <ResourceDictionary Source="Styles\CustomDataGrid.xaml" />
                 <ResourceDictionary Source="Styles\CustomScrollBar.xaml" />
-                <ResourceDictionary Source="/AvalonDock.Themes.VS2013;component/DarkBrushs.xaml" />
+                <ResourceDictionary Source="Styles\CustomTextBlock.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

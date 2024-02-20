@@ -113,6 +113,14 @@ namespace EasySaveGUI
             }
         }
 
+        private void ComboBoxFormatLog_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                _MainVm.FormatLogVm.SetFormatLog(e.AddedItems[0].ToString());
+            }
+        }
+
         private void Vs2013BlueThemeButton_Click(object sender, RoutedEventArgs e)
         {
             _MenuPage.Dock.Theme = new Vs2013BlueTheme();

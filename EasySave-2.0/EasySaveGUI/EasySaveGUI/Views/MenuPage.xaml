@@ -27,6 +27,7 @@
             Grid.ColumnSpan="2"
             Panel.ZIndex="2"
             DataContext="{Binding PopupVm}" />
+
         <DockingManager
             x:Name="Dock"
             Grid.Row="1"
@@ -118,9 +119,7 @@
                                                                 <ProgressBar
                                                                     x:Name="MyProgressBar"
                                                                     MinWidth="200"
-                                                                    HorizontalAlignment="Stretch"
-                                                                    VerticalAlignment="Stretch"
-                                                                    Maximum="100"
+                                                                    MaxWidth="50"
                                                                     Value="{Binding Path=SauveJobs.LogState.Progress, Mode=TwoWay}" />
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>

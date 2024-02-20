@@ -4,7 +4,7 @@
     xmlns:Converter="clr-namespace:EasySaveGUI.Converters">
     <Converter:PourcentConverter x:Key="PourcentConverter" />
     <Style TargetType="{x:Type ProgressBar}">
-        <Setter Property="BorderThickness" Value="5" />
+        <Setter Property="BorderThickness" Value="2" />
         <Setter Property="Foreground" Value="#007ACC" />
         <Setter Property="Background" Value="#DDD" />
         <Setter Property="Template">
@@ -20,7 +20,7 @@
                                 <Rectangle
                                     x:Name="PART_Indicator"
                                     HorizontalAlignment="Left"
-                                    Fill="{TemplateBinding Foreground}"
+                                    Fill="#9FFF73"
                                     RadiusX="10"
                                     RadiusY="10" />
                             </Grid>

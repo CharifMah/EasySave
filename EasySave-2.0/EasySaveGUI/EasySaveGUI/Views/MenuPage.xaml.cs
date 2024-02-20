@@ -105,24 +105,17 @@ namespace EasySaveGUI.Views
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 
-        private void LayoutAnchorable_FloatingPropertiesUpdated(object sender, System.EventArgs e)
-        {
-            
-        }
-
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Grid lGrid = sender as Grid;
 
             if (lGrid.ActualWidth >= lGrid.ActualHeight)
             {
-                HorizontalMenu.Visibility = Visibility.Visible;
-                VerticalMenu.Visibility = Visibility.Hidden;
+                HorizontalMenu.Orientation = Orientation.Horizontal;
             }
             else
             {
-                VerticalMenu.Visibility = Visibility.Visible;
-                HorizontalMenu.Visibility = Visibility.Hidden;
+                HorizontalMenu.Orientation = Orientation.Vertical;
             }
         }
     }

@@ -280,8 +280,10 @@
                                             <LayoutAnchorable
                                                 x:Name="PropertyPane"
                                                 Title="Property"
+                                                AutoHideMinWidth="150"
                                                 CanClose="False"
-                                                CanHide="False">
+                                                CanHide="False"
+                                                CanShowOnHover="False">
 
                                                 <Usr:JobPropertyControl x:Name="JobPropertyUsr" />
 
@@ -297,7 +299,8 @@
                                                 Title="CreateJob"
                                                 AutoHideMinWidth="150"
                                                 CanClose="False"
-                                                CanHide="True">
+                                                CanHide="True"
+                                                CanShowOnHover="False">
                                                 <Usr:CreateJobControl />
                                             </LayoutAnchorable>
 

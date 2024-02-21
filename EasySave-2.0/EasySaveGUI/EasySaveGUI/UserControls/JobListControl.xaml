@@ -27,7 +27,7 @@
                             <CheckBox
                                 Margin="5,2"
                                 Checked="CheckBox_Checked"
-                                IsChecked="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}">
+                                IsChecked="{Binding IsSelected, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}">
                                 <ContentPresenter />
                             </CheckBox>
                         </ControlTemplate>

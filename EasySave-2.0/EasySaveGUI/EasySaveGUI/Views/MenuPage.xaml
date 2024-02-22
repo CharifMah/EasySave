@@ -18,6 +18,7 @@
     <Page.Resources>
         <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
         <Converter:BytesValueConverter x:Key="BytesValueConverter" />
+        <Converter:SecondConverter x:Key="SecondConverter" />
     </Page.Resources>
 
     <!--  Main Content  -->
@@ -166,16 +167,26 @@
                                                         <DataGridTemplateColumn Header="Progress">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
-                                                                    <ProgressBar
-                                                                        x:Name="MyProgressBar"
-                                                                        MinWidth="200"
-                                                                        MaxWidth="50"
-                                                                        Value="{Binding Path=SauveJobs.LogState.Progress, Mode=TwoWay}" />
+                                                                    <Grid>
+                                                                        <ProgressBar
+                                                                            x:Name="MyProgressBar"
+                                                                            MinWidth="200"
+                                                                            MaxWidth="50"
+                                                                            Value="{Binding Path=SauveJobs.LogState.Progress, Mode=TwoWay}" />
+                                                                        <WrapPanel
+                                                                            HorizontalAlignment="Right"
+                                                                            VerticalAlignment="Bottom"
+                                                                            Orientation="Horizontal">
+                                                                            <TextBlock Margin="0,0,10,5" Text="{Binding Path=SauveJobs.LogState.ElapsedMilisecond, Mode=OneWay, Converter={StaticResource SecondConverter}}" />
+                                                                        </WrapPanel>
+                                                                    </Grid>
+
                                                                 </DataTemplate>
                                                             </DataGridTemplateColumn.CellTemplate>
 
                                                         </DataGridTemplateColumn>
 
+                                                        
                                                         <!--  LogSstate Column Datagrid JobsRunning  -->
                                                         <DataGridTemplateColumn Header="LogState">
                                                             <DataGridTemplateColumn.CellTemplate>
@@ -183,15 +194,31 @@
                                                                 <DataTemplate>
                                                                     <StackPanel>
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="Fichiers restants : " />
+                                                                            <TextBlock>
+                                                                                <Run FontWeight="Bold" Text="TotalTransferedFile : " />
+                                                                                <Run Text="{Binding Path=SauveJobs.LogState.TotalTransferedFile, Mode=OneWay}" />
 
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.RemainingFiles, Mode=OneWay}" />
+
+                                                                                <Run
+                                                                                    FontWeight="Bold"
+                                                                                    Foreground="#00266e"
+                                                                                    Text="/" />
+                                                                                <Run Text="{Binding Path=SauveJobs.LogState.EligibleFileCount, Mode=OneWay}" />
+                                                                            </TextBlock>
                                                                         </StackPanel>
 
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="Octets copiés : " />
 
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
+                                                                            <TextBlock>
+                                                                                <Run FontWeight="Bold" Text="Octets copiés : " />
+                                                                                <Run Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
+
+                                                                                <Run
+                                                                                    FontWeight="Bold"
+                                                                                    Foreground="#00266e"
+                                                                                    Text="/" />
+                                                                                <Run Text="{Binding Path=SauveJobs.LogState.TotalSize, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
+                                                                            </TextBlock>
                                                                         </StackPanel>
 
                                                                         <StackPanel Orientation="Horizontal">
@@ -207,40 +234,11 @@
                                                                         </StackPanel>
 
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="EligibleFileCount : " />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.EligibleFileCount, Mode=OneWay}" />
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="ElapsedMilisecond : " />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.ElapsedMilisecond, Mode=OneWay}" />
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="IsActive : " />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.IsActive, Mode=OneWay}" />
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="TotalSize : " />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.TotalSize, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
                                                                             <TextBlock FontWeight="Bold" Text="Derniere activitée : " />
 
                                                                             <TextBlock Text="{Binding Path=SauveJobs.LogState.Date, Mode=OneWay}" />
                                                                         </StackPanel>
 
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="TotalTransferedFile : " />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.TotalTransferedFile, Mode=OneWay}" />
-                                                                        </StackPanel>
                                                                     </StackPanel>
                                                                 </DataTemplate>
 

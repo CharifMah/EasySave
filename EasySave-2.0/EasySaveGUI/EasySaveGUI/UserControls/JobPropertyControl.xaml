@@ -65,6 +65,7 @@
                     Grid.Column="1"
                     Click="FolderSourcePropertyButton_Click"
                     Style="{StaticResource CustomButtonFolder}" />
+
                 <!--  TargetDir  -->
                 <TextBlock Grid.Row="2">
                     <Run Text="{x:Static Ressources:Strings.TargetDir}" />
@@ -88,7 +89,6 @@
 
                     </TextBox.Text>
                 </TextBox>
-
                 <Button
                     Grid.Row="3"
                     Grid.Column="1"
@@ -100,10 +100,15 @@
                 <Run Text="{x:Static Ressources:Strings.Type}" />
                 <Run Text=" : " />
             </TextBlock>
-            <ComboBox x:Name="PropertyComboBox" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=OneWay}">
+            <ComboBox x:Name="PropertyComboBox" SelectedItem="{Binding SelectedJob.BackupType, Converter={StaticResource ETypeBackupConverter}, Mode=TwoWay}">
                 <ComboBoxItem>COMPLET</ComboBoxItem>
                 <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
             </ComboBox>
+            <Separator />
+            <Button
+                Click="SaveConfigFileButton_Click"
+                Content="{x:Static Ressources:Strings.SaveConf}"
+                Style="{StaticResource CustomButtonFile}" />
 
         </StackPanel>
     </ScrollViewer>

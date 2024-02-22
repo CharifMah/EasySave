@@ -24,6 +24,7 @@ namespace EasySaveGUI.UserControls
         {
             _MainVm.PopupVm.Message = e.Error.ErrorContent.ToString();
             _MainWindow.MenuPage.PopupError.Show();
+
         }
 
         private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)

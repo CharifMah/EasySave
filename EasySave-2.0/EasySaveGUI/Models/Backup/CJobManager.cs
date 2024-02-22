@@ -2,6 +2,7 @@
 using Stockage.Logs;
 using Stockage.Save;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 namespace Models.Backup
 {
@@ -86,8 +87,11 @@ namespace Models.Backup
                 // cm - Lance les jobs
                 foreach (CJob lJob in pJobs)
                 {
-                    SauveJobsAsync _SauveJobs = new SauveJobsAsync("", CSettings.Instance.FormatLog.SelectedFormatLog.Value);
+                    Stopwatch lStopWatch = new Stopwatch();
+                    lStopWatch.Start();
+                    SauveJobsAsync _SauveJobs = new SauveJobsAsync("", CSettings.Instance.FormatLog.SelectedFormatLog.Value,lStopWatch);
                     lJob.SauveJobs = _SauveJobs;
+                    lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalMilliseconds;
                     lJob.SauveJobs.LogState.Name = lIndex + ' ' + _SauveJobs.LogState.Name;
                     lJob.SauveJobs.LogState.TotalTransferedFile = 0;
                     lJob.SauveJobs.LogState.BytesCopied = 0;
@@ -97,8 +101,11 @@ namespace Models.Backup
 
                     _jobsRunning.Add(lJob);
                     await lJob.Run(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList());
+
                     lJob.SauveJobs.LogState.Date = DateTime.Now;
                     lIndex++;
+                    lStopWatch.Stop();
+                    lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalSeconds;
                 }
 
             }

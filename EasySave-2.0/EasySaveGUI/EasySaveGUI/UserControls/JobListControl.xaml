@@ -19,8 +19,7 @@
         x:Name="JobsList"
         ItemsSource="{Binding JobVm.Jobs, Mode=TwoWay}"
         SelectionChanged="JobsList_SelectionChanged"
-        SelectionMode="Multiple"
-        Style="{StaticResource CustomListBox}">
+        SelectionMode="Multiple">
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <WrapPanel Orientation="Horizontal">

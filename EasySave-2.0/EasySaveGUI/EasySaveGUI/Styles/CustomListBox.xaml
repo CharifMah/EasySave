@@ -33,7 +33,7 @@
     </Style>
 
     <!--  Style for ListBox  -->
-    <Style x:Key="CustomListBox" TargetType="{x:Type ListBox}">
+    <Style TargetType="{x:Type ListBox}">
         <Setter Property="Background" Value="{DynamicResource GenericBackground}" />
         <Setter Property="BorderBrush" Value="#CCC" />
         <Setter Property="BorderThickness" Value="1" />

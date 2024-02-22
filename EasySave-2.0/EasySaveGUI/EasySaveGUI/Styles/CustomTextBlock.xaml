@@ -3,13 +3,13 @@
     <Style TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="/Fonts/#Louis George Cafe" />
         <Setter Property="FontSize" Value="15" />
-        <Setter Property="Foreground" Value="{DynamicResource Dark}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
     </Style>
 
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="FontFamily" Value="/Fonts/#Louis George Cafe" />
         <Setter Property="FontSize" Value="15" />
-        <Setter Property="Foreground" Value="{DynamicResource Dark}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
     </Style>
 
 </ResourceDictionary>

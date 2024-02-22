@@ -8,7 +8,7 @@
 
     <SolidColorBrush x:Key="GenericBackground" Color="White" />
 
-    <SolidColorBrush x:Key="Dark" Color="#2F2D30" />
+    <SolidColorBrush x:Key="TextColor" Color="#2F2D30" />
 
     <SolidColorBrush x:Key="HoverColor" Color="#F5F5F5" />
 

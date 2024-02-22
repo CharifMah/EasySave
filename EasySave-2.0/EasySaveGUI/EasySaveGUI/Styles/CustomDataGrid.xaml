@@ -2,11 +2,12 @@
 
 
     <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
-        <Setter Property="Background" Value="{DynamicResource LightGray}" />
-        <Setter Property="Foreground" Value="{DynamicResource Dark}" />
+        <Setter Property="Background" Value="{DynamicResource HoverColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="BorderBrush" Value="#FFA9A9A9" />
+        <Setter Property="Padding" Value="10,0,10,0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextColor}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
@@ -14,11 +15,11 @@
     <Style TargetType="{x:Type DataGrid}">
         <Setter Property="FontFamily" Value="/Fonts/#Louis George Cafe" />
         <Setter Property="Background" Value="{DynamicResource GenericBackground}" />
-        <Setter Property="BorderBrush" Value="#99C2E7" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextColor}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="AlternatingRowBackground" Value="#ECF4FC" />
         <Setter Property="HeadersVisibility" Value="Column" />
-        <Setter Property="Foreground" Value="{DynamicResource Dark}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
         <Setter Property="CanUserAddRows" Value="False" />
         <Setter Property="RowStyle">
             <Setter.Value>
@@ -30,7 +31,7 @@
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#99C2E7" />
-                            <Setter Property="BorderBrush" Value="#569CD6" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource TextColor}" />
                             <Setter Property="BorderThickness" Value="1" />
                         </Trigger>
                     </Style.Triggers>

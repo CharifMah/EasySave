@@ -135,7 +135,7 @@ namespace EasySaveGUI
         private void BlueTheme()
         {
             _MenuPage.Dock.Background = Brushes.White;
-            _MenuPage.Resources["Dark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+            _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
             _MenuPage.Resources["GenericBackground"] = Brushes.White;
             _MenuPage.Resources["LightGray"] = Brushes.LightBlue;
             _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEE6FD"));
@@ -146,7 +146,7 @@ namespace EasySaveGUI
         private void DarkTheme()
         {
             _MenuPage.Dock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
-            _MenuPage.Resources["Dark"] = Brushes.White;
+            _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ebeef2")); 
             _MenuPage.Resources["GenericBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
             _MenuPage.Resources["LightGray"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#111112"));
             _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#424242"));
@@ -157,7 +157,7 @@ namespace EasySaveGUI
         private void LightTheme()
         {
             _MenuPage.Dock.Background = Brushes.White;
-            _MenuPage.Resources["Dark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+            _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
             _MenuPage.Resources["GenericBackground"] = Brushes.White;
             _MenuPage.Resources["LightGray"] = Brushes.LightGray;
             _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));

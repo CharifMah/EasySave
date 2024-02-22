@@ -14,7 +14,7 @@
         x:Name="MainGrid"
         Background="Transparent"
         Visibility="Hidden">
-        <Grid Background="WhiteSmoke" Opacity="0.7" />
+        <Grid Background="WhiteSmoke" Opacity="0.9" />
         <Border
             Width="500"
             Height="300"

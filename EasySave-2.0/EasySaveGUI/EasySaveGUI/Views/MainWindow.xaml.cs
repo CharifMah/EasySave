@@ -28,7 +28,6 @@ namespace EasySaveGUI
         public MainViewModel MainVm { get => _MainVm; set => _MainVm = value; }
         public MenuPage MenuPage { get => _MenuPage; set => _MenuPage = value; }
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -38,6 +37,7 @@ namespace EasySaveGUI
             frame.Navigate(_MenuPage);
         }
 
+        #region TitleBarReleaseCapture
         // Event handler for title bar mouse left button down event
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -88,7 +88,9 @@ namespace EasySaveGUI
                     WindowState = WindowState.Maximized;
             }
         }
+        #endregion
 
+        #region TitleBarEvents
         private void ComboBox_MouseEnter(object sender, MouseEventArgs e)
         {
             ComboBox lComboBox = sender as ComboBox;
@@ -131,6 +133,8 @@ namespace EasySaveGUI
             _MenuPage.Dock.Theme = new AvalonDock.Themes.Vs2013DarkTheme();
             DarkTheme();
         }
+        #endregion
+
 
         private void BlueTheme()
         {

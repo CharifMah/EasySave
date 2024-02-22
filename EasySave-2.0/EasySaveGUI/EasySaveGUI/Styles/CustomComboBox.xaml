@@ -9,8 +9,8 @@
             <Border
                 x:Name="Border"
                 Grid.ColumnSpan="2"
-                Background="Black"
-                BorderBrush="#658EE6"
+                Background="{DynamicResource GenericBackground}"
+                BorderBrush="{DynamicResource GrayColor}"
                 CornerRadius="0" />
             <Border
                 Grid.Column="0"
@@ -56,7 +56,6 @@
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
         <Setter Property="MinWidth" Value="120" />
         <Setter Property="MinHeight" Value="20" />
-        <Setter Property="Foreground" Value="Black" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
@@ -82,9 +81,7 @@
                             Margin="3,3,23,3"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Background="#FF3F3F3F"
                             Focusable="True"
-                            Foreground="Black"
                             IsReadOnly="{TemplateBinding IsReadOnly}"
                             Style="{x:Null}"
                             Template="{StaticResource ComboBoxTextBox}"
@@ -104,7 +101,7 @@
                                 SnapsToDevicePixels="True">
                                 <Border
                                     x:Name="DropDownBorder"
-                                    Background="#FF3F3F3F"
+                                    Background="{DynamicResource GenericBackground}"
                                     BorderBrush="#888888"
                                     BorderThickness="1" />
                                 <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
@@ -118,7 +115,7 @@
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Foreground" Value="{DynamicResource RedHoverButtonColor}" />
                         </Trigger>
                         <Trigger Property="IsGrouping" Value="true">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
@@ -154,8 +151,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource TextColor}" />
-                            <Setter Property="Foreground" Value="Black" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource GreenHoverButtonColor}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

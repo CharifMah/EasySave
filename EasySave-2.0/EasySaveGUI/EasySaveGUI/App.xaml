@@ -20,6 +20,7 @@
                 <ResourceDictionary Source="Styles\CustomScrollBar.xaml" />
                 <ResourceDictionary Source="Styles\CustomTextBlock.xaml" />
                 <ResourceDictionary Source="Styles\CustomListBox.xaml" />
+                <ResourceDictionary Source="Styles\ColorPalette.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

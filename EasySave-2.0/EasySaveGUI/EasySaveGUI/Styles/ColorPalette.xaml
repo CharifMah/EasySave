@@ -1,14 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <SolidColorBrush x:Key="ButtonBackground" Color="#CEE6FD" />
+    <SolidColorBrush x:Key="ButtonBackground" Color="#F5F5F5" />
 
-    <SolidColorBrush x:Key="IconForeground" Color="#4D4D4D" />
+    <SolidColorBrush x:Key="LightDark" Color="#4D4D4D" />
 
-    <SolidColorBrush x:Key="DataGridHeaderBackground" Color="LightGray" />
+    <SolidColorBrush x:Key="LightGray" Color="LightGray" />
 
     <SolidColorBrush x:Key="GenericBackground" Color="White" />
 
-    <SolidColorBrush x:Key="TextForeground" Color="#2F2D30" />
+    <SolidColorBrush x:Key="Dark" Color="#2F2D30" />
 
     <SolidColorBrush x:Key="HoverColor" Color="#F5F5F5" />
 

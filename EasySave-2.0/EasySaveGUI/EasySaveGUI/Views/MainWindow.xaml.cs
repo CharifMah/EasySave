@@ -135,31 +135,34 @@ namespace EasySaveGUI
         private void BlueTheme()
         {
             _MenuPage.Dock.Background = Brushes.White;
-            _MenuPage.Resources["TextForeground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+            _MenuPage.Resources["Dark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
             _MenuPage.Resources["GenericBackground"] = Brushes.White;
-            _MenuPage.Resources["DataGridHeaderBackground"] = Brushes.White;
+            _MenuPage.Resources["LightGray"] = Brushes.LightBlue;
             _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEE6FD"));
-            _MenuPage.Resources["IconForeground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
+            _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
+            _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
         }
 
         private void DarkTheme()
         {
             _MenuPage.Dock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
-            _MenuPage.Resources["TextForeground"] = Brushes.White;
+            _MenuPage.Resources["Dark"] = Brushes.White;
             _MenuPage.Resources["GenericBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
-            _MenuPage.Resources["DataGridHeaderBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#111112"));
+            _MenuPage.Resources["LightGray"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#111112"));
             _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#424242"));
-            _MenuPage.Resources["IconForeground"] = Brushes.White;
+            _MenuPage.Resources["LightDark"] = Brushes.White;
+            _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#757f86"));
         }
 
         private void LightTheme()
         {
             _MenuPage.Dock.Background = Brushes.White;
-            _MenuPage.Resources["TextForeground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+            _MenuPage.Resources["Dark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
             _MenuPage.Resources["GenericBackground"] = Brushes.White;
-            _MenuPage.Resources["DataGridHeaderBackground"] = Brushes.White;
+            _MenuPage.Resources["LightGray"] = Brushes.LightGray;
+            _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
             _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
-            _MenuPage.Resources["IconForeground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
+            _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
         }
     }
 }

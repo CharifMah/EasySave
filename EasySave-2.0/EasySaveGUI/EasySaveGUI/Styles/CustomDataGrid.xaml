@@ -2,8 +2,8 @@
 
 
     <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
-        <Setter Property="Background" Value="{DynamicResource DataGridHeaderBackground}" />
-        <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
+        <Setter Property="Background" Value="{DynamicResource LightGray}" />
+        <Setter Property="Foreground" Value="{DynamicResource Dark}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="BorderBrush" Value="#FFA9A9A9" />
@@ -18,7 +18,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="AlternatingRowBackground" Value="#ECF4FC" />
         <Setter Property="HeadersVisibility" Value="Column" />
-        <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource Dark}" />
         <Setter Property="CanUserAddRows" Value="False" />
         <Setter Property="RowStyle">
             <Setter.Value>

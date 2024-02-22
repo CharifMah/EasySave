@@ -21,10 +21,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#EEE" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverColor}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource GenericBackground}" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource LightGray}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -34,7 +34,7 @@
 
     <!--  Style for ListBox  -->
     <Style x:Key="CustomListBox" TargetType="{x:Type ListBox}">
-        <Setter Property="Background" Value="{DynamicResource DataGridHeaderBackground}" />
+        <Setter Property="Background" Value="{DynamicResource GenericBackground}" />
         <Setter Property="BorderBrush" Value="#CCC" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource CustomListBoxItem}" />

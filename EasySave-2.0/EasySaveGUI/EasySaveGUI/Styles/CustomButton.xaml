@@ -23,7 +23,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 Width="35"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="SquareRoundedBadge" />
                             <TextBlock
                                 Grid.Row="2"
@@ -65,7 +65,7 @@
                             </Grid.RowDefinitions>
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Folder" />
                         </Grid>
                     </Border>
@@ -101,7 +101,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="File" />
                             <TextBlock
                                 Grid.Row="2"
@@ -144,7 +144,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Run" />
 
                             <TextBlock
@@ -188,7 +188,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Delete" />
 
                             <TextBlock
@@ -232,7 +232,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Cleaning" />
 
                             <TextBlock
@@ -276,7 +276,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Close" />
 
                             <TextBlock
@@ -320,7 +320,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="FormatColorReset" />
 
                             <TextBlock
@@ -364,7 +364,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Plus" />
                             <TextBlock
                                 Grid.Row="2"
@@ -407,7 +407,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 Width="35"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Settings" />
                             <TextBlock
                                 Grid.Row="2"
@@ -450,7 +450,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 Width="35"
-                                Foreground="{DynamicResource IconForeground}"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Info" />
                             <TextBlock
                                 Grid.Row="2"

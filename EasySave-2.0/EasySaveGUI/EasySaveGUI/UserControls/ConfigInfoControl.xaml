@@ -22,19 +22,34 @@
             </Grid.RowDefinitions>
             <GroupBox Grid.ColumnSpan="2" Header="Paths">
                 <StackPanel>
-                    <TextBlock Grid.Row="0">
-                        <Run Text="{x:Static Ressources:Strings.DefaultFile}" />
-                        <Run Text=" : " />
-                    </TextBlock>
-                    <TextBox Text="{Binding SettingsVm.Settings.JobDefaultConfigPath, Mode=OneWay}" />
-                    <TextBlock Grid.Row="0">
-                        <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
-                        <Run Text=" : " />
-                    </TextBlock>
-                    <TextBox Text="{Binding SettingsVm.Settings.JobConfigFolderPath, Mode=OneWay}" />
-                </StackPanel>
+                    <GroupBox Header="Configuration File">
+                        <StackPanel>
+                            <TextBlock Grid.Row="0">
+                                <Run Text="{x:Static Ressources:Strings.DefaultFile}" />
+                                <Run Text=" : " />
+                            </TextBlock>
+                            <TextBox Text="{Binding SettingsVm.Settings.JobDefaultConfigPath, Mode=OneWay}" />
+                            <TextBlock Grid.Row="0">
+                                <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
+                                <Run Text=" : " />
+                            </TextBlock>
+                            <TextBox Text="{Binding SettingsVm.Settings.JobConfigFolderPath, Mode=OneWay}" />
+                        </StackPanel>
+                    </GroupBox>
 
+
+                    <GroupBox Grid.ColumnSpan="2" Header="Logs">
+                        <StackPanel>
+                            <TextBlock Grid.Row="0">
+                                <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
+                                <Run Text=" : " />
+                            </TextBlock>
+                            <TextBox Text="{Binding SettingsVm.Settings.LogDefaultFolderPath, Mode=OneWay}" />
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
             </GroupBox>
+
 
             <StackPanel
                 Grid.Row="1"

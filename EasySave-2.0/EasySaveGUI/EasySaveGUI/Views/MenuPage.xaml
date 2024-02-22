@@ -186,7 +186,7 @@
 
                                                         </DataGridTemplateColumn>
 
-                                                        
+
                                                         <!--  LogSstate Column Datagrid JobsRunning  -->
                                                         <DataGridTemplateColumn Header="LogState">
                                                             <DataGridTemplateColumn.CellTemplate>

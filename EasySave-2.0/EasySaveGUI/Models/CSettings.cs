@@ -23,7 +23,7 @@ namespace Models
         private CLangue _Langue;
         [DataMember]
         private CFormatLog _FormatLog;
-
+        private string _LogDefaultFolderPath;
         #endregion
 
         /// <summary>
@@ -64,12 +64,16 @@ namespace Models
                 return _Instance;
             }
         }
+
+        public string LogDefaultFolderPath { get => _LogDefaultFolderPath; set => _LogDefaultFolderPath = value; }
+
         /// <summary>
         /// Constructeur Settings initialise le path par default de la configuration des jobs
         /// </summary>
         private CSettings()
         {
             _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs", "JobManager.json");
+            _LogDefaultFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EasySave");
         }
 
         #endregion

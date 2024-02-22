@@ -1,4 +1,5 @@
-﻿using Models.Backup;
+﻿using Gtk;
+using Models.Backup;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ViewModels;
+using ListBox = System.Windows.Controls.ListBox;
+using Window = System.Windows.Window;
 
 namespace EasySaveGUI.UserControls
 {
@@ -31,10 +34,13 @@ namespace EasySaveGUI.UserControls
             _MainVm = _MainWindow.MainVm;
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void JobsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _MainVm.JobVm.SelectedJob = ((sender as CheckBox).Content as ContentPresenter).Content as CJob;
-            _MainWindow.MenuPage.JobPropertyUsr.PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
+            if (e.AddedItems.Count > 0)
+            {
+                _MainVm.JobVm.SelectedJob = e.AddedItems[0] as CJob;
+                _MainWindow.MenuPage.JobPropertyUsr.PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
+            }
         }
     }
 }

@@ -18,23 +18,9 @@
     <ListBox
         x:Name="JobsList"
         ItemsSource="{Binding JobVm.Jobs, Mode=TwoWay}"
-        SelectionMode="Multiple">
-        <ListBox.Resources>
-            <Style TargetType="ListBoxItem">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ListBoxItem">
-                            <CheckBox
-                                Margin="5,2"
-                                Checked="CheckBox_Checked"
-                                IsChecked="{Binding IsSelected, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}">
-                                <ContentPresenter />
-                            </CheckBox>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </ListBox.Resources>
+        SelectionChanged="JobsList_SelectionChanged"
+        SelectionMode="Multiple"
+        Style="{StaticResource CustomListBox}">
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <WrapPanel Orientation="Horizontal">

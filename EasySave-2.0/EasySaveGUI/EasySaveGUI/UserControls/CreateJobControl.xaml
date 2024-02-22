@@ -62,22 +62,8 @@
                     x:Name="TextBoxJobTargetDirectory"
                     Grid.Row="3"
                     Grid.Column="0"
-                    Validation.Error="TextBoxJobDirectory_Error"
-                    Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
-                    <TextBox.Text>
-                        <Binding
-                            Mode="TwoWay"
-                            NotifyOnValidationError="True"
-                            Path="Text"
-                            RelativeSource="{RelativeSource Self}"
-                            UpdateSourceTrigger="LostFocus">
-                            <Binding.ValidationRules>
-                                <Validator:FolderPathValidator />
-                            </Binding.ValidationRules>
-                        </Binding>
+                    LostFocus="TextBoxJobSourceDirectory_LostFocus" />
 
-                    </TextBox.Text>
-                </TextBox>
                 <Button
                     Grid.Row="3"
                     Grid.Column="1"

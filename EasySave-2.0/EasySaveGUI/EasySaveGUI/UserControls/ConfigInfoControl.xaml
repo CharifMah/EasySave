@@ -10,6 +10,9 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <Converter:FormatLogConvert x:Key="FormatLogConvert" />
+    </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -47,6 +50,21 @@
                             <TextBox Text="{Binding SettingsVm.Settings.LogDefaultFolderPath, Mode=OneWay}" />
                         </StackPanel>
                     </GroupBox>
+
+
+                    <TextBlock
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Foreground="Black"
+                        Text="{x:Static Ressources:Strings.FormatLogs}" />
+                    <ComboBox
+                        x:Name="ComboBoxFormatLog"
+                        Width="90"
+                        Height="20"
+                        IsHitTestVisible="True"
+                        ItemsSource="{Binding FormatLogVm.FormatLog.FormatsLogs, Converter={StaticResource FormatLogConvert}}"
+                        SelectedIndex="{Binding FormatLogVm.FormatLog.SelectedFormatLog.Key, Mode=OneWay}"
+                        SelectionChanged="ComboBoxFormatLog_SelectionChanged" />
                 </StackPanel>
             </GroupBox>
 

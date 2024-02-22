@@ -33,7 +33,7 @@
 
     <Window.Resources>
         <Converter:LangueConvert x:Key="LangueConvert" />
-        <Converter:FormatLogConvert x:Key="FormatLogConvert" />
+   
     </Window.Resources>
 
     <Window.Template>
@@ -53,7 +53,7 @@
                         <!--  Window title bar  -->
                         <Grid
                             Grid.Row="0"
-                            Background="#187BDC"
+                            Background="#EBF7FF"
                             MouseDown="TitleBar_MouseDown"
                             MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
                             MouseMove="TitleBar_MouseMove">
@@ -67,7 +67,7 @@
                             <TextBlock
                                 Margin="5"
                                 VerticalAlignment="Center"
-                                Foreground="White"
+                                Foreground="Black"
                                 Text="{TemplateBinding Title}" />
                             <StackPanel
                                 Grid.Column="1"
@@ -133,26 +133,6 @@
                                     MouseLeave="ComboBox_MouseLeave"
                                     SelectedIndex="{Binding LangueVm.Langue.SelectedCulture.Key, Mode=OneWay}"
                                     SelectionChanged="ComboBoxLang_SelectionChanged" />
-
-                                <TextBlock Height="20" Margin="5">|</TextBlock>
-
-                                <TextBlock
-                                    Margin="5"
-                                    VerticalAlignment="Center"
-                                    Foreground="White"
-                                    Text="{x:Static Ressources:Strings.FormatLogs}" />     
-                                <ComboBox
-                                    x:Name="ComboBoxFormatLog"
-                                    Width="90"
-                                    Height="20"
-                                    IsHitTestVisible="True"
-                                    ItemsSource="{Binding FormatLogVm.FormatLog.FormatsLogs, Converter={StaticResource FormatLogConvert}}"
-                                    MouseEnter="ComboBox_MouseEnter"
-                                    MouseLeave="ComboBox_MouseLeave"
-                                    SelectedIndex="{Binding FormatLogVm.FormatLog.SelectedFormatLog.Key, Mode=OneWay}"
-                                    SelectionChanged="ComboBoxFormatLog_SelectionChanged" /> 
-
-
 
                             </StackPanel>
 

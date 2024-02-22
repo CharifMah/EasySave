@@ -3,24 +3,13 @@
     <Style TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="/Fonts/#Louis George Cafe" />
         <Setter Property="FontSize" Value="15" />
+        <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
     </Style>
 
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="FontFamily" Value="/Fonts/#Louis George Cafe" />
         <Setter Property="FontSize" Value="15" />
-    </Style>
-
-    <Style TargetType="{x:Type DataGrid}">
-        <Setter Property="FontFamily" Value="/Fonts/#Louis George Cafe" />
-        <Setter Property="FontSize" Value="15" />
-        <Setter Property="RowStyle">
-            <Setter.Value>
-                <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="FontFamily" Value="/Fonts/#Louis George Cafe" />
-                </Style>
-            </Setter.Value>
-        </Setter>
-
+        <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
     </Style>
 
 </ResourceDictionary>

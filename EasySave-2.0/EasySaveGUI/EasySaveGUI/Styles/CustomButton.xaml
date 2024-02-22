@@ -3,9 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF">
 
+
     <Style x:Key="CustomButton" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
-        <Setter Property="Foreground" Value="#4D4D4D" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="MinHeight" Value="50" />
@@ -23,6 +23,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 Width="35"
+                                Foreground="{DynamicResource IconForeground}"
                                 Kind="SquareRoundedBadge" />
                             <TextBlock
                                 Grid.Row="2"
@@ -45,7 +46,7 @@
     </Style>
 
     <Style x:Key="CustomButtonFolder" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -62,7 +63,10 @@
                                 <RowDefinition Height="2*" />
                                 <RowDefinition Height="3*" />
                             </Grid.RowDefinitions>
-                            <materialIcons:MaterialIcon Grid.Row="1" Kind="Folder" />
+                            <materialIcons:MaterialIcon
+                                Grid.Row="1"
+                                Foreground="{DynamicResource IconForeground}"
+                                Kind="Folder" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -77,7 +81,7 @@
     </Style>
 
     <Style x:Key="CustomButtonFile" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -97,6 +101,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource IconForeground}"
                                 Kind="File" />
                             <TextBlock
                                 Grid.Row="2"
@@ -119,7 +124,7 @@
     </Style>
 
     <Style x:Key="CustomButtonRun" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -139,6 +144,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource IconForeground}"
                                 Kind="Run" />
 
                             <TextBlock
@@ -162,7 +168,7 @@
     </Style>
 
     <Style x:Key="CustomButtonDelete" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -182,6 +188,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource IconForeground}"
                                 Kind="Delete" />
 
                             <TextBlock
@@ -205,7 +212,7 @@
     </Style>
 
     <Style x:Key="CustomButtonClear" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -225,6 +232,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource IconForeground}"
                                 Kind="Cleaning" />
 
                             <TextBlock
@@ -248,7 +256,7 @@
     </Style>
 
     <Style x:Key="CustomButtonClose" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -268,6 +276,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource IconForeground}"
                                 Kind="Close" />
 
                             <TextBlock
@@ -291,7 +300,7 @@
     </Style>
 
     <Style x:Key="CustomButtonApplyDefaultStyle" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -311,6 +320,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource IconForeground}"
                                 Kind="FormatColorReset" />
 
                             <TextBlock
@@ -334,7 +344,7 @@
     </Style>
 
     <Style x:Key="CustomButtonCreate" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -354,6 +364,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource IconForeground}"
                                 Kind="Plus" />
                             <TextBlock
                                 Grid.Row="2"
@@ -376,7 +387,7 @@
     </Style>
 
     <Style x:Key="CustomButtonSettings" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -396,6 +407,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 Width="35"
+                                Foreground="{DynamicResource IconForeground}"
                                 Kind="Settings" />
                             <TextBlock
                                 Grid.Row="2"
@@ -418,7 +430,7 @@
     </Style>
 
     <Style x:Key="CustomButtonInfo" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -438,6 +450,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 Width="35"
+                                Foreground="{DynamicResource IconForeground}"
                                 Kind="Info" />
                             <TextBlock
                                 Grid.Row="2"

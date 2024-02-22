@@ -5,7 +5,7 @@
 
     <!--  Style for ListBoxItem  -->
     <Style x:Key="CustomListBoxItem" TargetType="{x:Type ListBoxItem}">
-        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="{DynamicResource GenericBackground}" />
         <Setter Property="Padding" Value="5" />
         <Setter Property="Margin" Value="2" />
         <Setter Property="BorderThickness" Value="0" />
@@ -24,7 +24,7 @@
                             <Setter TargetName="Border" Property="Background" Value="#EEE" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#DDD" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource GenericBackground}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -34,7 +34,7 @@
 
     <!--  Style for ListBox  -->
     <Style x:Key="CustomListBox" TargetType="{x:Type ListBox}">
-        <Setter Property="Background" Value="#FFF" />
+        <Setter Property="Background" Value="{DynamicResource DataGridHeaderBackground}" />
         <Setter Property="BorderBrush" Value="#CCC" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource CustomListBoxItem}" />

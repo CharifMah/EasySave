@@ -18,5 +18,13 @@ namespace EasySaveGUI.UserControls
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
         }
+
+        private void ComboBoxFormatLog_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                _MainVm.FormatLogVm.SetFormatLog(e.AddedItems[0].ToString());
+            }
+        }
     }
 }

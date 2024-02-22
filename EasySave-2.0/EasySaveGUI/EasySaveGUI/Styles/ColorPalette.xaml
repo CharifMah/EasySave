@@ -14,4 +14,9 @@
 
     <SolidColorBrush x:Key="GrayColor" Color="#F5F5F5" />
 
+    <SolidColorBrush x:Key="GreenHoverButtonColor" Color="#7DC777" />
+
+    <SolidColorBrush x:Key="YellowHoverButtonColor" Color="#C7A261" />
+
+    <SolidColorBrush x:Key="RedHoverButtonColor" Color="#C74859" />
 </ResourceDictionary>

@@ -198,7 +198,7 @@
                                                                     <StackPanel>
                                                                         <StackPanel Orientation="Horizontal">
                                                                             <TextBlock>
-                                                                                <Run FontWeight="Bold" Text="TotalTransferedFile : " />
+                                                                                <Run FontWeight="DemiBold" Text="TotalTransferedFile : " />
                                                                                 <Run Text="{Binding Path=SauveJobs.LogState.TotalTransferedFile, Mode=OneWay}" />
 
 
@@ -213,7 +213,7 @@
                                                                         <StackPanel Orientation="Horizontal">
 
                                                                             <TextBlock>
-                                                                                <Run FontWeight="Bold" Text="Octets copiés : " />
+                                                                                <Run FontWeight="DemiBold" Text="Octets copiés : " />
                                                                                 <Run Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
 
                                                                                 <Run
@@ -231,13 +231,13 @@
                                                                         </StackPanel>
 
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="TargetDirectory : " />
+                                                                            <TextBlock FontWeight="DemiBold" Text="TargetDirectory : " />
 
                                                                             <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory, Mode=OneWay}" />
                                                                         </StackPanel>
 
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="Derniere activitée : " />
+                                                                            <TextBlock FontWeight="DemiBold" Text="Derniere activitée : " />
 
                                                                             <TextBlock Text="{Binding Path=SauveJobs.LogState.Date, Mode=OneWay}" />
                                                                         </StackPanel>
@@ -322,7 +322,7 @@
                                             CanHide="False">
 
                                             <DockPanel x:Name="DockPanelListDailyLogs">
-                                                <TextBlock DockPanel.Dock="Top" FontWeight="Bold">
+                                                <TextBlock DockPanel.Dock="Top" FontWeight="DemiBold">
                                                     <Run Text="Count Logs : " />
                                                     <Run Text="{Binding Datas.Count, Mode=OneWay}" />
                                                 </TextBlock>
@@ -343,7 +343,7 @@
                                             CanHide="False">
 
                                             <DockPanel x:Name="DockPanelListLogs">
-                                                <TextBlock DockPanel.Dock="Top" FontWeight="Bold">
+                                                <TextBlock DockPanel.Dock="Top" FontWeight="DemiBold">
                                                     <Run Text="Count Logs : " />
                                                     <Run Text="{Binding Datas.Count, Mode=OneWay}" />
                                                 </TextBlock>

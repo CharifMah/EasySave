@@ -15,7 +15,7 @@
             <Border
                 Grid.Column="0"
                 Margin="1"
-                Background="AliceBlue"
+                Background="{DynamicResource GenericBackground}"
                 Opacity="0.9" />
             <Path
                 x:Name="Arrow"
@@ -139,7 +139,6 @@
         <Style.Triggers />
     </Style>
 
-    <!--  SimpleStyles: ComboBoxItem  -->
     <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="Foreground" Value="White" />
@@ -155,7 +154,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="White" />
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource TextColor}" />
                             <Setter Property="Foreground" Value="Black" />
                         </Trigger>
                     </ControlTemplate.Triggers>

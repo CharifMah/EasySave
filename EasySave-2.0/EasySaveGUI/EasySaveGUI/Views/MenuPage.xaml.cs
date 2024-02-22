@@ -72,5 +72,18 @@ namespace EasySaveGUI.Views
                 HorizontalMenu.Visibility = Visibility.Hidden;
             }
         }
+
+
+        private void ListLogs_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+            if (ListLogs.Items.Count > 0)
+                ListLogs.ScrollIntoView(ListLogs.Items[ListLogs.Items.Count - 1]);
+        }
+
+        private void ListLogsDaily_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            if (ListLogsDaily.Items.Count > 0)
+                ListLogsDaily.ScrollIntoView(ListLogsDaily.Items[ListLogsDaily.Items.Count - 1]);
+        }
     }
 }

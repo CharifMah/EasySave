@@ -21,7 +21,7 @@ namespace EasySaveGUI.UserControls
 
         private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainWindow.frame.NavigationService.Navigate(new MenuPage(_MainVm));
+            _MainWindow.RefreshMenu();
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)

@@ -164,5 +164,11 @@ namespace EasySaveGUI
             _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
             _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
         }
+
+        public void RefreshMenu()
+        {
+            _MenuPage = new MenuPage(_MainVm);
+            frame.NavigationService.Navigate(_MenuPage);
+        }
     }
 }

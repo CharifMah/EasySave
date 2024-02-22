@@ -1,7 +1,9 @@
 ﻿using AvalonDock.Layout;
 using EasySaveGUI.UserControls;
 using LogsModels;
+using Models;
 using Models.Backup;
+using OpenDialog;
 using Ressources;
 using Stockage.Logs;
 using System.Collections.Generic;
@@ -84,6 +86,11 @@ namespace EasySaveGUI.Views
         {
             if (ListLogsDaily.Items.Count > 0)
                 ListLogsDaily.ScrollIntoView(ListLogsDaily.Items[ListLogsDaily.Items.Count - 1]);
+        }
+
+        private void OpenLogButton_Click(object sender, RoutedEventArgs e)
+        {
+            CDialog.ReadFile("",null,CSettings.Instance.LogDefaultFolderPath,true);
         }
     }
 }

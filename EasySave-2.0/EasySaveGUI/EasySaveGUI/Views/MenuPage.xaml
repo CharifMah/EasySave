@@ -325,7 +325,13 @@
                                                 <TextBlock DockPanel.Dock="Top" FontWeight="DemiBold">
                                                     <Run Text="Count Logs : " />
                                                     <Run Text="{Binding Datas.Count, Mode=OneWay}" />
+
+
                                                 </TextBlock>
+                                                <Button
+                                                    Click="OpenLogButton_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource CustomButtonLogFile}" />
                                                 <DataGrid
                                                     x:Name="ListLogsDaily"
                                                     IsReadOnly="True"

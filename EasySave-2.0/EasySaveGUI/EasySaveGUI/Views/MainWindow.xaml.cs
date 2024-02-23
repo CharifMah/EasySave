@@ -1,5 +1,6 @@
 ﻿using AvalonDock.Layout;
 using AvalonDock.Themes;
+using EasySaveGUI.ViewModels;
 using EasySaveGUI.Views;
 using System;
 using System.Runtime.InteropServices;
@@ -7,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using ViewModels;
 
 namespace EasySaveGUI
 {

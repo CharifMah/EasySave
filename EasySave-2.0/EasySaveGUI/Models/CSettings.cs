@@ -15,7 +15,7 @@ namespace Models
 
         private ICharge _loadSettings;
         private ISauve _saveSettings;
-
+        private string _LayoutDefaultFolderPath;
         private string _JobDefaultConfigPath;
         [DataMember]
         private string _JobConfigFolderPath;
@@ -65,6 +65,7 @@ namespace Models
         }
 
         public string LogDefaultFolderPath { get => _LogDefaultFolderPath; set => _LogDefaultFolderPath = value; }
+        public string LayoutDefaultFolderPath { get => _LayoutDefaultFolderPath; set => _LayoutDefaultFolderPath = value; }
 
         /// <summary>
         /// Constructeur Settings initialise le path par default de la configuration des jobs
@@ -73,6 +74,7 @@ namespace Models
         {
             _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs", "JobManager.json");
             _LogDefaultFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EasySave");
+            _LayoutDefaultFolderPath = Path.Combine(_LogDefaultFolderPath,"Layout");
         }
 
         #endregion

@@ -1,16 +1,12 @@
-﻿using AvalonDock.Layout;
-using EasySaveGUI.UserControls;
+﻿using EasySaveGUI.UserControls;
+using EasySaveGUI.ViewModels;
 using LogsModels;
 using Models;
-using Models.Backup;
 using OpenDialog;
 using Ressources;
 using Stockage.Logs;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModels;
 
 namespace EasySaveGUI.Views
 {
@@ -28,7 +24,7 @@ namespace EasySaveGUI.Views
             InitializeComponent();
             _MainVm = pMainVm;
             DataContext = _MainVm;
-            
+
             ListElements.Content = new JobMenuControl();
             LayoutAnchorableCreateJob.IsVisible = false;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
@@ -90,7 +86,7 @@ namespace EasySaveGUI.Views
 
         private void OpenLogButton_Click(object sender, RoutedEventArgs e)
         {
-            CDialog.ReadFile("",null,CSettings.Instance.LogDefaultFolderPath,true);
+            CDialog.ReadFile("", null, CSettings.Instance.LogDefaultFolderPath, true);
         }
     }
 }

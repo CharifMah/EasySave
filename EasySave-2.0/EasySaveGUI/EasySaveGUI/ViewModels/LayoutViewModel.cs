@@ -1,44 +1,59 @@
-﻿using Models;
-using Pango;
-using Stockage.Load;
+﻿using AvalonDock;
+using AvalonDock.Layout;
+using AvalonDock.Layout.Serialization;
+using EasySaveGUI.UserControls;
+using Models;
 using Stockage.Save;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace EasySaveGUI.ViewModels
 {
     public class LayoutViewModel : BaseViewModel
     {
-        private HashSet<string> _LayoutsName;
-        private Layout _DockLayout;
-        private ISauve _SauveCollection;
-        private ICharge _ChargeCollection;
-        public Layout DockLayout { get => _DockLayout; set => _DockLayout = value; }
+        private ContentControl _ElementsContent;
+        private ObservableCollection<string> _LayoutNames;
+        private DockingManager _DockLayout;
+        public DockingManager DockLayout { get => _DockLayout; set => _DockLayout = value; }
+        public ObservableCollection<string> LayoutNames { get => _LayoutNames; set => _LayoutNames = value; }
+        public ContentControl ElementsContent { get => _ElementsContent; set { _ElementsContent = value; NotifyPropertyChanged(); }  }
 
         public LayoutViewModel()
         {
-            _SauveCollection = new SauveCollection(CSettings.Instance.LayoutDefaultFolderPath);
-            _ChargeCollection = new ChargerCollection(CSettings.Instance.LayoutDefaultFolderPath);
-            _LayoutsName = new HashSet<string>();
+            FileInfo[] lFiles = new DirectoryInfo(CSettings.Instance.LayoutDefaultFolderPath).GetFiles();
+            if (lFiles.Length > 0)
+                _LayoutNames = new ObservableCollection<string>(lFiles.Select(f => f.Name));
+            else
+                _LayoutNames = new ObservableCollection<string>();
+
+            _ElementsContent = new JobMenuControl();
         }
 
-        public void SaveLayout(string pLayoutName)
+        public void SaveLayout(DockingManager pDock, string pLayoutName = "Layout")
         {
-            _LayoutsName.Add(pLayoutName);
-            _SauveCollection.Sauver(_DockLayout, pLayoutName);
-        }   
-        
-        public Layout LoadLayout(string pLayoutName)
-        {
-            _DockLayout = _ChargeCollection.Charger<Layout>(pLayoutName);
-            NotifyPropertyChanged("DockLayout");
+            if (!_LayoutNames.Contains(pLayoutName))
+                _LayoutNames.Add(pLayoutName);
 
-            return _DockLayout;
+            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(pDock);
+            new SauveCollection(CSettings.Instance.LayoutDefaultFolderPath);
+            layoutSerializer.Serialize(Path.Combine(CSettings.Instance.LayoutDefaultFolderPath, pLayoutName));
+            MessageBox.Show("LayoutSaved");
         }
 
+        public void LoadLayout(DockingManager pDock, string pLayoutName = "Layout")
+        {
+            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(pDock);
+            string lPath = Path.Combine(CSettings.Instance.LayoutDefaultFolderPath, pLayoutName);
 
+            if (File.Exists(lPath))
+            {
+                layoutSerializer.Deserialize(lPath);
+ 
+                NotifyPropertyChanged("DockLayout");
+            }
+        }
     }
 }

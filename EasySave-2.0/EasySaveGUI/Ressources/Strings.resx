@@ -308,4 +308,7 @@
   <data name="Jobs" xml:space="preserve">
     <value></value>
   </data>
+  <data name="SaveLayout" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

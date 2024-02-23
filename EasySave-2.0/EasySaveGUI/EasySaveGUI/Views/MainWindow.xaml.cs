@@ -1,4 +1,5 @@
-﻿using AvalonDock.Layout;
+﻿using AvalonDock;
+using AvalonDock.Layout;
 using AvalonDock.Themes;
 using EasySaveGUI.ViewModels;
 using EasySaveGUI.Views;
@@ -170,10 +171,16 @@ namespace EasySaveGUI
             _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
         }
 
-        public void RefreshMenu()
+        public void RefreshMenu(DockingManager pDockingManager = null)
         {
             _MenuPage = new MenuPage(_MainVm);
-            frame.NavigationService.Navigate(_MenuPage);
+            frame.NavigationService.Navigate(_MenuPage, pDockingManager);
+        }
+
+        private void ComboBoxLayout_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox lComboBox = sender as ComboBox;
+           _MainVm.LayoutVm.LoadLayout(_MenuPage.Dock,lComboBox.SelectedValue.ToString());
         }
     }
 }

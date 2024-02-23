@@ -16,6 +16,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Button
@@ -24,8 +25,13 @@
                 Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
                 Style="{StaticResource CustomButtonApplyDefaultStyle}" />
             <Button
-                x:Name="Clear"
                 Grid.Column="1"
+                Click="SaveLayoutButton_Click"
+                Content="{x:Static Ressources:Strings.SaveLayout}"
+                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+            <Button
+                x:Name="Clear"
+                Grid.Column="2"
                 Click="Clear_Click"
                 Content="{x:Static Ressources:Strings.ClearConsole}"
                 Style="{StaticResource CustomButtonClear}" />
@@ -33,6 +39,7 @@
 
         <Grid x:Name="VerticalMenu" Visibility="Hidden">
             <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -44,6 +51,11 @@
                 Style="{StaticResource CustomButtonApplyDefaultStyle}" />
             <Button
                 Grid.Row="1"
+                Click="SaveLayoutButton_Click"
+                Content="{x:Static Ressources:Strings.SaveLayout}"
+                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+            <Button
+                Grid.Row="2"
                 Click="Clear_Click"
                 Content="{x:Static Ressources:Strings.ClearConsole}"
                 Style="{StaticResource CustomButtonClear}" />

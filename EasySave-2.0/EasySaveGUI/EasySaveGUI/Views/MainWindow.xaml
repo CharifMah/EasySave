@@ -33,7 +33,7 @@
 
     <Window.Resources>
         <Converter:LangueConvert x:Key="LangueConvert" />
-   
+
     </Window.Resources>
 
     <Window.Template>
@@ -124,7 +124,6 @@
                                 <TextBlock Height="20" Margin="5">|</TextBlock>
 
                                 <ComboBox
-                                    x:Name="ComboBoxLang"
                                     Width="90"
                                     Height="20"
                                     IsHitTestVisible="True"
@@ -132,7 +131,18 @@
                                     MouseEnter="ComboBox_MouseEnter"
                                     MouseLeave="ComboBox_MouseLeave"
                                     SelectedIndex="{Binding LangueVm.Langue.SelectedCulture.Key, Mode=OneWay}"
-                                    SelectionChanged="ComboBoxLang_SelectionChanged" />
+                                    SelectionChanged="ComboBoxLang_SelectionChanged">
+                                </ComboBox>
+
+                                <ComboBox
+                                    x:Name="ComboBoxLayout"
+                                    Width="90"
+                                    Height="20"
+                                    IsHitTestVisible="True"
+                                    ItemsSource="{Binding LayoutVm.LayoutNames}"
+                                    MouseEnter="ComboBox_MouseEnter"
+                                    MouseLeave="ComboBox_MouseLeave"
+                                    SelectionChanged="ComboBoxLayout_SelectionChanged" />
 
                             </StackPanel>
 

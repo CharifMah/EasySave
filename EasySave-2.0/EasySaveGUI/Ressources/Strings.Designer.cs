@@ -558,6 +558,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SaveLayout {
+            get {
+                return ResourceManager.GetString("SaveLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);

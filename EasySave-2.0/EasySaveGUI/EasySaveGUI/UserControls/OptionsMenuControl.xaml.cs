@@ -44,5 +44,10 @@ namespace EasySaveGUI.UserControls
                 HorizontalMenu.Visibility = Visibility.Hidden;
             }
         }
+
+        private void SaveLayoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            _MainVm.LayoutVm.SaveLayout(_MainWindow.MenuPage.Dock);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EasySaveGUI.UserControls;
+﻿using AvalonDock;
+using EasySaveGUI.UserControls;
 using EasySaveGUI.ViewModels;
 using LogsModels;
 using Models;
@@ -19,13 +20,14 @@ namespace EasySaveGUI.Views
         private MainViewModel _MainVm;
         #endregion
 
-        public MenuPage(MainViewModel pMainVm)
+        public MenuPage(MainViewModel pMainVm, DockingManager pDockingManager = null)
         {
             InitializeComponent();
             _MainVm = pMainVm;
             DataContext = _MainVm;
-
-            ListElements.Content = new JobMenuControl();
+            if (pDockingManager != null)
+                Dock = pDockingManager;
+         
             LayoutAnchorableCreateJob.IsVisible = false;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
@@ -35,17 +37,7 @@ namespace EasySaveGUI.Views
             JobsListDocument.IsSelected = true;
         }
 
-        private void MenuButtons_MouseClick(object sender, RoutedEventArgs e)
-        {
-            ListElements.Show();
-            Button lButton = sender as Button;
-            if (lButton.Content == Strings.Config)
-                ListElements.Content = new ConfigMenuControl();
-            if (lButton.Content == Strings.Settings)
-                ListElements.Content = new OptionsMenuControl();
-            if (lButton.Content == Strings.Jobs)
-                ListElements.Content = new JobMenuControl();
-        }
+
 
         public void ClearLists()
         {
@@ -56,21 +48,7 @@ namespace EasySaveGUI.Views
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
 
-        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            Grid lGrid = sender as Grid;
 
-            if (lGrid.ActualWidth >= lGrid.ActualHeight)
-            {
-                HorizontalMenu.Visibility = Visibility.Visible;
-                VerticalMenu.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                VerticalMenu.Visibility = Visibility.Visible;
-                HorizontalMenu.Visibility = Visibility.Hidden;
-            }
-        }
 
         private void ListLogs_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
         {

@@ -17,15 +17,18 @@ namespace Models
         private ISauve _saveSettings;
         private string _LayoutDefaultFolderPath;
         private string _JobDefaultConfigPath;
+        private string _LogDefaultFolderPath;
+
         [DataMember]
         private string _JobConfigFolderPath;
         [DataMember]
         private CLangue _Langue;
         [DataMember]
         private CFormatLog _FormatLog;
-        private string _LogDefaultFolderPath;
+
         #endregion
 
+        #region Property
         /// <summary>
         /// Langue préférer de l'utilisateur
         /// </summary>
@@ -51,6 +54,10 @@ namespace Models
         /// Emplacement par défaut du répertoire dans lequel le fichier de configuration du travail est stocké
         /// </summary>
         public string JobDefaultConfigPath { get => _JobDefaultConfigPath; }
+        public string LogDefaultFolderPath { get => _LogDefaultFolderPath; set => _LogDefaultFolderPath = value; }
+        public string LayoutDefaultFolderPath { get => _LayoutDefaultFolderPath; set => _LayoutDefaultFolderPath = value; }
+
+        #endregion
 
         #region CTOR
         private static CSettings? _Instance;
@@ -63,9 +70,6 @@ namespace Models
                 return _Instance;
             }
         }
-
-        public string LogDefaultFolderPath { get => _LogDefaultFolderPath; set => _LogDefaultFolderPath = value; }
-        public string LayoutDefaultFolderPath { get => _LayoutDefaultFolderPath; set => _LayoutDefaultFolderPath = value; }
 
         /// <summary>
         /// Constructeur Settings initialise le path par default de la configuration des jobs

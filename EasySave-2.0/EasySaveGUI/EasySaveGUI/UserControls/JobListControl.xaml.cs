@@ -1,4 +1,5 @@
-﻿using Gtk;
+﻿using EasySaveGUI.ViewModels;
+using Gtk;
 using Models.Backup;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ViewModels;
 using ListBox = System.Windows.Controls.ListBox;
 using Window = System.Windows.Window;
 

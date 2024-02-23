@@ -1,7 +1,7 @@
-﻿using EasySaveGUI.Views;
+﻿using EasySaveGUI.ViewModels;
+using EasySaveGUI.Views;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModels;
 
 namespace EasySaveGUI.UserControls
 {

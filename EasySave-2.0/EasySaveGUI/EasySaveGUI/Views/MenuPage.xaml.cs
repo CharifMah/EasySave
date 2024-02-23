@@ -28,6 +28,7 @@ namespace EasySaveGUI.Views
             InitializeComponent();
             _MainVm = pMainVm;
             DataContext = _MainVm;
+            
             ListElements.Content = new JobMenuControl();
             LayoutAnchorableCreateJob.IsVisible = false;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
@@ -74,7 +75,6 @@ namespace EasySaveGUI.Views
                 HorizontalMenu.Visibility = Visibility.Hidden;
             }
         }
-
 
         private void ListLogs_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
         {

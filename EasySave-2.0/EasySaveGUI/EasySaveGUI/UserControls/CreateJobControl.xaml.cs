@@ -1,4 +1,5 @@
 ﻿using EasySaveGUI.ValidationRules;
+using EasySaveGUI.ViewModels;
 using Models.Backup;
 using OpenDialog;
 using System;
@@ -8,7 +9,6 @@ using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using ViewModels;
 
 namespace EasySaveGUI.UserControls
 {

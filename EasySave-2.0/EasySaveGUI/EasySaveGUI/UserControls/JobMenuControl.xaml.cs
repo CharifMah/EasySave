@@ -1,9 +1,9 @@
-﻿using Models.Backup;
+﻿using EasySaveGUI.ViewModels;
+using Models.Backup;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModels;
 
 namespace EasySaveGUI.UserControls
 {

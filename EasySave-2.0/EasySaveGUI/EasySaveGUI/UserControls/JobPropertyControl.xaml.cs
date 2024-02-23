@@ -1,7 +1,7 @@
-﻿using OpenDialog;
+﻿using EasySaveGUI.ViewModels;
+using OpenDialog;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModels;
 
 namespace EasySaveGUI.UserControls
 {

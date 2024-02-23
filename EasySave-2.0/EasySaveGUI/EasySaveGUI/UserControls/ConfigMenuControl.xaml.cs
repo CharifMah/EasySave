@@ -1,4 +1,5 @@
 ﻿using AvalonDock.Layout;
+using EasySaveGUI.ViewModels;
 using Gtk;
 using Models;
 using OpenDialog;
@@ -6,7 +7,6 @@ using Ressources;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModels;
 using Grid = System.Windows.Controls.Grid;
 
 namespace EasySaveGUI.UserControls

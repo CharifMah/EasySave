@@ -1,7 +1,7 @@
-﻿using Stockage.Logs;
+﻿using EasySaveGUI.ViewModels;
+using Stockage.Logs;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModels;
 
 namespace EasySaveGUI.UserControls
 {

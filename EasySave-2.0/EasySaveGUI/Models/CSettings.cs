@@ -52,7 +52,6 @@ namespace Models
         /// </summary>
         public string JobDefaultConfigPath { get => _JobDefaultConfigPath; }
 
-
         #region CTOR
         private static CSettings? _Instance;
         public static CSettings Instance

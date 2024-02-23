@@ -23,6 +23,7 @@ namespace EasySaveGUI
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
         #endregion
+
         private MainViewModel _MainVm;
         private MenuPage _MenuPage;
         public MainViewModel MainVm { get => _MainVm; set => _MainVm = value; }

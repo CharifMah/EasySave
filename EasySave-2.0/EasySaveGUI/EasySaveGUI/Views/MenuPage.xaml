@@ -161,7 +161,7 @@
                                                                         <StackPanel Orientation="Horizontal">
 
                                                                             <TextBlock>
-                                                                                <Run Text="{x:Static Ressources:Strings.ByteCopied}" />
+                                                                                <Run FontWeight="DemiBold" Text="{x:Static Ressources:Strings.ByteCopied}" />
                                                                                 <Run FontWeight="DemiBold" Text=" : " />
                                                                                 <Run Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
 
@@ -174,7 +174,7 @@
                                                                         </StackPanel>
 
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="{x:Static Ressources:Strings.SourceDirectory}" />
+                                                                            <TextBlock FontWeight="DemiBold" Text="{x:Static Ressources:Strings.SourceDirectory}" />
 
                                                                             <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory, Mode=OneWay}" />
                                                                         </StackPanel>

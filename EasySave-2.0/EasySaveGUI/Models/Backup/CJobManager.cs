@@ -89,7 +89,7 @@ namespace Models.Backup
                 {
                     Stopwatch lStopWatch = new Stopwatch();
                     lStopWatch.Start();
-                    SauveJobsAsync _SauveJobs = new SauveJobsAsync("", CSettings.Instance.FormatLog.SelectedFormatLog.Value,lStopWatch);
+                    SauveJobsAsync _SauveJobs = new SauveJobsAsync("", CSettings.Instance.FormatLog.SelectedFormatLog.Value, lStopWatch);
                     lJob.SauveJobs = _SauveJobs;
                     lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalMilliseconds;
                     lJob.SauveJobs.LogState.Name = lIndex + ' ' + _SauveJobs.LogState.Name;

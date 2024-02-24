@@ -18,7 +18,7 @@ namespace Models.Backup
         [DataMember]
         private string _TargetDirectory;
         [DataMember]
-        private ETypeBackup _BackupType; 
+        private ETypeBackup _BackupType;
         private SauveJobsAsync _SauveJobs;
         #endregion
 

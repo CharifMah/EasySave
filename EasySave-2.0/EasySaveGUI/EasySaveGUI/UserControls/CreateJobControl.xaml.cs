@@ -5,10 +5,8 @@ using OpenDialog;
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace EasySaveGUI.UserControls
 {
@@ -22,7 +20,7 @@ namespace EasySaveGUI.UserControls
         public CreateJobControl()
         {
             InitializeComponent();
-            _MainWindow = (Window.GetWindow(App.Current.MainWindow) as MainWindow);
+            _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
         }
 
@@ -55,17 +53,17 @@ namespace EasySaveGUI.UserControls
 
             if (String.IsNullOrEmpty(TextBoxJobSourceDirectory.Text))
             {
-                lResult += ("Le nom de la SourceDirectory est vide\n");
+                lResult += "Le nom de la SourceDirectory est vide\n";
             }
 
             if (String.IsNullOrEmpty(TextBoxJobTargetDirectory.Text))
             {
-                lResult += ("Le nom de la TargetDirectory est vide\n");
+                lResult += "Le nom de la TargetDirectory est vide\n";
             }
 
             if (ComboboxCreateJob.SelectedItem == null)
             {
-                lResult += (Ressources.Strings.BackupTypeEmpty + '\n');
+                lResult += Ressources.Strings.BackupTypeEmpty + '\n';
             }
             return lResult;
         }
@@ -91,13 +89,13 @@ namespace EasySaveGUI.UserControls
         {
             if (sender is TextBox)
             {
-                TextBox lTextBox = (sender as TextBox);
+                TextBox lTextBox = sender as TextBox;
                 lTextBox.Focus();
-                lTextBox.CaretIndex = lTextBox.Text.Length - 1      ;
+                lTextBox.CaretIndex = lTextBox.Text.Length - 1;
 
             }
             ShowError(e.Error.ErrorContent.ToString());
-        }   
+        }
 
         private void TextBoxJobSourceDirectory_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -105,7 +103,7 @@ namespace EasySaveGUI.UserControls
 
             if (lTextBox != null)
             {
-                ValidationResult lValidationResult = new FolderPathValidator().Validate(lTextBox.Text,CultureInfo.CurrentCulture);
+                ValidationResult lValidationResult = new FolderPathValidator().Validate(lTextBox.Text, CultureInfo.CurrentCulture);
                 if (!lValidationResult.IsValid)
                 {
                     ShowError(lValidationResult.ErrorContent.ToString());

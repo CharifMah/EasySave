@@ -19,4 +19,8 @@
     <SolidColorBrush x:Key="YellowHoverButtonColor" Color="#C7A261" />
 
     <SolidColorBrush x:Key="RedHoverButtonColor" Color="#C74859" />
+
+    <SolidColorBrush x:Key="LoadingBarColor" Color="#9FFF73" />
+
+    <SolidColorBrush x:Key="BorderColor" Color="Red" />
 </ResourceDictionary>

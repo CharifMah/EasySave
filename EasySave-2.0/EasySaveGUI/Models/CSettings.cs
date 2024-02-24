@@ -81,7 +81,7 @@ namespace Models
         {
             _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs", "JobManager.json");
             _LogDefaultFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EasySave");
-            _LayoutDefaultFolderPath = Path.Combine(_LogDefaultFolderPath,"Layout");
+            _LayoutDefaultFolderPath = Path.Combine(_LogDefaultFolderPath, "Layout");
         }
 
         #endregion

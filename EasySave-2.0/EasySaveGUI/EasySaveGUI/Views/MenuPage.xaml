@@ -33,7 +33,8 @@
             x:Name="Dock"
             Grid.Row="1"
             Grid.Column="1"
-            Background="#EDF5FD">
+            Background="#EDF5FD"
+            Foreground="Red">
             <DockingManager.Theme>
                 <Vs2013LightTheme />
             </DockingManager.Theme>

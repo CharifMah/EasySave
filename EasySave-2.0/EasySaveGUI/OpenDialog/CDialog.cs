@@ -14,7 +14,7 @@ namespace OpenDialog
         /// </summary>
         /// <param name="pDescription">Description for the interface</param>
         /// <returns>return the selected file full path</returns>
-        public static string ReadFile(string pDescription, Regex pRegexExtentions = null, string pCurrentFolder = null,bool pOpenFile = false)
+        public static string ReadFile(string pDescription, Regex pRegexExtentions = null, string pCurrentFolder = null, bool pOpenFile = false)
         {
 
             string lSelectedFile = null;
@@ -69,7 +69,7 @@ namespace OpenDialog
             return lSelectedFile;
         }
 
-        public static string ReadFolder(string pDescription = "",string pPath = null)
+        public static string ReadFolder(string pDescription = "", string pPath = null)
         {
             string lSelectedFolder = null;
 

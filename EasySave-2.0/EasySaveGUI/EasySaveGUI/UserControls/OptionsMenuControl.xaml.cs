@@ -1,5 +1,4 @@
 ﻿using EasySaveGUI.ViewModels;
-using EasySaveGUI.Views;
 using Models;
 using System.Windows;
 using System.Windows.Controls;
@@ -48,7 +47,7 @@ namespace EasySaveGUI.UserControls
 
         private void SaveLayoutButton_Click(object sender, RoutedEventArgs e)
         {
-            _MainVm.LayoutVm.SaveLayout(_MainWindow.MenuPage.Dock,CSettings.Instance.Theme.CurrentTheme);
+            _MainVm.LayoutVm.SaveLayout(_MainWindow.MenuPage.Dock, CSettings.Instance.Theme.CurrentTheme);
         }
     }
 }

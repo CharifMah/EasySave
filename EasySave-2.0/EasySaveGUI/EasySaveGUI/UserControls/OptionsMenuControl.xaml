@@ -18,17 +18,17 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
             <Button
                 Grid.Column="0"
-                Click="ApplyDefaultStyleButton_Click"
-                Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
-                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
-            <Button
-                Grid.Column="1"
                 Click="SaveLayoutButton_Click"
                 Content="{x:Static Ressources:Strings.SaveLayout}"
                 Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+            <Button
+                Grid.Column="1"
+                Click="ApplyDefaultStyleButton_Click"
+                Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
+                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+
             <Button
                 x:Name="Clear"
                 Grid.Column="2"
@@ -43,17 +43,17 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
             <Button
                 Grid.Row="0"
-                Click="ApplyDefaultStyleButton_Click"
-                Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
-                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
-            <Button
-                Grid.Row="1"
                 Click="SaveLayoutButton_Click"
                 Content="{x:Static Ressources:Strings.SaveLayout}"
                 Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+            <Button
+                Grid.Row="1"
+                Click="ApplyDefaultStyleButton_Click"
+                Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
+                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+
             <Button
                 Grid.Row="2"
                 Click="Clear_Click"

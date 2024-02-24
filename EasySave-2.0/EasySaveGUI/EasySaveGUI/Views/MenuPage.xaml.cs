@@ -1,10 +1,8 @@
 ﻿using AvalonDock;
-using EasySaveGUI.UserControls;
 using EasySaveGUI.ViewModels;
 using LogsModels;
 using Models;
 using OpenDialog;
-using Ressources;
 using Stockage.Logs;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,14 +18,12 @@ namespace EasySaveGUI.Views
         private MainViewModel _MainVm;
         #endregion
 
-        public MenuPage(MainViewModel pMainVm, DockingManager pDockingManager = null)
+        public MenuPage(MainViewModel pMainVm)
         {
             InitializeComponent();
             _MainVm = pMainVm;
             DataContext = _MainVm;
-            if (pDockingManager != null)
-                Dock = pDockingManager;
-         
+
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
 

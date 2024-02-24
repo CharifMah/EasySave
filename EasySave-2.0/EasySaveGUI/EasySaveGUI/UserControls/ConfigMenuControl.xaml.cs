@@ -1,6 +1,4 @@
-﻿using AvalonDock.Layout;
-using EasySaveGUI.ViewModels;
-using Gtk;
+﻿using EasySaveGUI.ViewModels;
 using Models;
 using OpenDialog;
 using Ressources;
@@ -38,7 +36,7 @@ namespace EasySaveGUI.UserControls
             {
                 CSettings.Instance.SetJobConfigPath(lConfigPath);
                 _MainVm.JobVm.LoadJobs(false, lConfigPath);
-            } 
+            }
         }
 
         private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)

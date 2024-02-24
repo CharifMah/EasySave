@@ -343,4 +343,22 @@
   <data name="CountLogs" xml:space="preserve">
     <value>Number of logs</value>
   </data>
+  <data name="TransfertTime" xml:space="preserve">
+    <value>Transfert time</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="LogState" xml:space="preserve">
+    <value>Real-time log</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="DailyLogs" xml:space="preserve">
+    <value>Daily log</value>
+  </data>
+  <data name="ByteCopied" xml:space="preserve">
+    <value>Bytes copied</value>
+  </data>
 </root>

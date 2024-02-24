@@ -94,7 +94,7 @@
 
                                             <LayoutDocument
                                                 x:Name="JobsListDocument"
-                                                Title="Jobs"
+                                                Title="{x:Static Ressources:Strings.Jobs}"
                                                 CanClose="False"
                                                 IsSelected="True">
                                                 <Usr:JobListControl x:Name="JobUsr" />
@@ -110,9 +110,9 @@
                                                     AutoGenerateColumns="False"
                                                     ItemsSource="{Binding JobVm.JobsRunning}">
                                                     <DataGrid.Columns>
-                                                        <DataGridTextColumn Binding="{Binding Path=Name}" Header="Nom" />
+                                                        <DataGridTextColumn Binding="{Binding Path=Name}" Header="{x:Static Ressources:Strings.Name}" />
 
-                                                        <DataGridTemplateColumn Header="Progress">
+                                                        <DataGridTemplateColumn Header="{x:Static Ressources:Strings.Progress}">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
                                                                     <Grid>
@@ -139,7 +139,7 @@
 
 
                                                         <!--  LogSstate Column Datagrid JobsRunning  -->
-                                                        <DataGridTemplateColumn Header="LogState">
+                                                        <DataGridTemplateColumn Header="{x:Static Ressources:Strings.LogState}">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <!--  LogSstate  -->
                                                                 <DataTemplate>
@@ -161,7 +161,8 @@
                                                                         <StackPanel Orientation="Horizontal">
 
                                                                             <TextBlock>
-                                                                                <Run FontWeight="DemiBold" Text="Octets copiés : " />
+                                                                                <Run Text="{x:Static Ressources:Strings.ByteCopied}" />
+                                                                                <Run FontWeight="DemiBold" Text=" : " />
                                                                                 <Run Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
 
                                                                                 <Run
@@ -173,13 +174,13 @@
                                                                         </StackPanel>
 
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="SourceDirectory : " />
+                                                                            <TextBlock FontWeight="Bold" Text="{x:Static Ressources:Strings.SourceDirectory}" />
 
                                                                             <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory, Mode=OneWay}" />
                                                                         </StackPanel>
 
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="DemiBold" Text="TargetDirectory : " />
+                                                                            <TextBlock FontWeight="DemiBold" Text="{x:Static Ressources:Strings.TargetDirectory}" />
 
                                                                             <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory, Mode=OneWay}" />
                                                                         </StackPanel>
@@ -196,9 +197,9 @@
                                                             </DataGridTemplateColumn.CellTemplate>
                                                         </DataGridTemplateColumn>
 
-                                                        <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="Répertoire source" />
+                                                        <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="{x:Static Ressources:Strings.SourceDir}" />
 
-                                                        <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
+                                                        <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="{x:Static Ressources:Strings.TargetDir}" />
 
                                                     </DataGrid.Columns>
 
@@ -265,7 +266,7 @@
                                     <LayoutAnchorablePane>
 
                                         <LayoutAnchorable
-                                            Title="Daily Logs"
+                                            Title="{x:Static Ressources:Strings.DailyLogs}"
                                             CanClose="False"
                                             CanHide="False">
 
@@ -283,8 +284,18 @@
                                                     Style="{StaticResource CustomButtonLogFile}" />
                                                 <DataGrid
                                                     x:Name="ListLogsDaily"
+                                                    AutoGenerateColumns="False"
                                                     IsReadOnly="True"
-                                                    ItemsSource="{Binding Datas, Mode=OneWay}" />
+                                                    ItemsSource="{Binding Datas, Mode=OneWay}">
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Binding="{Binding TransfertTime}" Header="{x:Static Ressources:Strings.TransfertTime}" />
+                                                        <DataGridTextColumn Binding="{Binding Name}" Header="{x:Static Ressources:Strings.Name}" />
+                                                        <DataGridTextColumn Binding="{Binding Date}" Header="{x:Static Ressources:Strings.Date}" />
+                                                        <DataGridTextColumn Binding="{Binding TotalSize}" Header="{x:Static Ressources:Strings.Size}" />
+                                                        <DataGridTextColumn Binding="{Binding SourceDirectory}" Header="{x:Static Ressources:Strings.SourceDir}" />
+                                                        <DataGridTextColumn Binding="{Binding TargetDirectory}" Header="{x:Static Ressources:Strings.TargetDir}" />
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
                                             </DockPanel>
 
                                         </LayoutAnchorable>

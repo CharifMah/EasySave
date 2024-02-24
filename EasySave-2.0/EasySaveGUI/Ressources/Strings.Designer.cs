@@ -90,6 +90,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string ByteCopied {
+            get {
+                return ResourceManager.GetString("ByteCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string bytes {
             get {
                 return ResourceManager.GetString("bytes", resourceCulture);
@@ -201,6 +210,15 @@ namespace Ressources {
         public static string CurrentFormat {
             get {
                 return ResourceManager.GetString("CurrentFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DailyLogs {
+            get {
+                return ResourceManager.GetString("DailyLogs", resourceCulture);
             }
         }
         
@@ -450,6 +468,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string LogState {
+            get {
+                return ResourceManager.GetString("LogState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string MultipleIndexes {
             get {
                 return ResourceManager.GetString("MultipleIndexes", resourceCulture);
@@ -525,6 +552,15 @@ namespace Ressources {
         public static string PossibleTypeBackup {
             get {
                 return ResourceManager.GetString("PossibleTypeBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Progress {
+            get {
+                return ResourceManager.GetString("Progress", resourceCulture);
             }
         }
         
@@ -675,6 +711,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Size {
+            get {
+                return ResourceManager.GetString("Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SourceDir {
             get {
                 return ResourceManager.GetString("SourceDir", resourceCulture);
@@ -741,6 +786,15 @@ namespace Ressources {
         public static string TotalSize {
             get {
                 return ResourceManager.GetString("TotalSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TransfertTime {
+            get {
+                return ResourceManager.GetString("TransfertTime", resourceCulture);
             }
         }
         

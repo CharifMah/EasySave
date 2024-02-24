@@ -36,8 +36,6 @@ namespace EasySaveGUI
 
             DataContext = _MainVm;
             RefreshMenu();
-
-     
         }
 
         #region TitleBarReleaseCapture
@@ -139,12 +137,12 @@ namespace EasySaveGUI
         }
         #endregion
 
-        public void RefreshMenu()
+        public void RefreshMenu(bool pSetLayout = true)
         {
             _MenuPage = new MenuPage(_MainVm);
             frame.NavigationService.Navigate(_MenuPage);
-
-            SetLayout(CSettings.Instance.Theme.CurrentLayout);
+            if (pSetLayout)
+                SetLayout(CSettings.Instance.Theme.CurrentLayout);
         }
 
         private void BlueTheme()

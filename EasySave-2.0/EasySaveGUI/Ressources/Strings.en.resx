@@ -331,4 +331,16 @@
   <data name="SaveLayout" xml:space="preserve">
     <value>Save layout</value>
   </data>
+  <data name="LoadDefaultFile" xml:space="preserve">
+    <value>Load default file</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="OtherLogs" xml:space="preserve">
+    <value>Other logs</value>
+  </data>
+  <data name="CountLogs" xml:space="preserve">
+    <value>Number of logs</value>
+  </data>
 </root>

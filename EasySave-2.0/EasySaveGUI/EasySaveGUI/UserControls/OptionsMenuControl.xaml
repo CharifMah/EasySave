@@ -22,7 +22,7 @@
                 Grid.Column="0"
                 Click="SaveLayoutButton_Click"
                 Content="{x:Static Ressources:Strings.SaveLayout}"
-                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+                Style="{StaticResource CustomButtonSaveLayout}" />
             <Button
                 Grid.Column="1"
                 Click="ApplyDefaultStyleButton_Click"
@@ -47,7 +47,7 @@
                 Grid.Row="0"
                 Click="SaveLayoutButton_Click"
                 Content="{x:Static Ressources:Strings.SaveLayout}"
-                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+                Style="{StaticResource CustomButtonSaveLayout}" />
             <Button
                 Grid.Row="1"
                 Click="ApplyDefaultStyleButton_Click"

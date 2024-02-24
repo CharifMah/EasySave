@@ -228,8 +228,7 @@
 
                                             <!--  Property Pane  -->
                                             <LayoutAnchorable
-                                                x:Name="PropertyPane"
-                                                Title="Property"
+                                                Title="{x:Static Ressources:Strings.Property}"
                                                 AutoHideMinWidth="150"
                                                 CanClose="False"
                                                 CanHide="False"
@@ -242,7 +241,7 @@
                                             <!--  CreateJob Pane  -->
                                             <LayoutAnchorable
                                                 x:Name="LayoutAnchorableCreateJob"
-                                                Title="CreateJob"
+                                                Title="{x:Static Ressources:Strings.CreateJob}"
                                                 AutoHideMinWidth="150"
                                                 CanClose="False"
                                                 CanHide="False"
@@ -272,7 +271,8 @@
 
                                             <DockPanel x:Name="DockPanelListDailyLogs">
                                                 <TextBlock DockPanel.Dock="Top" FontWeight="DemiBold">
-                                                    <Run Text="Count Logs : " />
+                                                    <Run Text="{x:Static Ressources:Strings.CountLogs}" />
+                                                    <Run Text=" : " />
                                                     <Run Text="{Binding Datas.Count, Mode=OneWay}" />
 
 
@@ -293,13 +293,14 @@
                                     <LayoutAnchorablePane>
 
                                         <LayoutAnchorable
-                                            Title="All Logs"
+                                            Title="{x:Static Ressources:Strings.OtherLogs}"
                                             CanClose="False"
                                             CanHide="False">
 
                                             <DockPanel x:Name="DockPanelListLogs">
                                                 <TextBlock DockPanel.Dock="Top" FontWeight="DemiBold">
-                                                    <Run Text="Count Logs : " />
+                                                    <Run Text="{x:Static Ressources:Strings.CountLogs}" />
+                                                    <Run Text=" : " />
                                                     <Run Text="{Binding Datas.Count, Mode=OneWay}" />
                                                 </TextBlock>
                                                 <ListBox x:Name="ListLogs" ItemsSource="{Binding Datas, Mode=OneWay}" />

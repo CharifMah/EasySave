@@ -180,6 +180,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string CountLogs {
+            get {
+                return ResourceManager.GetString("CountLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string CreateJob {
             get {
                 return ResourceManager.GetString("CreateJob", resourceCulture);
@@ -405,6 +414,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string LoadDefaultFile {
+            get {
+                return ResourceManager.GetString("LoadDefaultFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Loaded {
             get {
                 return ResourceManager.GetString("Loaded", resourceCulture);
@@ -477,6 +495,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string OtherLogs {
+            get {
+                return ResourceManager.GetString("OtherLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PasteClipboard {
             get {
                 return ResourceManager.GetString("PasteClipboard", resourceCulture);
@@ -498,6 +525,15 @@ namespace Ressources {
         public static string PossibleTypeBackup {
             get {
                 return ResourceManager.GetString("PossibleTypeBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Property {
+            get {
+                return ResourceManager.GetString("Property", resourceCulture);
             }
         }
         

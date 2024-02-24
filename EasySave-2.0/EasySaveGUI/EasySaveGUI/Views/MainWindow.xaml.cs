@@ -6,6 +6,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -143,6 +144,7 @@ namespace EasySaveGUI
             frame.NavigationService.Navigate(_MenuPage);
             if (pSetLayout)
                 SetLayout(CSettings.Instance.Theme.CurrentLayout);
+            
         }
 
         private void BlueTheme()

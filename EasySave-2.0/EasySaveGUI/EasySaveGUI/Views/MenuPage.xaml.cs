@@ -1,4 +1,5 @@
 ﻿using AvalonDock;
+using EasySaveGUI.UserControls;
 using EasySaveGUI.ViewModels;
 using LogsModels;
 using Models;
@@ -23,7 +24,7 @@ namespace EasySaveGUI.Views
             InitializeComponent();
             _MainVm = pMainVm;
             DataContext = _MainVm;
-
+            _MainVm.LayoutVm.ElementsContent = new JobMenuControl();
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
 

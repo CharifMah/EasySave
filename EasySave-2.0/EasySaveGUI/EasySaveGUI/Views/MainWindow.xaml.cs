@@ -233,6 +233,8 @@ namespace EasySaveGUI
                     BlueTheme();
                     break;
             }
+
+            CSettings.Instance.Theme.CurrentTheme = pTheme;
         }
     }
 }

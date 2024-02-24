@@ -243,9 +243,9 @@
                                                 Title="CreateJob"
                                                 AutoHideMinWidth="150"
                                                 CanClose="False"
-                                                CanHide="True"
+                                                CanHide="False"
                                                 CanShowOnHover="False">
-                                                <Usr:CreateJobControl />
+                                                <Usr:CreateJobControl x:Name="CreateJob" />
                                             </LayoutAnchorable>
 
                                         </LayoutAnchorablePane>

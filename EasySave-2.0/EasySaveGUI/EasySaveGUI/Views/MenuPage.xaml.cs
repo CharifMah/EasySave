@@ -28,11 +28,9 @@ namespace EasySaveGUI.Views
             if (pDockingManager != null)
                 Dock = pDockingManager;
          
-            LayoutAnchorableCreateJob.IsVisible = false;
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
 
-            LayoutAnchorableCreateJob.ToggleAutoHide();
             ConfigInfoDocument.Close();
             JobsListDocument.IsSelected = true;
         }
@@ -47,8 +45,6 @@ namespace EasySaveGUI.Views
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
-
-
 
         private void ListLogs_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
         {

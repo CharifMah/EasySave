@@ -42,6 +42,7 @@ namespace EasySaveGUI.UserControls
             if (lButton.Content == Strings.Jobs)
                 _MainVm.LayoutVm.ElementsContent.Content = new JobMenuControl();
             _MainWindow.MenuPage.ListElements.Show();
+            _MainWindow.MenuPage.ListElements.IsActive = true;
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

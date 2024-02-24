@@ -23,9 +23,15 @@ namespace EasySaveGUI.ViewModels
 
         public LayoutViewModel()
         {
-            FileInfo[] lFiles = new DirectoryInfo(CSettings.Instance.LayoutDefaultFolderPath).GetFiles();
-            if (lFiles.Length > 0)
+            DirectoryInfo lDirInfo = new DirectoryInfo(CSettings.Instance.LayoutDefaultFolderPath);
+            if (lDirInfo.Exists)
+            {
+                FileInfo[] lFiles = lDirInfo.GetFiles();
+                if (lFiles.Length > 0)
+
                 _LayoutNames = new ObservableCollection<string>(lFiles.Select(f => f.Name));
+            }
+            
             else
                 _LayoutNames = new ObservableCollection<string>();
 

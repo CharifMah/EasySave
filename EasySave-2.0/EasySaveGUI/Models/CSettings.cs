@@ -18,14 +18,15 @@ namespace Models
         private string _LayoutDefaultFolderPath;
         private string _JobDefaultConfigPath;
         private string _LogDefaultFolderPath;
-
+        [DataMember]
+        private CTheme _Theme;
         [DataMember]
         private string _JobConfigFolderPath;
         [DataMember]
         private CLangue _Langue;
         [DataMember]
         private CFormatLog _FormatLog;
-
+        private static CSettings? _Instance;
         #endregion
 
         #region Property
@@ -56,11 +57,8 @@ namespace Models
         public string JobDefaultConfigPath { get => _JobDefaultConfigPath; }
         public string LogDefaultFolderPath { get => _LogDefaultFolderPath; set => _LogDefaultFolderPath = value; }
         public string LayoutDefaultFolderPath { get => _LayoutDefaultFolderPath; set => _LayoutDefaultFolderPath = value; }
+        public CTheme Theme { get => _Theme; set => _Theme = value; }
 
-        #endregion
-
-        #region CTOR
-        private static CSettings? _Instance;
         public static CSettings Instance
         {
             get
@@ -70,6 +68,11 @@ namespace Models
                 return _Instance;
             }
         }
+
+
+        #endregion
+
+        #region CTOR
 
         /// <summary>
         /// Constructeur Settings initialise le path par default de la configuration des jobs
@@ -111,6 +114,10 @@ namespace Models
                     _Instance.Langue = new CLangue();
                 if (_Instance.FormatLog == null)
                     _Instance.FormatLog = new CFormatLog();
+                if (_Instance.Theme == null)
+                {
+                    _Instance._Theme = new CTheme();
+                }
             }
         }
 

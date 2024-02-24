@@ -1,8 +1,8 @@
 ﻿using AvalonDock;
-using AvalonDock.Layout;
 using AvalonDock.Themes;
 using EasySaveGUI.ViewModels;
 using EasySaveGUI.Views;
+using Models;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -30,13 +30,17 @@ namespace EasySaveGUI
         public MainViewModel MainVm { get => _MainVm; set => _MainVm = value; }
         public MenuPage MenuPage { get => _MenuPage; set => _MenuPage = value; }
 
+
         public MainWindow()
         {
             InitializeComponent();
             _MainVm = new MainViewModel();
+
             DataContext = _MainVm;
             _MenuPage = new MenuPage(_MainVm);
             frame.Navigate(_MenuPage);
+
+            SetLayout(CSettings.Instance.Theme.CurrentLayout);
         }
 
         #region TitleBarReleaseCapture
@@ -120,26 +124,31 @@ namespace EasySaveGUI
 
         private void Vs2013BlueThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            _MenuPage.Dock.Theme = new Vs2013BlueTheme();
+
             BlueTheme();
+
         }
 
         private void Vs2013LightThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            _MenuPage.Dock.Theme = new Vs2013LightTheme();
+
             LightTheme();
+
         }
 
         private void GenericThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            _MenuPage.Dock.Theme = new AvalonDock.Themes.Vs2013DarkTheme();
+
             DarkTheme();
+
         }
         #endregion
 
 
         private void BlueTheme()
         {
+            _MenuPage.Dock.Theme = new Vs2013BlueTheme();
+            CSettings.Instance.Theme.CurrentTheme = ETheme.BLUE;
             _MenuPage.Dock.Background = Brushes.White;
             _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
             _MenuPage.Resources["GenericBackground"] = Brushes.White;
@@ -147,21 +156,27 @@ namespace EasySaveGUI
             _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEE6FD"));
             _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
             _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
+            CSettings.Instance.SaveSettings();
         }
 
         private void DarkTheme()
         {
+            _MenuPage.Dock.Theme = new AvalonDock.Themes.Vs2013DarkTheme();
+            CSettings.Instance.Theme.CurrentTheme = ETheme.DARK;
             _MenuPage.Dock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
-            _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ebeef2")); 
+            _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ebeef2"));
             _MenuPage.Resources["GenericBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
             _MenuPage.Resources["LightGray"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#111112"));
             _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#424242"));
             _MenuPage.Resources["LightDark"] = Brushes.White;
             _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#757f86"));
+            CSettings.Instance.SaveSettings();
         }
 
         private void LightTheme()
         {
+            _MenuPage.Dock.Theme = new Vs2013LightTheme();
+            CSettings.Instance.Theme.CurrentTheme = ETheme.LIGHT;
             _MenuPage.Dock.Background = Brushes.White;
             _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
             _MenuPage.Resources["GenericBackground"] = Brushes.White;
@@ -169,6 +184,8 @@ namespace EasySaveGUI
             _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
             _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
             _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
+            CSettings.Instance.SaveSettings();
+
         }
 
         public void RefreshMenu(DockingManager pDockingManager = null)
@@ -180,7 +197,42 @@ namespace EasySaveGUI
         private void ComboBoxLayout_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox lComboBox = sender as ComboBox;
-           _MainVm.LayoutVm.LoadLayout(_MenuPage.Dock,lComboBox.SelectedValue.ToString());
+            string lSelectedValue = lComboBox.SelectedValue.ToString();
+            SetLayout(lSelectedValue);
+        }
+
+        private void SetLayout(string pSelectedValue)
+        {
+            if (!string.IsNullOrEmpty(pSelectedValue))
+            {
+                _MainVm.LayoutVm.LoadLayout(_MenuPage.Dock, pSelectedValue);
+
+                CSettings.Instance.Theme.CurrentLayout = pSelectedValue;
+
+                if (CSettings.Instance.Theme.LayoutsTheme.ContainsKey(pSelectedValue))
+                {
+                    ETheme lLayoutTheme = (ETheme)Enum.Parse(typeof(ETheme), CSettings.Instance.Theme.LayoutsTheme[pSelectedValue]);
+                    SetTheme(lLayoutTheme);
+                }
+
+                CSettings.Instance.SaveSettings();
+            }
+        }
+
+        private void SetTheme(ETheme pTheme)
+        {
+            switch (pTheme)
+            {
+                case ETheme.LIGHT:
+                    LightTheme();
+                    break;
+                case ETheme.DARK:
+                    DarkTheme();
+                    break;
+                case ETheme.BLUE:
+                    BlueTheme();
+                    break;
+            }
         }
     }
 }

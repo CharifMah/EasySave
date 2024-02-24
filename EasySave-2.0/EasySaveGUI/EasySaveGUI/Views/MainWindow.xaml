@@ -131,8 +131,7 @@
                                     MouseEnter="ComboBox_MouseEnter"
                                     MouseLeave="ComboBox_MouseLeave"
                                     SelectedIndex="{Binding LangueVm.Langue.SelectedCulture.Key, Mode=OneWay}"
-                                    SelectionChanged="ComboBoxLang_SelectionChanged">
-                                </ComboBox>
+                                    SelectionChanged="ComboBoxLang_SelectionChanged" />
 
                                 <ComboBox
                                     x:Name="ComboBoxLayout"
@@ -142,6 +141,7 @@
                                     ItemsSource="{Binding LayoutVm.LayoutNames}"
                                     MouseEnter="ComboBox_MouseEnter"
                                     MouseLeave="ComboBox_MouseLeave"
+                                    SelectedValue="{Binding SettingsVm.Settings.Theme.CurrentLayout}"
                                     SelectionChanged="ComboBoxLayout_SelectionChanged" />
 
                             </StackPanel>

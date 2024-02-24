@@ -32,12 +32,20 @@ namespace EasySaveGUI.ViewModels
             _ElementsContent = new JobMenuControl();
         }
 
-        public void SaveLayout(DockingManager pDock, string pLayoutName = "Layout")
+        public void SaveLayout(DockingManager pDock,ETheme pTheme, string pLayoutName = "Layout")
         {
             if (!_LayoutNames.Contains(pLayoutName))
                 _LayoutNames.Add(pLayoutName);
+            if (CSettings.Instance.Theme.LayoutsTheme.ContainsKey(pLayoutName))
+            {
+                CSettings.Instance.Theme.LayoutsTheme[pLayoutName] = pTheme.ToString();
+            }
+            else
+                CSettings.Instance.Theme.LayoutsTheme.Add(pLayoutName, pTheme.ToString());
 
-            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(pDock);
+            CSettings.Instance.SaveSettings();
+
+            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(pDock);  
             new SauveCollection(CSettings.Instance.LayoutDefaultFolderPath);
             layoutSerializer.Serialize(Path.Combine(CSettings.Instance.LayoutDefaultFolderPath, pLayoutName));
             MessageBox.Show("LayoutSaved");

@@ -10,7 +10,7 @@ namespace Models.Backup
     /// Gestionnaire de jobs
     /// </summary>
     [DataContract]
-    public class CJobManager : BaseModel
+    public class CJobManager
     {
         #region Attribute
         [DataMember]

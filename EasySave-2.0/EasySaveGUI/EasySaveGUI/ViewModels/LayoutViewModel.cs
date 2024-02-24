@@ -1,5 +1,4 @@
 ﻿using AvalonDock;
-using AvalonDock.Layout;
 using AvalonDock.Layout.Serialization;
 using EasySaveGUI.UserControls;
 using Models;
@@ -16,10 +15,9 @@ namespace EasySaveGUI.ViewModels
     {
         private ContentControl _ElementsContent;
         private ObservableCollection<string> _LayoutNames;
-        private DockingManager _DockLayout;
-        public DockingManager DockLayout { get => _DockLayout; set => _DockLayout = value; }
         public ObservableCollection<string> LayoutNames { get => _LayoutNames; set => _LayoutNames = value; }
-        public ContentControl ElementsContent { get => _ElementsContent; set { _ElementsContent = value; NotifyPropertyChanged(); }  }
+        public ContentControl ElementsContent { get => _ElementsContent; set { _ElementsContent = value; NotifyPropertyChanged(); } }
+
 
         public LayoutViewModel()
         {
@@ -29,31 +27,32 @@ namespace EasySaveGUI.ViewModels
                 FileInfo[] lFiles = lDirInfo.GetFiles();
                 if (lFiles.Length > 0)
 
-                _LayoutNames = new ObservableCollection<string>(lFiles.Select(f => f.Name));
+                    _LayoutNames = new ObservableCollection<string>(lFiles.Select(f => f.Name));
             }
-            
+
             else
                 _LayoutNames = new ObservableCollection<string>();
 
             _ElementsContent = new JobMenuControl();
         }
 
-        public void SaveLayout(DockingManager pDock,ETheme pTheme, string pLayoutName = "Layout")
+        public void SaveLayout(DockingManager pDock, ETheme pTheme, string pLayoutName = "Layout")
         {
             if (!_LayoutNames.Contains(pLayoutName))
                 _LayoutNames.Add(pLayoutName);
             if (CSettings.Instance.Theme.LayoutsTheme.ContainsKey(pLayoutName))
             {
-                CSettings.Instance.Theme.LayoutsTheme[pLayoutName] = pTheme.ToString();
+                CSettings.Instance.Theme.LayoutsTheme[pLayoutName] = pTheme;
             }
             else
-                CSettings.Instance.Theme.LayoutsTheme.Add(pLayoutName, pTheme.ToString());
+                CSettings.Instance.Theme.LayoutsTheme.Add(pLayoutName, pTheme);
 
-            CSettings.Instance.SaveSettings();
+            CSettings.Instance.Theme.CurrentTheme = pTheme;
 
-            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(pDock);  
+            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(pDock);
             new SauveCollection(CSettings.Instance.LayoutDefaultFolderPath);
             layoutSerializer.Serialize(Path.Combine(CSettings.Instance.LayoutDefaultFolderPath, pLayoutName));
+            CSettings.Instance.SaveSettings();
             MessageBox.Show("LayoutSaved");
         }
 
@@ -65,7 +64,7 @@ namespace EasySaveGUI.ViewModels
             if (File.Exists(lPath))
             {
                 layoutSerializer.Deserialize(lPath);
- 
+
                 NotifyPropertyChanged("DockLayout");
             }
         }

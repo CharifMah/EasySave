@@ -211,8 +211,7 @@ namespace EasySaveGUI
 
                 if (CSettings.Instance.Theme.LayoutsTheme.ContainsKey(pSelectedValue))
                 {
-                    ETheme lLayoutTheme = (ETheme)Enum.Parse(typeof(ETheme), CSettings.Instance.Theme.LayoutsTheme[pSelectedValue]);
-                    SetTheme(lLayoutTheme);
+                    SetTheme(CSettings.Instance.Theme.LayoutsTheme[pSelectedValue]);
                 }
 
                 CSettings.Instance.SaveSettings();

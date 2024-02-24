@@ -209,7 +209,8 @@
                                             <LayoutDocument
                                                 x:Name="ConfigInfoDocument"
                                                 Title="ConfigInfo"
-                                                CanClose="True">
+                                                CanClose="False"
+                                                ContentId="ConfigInfoDocument">
                                                 <Usr:ConfigInfoControl />
 
                                             </LayoutDocument>

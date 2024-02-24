@@ -50,12 +50,6 @@ namespace EasySaveGUI.UserControls
             }
         }
 
-        private void CreateJobButton_Click(object sender, RoutedEventArgs e)
-        {
-            _MainWindow.MenuPage.LayoutAnchorableCreateJob.Show();
-            _MainWindow.MenuPage.LayoutAnchorableCreateJob.IsActive = true;
-        }
-
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Grid lGrid = sender as Grid;

@@ -15,21 +15,21 @@ namespace Models
         [DataMember]    
         private string _CurrentLayout;
         [DataMember]
-        private Dictionary<string, string> _LayoutsTheme;
+        private Dictionary<string, ETheme> _LayoutsTheme;
 
-        public Dictionary<string, string> LayoutsTheme { get => _LayoutsTheme; set => _LayoutsTheme = value; }
+        public Dictionary<string, ETheme> LayoutsTheme { get => _LayoutsTheme; set => _LayoutsTheme = value; }
         public string CurrentLayout { get => _CurrentLayout; set => _CurrentLayout = value; }
         public ETheme CurrentTheme { get => _CurrentTheme; 
             set 
             { 
                 _CurrentTheme = value;
-                _LayoutsTheme[_CurrentLayout] = _CurrentTheme.ToString();
+                _LayoutsTheme[_CurrentLayout] = _CurrentTheme;
             } 
         }
 
         public CTheme()
         {
-            _LayoutsTheme = new Dictionary<string, string>();
+            _LayoutsTheme = new Dictionary<string, ETheme>();
         }
 
 

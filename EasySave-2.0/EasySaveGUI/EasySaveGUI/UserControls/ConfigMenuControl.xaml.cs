@@ -46,19 +46,6 @@ namespace EasySaveGUI.UserControls
             _MainVm.JobVm.SaveJobs();
         }
 
-        private void InfoConfigButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!_MainWindow.MenuPage.JobsPaneGroup.Children.Contains(_MainWindow.MenuPage.ConfigInfoDocument))
-            {
-                _MainWindow.MenuPage.ConfigInfoDocument.Dock();
-                _MainWindow.MenuPage.ConfigInfoDocument.Content = new ConfigInfoControl();
-            }
-            else
-            {
-                _MainWindow.MenuPage.ConfigInfoDocument.IsActive = true;
-            }
-        }
-
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Grid lGrid = sender as Grid;

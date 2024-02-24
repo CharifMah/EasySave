@@ -31,7 +31,6 @@ namespace EasySaveGUI.Views
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
 
-            ConfigInfoDocument.Close();
             JobsListDocument.IsSelected = true;
         }
 

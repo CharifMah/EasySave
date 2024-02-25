@@ -633,6 +633,46 @@
         </Setter>
     </Style>
 
+    <Style x:Key="CustomButtonRemove" TargetType="Button">
+        <Setter Property="Width" Value="35"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" Cursor="Hand">
+                        <materialIcons:MaterialIcon Kind="Delete" Foreground="Red" Width="30" Height="30"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFDDDDDD"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ToolTip" Value="Supprimer"/>
+    </Style>
 
+    <Style x:Key="CustomButtonAdd" TargetType="Button">
+        <Setter Property="Width" Value="35"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" Cursor="Hand">
+                        <materialIcons:MaterialIcon Kind="AddBox" Foreground="Green" Width="30" Height="30"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFDDDDDD"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ToolTip" Value="Ajouter"/>
+    </Style>
 
 </ResourceDictionary>

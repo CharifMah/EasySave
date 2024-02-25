@@ -376,4 +376,7 @@
   <data name="Paths" xml:space="preserve">
     <value>Paths</value>
   </data>
+  <data name="BusinessSoftware" xml:space="preserve">
+    <value>Business Software</value>
+  </data>
 </root>

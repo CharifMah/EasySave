@@ -1,61 +1,58 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Models;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace EasySaveGUI.ViewModels
 {
     public class BusinessSoftwareViewModel : BaseViewModel
     {
-        private ObservableCollection<CBusinessSoftware> _businessSoftwares;
-     
-        public ObservableCollection<CBusinessSoftware> BusinessSoftwares
-        {
-            get => _businessSoftwares;
-            set
-            {
-                if (_businessSoftwares != value)
-                {
-                    _businessSoftwares = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        public ObservableCollection<CBusinessSoftware> BusinessSoftwares { get; private set; }
 
         public BusinessSoftwareViewModel()
         {
-            _businessSoftwares = new ObservableCollection<CBusinessSoftware>(CSettings.Instance.BusinessSoftwares.Values);
+            BusinessSoftwares = new ObservableCollection<CBusinessSoftware>(CSettings.Instance.BusinessSoftwares);
         }
 
-        /// <summary>
-        /// Ajoute un nouveau logiciel métier à la collection.
-        /// </summary>
-        /// <param name="software">Nom du logiciel métier</param>
-        public bool AddBusinessSoftware(CBusinessSoftware software)
+        public bool AddBusinessSoftware(string softwareName)
         {
-            if (!CSettings.Instance.BusinessSoftwares.ContainsKey(software.Name))
+            if (!string.IsNullOrWhiteSpace(softwareName) &&
+                !BusinessSoftwares.Any(software => software.Name.Equals(softwareName)))
             {
-                _businessSoftwares.Add(software);
-                CSettings.Instance.BusinessSoftwares.Add(software.Name, software);
-                CSettings.Instance.SaveSettings();
+                BusinessSoftwares.Add(new CBusinessSoftware(softwareName));
                 NotifyPropertyChanged(nameof(BusinessSoftwares));
-                return true; // Ajout réussi
+                SaveSettings();
+                return true;
             }
-
-            return false; // Logiciel déjà présent
+            return false;
         }
 
-        public void RemoveBusinessSoftware(CBusinessSoftware software)
+        public void RemoveBusinessSoftwares(IEnumerable<CBusinessSoftware> softwaresToRemove)
         {
-            if (CSettings.Instance.BusinessSoftwares.ContainsKey(software.Name))
+            List<CBusinessSoftware> softwaresToRemoveList = softwaresToRemove.ToList();
+
+            foreach (CBusinessSoftware software in softwaresToRemoveList)
             {
-                _businessSoftwares.Remove(software);
-                CSettings.Instance.BusinessSoftwares.Remove(software.Name);
+                if (BusinessSoftwares.Contains(software))
+                {
+                    BusinessSoftwares.Remove(software);
+                }
+            }
+            NotifyPropertyChanged(nameof(BusinessSoftwares));
+            SaveSettings();
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                CSettings.Instance.BusinessSoftwares = BusinessSoftwares.ToList();
                 CSettings.Instance.SaveSettings();
-                NotifyPropertyChanged(nameof(BusinessSoftwares));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving settings: {ex.Message}");
             }
         }
     }

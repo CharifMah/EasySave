@@ -23,77 +23,129 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <GroupBox Grid.ColumnSpan="2" Header="Paths">
+            <GroupBox Grid.ColumnSpan="2">
                 <StackPanel>
-                    <GroupBox Header="Configuration File">
+                    <GroupBox Header="JobManager Configuration">
                         <StackPanel>
                             <TextBlock Grid.Row="0" ToolTip="{x:Static Ressources:Strings.DefaultFile}">
                                 <Run Text="{x:Static Ressources:Strings.DefaultFile}" />
                                 <Run Text=" : " />
                             </TextBlock>
                             <TextBox Text="{Binding SettingsVm.Settings.JobDefaultConfigPath, Mode=OneWay}" />
-
                             <TextBlock Grid.Row="0" ToolTip="{x:Static Ressources:Strings.EnterFolderPath}">
                                 <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
-
                             </TextBlock>
                             <TextBox Text="{Binding SettingsVm.Settings.JobConfigFolderPath, Mode=OneWay}" />
                         </StackPanel>
                     </GroupBox>
-
-
-                    <GroupBox Grid.ColumnSpan="2" Header="Logs">
-                        <StackPanel ToolTip="{x:Static Ressources:Strings.EnterFolderPath}">
-                            <TextBlock Grid.Row="0">
-                                <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
-
-                            </TextBlock>
-                            <TextBox Text="{Binding SettingsVm.Settings.LogDefaultFolderPath, Mode=OneWay}" />
+                    <GroupBox Grid.ColumnSpan="2" Header="Logs Configuration">
+                        <StackPanel>
+                            <StackPanel ToolTip="{x:Static Ressources:Strings.EnterFolderPath}">
+                                <TextBlock Grid.Row="0">
+                                    <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
+                                </TextBlock>
+                                <TextBox Text="{Binding SettingsVm.Settings.LogDefaultFolderPath, Mode=OneWay}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Margin="5,5,5,0" Foreground="Black">
+                                    <Run Text="{x:Static Ressources:Strings.FormatLogs}"/>
+                                    <Run Text=":"/>
+                                </TextBlock>
+                                <ComboBox
+                                    x:Name="ComboBoxFormatLog"
+                                    Width="90"
+                                    Height="20"
+                                    IsHitTestVisible="True"
+                                    ItemsSource="{Binding FormatLogVm.FormatLog.FormatsLogs, Converter={StaticResource FormatLogConvert}}"
+                                    SelectedIndex="{Binding FormatLogVm.FormatLog.SelectedFormatLog.Key, Mode=OneWay}"
+                                    SelectionChanged="ComboBoxFormatLog_SelectionChanged"
+                                    Margin="5,5,5,0"
+                                    ToolTip="Type du job" 
+                                />
+                            </StackPanel>
                         </StackPanel>
                     </GroupBox>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
 
+                        <GroupBox Header="Business Softwares" Grid.Column="0" Grid.Row="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ListBox x:Name="ListBoxBusinessSoftwares"
+                                     Grid.Row="1"
+                                     ItemsSource="{Binding BusinessSoftwareVm.BusinessSoftwares}"
+                                     DisplayMemberPath="Name"
+                                     SelectionMode="Multiple" Height="140"
+                                />
+                                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" HorizontalAlignment="Center">
+                                    <Button 
+                                         Click="LoadSoftwareFileButton_Click"
+                                         Style="{StaticResource CustomButtonAdd}"
+                                         Margin="5"
+                                     />
+                                    <Button 
+                                         Click="RemoveSoftwareButton_Click"
+                                         Style="{StaticResource CustomButtonRemove}"
+                                         Margin="5"
+                                     />   
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
 
-                    <TextBlock
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Foreground="Black"
-                        Text="{x:Static Ressources:Strings.FormatLogs}" />
-                    <ComboBox
-                        x:Name="ComboBoxFormatLog"
-                        Width="90"
-                        Height="20"
-                        IsHitTestVisible="True"
-                        ItemsSource="{Binding FormatLogVm.FormatLog.FormatsLogs, Converter={StaticResource FormatLogConvert}}"
-                        SelectedIndex="{Binding FormatLogVm.FormatLog.SelectedFormatLog.Key, Mode=OneWay}"
-                        SelectionChanged="ComboBoxFormatLog_SelectionChanged"
-                        ToolTip="Type du job" />
+                        <GroupBox Header="Extensions de fichiers à chiffrer" Grid.Column="1" Grid.Row="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="txtEncryptionExtension"
+                                     Grid.Column="0"
+                                     Grid.Row="0"
+                                     Margin="5"
+                                 />
+                                <ListBox x:Name="ListBoxEncryptionExtensions"
+                                     ItemsSource="{Binding FileExtensionVm.EncryptionExtensions}"
+                                     Grid.Column="0"
+                                     Grid.Row="1"
+                                     SelectionMode="Multiple" Height="100"
+                                 />    
+                                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" HorizontalAlignment="Center">
+                                    <Button 
+                                        Click="AddEncryptionExtension_Click"
+                                        Style="{StaticResource CustomButtonAdd}"
+                                        Margin="5"
+                                     />
+                                    <Button
+                                        Click="RemoveEncryptionExtensions_Click"
+                                        Style="{StaticResource CustomButtonRemove}"
+                                        Margin="5"
+                                     />
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
                 </StackPanel>
             </GroupBox>
-
-
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="1"
-                VerticalAlignment="Bottom">
-                <GroupBox Header="BlackList">
-                    <ListBox ItemsSource="{Binding SettingsVm.Settings.FormatLog.FormatsLogs}" />
-                </GroupBox>
-
-                <GroupBox Header="Supported format">
-                    <ListBox ItemsSource="{Binding SettingsVm.Settings.FormatLog.FormatsLogs}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    <Run Text="{Binding Value, Mode=OneWay}" />
-                                </TextBlock>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </GroupBox>
-            </StackPanel>
         </Grid>
     </ScrollViewer>
-
-
 
 </UserControl>

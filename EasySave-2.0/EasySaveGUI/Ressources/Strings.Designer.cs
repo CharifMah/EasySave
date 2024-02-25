@@ -90,6 +90,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string BusinessSoftware {
+            get {
+                return ResourceManager.GetString("BusinessSoftware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
         public static string ByteCopied {
             get {
                 return ResourceManager.GetString("ByteCopied", resourceCulture);
@@ -97,7 +106,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string bytes {
             get {
@@ -196,7 +205,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string CreateJob {
             get {
@@ -223,7 +232,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string Date {
             get {
@@ -439,7 +448,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string Loaded {
             get {
@@ -475,7 +484,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string MenuJob {
             get {
@@ -484,7 +493,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string MenuPreference {
             get {
@@ -493,7 +502,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string MenuSettings {
             get {
@@ -502,7 +511,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string MultipleIndexes {
             get {
@@ -556,7 +565,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string PasteClipboard {
             get {
@@ -583,7 +592,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string PossibleTypeBackup {
             get {
@@ -601,7 +610,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string Progress {
             get {
@@ -610,7 +619,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string Property {
             get {
@@ -619,7 +628,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string Quit {
             get {
@@ -682,7 +691,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string Select {
             get {
@@ -763,7 +772,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string SourceDir {
             get {
@@ -844,7 +853,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string Type {
             get {

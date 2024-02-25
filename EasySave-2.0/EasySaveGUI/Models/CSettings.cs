@@ -27,7 +27,9 @@ namespace Models
         [DataMember]
         private CFormatLog _FormatLog;
         [DataMember]
-        private Dictionary<string, CBusinessSoftware> _BusinessSoftwares = new Dictionary<string, CBusinessSoftware>();
+        private List<CBusinessSoftware> _BusinessSoftwares = new List<CBusinessSoftware>();
+        [DataMember]
+        public List<string> _EncryptionExtensions = new List<string>();
 
         private static CSettings? _Instance;
         #endregion
@@ -46,7 +48,17 @@ namespace Models
         /// <summary>
         /// Logiciels métiers
         /// </summary>
-        public Dictionary<string, CBusinessSoftware> BusinessSoftwares { get => _BusinessSoftwares; set => _BusinessSoftwares = value; }
+        public List<CBusinessSoftware> BusinessSoftwares
+        {
+            get => _BusinessSoftwares;
+            set => _BusinessSoftwares = value;
+        }
+
+        public List<string> EncryptionExtensions
+        {
+            get => _EncryptionExtensions; 
+            set => _EncryptionExtensions = value;
+        }
 
         /// <summary>
         /// Emplacement du répertoire dans lequel le fichier de configuration du travail est stocké
@@ -122,8 +134,6 @@ namespace Models
                     _Instance.Langue = new CLangue();
                 if (_Instance.FormatLog == null)
                     _Instance.FormatLog = new CFormatLog();
-                if(_Instance.BusinessSoftwares == null)
-                    _Instance.BusinessSoftwares = new Dictionary<string, CBusinessSoftware>();
                 if (_Instance.Theme == null)
                 {
                     _Instance._Theme = new CTheme();

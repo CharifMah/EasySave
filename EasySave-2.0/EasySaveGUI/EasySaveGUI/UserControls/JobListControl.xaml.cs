@@ -17,7 +17,6 @@ namespace EasySaveGUI.UserControls
             InitializeComponent();
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
-            DataContext = _MainVm;
         }
 
         private void JobsList_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -41,10 +41,11 @@
             <DockingManager.Layout>
                 <LayoutRoot>
 
+
                     <LayoutPanel Orientation="Vertical">
 
                         <LayoutAnchorablePane
-                            DockHeight="70"
+                            DockHeight="0.13592233009708737*"
                             DockMinHeight="70"
                             DockMinWidth="80"
                             DockWidth="80">
@@ -58,7 +59,7 @@
                             </LayoutAnchorable>
                         </LayoutAnchorablePane>
 
-                        <LayoutPanel Orientation="Horizontal">
+                        <LayoutPanel DockHeight="1.87*" Orientation="Horizontal">
 
                             <!--  Elements Pane Left  -->
                             <!--  MenuButtons  -->
@@ -67,7 +68,7 @@
                                 DockHeight="80"
                                 DockMinHeight="80"
                                 DockMinWidth="90"
-                                DockWidth="90">
+                                DockWidth="0.1*">
 
                                 <LayoutAnchorable
                                     x:Name="ListElements"
@@ -81,29 +82,35 @@
 
                             </LayoutAnchorablePane>
 
-                            <LayoutPanel Orientation="Vertical">
+                            <LayoutPanel
+                                DockHeight="500"
+                                DockWidth="1.9*"
+                                Orientation="Vertical">
 
                                 <!--  Jobs Pane  -->
-                                <LayoutPanel Orientation="Horizontal">
+                                <LayoutPanel DockHeight="1.7*" Orientation="Horizontal">
 
                                     <!--  Jobs Pane  -->
-                                    <LayoutDocumentPaneGroup DockWidth="200" Orientation="Vertical">
+                                    <LayoutAnchorablePaneGroup DockWidth="1600" Orientation="Vertical">
                                         <!--  jobs list  -->
-                                        <LayoutDocumentPane x:Name="JobsPaneGroup">
+                                        <LayoutAnchorablePane x:Name="JobsPaneGroup" DockWidth="1600">
 
-                                            <LayoutDocument
+                                            <LayoutAnchorable
                                                 x:Name="JobsListDocument"
                                                 Title="{x:Static Ressources:Strings.Jobs}"
+                                                CanAutoHide="False"
                                                 CanClose="False"
-                                                IsSelected="True">
+                                                CanHide="False">
                                                 <Usr:JobListControl x:Name="JobUsr" />
-                                            </LayoutDocument>
+                                            </LayoutAnchorable>
 
                                             <!--  JobsRunning  -->
-                                            <LayoutDocument
+                                            <LayoutAnchorable
                                                 x:Name="JobsRunningDocument"
-                                                Title="JobsRunning"
-                                                CanClose="False">
+                                                Title="{x:Static Ressources:Strings.JobsRunning}"
+                                                CanAutoHide="False"
+                                                CanClose="False"
+                                                CanHide="False">
                                                 <DataGrid
                                                     x:Name="dataGrid"
                                                     AutoGenerateColumns="False"
@@ -204,24 +211,26 @@
 
                                                 </DataGrid>
 
-                                            </LayoutDocument>
+                                            </LayoutAnchorable>
 
                                             <!--  ConfigInfo  -->
-                                            <LayoutDocument
+                                            <LayoutAnchorable
                                                 x:Name="ConfigInfoDocument"
-                                                Title="ConfigInfo"
+                                                Title="{x:Static Ressources:Strings.Config}"
+                                                CanAutoHide="False"
                                                 CanClose="False"
+                                                CanHide="False"
                                                 ContentId="ConfigInfoDocument">
                                                 <Usr:ConfigInfoControl />
 
-                                            </LayoutDocument>
+                                            </LayoutAnchorable>
 
-                                        </LayoutDocumentPane>
+                                        </LayoutAnchorablePane>
 
-                                    </LayoutDocumentPaneGroup>
+                                    </LayoutAnchorablePaneGroup>
 
                                     <!--  Property Pane  -->
-                                    <LayoutAnchorablePaneGroup DockWidth="200">
+                                    <LayoutAnchorablePaneGroup DockWidth="0.15*">
 
                                         <!--  Property Pane  -->
                                         <LayoutAnchorablePane DockMinWidth="200">
@@ -259,7 +268,7 @@
                                 </LayoutPanel>
 
                                 <!--  Logs  -->
-                                <LayoutAnchorablePaneGroup DockHeight="120" Orientation="Horizontal">
+                                <LayoutAnchorablePaneGroup DockHeight="0.2976939203354298*" Orientation="Horizontal">
 
                                     <!--  Logs  -->
                                     <LayoutAnchorablePane>

@@ -376,4 +376,7 @@
   <data name="Paths" xml:space="preserve">
     <value>Paths</value>
   </data>
+  <data name="JobsRunning" xml:space="preserve">
+    <value>Jobs running</value>
+  </data>
 </root>

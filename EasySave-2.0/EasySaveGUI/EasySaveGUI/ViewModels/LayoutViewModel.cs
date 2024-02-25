@@ -52,7 +52,6 @@ namespace EasySaveGUI.ViewModels
             new SauveCollection(CSettings.Instance.LayoutDefaultFolderPath);
             layoutSerializer.Serialize(Path.Combine(CSettings.Instance.LayoutDefaultFolderPath, pLayoutName));
             CSettings.Instance.SaveSettings();
-            MessageBox.Show("LayoutSaved");
         }
 
         public void LoadLayout(DockingManager pDock, string pLayoutName = "Layout")

@@ -24,11 +24,6 @@ namespace EasySaveGUI.ViewModels
         public CJobManager JobManager
         {
             get => _jobManager;
-            set
-            {
-                _jobManager = value;
-                NotifyPropertyChanged();
-            }
         }
         /// <summary>
         /// Job selectionnée par l'utilisateur
@@ -51,16 +46,11 @@ namespace EasySaveGUI.ViewModels
             {
                 return _jobManager.Jobs;
             }
-            set
-            {
-                _jobManager.Jobs = value;
-                NotifyPropertyChanged();
-            }
         }
         /// <summary>
         /// Les job en cours execution du job manager
         /// </summary>
-        public ObservableCollection<CJob> JobsRunning { get => _jobManager.JobsRunning; set { _jobManager.JobsRunning = value; NotifyPropertyChanged(); } }
+        public ObservableCollection<CJob> JobsRunning { get => _jobManager.JobsRunning; }
         #endregion
 
         #region CTOR

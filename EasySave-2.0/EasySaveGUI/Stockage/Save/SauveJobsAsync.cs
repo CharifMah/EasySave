@@ -69,14 +69,14 @@ namespace Stockage.Save
                             // cm -  Copy the file async if the target file is newer
                             await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
 
-                            await UpdateLog(lFiles[i], lTargetFilePath, _StopWatch, lName, pLogStates);
+                            UpdateLog(lFiles[i], lTargetFilePath, _StopWatch, lName, pLogStates);
                         }
                     }
                     else
                     {
                         // cm -  Copy the file async
                         await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
-                        await UpdateLog(lFiles[i], lTargetFilePath, _StopWatch, lName, pLogStates);
+                        UpdateLog(lFiles[i], lTargetFilePath, _StopWatch, lName, pLogStates);
                     }
                 }
 
@@ -96,7 +96,7 @@ namespace Stockage.Save
             }
         }
 
-        private async Task UpdateLog(FileInfo pFileInfo, string pTargetFilePath, Stopwatch pSw, string pName, List<CLogState> pLogStates)
+        private void UpdateLog(FileInfo pFileInfo, string pTargetFilePath, Stopwatch pSw, string pName, List<CLogState> pLogStates)
         {
             _LogState.TotalTransferedFile++;
             _LogState.SourceDirectory = pFileInfo.FullName;

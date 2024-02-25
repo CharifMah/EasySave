@@ -31,6 +31,7 @@ namespace EasySaveGUI.UserControls
                 _MainWindow.MenuPage.ClearLists();
 
                 _MainWindow.MenuPage.JobsRunningDocument.IsActive = true;
+
                 await _MainWindow.MainVm.JobVm.RunJobs(lSelectedJobs);
 
                 lButton.IsEnabled = true;

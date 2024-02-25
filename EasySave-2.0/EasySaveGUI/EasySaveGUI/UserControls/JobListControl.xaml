@@ -44,7 +44,6 @@
                         </TextBlock>
                     </StackPanel>
                 </WrapPanel>
-                <!--</CheckBox>-->
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox>

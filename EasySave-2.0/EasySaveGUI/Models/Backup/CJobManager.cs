@@ -1,4 +1,5 @@
 ﻿using LogsModels;
+using Models.Settings;
 using Stockage.Logs;
 using Stockage.Save;
 using System.Collections.ObjectModel;

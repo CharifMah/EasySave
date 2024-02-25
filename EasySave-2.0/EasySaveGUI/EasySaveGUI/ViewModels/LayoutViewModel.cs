@@ -1,7 +1,8 @@
 ﻿using AvalonDock;
 using AvalonDock.Layout.Serialization;
 using EasySaveGUI.UserControls;
-using Models;
+using Models.Settings;
+using Models.Settings.Theme;
 using Stockage.Save;
 using System.Collections.ObjectModel;
 using System.IO;

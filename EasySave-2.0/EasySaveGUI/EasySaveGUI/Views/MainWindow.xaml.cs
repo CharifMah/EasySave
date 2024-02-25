@@ -2,7 +2,8 @@
 using EasySaveGUI.ViewModels;
 using EasySaveGUI.Views;
 using LogsModels;
-using Models;
+using Models.Settings;
+using Models.Settings.Theme;
 using Ressources;
 using Stockage.Logs;
 using System;

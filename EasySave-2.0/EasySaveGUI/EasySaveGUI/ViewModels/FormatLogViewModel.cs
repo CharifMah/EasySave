@@ -1,4 +1,4 @@
-﻿using Models;
+﻿using Models.Settings;
 
 namespace EasySaveGUI.ViewModels
 {

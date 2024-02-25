@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Models
+namespace Models.Settings.Theme
 {
     [DataContract]
     public class CTheme

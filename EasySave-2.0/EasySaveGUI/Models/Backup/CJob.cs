@@ -8,7 +8,7 @@ namespace Models.Backup
     /// Représente un travail/tâche à exécuter
     /// </summary>
     [DataContract]
-    public class CJob : IPath
+    public class CJob : BaseModel, IPath
     {
         #region Attribute
         [DataMember]
@@ -26,23 +26,35 @@ namespace Models.Backup
         /// <summary>
         /// Nom du job de sauvegarde
         /// </summary>
-        public string Name { get => _Name; set => _Name = value; }
+        public string Name { get => _Name; set { _Name = value; NotifyPropertyChanged(); } }
 
         /// <summary>
         /// Répertoire source à sauvegarder
         /// </summary>
-        public string SourceDirectory { get => _SourceDirectory; set => _SourceDirectory = value; }
+        public string SourceDirectory
+        {
+            get => _SourceDirectory; set { _SourceDirectory = value; NotifyPropertyChanged(); }
+        }
 
         /// <summary>
         /// Répertoire cible de la sauvegarde
         /// </summary>
-        public string TargetDirectory { get => _TargetDirectory; set => _TargetDirectory = value; }
+        public string TargetDirectory
+        {
+            get => _TargetDirectory; set { _TargetDirectory = value; NotifyPropertyChanged(); }
+        }
 
         /// <summary>
         /// Type de sauvegarde
         /// </summary>
-        public ETypeBackup BackupType { get => _BackupType; set => _BackupType = value; }
-        public SauveJobsAsync SauveJobs { get => _SauveJobs; set => _SauveJobs = value; }
+        public ETypeBackup BackupType
+        {
+            get => _BackupType; set { _BackupType = value; NotifyPropertyChanged(); }
+        }
+        public SauveJobsAsync SauveJobs
+        {
+            get => _SauveJobs; set { _SauveJobs = value; NotifyPropertyChanged(); }
+        }
 
 
 

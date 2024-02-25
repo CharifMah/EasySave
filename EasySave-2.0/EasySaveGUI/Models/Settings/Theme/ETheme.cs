@@ -1,4 +1,4 @@
-﻿namespace Models
+﻿namespace Models.Settings.Theme
 {
     public enum ETheme
     {

@@ -1,4 +1,6 @@
-﻿namespace EasySaveGUI.ViewModels
+﻿using Models.Settings;
+
+namespace EasySaveGUI.ViewModels
 {
     /// <summary>
     /// Modèle de vue principal regroupant les différents modèles de vue
@@ -34,7 +36,7 @@
         /// </summary>
         public MainViewModel()
         {
-            Models.CSettings.Instance.LoadSettings();
+            CSettings.Instance.LoadSettings();
             _LangueVm = new LangueViewModel();
             _FormatLogVm = new FormatLogViewModel();
             _JobVm = new JobViewModel();

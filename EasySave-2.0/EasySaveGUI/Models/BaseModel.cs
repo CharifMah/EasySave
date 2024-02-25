@@ -1,11 +1,14 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
-namespace EasySaveGUI.ViewModels
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Models
 {
-    /// <summary>
-    /// Classe abstraite BaseViewModel
-    /// </summary>
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseModel : INotifyPropertyChanged
     {
         /// <summary> Événement de modification d'une property </summary>
         public event PropertyChangedEventHandler? PropertyChanged;

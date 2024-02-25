@@ -1,9 +1,11 @@
 ﻿using Models.Backup;
+using Models.Langue;
+using Models.Settings.Theme;
 using Stockage.Load;
 using Stockage.Save;
 using System.Runtime.Serialization;
 
-namespace Models
+namespace Models.Settings
 {
     /// <summary>
     /// Classe des settings de l'application permettant le chargement et la sauvegarde des paramètres de l'utilisateur
@@ -129,7 +131,7 @@ namespace Models
         public CJobManager LoadJobsFile(string pPath = null)
         {
             // cm - Si le path est null on init le path par default
-            if (String.IsNullOrEmpty(pPath))
+            if (string.IsNullOrEmpty(pPath))
                 pPath = _JobDefaultConfigPath;
 
             ICharge lChargerCollection = new ChargerCollection(null);

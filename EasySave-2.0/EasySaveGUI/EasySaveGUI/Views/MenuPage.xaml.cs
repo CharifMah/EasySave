@@ -2,7 +2,7 @@
 using EasySaveGUI.UserControls;
 using EasySaveGUI.ViewModels;
 using LogsModels;
-using Models;
+using Models.Settings;
 using OpenDialog;
 using Stockage.Logs;
 using System.Windows;

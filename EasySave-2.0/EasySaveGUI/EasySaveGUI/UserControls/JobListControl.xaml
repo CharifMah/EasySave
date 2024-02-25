@@ -18,6 +18,7 @@
     <ListBox
         x:Name="JobsList"
         ItemsSource="{Binding JobVm.Jobs, Mode=OneWay}"
+        ScrollViewer.CanContentScroll="False"
         SelectionChanged="JobsList_SelectionChanged"
         SelectionMode="Multiple">
         <ListBox.ItemTemplate>

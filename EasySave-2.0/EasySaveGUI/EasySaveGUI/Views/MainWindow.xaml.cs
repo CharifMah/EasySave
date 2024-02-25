@@ -151,7 +151,7 @@ namespace EasySaveGUI
             if (pSetLayout)
                 SetLayout(_MainVm.SettingsVm.CurrentLayout);
             else
-                _MainVm.SettingsVm.CurrentLayout = "";
+                _MainVm.SettingsVm.ResetCurrentLayout();
         }
 
         private void ComboBoxLayout_SelectionChanged(object sender, SelectionChangedEventArgs e)

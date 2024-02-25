@@ -41,7 +41,7 @@
             <Grid>
                 <!--  Window background  -->
                 <Border
-                    Background="#F5F5F5"
+                    Background="White"
                     BorderBrush="#CCCCCC"
                     BorderThickness="1">
                     <Grid>
@@ -53,10 +53,15 @@
                         <!--  Window title bar  -->
                         <Grid
                             Grid.Row="0"
-                            Background="#EBF7FF"
                             MouseDown="TitleBar_MouseDown"
                             MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
                             MouseMove="TitleBar_MouseMove">
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                    <GradientStop Color="#FFEBF7FF" />
+                                    <GradientStop Offset="1" Color="Transparent" />
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -104,7 +109,6 @@
                                         Kind="Shape" />
                                 </Button>
 
-
                                 <TextBlock Height="20" Margin="5">|</TextBlock>
 
                                 <Button
@@ -132,6 +136,8 @@
                                     MouseLeave="ComboBox_MouseLeave"
                                     SelectedIndex="{Binding LangueVm.Langue.SelectedCulture.Key, Mode=OneWay}"
                                     SelectionChanged="ComboBoxLang_SelectionChanged" />
+
+                                <TextBlock Height="20" Margin="5">|</TextBlock>
 
                                 <ComboBox
                                     Width="90"

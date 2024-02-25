@@ -243,6 +243,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string DefaultLayout {
+            get {
+                return ResourceManager.GetString("DefaultLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string DeleteJob {
             get {
                 return ResourceManager.GetString("DeleteJob", resourceCulture);

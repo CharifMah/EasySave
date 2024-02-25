@@ -379,4 +379,7 @@
   <data name="JobsRunning" xml:space="preserve">
     <value>Travaux de sauvegarde en cours</value>
   </data>
+  <data name="DefaultLayout" xml:space="preserve">
+    <value>Présentation par défaut</value>
+  </data>
 </root>

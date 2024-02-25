@@ -103,8 +103,15 @@ namespace Models.Settings
         /// </summary>
         public void SaveSettings()
         {
-            _saveSettings = new SauveCollection(Environment.CurrentDirectory);
+            _saveSettings = new SauveCollection(GetSettingsFolderPath());
             _saveSettings.Sauver(this, "Settings");
+        }
+
+        private string GetSettingsFolderPath()
+        {
+            string lAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string lLogsFolder = Path.Combine(lAppDataFolder, "EasySave");
+            return lLogsFolder;
         }
 
         /// <summary>
@@ -112,7 +119,7 @@ namespace Models.Settings
         /// </summary>
         public void LoadSettings()
         {
-            _loadSettings = new ChargerCollection(Environment.CurrentDirectory);
+            _loadSettings = new ChargerCollection(GetSettingsFolderPath());
             // cm - Charge les settings
             CSettings lInstance = _loadSettings.Charger<CSettings>(Path.Combine("Settings"));
             if (lInstance != null)

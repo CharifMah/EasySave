@@ -108,9 +108,9 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
 
-            <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="{x:Static Ressources:Strings.SourceDir}" />
+            <DataGridTextColumn Binding="{Binding Path=SourceDirectory, Mode=OneWay}" Header="{x:Static Ressources:Strings.SourceDir}" />
 
-            <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="{x:Static Ressources:Strings.TargetDir}" />
+            <DataGridTextColumn Binding="{Binding Path=TargetDirectory, Mode=OneWay}" Header="{x:Static Ressources:Strings.TargetDir}" />
 
         </DataGrid.Columns>
 

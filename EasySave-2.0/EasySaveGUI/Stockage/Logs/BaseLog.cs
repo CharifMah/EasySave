@@ -37,6 +37,8 @@ namespace Stockage.Logs
                 _Save.FolderPath = string.IsNullOrEmpty(pFolderName) ? lLogsFolder : Path.Combine(lLogsFolder, pFolderName);
                 _Save.Sauver(pData, pFileName, pAppend, pExtension);
             }
+            if (!pAppend)
+                _Datas = new ObservableCollection<T>();
 
             _Datas.Add(pData);
         }

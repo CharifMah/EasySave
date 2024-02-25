@@ -22,11 +22,13 @@ namespace EasySaveGUI.UserControls
         private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
         {
             _MainWindow.RefreshMenu(false);
+            _MainWindow.MenuPage.ShowValidation();
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
             _MainWindow.MenuPage.ClearLists();
+            _MainWindow.MenuPage.ShowValidation();
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -48,6 +50,7 @@ namespace EasySaveGUI.UserControls
         private void SaveLayoutButton_Click(object sender, RoutedEventArgs e)
         {
             _MainVm.LayoutVm.SaveLayout(_MainWindow.MenuPage.Dock, CSettings.Instance.Theme.CurrentTheme);
+            _MainWindow.MenuPage.ShowValidation();
         }
     }
 }

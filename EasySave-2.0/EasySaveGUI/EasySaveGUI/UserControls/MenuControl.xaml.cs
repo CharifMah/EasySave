@@ -21,7 +21,6 @@ namespace EasySaveGUI.UserControls
 
         private void MenuButtons_MouseClick(object sender, RoutedEventArgs e)
         {
-
             Button lButton = sender as Button;
             if (lButton.Content == Strings.Settings)
                 _MainVm.LayoutVm.ElementsContent.Content = new ConfigMenuControl();
@@ -29,7 +28,6 @@ namespace EasySaveGUI.UserControls
                 _MainVm.LayoutVm.ElementsContent.Content = new OptionsMenuControl();
             if (lButton.Content == Strings.Jobs)
                 _MainVm.LayoutVm.ElementsContent.Content = new JobMenuControl();
-
             _MainWindow.MenuPage.ListElements.Show();
             _MainWindow.MenuPage.ListElements.IsActive = true;
         }

@@ -7,6 +7,8 @@ using OpenDialog;
 using Stockage.Logs;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 
 namespace EasySaveGUI.Views
 {
@@ -29,6 +31,8 @@ namespace EasySaveGUI.Views
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
 
             JobsListDocument.IsSelected = true;
+
+            ValidationAnimation.Hide();
         }
 
         public void ClearLists()
@@ -55,6 +59,11 @@ namespace EasySaveGUI.Views
         private void OpenLogButton_Click(object sender, RoutedEventArgs e)
         {
             CDialog.ReadFile("", null, CSettings.Instance.LogDefaultFolderPath, true);
+        }
+
+        public void ShowValidation()
+        {
+            ValidationAnimation.Show();
         }
     }
 }

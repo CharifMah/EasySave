@@ -39,6 +39,7 @@ namespace EasySaveGUI.UserControls
         private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.SaveJobs();
+            _MainWindow.MenuPage.ShowValidation();
         }
     }
 }

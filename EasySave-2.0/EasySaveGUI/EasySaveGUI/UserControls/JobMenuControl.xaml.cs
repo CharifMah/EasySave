@@ -35,6 +35,7 @@ namespace EasySaveGUI.UserControls
 
                 lButton.IsEnabled = true;
             }
+            _MainWindow.MenuPage.ShowValidation();
         }
 
         private void ButtonDeletesJobs_Click(object sender, RoutedEventArgs e)
@@ -47,6 +48,7 @@ namespace EasySaveGUI.UserControls
 
                 _MainWindow.MainVm.JobVm.DeleteJobs(lSelectedJobs);
             }
+            _MainWindow.MenuPage.ShowValidation();
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

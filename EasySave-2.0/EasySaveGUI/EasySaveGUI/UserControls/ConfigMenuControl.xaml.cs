@@ -27,6 +27,7 @@ namespace EasySaveGUI.UserControls
         {
             CSettings.Instance.ResetJobConfigPath();
             _MainVm.JobVm.LoadJobs();
+            _MainWindow.MenuPage.ShowValidation();
         }
 
         private void LoadConfigFileButton_Click(object sender, RoutedEventArgs e)
@@ -36,12 +37,14 @@ namespace EasySaveGUI.UserControls
             {
                 CSettings.Instance.SetJobConfigPath(lConfigPath);
                 _MainVm.JobVm.LoadJobs(false, lConfigPath);
+                _MainWindow.MenuPage.ShowValidation();
             }
         }
 
         private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.SaveJobs();
+            _MainWindow.MenuPage.ShowValidation();
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

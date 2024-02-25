@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
 namespace CryptoSoft
 {
@@ -16,11 +11,11 @@ namespace CryptoSoft
         {
             Stopwatch lStopwatch = new Stopwatch();
             lStopwatch.Start();
- 
+
             byte[] lResult = Xor(pData, pKey);
 
             lStopwatch.Stop();
-            this.EncryptTime = lStopwatch.Elapsed;
+            EncryptTime = lStopwatch.Elapsed;
 
             return lResult;
         }
@@ -35,7 +30,7 @@ namespace CryptoSoft
             byte[] lResult = Xor(pData, pKey);
 
             lStopwatch.Stop();
-            this.DecryptTime = lStopwatch.Elapsed;
+            DecryptTime = lStopwatch.Elapsed;
 
             return lResult;
         }

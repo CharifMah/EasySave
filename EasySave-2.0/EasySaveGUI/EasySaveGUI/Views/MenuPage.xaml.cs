@@ -1,5 +1,4 @@
-﻿using AvalonDock;
-using EasySaveGUI.UserControls;
+﻿using EasySaveGUI.UserControls;
 using EasySaveGUI.ViewModels;
 using LogsModels;
 using Models.Settings;
@@ -7,8 +6,6 @@ using OpenDialog;
 using Stockage.Logs;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 
 namespace EasySaveGUI.Views
 {

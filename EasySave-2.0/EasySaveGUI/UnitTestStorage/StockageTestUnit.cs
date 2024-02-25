@@ -49,7 +49,7 @@ namespace UnitTestStorage
                 File.Delete(lPathJson);
             }
 
-             Assert.False(File.Exists(lPathXml));
+            Assert.False(File.Exists(lPathXml));
 
             // Sauvegarde les données, Sauver détermine le format
             lSauveCollection.Sauver(lData, "int", false, "xml");

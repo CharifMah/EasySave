@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,28 +12,45 @@ namespace CryptoSoft
     /// </summary>
     public class CXorChiffrement : BaseChiffrement
     {
-        public override byte[] Encrypt(byte[] data, byte[] key)
+        public override byte[] Encrypt(byte[] pData, byte[] pKey)
         {
-            return Xor(data, key);
+            Stopwatch lStopwatch = new Stopwatch();
+            lStopwatch.Start();
+ 
+            byte[] lResult = Xor(pData, pKey);
+
+            lStopwatch.Stop();
+            this.EncryptTime = lStopwatch.Elapsed;
+
+            return lResult;
         }
 
-        public override byte[] Decrypt(byte[] data, byte[] key)
+        public override byte[] Decrypt(byte[] pData, byte[] pKey)
         {
+
+            Stopwatch lStopwatch = new Stopwatch();
+            lStopwatch.Start();
+
             // cm - For XOR, encryption and decryption are the same operation.
-            return Xor(data, key);
+            byte[] lResult = Xor(pData, pKey);
+
+            lStopwatch.Stop();
+            this.DecryptTime = lStopwatch.Elapsed;
+
+            return lResult;
         }
 
-        private byte[] Xor(byte[] data, byte[] key)
+        private byte[] Xor(byte[] pData, byte[] pKey)
         {
-            byte[] output = new byte[data.Length];
+            byte[] lOutput = new byte[pData.Length];
 
-            for (int i = 0; i < data.Length; i++)
+            for (int i = 0; i < pData.Length; i++)
             {
                 // cm - XOR each byte of the data with the key, wrapping around the key if necessary
-                output[i] = (byte)(data[i] ^ key[i % key.Length]);
+                lOutput[i] = (byte)(pData[i] ^ pKey[i % pKey.Length]);
             }
 
-            return output;
+            return lOutput;
         }
     }
 }

@@ -33,6 +33,7 @@
 
     <Window.Resources>
         <Converter:LangueConvert x:Key="LangueConvert" />
+
     </Window.Resources>
 
     <Window.Template>
@@ -52,7 +53,7 @@
                         <!--  Window title bar  -->
                         <Grid
                             Grid.Row="0"
-                            Background="#187BDC"
+                            Background="#EBF7FF"
                             MouseDown="TitleBar_MouseDown"
                             MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
                             MouseMove="TitleBar_MouseMove">
@@ -66,7 +67,7 @@
                             <TextBlock
                                 Margin="5"
                                 VerticalAlignment="Center"
-                                Foreground="White"
+                                Foreground="Black"
                                 Text="{TemplateBinding Title}" />
                             <StackPanel
                                 Grid.Column="1"
@@ -120,11 +121,9 @@
                                         ToolTip="{x:Static Ressources:Strings.ApplyDefaultStyle}" />
                                 </Button>
 
-
                                 <TextBlock Height="20" Margin="5">|</TextBlock>
 
                                 <ComboBox
-                                    x:Name="ComboBoxLang"
                                     Width="90"
                                     Height="20"
                                     IsHitTestVisible="True"
@@ -133,6 +132,16 @@
                                     MouseLeave="ComboBox_MouseLeave"
                                     SelectedIndex="{Binding LangueVm.Langue.SelectedCulture.Key, Mode=OneWay}"
                                     SelectionChanged="ComboBoxLang_SelectionChanged" />
+
+                                <ComboBox
+                                    Width="90"
+                                    Height="20"
+                                    IsHitTestVisible="True"
+                                    ItemsSource="{Binding LayoutVm.LayoutNames}"
+                                    MouseEnter="ComboBox_MouseEnter"
+                                    MouseLeave="ComboBox_MouseLeave"
+                                    SelectedValue="{Binding SettingsVm.CurrentLayout, Mode=TwoWay}"
+                                    SelectionChanged="ComboBoxLayout_SelectionChanged" />
 
                             </StackPanel>
 

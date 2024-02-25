@@ -2,6 +2,7 @@
 using Stockage.Logs;
 using Stockage.Save;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 namespace Models.Backup
 {
@@ -18,6 +19,8 @@ namespace Models.Backup
         private ObservableCollection<CJob> _Jobs;
         [DataMember]
         private string _Name;
+
+        private ObservableCollection<CJob> _jobsRunning;
 
         private ISauve _SauveCollection;
 
@@ -39,6 +42,9 @@ namespace Models.Backup
         /// </summary>
         public ISauve SauveCollection { get => _SauveCollection; set => _SauveCollection = value; }
 
+        public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; } }
+
+
         #endregion
 
         #region CTOR
@@ -49,6 +55,7 @@ namespace Models.Backup
         {
             _Name = "JobManager";
             _Jobs = new ObservableCollection<CJob>();
+            _jobsRunning = new ObservableCollection<CJob>();
             _MaxJobs = 5;
             SauveJobsAsync _SauveJobs = new SauveJobsAsync();
             if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
@@ -60,9 +67,54 @@ namespace Models.Backup
                 _SauveCollection = new SauveCollection(CSettings.Instance.JobConfigFolderPath);
             }
         }
-        #endregion 
+        #endregion
 
         #region Methods
+
+
+        /// <summary>
+        /// Lance l'exécution de la liste de jobs passée en paramètre
+        /// </summary>
+        /// <param name="pJobs">Liste des jobs à exécuter</param>
+        /// <returns>
+        /// La liste des jobs, mise à jour avec leur état après exécution
+        /// </returns>
+        public async Task RunJobs(List<CJob> pJobs)
+        {
+            try
+            {
+                uint lIndex = 0;
+                // cm - Lance les jobs
+                foreach (CJob lJob in pJobs)
+                {
+                    Stopwatch lStopWatch = new Stopwatch();
+                    lStopWatch.Start();
+                    SauveJobsAsync _SauveJobs = new SauveJobsAsync("", CSettings.Instance.FormatLog.SelectedFormatLog.Value, lStopWatch);
+                    lJob.SauveJobs = _SauveJobs;
+                    lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalMilliseconds;
+                    lJob.SauveJobs.LogState.Name = lIndex + ' ' + _SauveJobs.LogState.Name;
+                    lJob.SauveJobs.LogState.TotalTransferedFile = 0;
+                    lJob.SauveJobs.LogState.BytesCopied = 0;
+                    string[] lFiles = Directory.GetFiles(lJob.SourceDirectory, "*", SearchOption.AllDirectories);
+                    lJob.SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
+                    lJob.SauveJobs.LogState.EligibleFileCount = lFiles.Length;
+
+                    _jobsRunning.Add(lJob);
+                    await lJob.Run(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList());
+
+                    lJob.SauveJobs.LogState.Date = DateTime.Now;
+                    lIndex++;
+                    lStopWatch.Stop();
+                    lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalSeconds;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+            }
+        }
+
         /// <summary>
         /// Crée un nouveau job de sauvegarde
         /// </summary>
@@ -93,37 +145,6 @@ namespace Models.Backup
                 _Jobs.Remove(lJob);
             }
             return true;
-        }
-
-        /// <summary>
-        /// Lance l'exécution de la liste de jobs passée en paramètre
-        /// </summary>
-        /// <param name="pJobs">Liste des jobs à exécuter</param>
-        /// <returns>
-        /// La liste des jobs, mise à jour avec leur état après exécution
-        /// </returns>
-        public async Task RunJobs(ObservableCollection<CJob> pJobs)
-        {
-            try
-            {
-                // cm - Lance les jobs
-                foreach (CJob lJob in pJobs)
-                {
-                    SauveJobsAsync _SauveJobs = new SauveJobsAsync("", CSettings.Instance.FormatLog.SelectedLogFormat);
-                    _SauveJobs.LogState.TotalTransferedFile = 0;
-                    _SauveJobs.LogState.BytesCopied = 0;
-                    string[] lFiles = Directory.GetFiles(lJob.SourceDirectory, "*", SearchOption.AllDirectories);
-                    _SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
-                    _SauveJobs.LogState.EligibleFileCount = lFiles.Length;
-                    await lJob.Run(_SauveJobs);
-                    _SauveJobs.LogState.Date = DateTime.Now;
-                }
-            }
-            catch (Exception ex)
-            {
-                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
-            }
-
         }
 
         /// <summary>

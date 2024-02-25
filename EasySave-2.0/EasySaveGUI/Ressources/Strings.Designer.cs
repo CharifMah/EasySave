@@ -81,6 +81,24 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string BackupTypeEmpty {
+            get {
+                return ResourceManager.GetString("BackupTypeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ByteCopied {
+            get {
+                return ResourceManager.GetString("ByteCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string bytes {
             get {
                 return ResourceManager.GetString("bytes", resourceCulture);
@@ -144,6 +162,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Config {
+            get {
+                return ResourceManager.GetString("Config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Confirm {
             get {
                 return ResourceManager.GetString("Confirm", resourceCulture);
@@ -162,6 +189,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string CountLogs {
+            get {
+                return ResourceManager.GetString("CountLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string CreateJob {
             get {
                 return ResourceManager.GetString("CreateJob", resourceCulture);
@@ -174,6 +210,15 @@ namespace Ressources {
         public static string CurrentFormat {
             get {
                 return ResourceManager.GetString("CurrentFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DailyLogs {
+            get {
+                return ResourceManager.GetString("DailyLogs", resourceCulture);
             }
         }
         
@@ -261,6 +306,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Info {
+            get {
+                return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string InputFormat {
             get {
                 return ResourceManager.GetString("InputFormat", resourceCulture);
@@ -342,6 +396,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Jobs {
+            get {
+                return ResourceManager.GetString("Jobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string JobsDeleted {
             get {
                 return ResourceManager.GetString("JobsDeleted", resourceCulture);
@@ -369,6 +432,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string LoadDefaultFile {
+            get {
+                return ResourceManager.GetString("LoadDefaultFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Loaded {
             get {
                 return ResourceManager.GetString("Loaded", resourceCulture);
@@ -390,6 +462,42 @@ namespace Ressources {
         public static string LoadJobs {
             get {
                 return ResourceManager.GetString("LoadJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LogState {
+            get {
+                return ResourceManager.GetString("LogState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MenuJob {
+            get {
+                return ResourceManager.GetString("MenuJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MenuPreference {
+            get {
+                return ResourceManager.GetString("MenuPreference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MenuSettings {
+            get {
+                return ResourceManager.GetString("MenuSettings", resourceCulture);
             }
         }
         
@@ -441,6 +549,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string OtherLogs {
+            get {
+                return ResourceManager.GetString("OtherLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PasteClipboard {
             get {
                 return ResourceManager.GetString("PasteClipboard", resourceCulture);
@@ -459,9 +576,45 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Paths {
+            get {
+                return ResourceManager.GetString("Paths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PossibleTypeBackup {
             get {
                 return ResourceManager.GetString("PossibleTypeBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Preference {
+            get {
+                return ResourceManager.GetString("Preference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Progress {
+            get {
+                return ResourceManager.GetString("Progress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Property {
+            get {
+                return ResourceManager.GetString("Property", resourceCulture);
             }
         }
         
@@ -522,6 +675,15 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SaveLayout {
+            get {
+                return ResourceManager.GetString("SaveLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
@@ -576,9 +738,27 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SingleIndex {
             get {
                 return ResourceManager.GetString("SingleIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Size {
+            get {
+                return ResourceManager.GetString("Size", resourceCulture);
             }
         }
         
@@ -651,6 +831,15 @@ namespace Ressources {
         public static string TotalSize {
             get {
                 return ResourceManager.GetString("TotalSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string TransfertTime {
+            get {
+                return ResourceManager.GetString("TransfertTime", resourceCulture);
             }
         }
         

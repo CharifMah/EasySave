@@ -10,7 +10,7 @@ namespace Stockage.Save
     /// </summary>
     public abstract class BaseSave : ISauve
     {
-        private string _path;
+        protected string _path;
 
         private readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
 
@@ -85,12 +85,12 @@ namespace Stockage.Save
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
         }
-        public virtual void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, bool pForce = false)
+        public virtual void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, ref CLogState pLogState, bool pDiffertielle = false)
         {
             throw new NotImplementedException();
         }
 
-        public virtual void CopyDirectory(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, ref CLogState pLogState, bool pDiffertielle = false)
+        public virtual async Task CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, List<CLogState> pLogState, bool pDiffertielle = false)
         {
             throw new NotImplementedException();
         }

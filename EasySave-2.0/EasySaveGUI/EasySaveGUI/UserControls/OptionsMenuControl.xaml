@@ -1,0 +1,67 @@
+﻿<UserControl
+    x:Class="EasySaveGUI.UserControls.OptionsMenuControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:EasySaveGUI.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <!--  MenuButtons  -->
+    <Grid SizeChanged="Grid_SizeChanged">
+        <Grid x:Name="HorizontalMenu" Visibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Click="SaveLayoutButton_Click"
+                Content="{x:Static Ressources:Strings.SaveLayout}"
+                Style="{StaticResource CustomButtonSaveLayout}" />
+            <Button
+                Grid.Column="1"
+                Click="ApplyDefaultStyleButton_Click"
+                Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
+                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+
+            <Button
+                x:Name="Clear"
+                Grid.Column="2"
+                Click="Clear_Click"
+                Content="{x:Static Ressources:Strings.ClearConsole}"
+                Style="{StaticResource CustomButtonClear}" />
+        </Grid>
+
+        <Grid x:Name="VerticalMenu" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button
+                Grid.Row="0"
+                Click="SaveLayoutButton_Click"
+                Content="{x:Static Ressources:Strings.SaveLayout}"
+                Style="{StaticResource CustomButtonSaveLayout}" />
+            <Button
+                Grid.Row="1"
+                Click="ApplyDefaultStyleButton_Click"
+                Content="{x:Static Ressources:Strings.ApplyDefaultStyle}"
+                Style="{StaticResource CustomButtonApplyDefaultStyle}" />
+
+            <Button
+                Grid.Row="2"
+                Click="Clear_Click"
+                Content="{x:Static Ressources:Strings.ClearConsole}"
+                Style="{StaticResource CustomButtonClear}" />
+        </Grid>
+
+    </Grid>
+
+
+</UserControl>

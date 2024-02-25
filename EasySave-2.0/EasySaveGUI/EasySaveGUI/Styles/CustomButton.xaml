@@ -3,14 +3,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF">
 
+
     <Style x:Key="CustomButton" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
-        <Setter Property="Foreground" Value="#4D4D4D" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="MinHeight" Value="50" />
         <Setter Property="MinWidth" Value="20" />
-        <Setter Property="FontSize" Value="10" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -24,6 +23,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 Width="35"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="SquareRoundedBadge" />
                             <TextBlock
                                 Grid.Row="2"
@@ -46,7 +46,7 @@
     </Style>
 
     <Style x:Key="CustomButtonFolder" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -63,7 +63,10 @@
                                 <RowDefinition Height="2*" />
                                 <RowDefinition Height="3*" />
                             </Grid.RowDefinitions>
-                            <materialIcons:MaterialIcon Grid.Row="1" Kind="Folder" />
+                            <materialIcons:MaterialIcon
+                                Grid.Row="1"
+                                Foreground="{DynamicResource LightDark}"
+                                Kind="Folder" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -78,7 +81,7 @@
     </Style>
 
     <Style x:Key="CustomButtonFile" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -98,6 +101,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="File" />
                             <TextBlock
                                 Grid.Row="2"
@@ -110,7 +114,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#B1D4F6" />
+                            <Setter Property="Background" Value="{DynamicResource YellowHoverButtonColor}" />
                             <Setter Property="Cursor" Value="Hand" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -120,7 +124,7 @@
     </Style>
 
     <Style x:Key="CustomButtonRun" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -140,6 +144,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Run" />
 
                             <TextBlock
@@ -153,7 +158,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#77FF3D" />
+                            <Setter Property="Background" Value="{DynamicResource GreenHoverButtonColor}" />
                             <Setter Property="Cursor" Value="Hand" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -163,7 +168,7 @@
     </Style>
 
     <Style x:Key="CustomButtonDelete" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -183,6 +188,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Delete" />
 
                             <TextBlock
@@ -196,7 +202,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FF002B" />
+                            <Setter Property="Background" Value="{DynamicResource RedHoverButtonColor}" />
                             <Setter Property="Cursor" Value="Hand" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -206,7 +212,7 @@
     </Style>
 
     <Style x:Key="CustomButtonClear" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -226,6 +232,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Cleaning" />
 
                             <TextBlock
@@ -249,7 +256,7 @@
     </Style>
 
     <Style x:Key="CustomButtonClose" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -269,6 +276,7 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="Close" />
 
                             <TextBlock
@@ -291,8 +299,8 @@
         </Setter>
     </Style>
 
-    <Style x:Key="CustomButtonApplyDefaultStyle" TargetType="Button">
-        <Setter Property="Background" Value="#CEE6FD" />
+    <Style x:Key="CustomButtonSaveLayout" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -312,6 +320,51 @@
                             <materialIcons:MaterialIcon
                                 Grid.Row="1"
                                 MaxWidth="35"
+                                Foreground="{DynamicResource LightDark}"
+                                Kind="WaterCheck" />
+
+                            <TextBlock
+                                Grid.Row="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{TemplateBinding Content}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#E1BFFF" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CustomButtonApplyDefaultStyle" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        <Setter Property="Foreground" Value="#4D4D4D" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="10" />
+        <Setter Property="MinWidth" Value="10" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="3*" />
+                            </Grid.RowDefinitions>
+                            <materialIcons:MaterialIcon
+                                Grid.Row="1"
+                                MaxWidth="35"
+                                Foreground="{DynamicResource LightDark}"
                                 Kind="FormatColorReset" />
 
                             <TextBlock
@@ -333,4 +386,253 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="CustomButtonCreate" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        <Setter Property="Foreground" Value="#4D4D4D" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="10" />
+        <Setter Property="MinWidth" Value="10" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="3*" />
+                            </Grid.RowDefinitions>
+                            <materialIcons:MaterialIcon
+                                Grid.Row="1"
+                                MaxWidth="35"
+                                Foreground="{DynamicResource LightDark}"
+                                Kind="Plus" />
+                            <TextBlock
+                                Grid.Row="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{TemplateBinding Content}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource GreenHoverButtonColor}" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CustomButtonJobs" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        <Setter Property="Foreground" Value="#4D4D4D" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="10" />
+        <Setter Property="MinWidth" Value="10" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="3*" />
+                            </Grid.RowDefinitions>
+                            <materialIcons:MaterialIcon
+                                Grid.Row="1"
+                                MaxWidth="35"
+                                Foreground="{DynamicResource LightDark}"
+                                Kind="ContentSaveOutline" />
+                            <TextBlock
+                                Grid.Row="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{TemplateBinding Content}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource GreenHoverButtonColor}" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CustomButtonSettings" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        <Setter Property="Foreground" Value="#4D4D4D" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="3*" />
+                            </Grid.RowDefinitions>
+                            <materialIcons:MaterialIcon
+                                Grid.Row="1"
+                                Width="35"
+                                Foreground="{DynamicResource LightDark}"
+                                Kind="Settings" />
+                            <TextBlock
+                                Grid.Row="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{TemplateBinding Content}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#B1D4F6" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CustomButtonPreference" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        <Setter Property="Foreground" Value="#4D4D4D" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="3*" />
+                            </Grid.RowDefinitions>
+                            <materialIcons:MaterialIcon
+                                Grid.Row="1"
+                                Width="35"
+                                Foreground="{DynamicResource LightDark}"
+                                Kind="WaterOpacity" />
+                            <TextBlock
+                                Grid.Row="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{TemplateBinding Content}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#B1D4F6" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CustomButtonInfo" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        <Setter Property="Foreground" Value="#4D4D4D" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="50" />
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="3*" />
+                            </Grid.RowDefinitions>
+                            <materialIcons:MaterialIcon
+                                Grid.Row="1"
+                                Width="35"
+                                Foreground="{DynamicResource LightDark}"
+                                Kind="Info" />
+                            <TextBlock
+                                Grid.Row="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{TemplateBinding Content}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#B1D4F6" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CustomButtonLogFile" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        <Setter Property="Foreground" Value="#4D4D4D" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="10" />
+        <Setter Property="MinWidth" Value="10" />
+        <Setter Property="Width" Value="15" />
+        <Setter Property="Height" Value="15" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" Background="{TemplateBinding Background}">
+                        <materialIcons:MaterialIcon
+                            Grid.Row="1"
+                            Width="15"
+                            Foreground="{DynamicResource LightDark}"
+                            Kind="File" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#B1D4F6" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
 </ResourceDictionary>

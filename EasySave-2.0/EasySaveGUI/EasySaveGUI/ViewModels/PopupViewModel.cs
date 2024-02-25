@@ -1,4 +1,4 @@
-﻿namespace ViewModels
+﻿namespace EasySaveGUI.ViewModels
 {
     public class PopupViewModel : BaseViewModel
     {

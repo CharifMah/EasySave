@@ -293,4 +293,67 @@
   <data name="Close" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Config" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="BackupTypeEmpty" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Jobs" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SaveLayout" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LoadDefaultFile" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="OtherLogs" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="CountLogs" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="TransfertTime" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LogState" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DailyLogs" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ByteCopied" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MenuJob" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MenuPreference" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Preference" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Paths" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

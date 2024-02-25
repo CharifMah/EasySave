@@ -1,5 +1,7 @@
 ﻿using Gtk;
 using Ressources;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
 namespace OpenDialog
@@ -12,7 +14,7 @@ namespace OpenDialog
         /// </summary>
         /// <param name="pDescription">Description for the interface</param>
         /// <returns>return the selected file full path</returns>
-        public static string ReadFile(string pDescription, Regex pRegexExtentions = null, string pCurrentFolder = null)
+        public static string ReadFile(string pDescription, Regex? pRegexExtensions = null, string? pCurrentFolder = null, bool pOpenFile = false)
         {
 
             string lSelectedFile = null;
@@ -26,7 +28,7 @@ namespace OpenDialog
                        parent: null,
                        action: FileChooserAction.Open);
                 lFileDialog.FontOptions = null;
-                if (pRegexExtentions != null && pRegexExtentions.ToString().Contains("json"))
+                if (pRegexExtensions != null && pRegexExtensions.ToString().Contains("json"))
                 {
                     FileFilter lFilter = new FileFilter();
                     lFilter.Name = pDescription;
@@ -42,6 +44,16 @@ namespace OpenDialog
                     if (lFileDialog.Run() == (int)ResponseType.Ok)
                     {
                         lSelectedFile = lFileDialog.Filename;
+                        if (pOpenFile)
+                        {
+                            // Ouvre le fichier avec l'application par défaut sur windows
+                            RuntimeInformation.OSDescription.StartsWith("Windows");
+                            Process.Start(new ProcessStartInfo
+                            {
+                                FileName = lSelectedFile,
+                                UseShellExecute = true
+                            });
+                        }
                     }
                     else
                         lSelectedFile = "-1";
@@ -57,7 +69,7 @@ namespace OpenDialog
             return lSelectedFile;
         }
 
-        public static string ReadFolder(string pDescription)
+        public static string ReadFolder(string pDescription = "", string? pPath = null)
         {
             string lSelectedFolder = null;
 
@@ -74,7 +86,10 @@ namespace OpenDialog
                 lDialog.FontOptions = null;
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Cancel").ToString(), ResponseType.Cancel);
                 lDialog.AddButton(Strings.ResourceManager.GetObject("Select").ToString(), ResponseType.Ok);
-                lDialog.SetCurrentFolder(Directory.GetCurrentDirectory());
+
+                if (pPath == null)
+                    pPath = Directory.GetCurrentDirectory();
+                lDialog.SetCurrentFolder(pPath);
                 unsafe
                 {
                     if (lDialog.Run() == (int)ResponseType.Ok)

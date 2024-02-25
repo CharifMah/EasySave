@@ -15,17 +15,21 @@ namespace Models
 
         private ICharge _loadSettings;
         private ISauve _saveSettings;
-
+        private string _LayoutDefaultFolderPath;
         private string _JobDefaultConfigPath;
+        private string _LogDefaultFolderPath;
+        [DataMember]
+        private CTheme _Theme;
         [DataMember]
         private string _JobConfigFolderPath;
         [DataMember]
         private CLangue _Langue;
         [DataMember]
         private CFormatLog _FormatLog;
-
+        private static CSettings? _Instance;
         #endregion
 
+        #region Property
         /// <summary>
         /// Langue préférer de l'utilisateur
         /// </summary>
@@ -51,10 +55,10 @@ namespace Models
         /// Emplacement par défaut du répertoire dans lequel le fichier de configuration du travail est stocké
         /// </summary>
         public string JobDefaultConfigPath { get => _JobDefaultConfigPath; }
+        public string LogDefaultFolderPath { get => _LogDefaultFolderPath; set => _LogDefaultFolderPath = value; }
+        public string LayoutDefaultFolderPath { get => _LayoutDefaultFolderPath; set => _LayoutDefaultFolderPath = value; }
+        public CTheme Theme { get => _Theme; set => _Theme = value; }
 
-
-        #region CTOR
-        private static CSettings? _Instance;
         public static CSettings Instance
         {
             get
@@ -64,12 +68,20 @@ namespace Models
                 return _Instance;
             }
         }
+
+
+        #endregion
+
+        #region CTOR
+
         /// <summary>
         /// Constructeur Settings initialise le path par default de la configuration des jobs
         /// </summary>
         private CSettings()
         {
             _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs", "JobManager.json");
+            _LogDefaultFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EasySave");
+            _LayoutDefaultFolderPath = Path.Combine(_LogDefaultFolderPath, "Layout");
         }
 
         #endregion
@@ -102,6 +114,10 @@ namespace Models
                     _Instance.Langue = new CLangue();
                 if (_Instance.FormatLog == null)
                     _Instance.FormatLog = new CFormatLog();
+                if (_Instance.Theme == null)
+                {
+                    _Instance._Theme = new CTheme();
+                }
             }
         }
 
@@ -138,6 +154,11 @@ namespace Models
         public void ResetJobConfigPath()
         {
             _JobConfigFolderPath = new FileInfo(_JobDefaultConfigPath).DirectoryName;
+        }
+
+        public void SetJobConfigPath(string pFullPath)
+        {
+            _JobConfigFolderPath = new FileInfo(pFullPath).DirectoryName;
         }
         #endregion
     }

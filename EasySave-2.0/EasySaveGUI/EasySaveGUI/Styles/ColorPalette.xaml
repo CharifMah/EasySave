@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="ButtonBackground" Color="#F5F5F5" />
+
+    <SolidColorBrush x:Key="LightDark" Color="#4D4D4D" />
+
+    <SolidColorBrush x:Key="LightGray" Color="LightGray" />
+
+    <SolidColorBrush x:Key="GenericBackground" Color="White" />
+
+    <SolidColorBrush x:Key="TextColor" Color="#2F2D30" />
+
+    <SolidColorBrush x:Key="HoverColor" Color="#F5F5F5" />
+
+    <SolidColorBrush x:Key="GrayColor" Color="#F5F5F5" />
+
+    <SolidColorBrush x:Key="GreenHoverButtonColor" Color="#7DC777" />
+
+    <SolidColorBrush x:Key="YellowHoverButtonColor" Color="#C7A261" />
+
+    <SolidColorBrush x:Key="RedHoverButtonColor" Color="#C74859" />
+
+    <SolidColorBrush x:Key="LoadingBarColor" Color="#9FFF73" />
+
+    <SolidColorBrush x:Key="BorderColor" Color="Red" />
+</ResourceDictionary>

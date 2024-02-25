@@ -1,22 +1,37 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="CustomDataGrid" TargetType="{x:Type DataGrid}">
 
-        <Setter Property="Background" Value="#DCEBFC" />
-        <Setter Property="BorderBrush" Value="#99C2E7" />
+    <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+        <Setter Property="Background" Value="{DynamicResource HoverColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Padding" Value="10,0,10,0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextColor}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
 
+    <Style TargetType="{x:Type DataGrid}">
+        <Setter Property="FontFamily" Value="/Fonts/#Louis George Cafe" />
+        <Setter Property="Background" Value="{DynamicResource GenericBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TextColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="AlternatingRowBackground" Value="#ECF4FC" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}" />
+        <Setter Property="CanUserAddRows" Value="False" />
         <Setter Property="RowStyle">
             <Setter.Value>
                 <Style TargetType="{x:Type DataGridRow}">
-                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Background" Value="{DynamicResource GenericBackground}" />
                     <Setter Property="BorderBrush" Value="Transparent" />
                     <Setter Property="BorderThickness" Value="0" />
 
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#99C2E7" />
-                            <Setter Property="BorderBrush" Value="#569CD6" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource TextColor}" />
                             <Setter Property="BorderThickness" Value="1" />
                         </Trigger>
                     </Style.Triggers>
@@ -34,17 +49,6 @@
             </Setter.Value>
         </Setter>
 
-        <Setter Property="AlternatingRowBackground" Value="#ECF4FC" />
-
-        <Setter Property="HeadersVisibility" Value="Column" />
-
-        <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="FontSize" Value="9" />
-
-        <Setter Property="CanUserAddRows" Value="False" />
-
     </Style>
-
-
 
 </ResourceDictionary>

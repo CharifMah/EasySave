@@ -1,0 +1,99 @@
+﻿<UserControl
+    x:Class="EasySaveGUI.UserControls.ConfigInfoControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="clr-namespace:EasySaveGUI.Converters"
+    xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:EasySaveGUI.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Converter:FormatLogConvert x:Key="FormatLogConvert" />
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <GroupBox Grid.ColumnSpan="2" Header="Paths">
+                <StackPanel>
+                    <GroupBox Header="Configuration File">
+                        <StackPanel>
+                            <TextBlock Grid.Row="0" ToolTip="{x:Static Ressources:Strings.DefaultFile}">
+                                <Run Text="{x:Static Ressources:Strings.DefaultFile}" />
+                                <Run Text=" : " />
+                            </TextBlock>
+                            <TextBox Text="{Binding SettingsVm.Settings.JobDefaultConfigPath, Mode=OneWay}" />
+
+                            <TextBlock Grid.Row="0" ToolTip="{x:Static Ressources:Strings.EnterFolderPath}">
+                                <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
+
+                            </TextBlock>
+                            <TextBox Text="{Binding SettingsVm.Settings.JobConfigFolderPath, Mode=OneWay}" />
+                        </StackPanel>
+                    </GroupBox>
+
+
+                    <GroupBox Grid.ColumnSpan="2" Header="Logs">
+                        <StackPanel ToolTip="{x:Static Ressources:Strings.EnterFolderPath}">
+                            <TextBlock Grid.Row="0">
+                                <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
+
+                            </TextBlock>
+                            <TextBox Text="{Binding SettingsVm.Settings.LogDefaultFolderPath, Mode=OneWay}" />
+                        </StackPanel>
+                    </GroupBox>
+
+
+                    <TextBlock
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Foreground="Black"
+                        Text="{x:Static Ressources:Strings.FormatLogs}" />
+                    <ComboBox
+                        x:Name="ComboBoxFormatLog"
+                        Width="90"
+                        Height="20"
+                        IsHitTestVisible="True"
+                        ItemsSource="{Binding FormatLogVm.FormatLog.FormatsLogs, Converter={StaticResource FormatLogConvert}}"
+                        SelectedIndex="{Binding FormatLogVm.FormatLog.SelectedFormatLog.Key, Mode=OneWay}"
+                        SelectionChanged="ComboBoxFormatLog_SelectionChanged"
+                        ToolTip="Type du job" />
+                </StackPanel>
+            </GroupBox>
+
+
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="1"
+                VerticalAlignment="Bottom">
+                <GroupBox Header="BlackList">
+                    <ListBox ItemsSource="{Binding SettingsVm.Settings.FormatLog.FormatsLogs}" />
+                </GroupBox>
+
+                <GroupBox Header="Supported format">
+                    <ListBox ItemsSource="{Binding SettingsVm.Settings.FormatLog.FormatsLogs}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Value, Mode=OneWay}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+
+
+
+</UserControl>

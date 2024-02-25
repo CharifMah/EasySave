@@ -1,11 +1,17 @@
 ﻿using AvalonDock.Themes;
+using EasySaveGUI.ViewModels;
 using EasySaveGUI.Views;
+using LogsModels;
+using Models;
+using Ressources;
+using Stockage.Logs;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
-using ViewModels;
+using System.Windows.Media;
 
 namespace EasySaveGUI
 {
@@ -21,17 +27,22 @@ namespace EasySaveGUI
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
         #endregion
+
         private MainViewModel _MainVm;
-        MenuPage _MenuPage;
+        private MenuPage _MenuPage;
+        public MainViewModel MainVm { get => _MainVm; set => _MainVm = value; }
+        public MenuPage MenuPage { get => _MenuPage; set => _MenuPage = value; }
+
         public MainWindow()
         {
             InitializeComponent();
             _MainVm = new MainViewModel();
+            WindowState = WindowState.Maximized;
             DataContext = _MainVm;
-            _MenuPage = new MenuPage(_MainVm);
-            frame.Navigate(_MenuPage);
+            RefreshMenu();
         }
 
+        #region TitleBarReleaseCapture
         // Event handler for title bar mouse left button down event
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -82,7 +93,9 @@ namespace EasySaveGUI
                     WindowState = WindowState.Maximized;
             }
         }
+        #endregion
 
+        #region TitleBarEvents
         private void ComboBox_MouseEnter(object sender, MouseEventArgs e)
         {
             ComboBox lComboBox = sender as ComboBox;
@@ -102,25 +115,157 @@ namespace EasySaveGUI
             if (e.AddedItems.Count > 0)
             {
                 _MainVm.LangueVm.SetLanguage(e.AddedItems[0].ToString()[0..2]);
-                _MenuPage = new MenuPage(_MainVm);
-                // cm - Recharger la page
-                frame.Navigate(_MenuPage);
+                RefreshMenu();
             }
         }
 
         private void Vs2013BlueThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            _MenuPage.Dock.Theme = new Vs2013BlueTheme();
+
+            BlueTheme();
+
         }
 
         private void Vs2013LightThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            _MenuPage.Dock.Theme = new Vs2013LightTheme();
+
+            LightTheme();
+
         }
 
         private void GenericThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            _MenuPage.Dock.Theme = new AvalonDock.Themes.GenericTheme();
+
+            DarkTheme();
+
+        }
+        #endregion
+        /// <summary>
+        /// Rafraîchie le menu avec le layout sélectionnée
+        /// </summary>
+        /// <param name="pSetLayout">false pour reset le layout</param>
+        public void RefreshMenu(bool pSetLayout = true)
+        {
+            _MenuPage = new MenuPage(_MainVm);
+            frame.NavigationService.Navigate(_MenuPage);
+            if (pSetLayout)
+                SetLayout(_MainVm.SettingsVm.CurrentLayout);
+            else
+                _MainVm.SettingsVm.CurrentLayout = "";
+        }
+
+        private void BlueTheme()
+        {
+            try
+            {
+                _MenuPage.Dock.Theme = new Vs2013BlueTheme();
+                CSettings.Instance.Theme.CurrentTheme = ETheme.BLUE;
+                _MenuPage.Dock.Background = Brushes.White;
+                _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+                _MenuPage.Resources["GenericBackground"] = Brushes.White;
+                _MenuPage.Resources["LightGray"] = Brushes.LightBlue;
+                _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEE6FD"));
+                _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
+                _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
+                _MenuPage.Resources["LoadingBarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#9FFF73"));
+                CSettings.Instance.SaveSettings();
+            }
+            catch (Exception ex)
+            {
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+            }
+
+        }
+
+        private void LightTheme()
+        {
+            try
+            {
+                _MenuPage.Dock.Theme = new Vs2013LightTheme();
+                CSettings.Instance.Theme.CurrentTheme = ETheme.LIGHT;
+                _MenuPage.Dock.Background = Brushes.White;
+                _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+                _MenuPage.Resources["GenericBackground"] = Brushes.White;
+                _MenuPage.Resources["LightGray"] = Brushes.LightGray;
+                _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
+                _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
+                _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
+                _MenuPage.Resources["LoadingBarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#9FFF73"));
+                CSettings.Instance.SaveSettings();
+            }
+            catch (Exception ex)
+            {
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+            }
+
+        }
+
+        private void DarkTheme()
+        {
+            try
+            {
+                _MenuPage.Dock.Theme = new AvalonDock.Themes.Vs2013DarkTheme();
+                CSettings.Instance.Theme.CurrentTheme = ETheme.DARK;
+                _MenuPage.Dock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+                _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ebeef2"));
+                _MenuPage.Resources["GenericBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+                _MenuPage.Resources["LightGray"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#111112"));
+                _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#424242"));
+                _MenuPage.Resources["LightDark"] = Brushes.White;
+                _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#757f86"));
+                _MenuPage.Resources["LoadingBarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1D8A1D"));
+                CSettings.Instance.SaveSettings();
+            }
+            catch (Exception ex)
+            {
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+            }
+
+        }
+
+        private void ComboBoxLayout_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox lComboBox = sender as ComboBox;
+            if (lComboBox.SelectedValue != null)
+            {
+                string lSelectedValue = lComboBox.SelectedValue.ToString();
+                SetLayout(lSelectedValue);
+            }
+        }
+
+        private void SetLayout(string pSelectedValue)
+        {
+            if (!string.IsNullOrEmpty(pSelectedValue))
+            {
+                _MainVm.LayoutVm.LoadLayout(_MenuPage.Dock, pSelectedValue);
+
+                _MainVm.SettingsVm.CurrentLayout = pSelectedValue;
+
+                if (CSettings.Instance.Theme.LayoutsTheme.ContainsKey(pSelectedValue))
+                {
+                    SetTheme(CSettings.Instance.Theme.LayoutsTheme[pSelectedValue]);
+                }
+
+                CSettings.Instance.SaveSettings();
+            }
+        }
+
+        private void SetTheme(ETheme pTheme)
+        {
+            switch (pTheme)
+            {
+                case ETheme.LIGHT:
+                    LightTheme();
+                    break;
+                case ETheme.DARK:
+                    DarkTheme();
+                    break;
+                case ETheme.BLUE:
+                    BlueTheme();
+                    break;
+            }
+
+            CSettings.Instance.Theme.CurrentTheme = pTheme;
         }
     }
 }

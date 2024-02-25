@@ -1,9 +1,11 @@
 ﻿using Models.Backup;
+using Models.Langue;
+using Models.Settings.Theme;
 using Stockage.Load;
 using Stockage.Save;
 using System.Runtime.Serialization;
 
-namespace Models
+namespace Models.Settings
 {
     /// <summary>
     /// Classe des settings de l'application permettant le chargement et la sauvegarde des paramètres de l'utilisateur
@@ -27,7 +29,7 @@ namespace Models
         [DataMember]
         private CFormatLog _FormatLog;
         [DataMember]
-        private List<CBusinessSoftware> _BusinessSoftwares = new List<CBusinessSoftware>();
+        private List<string> _BusinessSoftware = new List<string>();
         [DataMember]
         public List<string> _EncryptionExtensions = new List<string>();
 
@@ -48,10 +50,10 @@ namespace Models
         /// <summary>
         /// Logiciels métiers
         /// </summary>
-        public List<CBusinessSoftware> BusinessSoftwares
+        public List<string> BusinessSoftware
         {
-            get => _BusinessSoftwares;
-            set => _BusinessSoftwares = value;
+            get => _BusinessSoftware;
+            set => _BusinessSoftware = value;
         }
 
         public List<string> EncryptionExtensions
@@ -75,8 +77,17 @@ namespace Models
         /// Emplacement par défaut du répertoire dans lequel le fichier de configuration du travail est stocké
         /// </summary>
         public string JobDefaultConfigPath { get => _JobDefaultConfigPath; }
+        /// <summary>
+        /// Chemin du dossier par default des logs
+        /// </summary>
         public string LogDefaultFolderPath { get => _LogDefaultFolderPath; set => _LogDefaultFolderPath = value; }
+        /// <summary>
+        /// Chemin par defaut du dossier de sauvegarde des layouts
+        /// </summary>
         public string LayoutDefaultFolderPath { get => _LayoutDefaultFolderPath; set => _LayoutDefaultFolderPath = value; }
+        /// <summary>
+        /// Theme de l'application
+        /// </summary>
         public CTheme Theme { get => _Theme; set => _Theme = value; }
 
         public static CSettings Instance
@@ -88,7 +99,6 @@ namespace Models
                 return _Instance;
             }
         }
-
 
         #endregion
 
@@ -123,12 +133,13 @@ namespace Models
         public void LoadSettings()
         {
             _loadSettings = new ChargerCollection(Environment.CurrentDirectory);
+            // cm - Charge les settings
             CSettings lInstance = _loadSettings.Charger<CSettings>(Path.Combine("Settings"));
             if (lInstance != null)
             {
                 _Instance = lInstance;
             }
-            if (_Instance != null)
+            if (_Instance != null) // cm - Initialisation pour ne pas avoir d'instance null
             {
                 if (_Instance.Langue == null)
                     _Instance.Langue = new CLangue();
@@ -149,7 +160,7 @@ namespace Models
         public CJobManager LoadJobsFile(string pPath = null)
         {
             // cm - Si le path est null on init le path par default
-            if (String.IsNullOrEmpty(pPath))
+            if (string.IsNullOrEmpty(pPath))
                 pPath = _JobDefaultConfigPath;
 
             ICharge lChargerCollection = new ChargerCollection(null);
@@ -170,12 +181,17 @@ namespace Models
 
             return lJobManager;
         }
-
+        /// <summary>
+        /// Reset le chemin de sauvegarde du jobmanager
+        /// </summary>
         public void ResetJobConfigPath()
         {
             _JobConfigFolderPath = new FileInfo(_JobDefaultConfigPath).DirectoryName;
         }
-
+        /// <summary>
+        /// Définit le chemin de sauvegarde du job manager a partir d'un chemin correspondant a un fichier
+        /// </summary>
+        /// <param name="pFullPath">chemin du fichier complet</param>
         public void SetJobConfigPath(string pFullPath)
         {
             _JobConfigFolderPath = new FileInfo(pFullPath).DirectoryName;

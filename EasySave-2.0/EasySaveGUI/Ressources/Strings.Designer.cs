@@ -423,6 +423,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string JobsRunning {
+            get {
+                return ResourceManager.GetString("JobsRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Lang {
             get {
                 return ResourceManager.GetString("Lang", resourceCulture);

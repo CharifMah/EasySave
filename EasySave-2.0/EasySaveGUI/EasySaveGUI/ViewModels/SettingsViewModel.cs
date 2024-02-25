@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Models.Settings;
+using Models;
 using System.Collections.ObjectModel;
 
 namespace EasySaveGUI.ViewModels
@@ -7,8 +8,7 @@ namespace EasySaveGUI.ViewModels
     {
         private FormatLogViewModel _logViewModel;
         private BusinessSoftwareViewModel _businessSoftwareViewModel;
-
-        public ObservableCollection<string> EncryptionFileExtensions => new ObservableCollection<string>(CSettings.Instance._EncryptionExtensions);
+        private FileExtensionViewModel _fileExtensionViewModel;
 
         public CSettings Settings
         {
@@ -33,23 +33,15 @@ namespace EasySaveGUI.ViewModels
 
         public FormatLogViewModel LogVm { get => _logViewModel; set => _logViewModel = value; }
 
-        public BusinessSoftwareViewModel BusinessSoftwareVm
-        {
-            get => _businessSoftwareViewModel;
-            set
-            {
-                if (_businessSoftwareViewModel != value)
-                {
-                    _businessSoftwareViewModel = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        public BusinessSoftwareViewModel BusinessSoftwareVm { get => _businessSoftwareViewModel; set => _businessSoftwareViewModel = value; }
+
+        public FileExtensionViewModel FileExtensionVm { get => _fileExtensionViewModel; set => _fileExtensionViewModel = value; }
 
         public SettingsViewModel()
         {
             _logViewModel = new FormatLogViewModel();
             _businessSoftwareViewModel = new BusinessSoftwareViewModel();
+            _fileExtensionViewModel = new FileExtensionViewModel();
         }
     }
 }

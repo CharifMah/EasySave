@@ -1,4 +1,4 @@
-﻿using Models;
+﻿using Models.Settings;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,20 +14,20 @@ namespace EasySaveGUI.ViewModels
             EncryptionExtensions = new ObservableCollection<string>(CSettings.Instance.EncryptionExtensions);
         }
 
-        public void AddEncryptionExtension(string extension)
+        public void AddEncryptionExtension(string pExtension)
         {
-            if (!string.IsNullOrWhiteSpace(extension) && !EncryptionExtensions.Contains(extension))
+            if (!string.IsNullOrWhiteSpace(pExtension) && !EncryptionExtensions.Contains(pExtension))
             {
-                EncryptionExtensions.Add(extension);
-                CSettings.Instance.EncryptionExtensions.Add(extension);
+                EncryptionExtensions.Add(pExtension);
+                CSettings.Instance.EncryptionExtensions.Add(pExtension);
                 CSettings.Instance.SaveSettings();
                 NotifyPropertyChanged(nameof(EncryptionExtensions));
             }
         }
 
-        public void RemoveEncryptionExtensions(IEnumerable<string> extensions)
+        public void RemoveEncryptionExtensions(List<string> pExtensions)
         {
-            List<string> extensionsList = extensions.ToList();
+            List<string> extensionsList = pExtensions.ToList();
             foreach (string extension in extensionsList)
             {
                 if (EncryptionExtensions.Contains(extension))
@@ -39,7 +39,5 @@ namespace EasySaveGUI.ViewModels
             CSettings.Instance.SaveSettings();
             NotifyPropertyChanged(nameof(EncryptionExtensions));
         }
-
-
     }
 }

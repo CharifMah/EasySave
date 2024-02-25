@@ -1,5 +1,5 @@
 ﻿using EasySaveGUI.ViewModels;
-using Models;
+using Models.Settings;
 using OpenDialog;
 using Ressources;
 using System.Text.RegularExpressions;
@@ -32,7 +32,7 @@ namespace EasySaveGUI.UserControls
 
         private void LoadConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
-            string lConfigPath = CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), Models.CSettings.Instance.JobConfigFolderPath);
+            string lConfigPath = CDialog.ReadFile($"\n{Strings.ResourceManager.GetObject("SelectConfigurationFile")}", new Regex("^.*\\.(json | JSON)$"), CSettings.Instance.JobConfigFolderPath);
             if (lConfigPath != "-1")
             {
                 CSettings.Instance.SetJobConfigPath(lConfigPath);

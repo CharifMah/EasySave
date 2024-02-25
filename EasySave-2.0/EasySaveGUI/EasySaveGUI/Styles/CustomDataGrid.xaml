@@ -30,7 +30,7 @@
 
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#99C2E7" />
+                            <Setter Property="Background" Value="{DynamicResource LightBlue}" />
                             <Setter Property="BorderBrush" Value="{DynamicResource TextColor}" />
                             <Setter Property="BorderThickness" Value="1" />
                         </Trigger>

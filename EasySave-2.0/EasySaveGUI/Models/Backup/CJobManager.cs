@@ -1,4 +1,5 @@
 ﻿using LogsModels;
+using Models.Settings;
 using Stockage.Logs;
 using Stockage.Save;
 using System.Collections.ObjectModel;
@@ -13,8 +14,6 @@ namespace Models.Backup
     public class CJobManager
     {
         #region Attribute
-        [DataMember]
-        private readonly int _MaxJobs;
         [DataMember]
         private ObservableCollection<CJob> _Jobs;
         [DataMember]
@@ -41,7 +40,9 @@ namespace Models.Backup
         /// Interface de sauvegarde des données
         /// </summary>
         public ISauve SauveCollection { get => _SauveCollection; set => _SauveCollection = value; }
-
+        /// <summary>
+        /// Les jobs en cours d’exécution
+        /// </summary>
         public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; } }
 
 
@@ -49,23 +50,19 @@ namespace Models.Backup
 
         #region CTOR
         /// <summary>
-        /// Contructeur de CJobManager initialise le chemin de sauvegarde
+        /// Constructeur de CJobManager initialise le chemin de sauvegarde
         /// </summary>
         public CJobManager()
         {
             _Name = "JobManager";
             _Jobs = new ObservableCollection<CJob>();
             _jobsRunning = new ObservableCollection<CJob>();
-            _MaxJobs = 5;
-            SauveJobsAsync _SauveJobs = new SauveJobsAsync();
+
+            //Init la classe de sauvegarde avec le chemin definit par l'utilisateur ou celui par default
             if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
-            {
                 _SauveCollection = new SauveCollection(new FileInfo(CSettings.Instance.JobDefaultConfigPath).DirectoryName);
-            }
             else
-            {
                 _SauveCollection = new SauveCollection(CSettings.Instance.JobConfigFolderPath);
-            }
         }
         #endregion
 
@@ -84,7 +81,7 @@ namespace Models.Backup
             try
             {
                 uint lIndex = 0;
-                // cm - Lance les jobs
+                // cm - parcours les jobs
                 foreach (CJob lJob in pJobs)
                 {
                     Stopwatch lStopWatch = new Stopwatch();
@@ -98,8 +95,9 @@ namespace Models.Backup
                     string[] lFiles = Directory.GetFiles(lJob.SourceDirectory, "*", SearchOption.AllDirectories);
                     lJob.SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
                     lJob.SauveJobs.LogState.EligibleFileCount = lFiles.Length;
-
+                    // cm - Ajoute le job lancer dans la liste des job en cours cette liste est vidée lors du lancement d'autre job
                     _jobsRunning.Add(lJob);
+                    // cm - Lance le job
                     await lJob.Run(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList());
 
                     lJob.SauveJobs.LogState.Date = DateTime.Now;
@@ -107,7 +105,6 @@ namespace Models.Backup
                     lStopWatch.Stop();
                     lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalSeconds;
                 }
-
             }
             catch (Exception ex)
             {
@@ -125,7 +122,7 @@ namespace Models.Backup
         {
             bool lResult = true;
             // cm - Verifies que on n'a pas atteint la maximum de job
-            if (_Jobs.Count <= _MaxJobs && !_Jobs.Contains(lJob))
+            if (!_Jobs.Contains(lJob))
                 _Jobs.Add(lJob);
             else
                 lResult = false;

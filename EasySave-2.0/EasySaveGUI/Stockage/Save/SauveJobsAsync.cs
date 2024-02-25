@@ -9,7 +9,6 @@ namespace Stockage.Save
     /// </summary>
     public class SauveJobsAsync : BaseSave
     {
-        private List<CLogState> _LogStates;
         private CLogState _LogState;
         private string _FormatLog;
         private Stopwatch _StopWatch;
@@ -22,7 +21,6 @@ namespace Stockage.Save
         /// <param name="pPath">Le chemin du dossier</param>
         public SauveJobsAsync(string pPath = null, string pFormatLog = "json", Stopwatch pStopwatch = null) : base(pPath)
         {
-            _LogStates = new List<CLogState>();
             _LogState = new CLogState();
             _LogState.TotalTransferedFile = 0;
             _FormatLog = pFormatLog;

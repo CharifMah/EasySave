@@ -1,5 +1,4 @@
 ﻿using EasySaveGUI.ViewModels;
-using Models;
 using OpenDialog;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +31,7 @@ namespace EasySaveGUI.UserControls
 
         private void LoadSoftwareFileButton_Click(object sender, RoutedEventArgs e)
         {
-            string lApplicationPath = CDialog.ReadFile("", null, Models.CSettings.Instance.JobConfigFolderPath);
+            string lApplicationPath = CDialog.ReadFile("");
             if (lApplicationPath != "-1")
             {
                 string lApplicationName = System.IO.Path.GetFileName(lApplicationPath);
@@ -43,10 +42,10 @@ namespace EasySaveGUI.UserControls
 
         private void RemoveSoftwareButton_Click(object sender, RoutedEventArgs e)
         {
-            List<CBusinessSoftware> selectedSoftwares = ListBoxBusinessSoftwares.SelectedItems.Cast<CBusinessSoftware>().ToList();
-            if (selectedSoftwares.Any())
+            List<string> selectedSoftware = ListBoxBusinessSoftware.SelectedItems.Cast<string>().ToList();
+            if (selectedSoftware.Any())
             {
-                _MainVm.BusinessSoftwareVm.RemoveBusinessSoftwares(selectedSoftwares);
+                _MainVm.BusinessSoftwareVm.RemoveBusinessSoftwares(selectedSoftware);
             }
         }
 

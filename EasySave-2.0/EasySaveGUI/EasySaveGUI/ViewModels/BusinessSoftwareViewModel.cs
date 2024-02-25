@@ -1,5 +1,4 @@
-﻿using Models;
-using System;
+﻿using Models.Settings;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,52 +7,39 @@ namespace EasySaveGUI.ViewModels
 {
     public class BusinessSoftwareViewModel : BaseViewModel
     {
-        public ObservableCollection<CBusinessSoftware> BusinessSoftwares { get; private set; }
+        public ObservableCollection<string> BusinessSoftware { get; private set; }
 
         public BusinessSoftwareViewModel()
         {
-            BusinessSoftwares = new ObservableCollection<CBusinessSoftware>(CSettings.Instance.BusinessSoftwares);
+            BusinessSoftware = new ObservableCollection<string>(CSettings.Instance.BusinessSoftware);
         }
 
-        public bool AddBusinessSoftware(string softwareName)
+        public void AddBusinessSoftware(string pSoftware)
         {
-            if (!string.IsNullOrWhiteSpace(softwareName) &&
-                !BusinessSoftwares.Any(software => software.Name.Equals(softwareName)))
+            if (!string.IsNullOrWhiteSpace(pSoftware) && !BusinessSoftware.Contains(pSoftware))
             {
-                BusinessSoftwares.Add(new CBusinessSoftware(softwareName));
-                NotifyPropertyChanged(nameof(BusinessSoftwares));
-                SaveSettings();
-                return true;
+                BusinessSoftware.Add(pSoftware);
+                CSettings.Instance.BusinessSoftware.Add(pSoftware);
+                CSettings.Instance.SaveSettings();
+                NotifyPropertyChanged(nameof(BusinessSoftware));
             }
-            return false;
         }
 
-        public void RemoveBusinessSoftwares(IEnumerable<CBusinessSoftware> softwaresToRemove)
-        {
-            List<CBusinessSoftware> softwaresToRemoveList = softwaresToRemove.ToList();
 
-            foreach (CBusinessSoftware software in softwaresToRemoveList)
+        public void RemoveBusinessSoftwares(List<string> pSoftwareList)
+        {
+            List<string> softwaresList = pSoftwareList.ToList();
+
+            foreach (string software in softwaresList)
             {
-                if (BusinessSoftwares.Contains(software))
+                if (BusinessSoftware.Contains(software))
                 {
-                    BusinessSoftwares.Remove(software);
+                    BusinessSoftware.Remove(software);
+                    CSettings.Instance.BusinessSoftware.Remove(software);
                 }
             }
-            NotifyPropertyChanged(nameof(BusinessSoftwares));
-            SaveSettings();
-        }
-
-        private void SaveSettings()
-        {
-            try
-            {
-                CSettings.Instance.BusinessSoftwares = BusinessSoftwares.ToList();
-                CSettings.Instance.SaveSettings();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving settings: {ex.Message}");
-            }
+            CSettings.Instance.SaveSettings();
+            NotifyPropertyChanged(nameof(BusinessSoftware));
         }
     }
 }

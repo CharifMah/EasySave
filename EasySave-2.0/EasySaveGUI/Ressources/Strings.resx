@@ -356,6 +356,9 @@
   <data name="Paths" xml:space="preserve">
     <value></value>
   </data>
+  <data name="JobsRunning" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="BusinessSoftware" xml:space="preserve">
     <value></value>
   </data>

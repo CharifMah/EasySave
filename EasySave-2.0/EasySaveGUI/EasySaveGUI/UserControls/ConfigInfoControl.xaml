@@ -86,10 +86,9 @@
                                     <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <ListBox x:Name="ListBoxBusinessSoftwares"
+                                <ListBox x:Name="ListBoxBusinessSoftware"
                                      Grid.Row="1"
-                                     ItemsSource="{Binding BusinessSoftwareVm.BusinessSoftwares}"
-                                     DisplayMemberPath="Name"
+                                     ItemsSource="{Binding BusinessSoftwareVm.BusinessSoftware}"
                                      SelectionMode="Multiple" Height="140"
                                 />
                                 <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" HorizontalAlignment="Center">
@@ -105,7 +104,9 @@
                                      />   
                                 </StackPanel>
                             </Grid>
+                            
                         </GroupBox>
+
 
                         <GroupBox Header="Extensions de fichiers à chiffrer" Grid.Column="1" Grid.Row="1">
                             <Grid>
@@ -127,7 +128,7 @@
                                      Grid.Column="0"
                                      Grid.Row="1"
                                      SelectionMode="Multiple" Height="100"
-                                 />    
+                                 />
                                 <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" HorizontalAlignment="Center">
                                     <Button 
                                         Click="AddEncryptionExtension_Click"

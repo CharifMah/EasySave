@@ -376,6 +376,9 @@
   <data name="Paths" xml:space="preserve">
     <value>Chemins</value>
   </data>
+  <data name="JobsRunning" xml:space="preserve">
+    <value>Travaux de sauvegarde en cours</value>
+  </data>
   <data name="BusinessSoftware" xml:space="preserve">
     <value>Logiciels Métiers</value>
   </data>

@@ -1,4 +1,5 @@
 ﻿using Models.Backup;
+using Models.Settings;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -29,7 +30,9 @@ namespace EasySaveGUI.ViewModels
                 NotifyPropertyChanged();
             }
         }
-
+        /// <summary>
+        /// Job selectionnée par l'utilisateur
+        /// </summary>
         public CJob SelectedJob
         {
             get { return _SelectedJob; }
@@ -39,7 +42,9 @@ namespace EasySaveGUI.ViewModels
                 NotifyPropertyChanged();
             }
         }
-
+        /// <summary>
+        /// Job charger du job manager
+        /// </summary>
         public ObservableCollection<CJob> Jobs
         {
             get
@@ -52,6 +57,9 @@ namespace EasySaveGUI.ViewModels
                 NotifyPropertyChanged();
             }
         }
+        /// <summary>
+        /// Les job en cours execution du job manager
+        /// </summary>
         public ObservableCollection<CJob> JobsRunning { get => _jobManager.JobsRunning; set { _jobManager.JobsRunning = value; NotifyPropertyChanged(); } }
         #endregion
 
@@ -63,13 +71,13 @@ namespace EasySaveGUI.ViewModels
         public JobViewModel()
         {
             string lPath;
-            string lFolderPath = Models.CSettings.Instance.JobConfigFolderPath;
+            string lFolderPath = CSettings.Instance.JobConfigFolderPath;
             if (!string.IsNullOrEmpty(lFolderPath))
                 lPath = Path.Combine(lFolderPath, "JobManager.json");
             else
-                lPath = Models.CSettings.Instance.JobDefaultConfigPath;
+                lPath = CSettings.Instance.JobDefaultConfigPath;
 
-            _jobManager = Models.CSettings.Instance.LoadJobsFile(lPath);
+            _jobManager = CSettings.Instance.LoadJobsFile(lPath);
         }
 
         #endregion
@@ -115,9 +123,9 @@ namespace EasySaveGUI.ViewModels
         public void SaveJobs()
         {
             _jobManager.SaveJobs();
-            NotifyPropertyChanged("Jobs");
             NotifyPropertyChanged("SelectedJob");
-            NotifyPropertyChanged("JobsRunning");
+            NotifyPropertyChanged("Jobs");
+
         }
 
         /// <summary>
@@ -128,9 +136,9 @@ namespace EasySaveGUI.ViewModels
         public void LoadJobs(bool IsDefaultFile = true, string pPath = null)
         {
             if (IsDefaultFile)
-                _jobManager = Models.CSettings.Instance.LoadJobsFile();
+                _jobManager = CSettings.Instance.LoadJobsFile();
             else
-                _jobManager = Models.CSettings.Instance.LoadJobsFile(pPath);
+                _jobManager = CSettings.Instance.LoadJobsFile(pPath);
 
             NotifyPropertyChanged("Jobs");
         }

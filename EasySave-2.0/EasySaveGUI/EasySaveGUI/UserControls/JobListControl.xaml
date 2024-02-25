@@ -17,7 +17,7 @@
 
     <ListBox
         x:Name="JobsList"
-        ItemsSource="{Binding JobVm.Jobs, Mode=TwoWay}"
+        ItemsSource="{Binding JobVm.Jobs, Mode=OneWay}"
         SelectionChanged="JobsList_SelectionChanged"
         SelectionMode="Multiple">
         <ListBox.ItemTemplate>
@@ -27,24 +27,23 @@
                         <TextBlock>
                             <Run Text="{x:Static Ressources:Strings.Name}" />
                             <Run Text=" : " />
-                            <Run Text="{Binding Name}" />
+                            <Run Text="{Binding Name, Mode=OneWay}" />
                         </TextBlock>
                         <TextBlock>
                             <Run Text="{x:Static Ressources:Strings.SourceDirectory}" />
-                            <Run Text="{Binding SourceDirectory}" />
+                            <Run Text="{Binding SourceDirectory, Mode=OneWay}" />
                         </TextBlock>
                         <TextBlock>
                             <Run Text="{x:Static Ressources:Strings.TargetDirectory}" />
-                            <Run Text="{Binding TargetDirectory}" />
+                            <Run Text="{Binding TargetDirectory, Mode=OneWay}" />
                         </TextBlock>
                         <TextBlock>
                             <Run Text="{x:Static Ressources:Strings.Type}" />
                             <Run Text=" : " />
-                            <Run Text="{Binding BackupType, Mode=TwoWay, Converter={StaticResource ETypeBackupConverter}}" />
+                            <Run Text="{Binding BackupType, Mode=OneWay, Converter={StaticResource ETypeBackupConverter}}" />
                         </TextBlock>
                     </StackPanel>
                 </WrapPanel>
-                <!--</CheckBox>-->
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox>

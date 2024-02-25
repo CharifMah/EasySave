@@ -2,6 +2,7 @@
 using EasySaveGUI.ViewModels;
 using EasySaveGUI.Views;
 using Models;
+using Ressources;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -34,7 +35,7 @@ namespace EasySaveGUI
         {
             InitializeComponent();
             _MainVm = new MainViewModel();
-
+            WindowState = WindowState.Maximized;
             DataContext = _MainVm;
             RefreshMenu();
         }
@@ -137,14 +138,18 @@ namespace EasySaveGUI
 
         }
         #endregion
-
+        /// <summary>
+        /// Rafraîchie le menu avec le layout sélectionnée
+        /// </summary>
+        /// <param name="pSetLayout">false pour reset le layout</param>
         public void RefreshMenu(bool pSetLayout = true)
         {
             _MenuPage = new MenuPage(_MainVm);
             frame.NavigationService.Navigate(_MenuPage);
             if (pSetLayout)
-                SetLayout(CSettings.Instance.Theme.CurrentLayout);
-            
+                SetLayout(_MainVm.SettingsVm.CurrentLayout);
+            else
+                _MainVm.SettingsVm.CurrentLayout = "";
         }
 
         private void BlueTheme()
@@ -195,8 +200,11 @@ namespace EasySaveGUI
         private void ComboBoxLayout_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox lComboBox = sender as ComboBox;
-            string lSelectedValue = lComboBox.SelectedValue.ToString();
-            SetLayout(lSelectedValue);
+            if (lComboBox.SelectedValue != null)
+            {
+                string lSelectedValue = lComboBox.SelectedValue.ToString();
+                SetLayout(lSelectedValue);
+            }
         }
 
         private void SetLayout(string pSelectedValue)
@@ -205,7 +213,7 @@ namespace EasySaveGUI
             {
                 _MainVm.LayoutVm.LoadLayout(_MenuPage.Dock, pSelectedValue);
 
-                CSettings.Instance.Theme.CurrentLayout = pSelectedValue;
+                _MainVm.SettingsVm.CurrentLayout = pSelectedValue;
 
                 if (CSettings.Instance.Theme.LayoutsTheme.ContainsKey(pSelectedValue))
                 {

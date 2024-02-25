@@ -31,8 +31,6 @@ namespace EasySaveGUI.Views
             JobsListDocument.IsSelected = true;
         }
 
-
-
         public void ClearLists()
         {
             CLogger<CLogBase>.Instance.Clear();

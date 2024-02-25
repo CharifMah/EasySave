@@ -140,7 +140,7 @@
                                     ItemsSource="{Binding LayoutVm.LayoutNames}"
                                     MouseEnter="ComboBox_MouseEnter"
                                     MouseLeave="ComboBox_MouseLeave"
-                                    SelectedValue="{Binding SettingsVm.Settings.Theme.CurrentLayout, Mode=TwoWay}"
+                                    SelectedValue="{Binding SettingsVm.CurrentLayout, Mode=TwoWay}"
                                     SelectionChanged="ComboBoxLayout_SelectionChanged" />
 
                             </StackPanel>

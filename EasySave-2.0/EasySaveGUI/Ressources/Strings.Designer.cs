@@ -477,6 +477,33 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string MenuJob {
+            get {
+                return ResourceManager.GetString("MenuJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MenuPreference {
+            get {
+                return ResourceManager.GetString("MenuPreference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MenuSettings {
+            get {
+                return ResourceManager.GetString("MenuSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string MultipleIndexes {
             get {
                 return ResourceManager.GetString("MultipleIndexes", resourceCulture);
@@ -549,9 +576,27 @@ namespace Ressources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Paths {
+            get {
+                return ResourceManager.GetString("Paths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PossibleTypeBackup {
             get {
                 return ResourceManager.GetString("PossibleTypeBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Preference {
+            get {
+                return ResourceManager.GetString("Preference", resourceCulture);
             }
         }
         

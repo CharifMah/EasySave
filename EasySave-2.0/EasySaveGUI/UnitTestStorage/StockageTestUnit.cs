@@ -6,7 +6,7 @@ namespace UnitTestStorage
     public class StockageTestUnit
     {
         [Fact]
-        public void TestSerialisation()
+        public void TestSerialization()
         {
             string lPath = Environment.CurrentDirectory;
             ISauve lSauveCollection = new SauveCollection(lPath);
@@ -23,7 +23,7 @@ namespace UnitTestStorage
         }
 
         [Fact]
-        public void TestExtensionSerialisation()
+        public void TestExtensionSerialization()
         {
             string lPath = Environment.CurrentDirectory;
             ISauve lSauveCollection = new SauveCollection(lPath);
@@ -34,11 +34,12 @@ namespace UnitTestStorage
             string lPathXml = Path.Combine(lPath, "int.xml");
 
             // Initialise de la variable pour stocker le chemin du fichier chargé
-            string loadedFilePath = null;
+            string? loadedFilePath = null;
 
             // Sauvegarde les données, Sauver détermine le format
             lSauveCollection.Sauver(lData, "int", false, "json");
             Assert.True(File.Exists(lPathJson));
+
             // Vérifie l'existence et le format du fichier
             if (File.Exists(lPathJson))
             {
@@ -48,8 +49,8 @@ namespace UnitTestStorage
                 File.Delete(lPathJson);
             }
 
+             Assert.False(File.Exists(lPathXml));
 
-            // Assert.False(File.Exists(lPathXml));
             // Sauvegarde les données, Sauver détermine le format
             lSauveCollection.Sauver(lData, "int", false, "xml");
             Assert.True(File.Exists(lPathXml));

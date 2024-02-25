@@ -27,14 +27,15 @@
                 <StackPanel>
                     <GroupBox Header="Configuration File">
                         <StackPanel>
-                            <TextBlock Grid.Row="0">
+                            <TextBlock Grid.Row="0" ToolTip="{x:Static Ressources:Strings.DefaultFile}">
                                 <Run Text="{x:Static Ressources:Strings.DefaultFile}" />
                                 <Run Text=" : " />
                             </TextBlock>
                             <TextBox Text="{Binding SettingsVm.Settings.JobDefaultConfigPath, Mode=OneWay}" />
-                            <TextBlock Grid.Row="0">
+
+                            <TextBlock Grid.Row="0" ToolTip="{x:Static Ressources:Strings.EnterFolderPath}">
                                 <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
-                                <Run Text=" : " />
+
                             </TextBlock>
                             <TextBox Text="{Binding SettingsVm.Settings.JobConfigFolderPath, Mode=OneWay}" />
                         </StackPanel>
@@ -42,10 +43,10 @@
 
 
                     <GroupBox Grid.ColumnSpan="2" Header="Logs">
-                        <StackPanel>
+                        <StackPanel ToolTip="{x:Static Ressources:Strings.EnterFolderPath}">
                             <TextBlock Grid.Row="0">
                                 <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
-                                <Run Text=" : " />
+
                             </TextBlock>
                             <TextBox Text="{Binding SettingsVm.Settings.LogDefaultFolderPath, Mode=OneWay}" />
                         </StackPanel>
@@ -64,7 +65,8 @@
                         IsHitTestVisible="True"
                         ItemsSource="{Binding FormatLogVm.FormatLog.FormatsLogs, Converter={StaticResource FormatLogConvert}}"
                         SelectedIndex="{Binding FormatLogVm.FormatLog.SelectedFormatLog.Key, Mode=OneWay}"
-                        SelectionChanged="ComboBoxFormatLog_SelectionChanged" />
+                        SelectionChanged="ComboBoxFormatLog_SelectionChanged"
+                        ToolTip="Type du job" />
                 </StackPanel>
             </GroupBox>
 

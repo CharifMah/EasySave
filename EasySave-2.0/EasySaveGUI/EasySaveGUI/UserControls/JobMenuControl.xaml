@@ -20,13 +20,15 @@
                 Grid.Column="0"
                 Click="RunJobsButton_Click"
                 Content="{x:Static Ressources:Strings.RunJobs}"
-                Style="{StaticResource CustomButtonRun}" />
+                Style="{StaticResource CustomButtonRun}"
+                ToolTip="{x:Static Ressources:Strings.RunJobs}" />
 
             <Button
                 Grid.Column="1"
                 Click="ButtonDeletesJobs_Click"
                 Content="{x:Static Ressources:Strings.DeleteJob}"
-                Style="{StaticResource CustomButtonDelete}" />
+                Style="{StaticResource CustomButtonDelete}"
+                ToolTip="{x:Static Ressources:Strings.DeleteJob}" />
         </Grid>
 
         <Grid x:Name="VerticalMenu" Visibility="Hidden">
@@ -38,13 +40,16 @@
                 Grid.Row="0"
                 Click="RunJobsButton_Click"
                 Content="{x:Static Ressources:Strings.RunJobs}"
-                Style="{StaticResource CustomButtonRun}" />
+                Style="{StaticResource CustomButtonRun}"
+                ToolTip="{x:Static Ressources:Strings.RunJobs}" />
+
 
             <Button
                 Grid.Row="1"
                 Click="ButtonDeletesJobs_Click"
                 Content="{x:Static Ressources:Strings.DeleteJob}"
-                Style="{StaticResource CustomButtonDelete}" />
+                Style="{StaticResource CustomButtonDelete}"
+                ToolTip="{x:Static Ressources:Strings.DeleteJob}" />
         </Grid>
 
     </Grid>

@@ -25,17 +25,21 @@
                 Grid.Column="0"
                 Click="MenuButtons_MouseClick"
                 Content="{x:Static Ressources:Strings.Jobs}"
-                Style="{StaticResource CustomButtonJobs}" />
+                Style="{StaticResource CustomButtonJobs}"
+                ToolTip="{x:Static Ressources:Strings.MenuJob}" />
+
             <Button
                 Grid.Column="1"
                 Click="MenuButtons_MouseClick"
-                Content="{x:Static Ressources:Strings.Settings}"
-                Style="{StaticResource CustomButtonSettings}" />
+                Content="{x:Static Ressources:Strings.Preference}"
+                Style="{StaticResource CustomButtonPreference}"
+                ToolTip="{x:Static Ressources:Strings.MenuPreference}" />
             <Button
                 Grid.Column="2"
                 Click="MenuButtons_MouseClick"
-                Content="{x:Static Ressources:Strings.Config}"
-                Style="{StaticResource CustomButtonFile}" />
+                Content="{x:Static Ressources:Strings.Settings}"
+                Style="{StaticResource CustomButtonSettings}"
+                ToolTip="{x:Static Ressources:Strings.MenuSettings}" />
         </Grid>
 
         <Grid
@@ -53,17 +57,20 @@
                 Grid.Row="0"
                 Click="MenuButtons_MouseClick"
                 Content="{x:Static Ressources:Strings.Jobs}"
-                Style="{StaticResource CustomButtonJobs}" />
+                Style="{StaticResource CustomButtonJobs}"
+                ToolTip="{x:Static Ressources:Strings.MenuJob}" />
             <Button
                 Grid.Row="1"
                 Click="MenuButtons_MouseClick"
-                Content="{x:Static Ressources:Strings.Settings}"
-                Style="{StaticResource CustomButtonSettings}" />
+                Content="{x:Static Ressources:Strings.Preference}"
+                Style="{StaticResource CustomButtonPreference}"
+                ToolTip="{x:Static Ressources:Strings.MenuPreference}" />
             <Button
                 Grid.Row="2"
                 Click="MenuButtons_MouseClick"
-                Content="{x:Static Ressources:Strings.Config}"
-                Style="{StaticResource CustomButtonFile}" />
+                Content="{x:Static Ressources:Strings.Settings}"
+                Style="{StaticResource CustomButtonSettings}"
+                ToolTip="{x:Static Ressources:Strings.MenuSettings}" />
         </Grid>
 
     </Grid>

@@ -103,7 +103,7 @@ namespace Models.Backup
                 }
                 else
                 {
-                    throw new Exception("La chemin cible et le chemin source est identique");
+                    CLogger<CLogBase>.Instance.StringLogger.Log("La chemin cible et le chemin source est identique");
                 }
             }
             catch (Exception ex)
@@ -111,15 +111,21 @@ namespace Models.Backup
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
         }
+
         public override bool Equals(object? obj)
         {
-            CJob lJob = obj as CJob;
-
-            if (lJob == null)
-                return false;
-
-            return lJob.Name == _Name && lJob.SourceDirectory == _SourceDirectory && lJob.TargetDirectory == TargetDirectory;
+            return obj is CJob job &&
+                   _Name == job._Name &&
+                   _SourceDirectory == job._SourceDirectory &&
+                   _TargetDirectory == job._TargetDirectory &&
+                   _BackupType == job._BackupType;
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_Name, _SourceDirectory, _TargetDirectory, _BackupType);
+        }
+
         #endregion
     }
 }

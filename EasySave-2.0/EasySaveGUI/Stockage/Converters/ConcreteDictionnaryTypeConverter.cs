@@ -29,7 +29,7 @@ namespace Stockage.Converters
         /// <param name="existingValue"></param>
         /// <param name="serializer"></param>
         /// <returns></returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type? objectType, object? existingValue, JsonSerializer serializer)
         {
             var collection = new TDictionary();
             var items = serializer.Deserialize<Dictionary<TKey, TItem>>(reader);
@@ -47,7 +47,7 @@ namespace Stockage.Converters
         /// </summary>
         /// <param name="objectType"></param>
         /// <returns></returns>
-        public override bool CanConvert(Type objectType)
+        public override bool CanConvert(Type? objectType)
         {
             return typeof(IDictionary<TKey, TValue>).IsAssignableFrom(objectType);
         }

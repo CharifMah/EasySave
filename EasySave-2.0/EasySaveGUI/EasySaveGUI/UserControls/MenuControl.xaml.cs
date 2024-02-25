@@ -23,12 +23,13 @@ namespace EasySaveGUI.UserControls
         {
 
             Button lButton = sender as Button;
-            if (lButton.Content == Strings.Config)
-                _MainVm.LayoutVm.ElementsContent.Content = new ConfigMenuControl();
             if (lButton.Content == Strings.Settings)
+                _MainVm.LayoutVm.ElementsContent.Content = new ConfigMenuControl();
+            if (lButton.Content == Strings.Preference)
                 _MainVm.LayoutVm.ElementsContent.Content = new OptionsMenuControl();
             if (lButton.Content == Strings.Jobs)
                 _MainVm.LayoutVm.ElementsContent.Content = new JobMenuControl();
+
             _MainWindow.MenuPage.ListElements.Show();
             _MainWindow.MenuPage.ListElements.IsActive = true;
         }

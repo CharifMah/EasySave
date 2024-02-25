@@ -13,6 +13,19 @@ namespace EasySaveGUI.ViewModels
             }
         }
 
+        public string CurrentLayout
+        {
+            get
+            {
+                return CSettings.Instance.Theme.CurrentLayout;
+            }
+            set
+            {
+                CSettings.Instance.Theme.CurrentLayout = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public FormatLogViewModel LogVm { get => _logViewModel; set => _logViewModel = value; }
 
         public SettingsViewModel()

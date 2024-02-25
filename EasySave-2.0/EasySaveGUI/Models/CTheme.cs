@@ -28,7 +28,5 @@ namespace Models
         {
             _LayoutsTheme = new Dictionary<string, ETheme>();
         }
-
-
     }
 }

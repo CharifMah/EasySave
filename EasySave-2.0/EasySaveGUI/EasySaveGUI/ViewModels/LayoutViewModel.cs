@@ -29,7 +29,6 @@ namespace EasySaveGUI.ViewModels
 
                     _LayoutNames = new ObservableCollection<string>(lFiles.Select(f => f.Name));
             }
-
             else
                 _LayoutNames = new ObservableCollection<string>();
 

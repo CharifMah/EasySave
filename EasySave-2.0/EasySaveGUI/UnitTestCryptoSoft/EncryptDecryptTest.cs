@@ -17,6 +17,7 @@ namespace UnitTestCryptoSoft
             byte[] lDecryptedData = lXorChiffrement.Decrypt(lEncryptedData, lKey);
             string lDecryptedText = Encoding.UTF8.GetString(lDecryptedData);
 
+            Assert.NotEqual(lOriginalData, lEncryptedData);
             Assert.Equal(lOriginalText, lDecryptedText);
         }
     }

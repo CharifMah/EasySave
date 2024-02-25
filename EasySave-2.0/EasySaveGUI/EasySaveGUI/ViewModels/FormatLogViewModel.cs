@@ -2,6 +2,9 @@
 
 namespace EasySaveGUI.ViewModels
 {
+    /// <summary>
+    /// View model des format de log
+    /// </summary>
     public class FormatLogViewModel : BaseViewModel
     {
         private CFormatLog _FormatLog;

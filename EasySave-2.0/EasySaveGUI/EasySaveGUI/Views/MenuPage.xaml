@@ -33,17 +33,13 @@
             DataContext="{Binding PopupVm}" />
 
         <DockingManager x:Name="Dock" Background="#EDF5FD">
-
             <DockingManager.Theme>
                 <Vs2013LightTheme />
             </DockingManager.Theme>
             <!--  Content  -->
             <DockingManager.Layout>
                 <LayoutRoot>
-
-
                     <LayoutPanel Orientation="Vertical">
-
                         <LayoutAnchorablePane
                             DockHeight="0.13592233009708737*"
                             DockMinHeight="70"
@@ -100,7 +96,8 @@
                                                 Title="{x:Static Ressources:Strings.Jobs}"
                                                 CanAutoHide="False"
                                                 CanClose="False"
-                                                CanHide="False">
+                                                CanHide="False"
+                                                ContentId="JobsListDocument">
                                                 <Usr:JobListControl x:Name="JobUsr" />
                                             </LayoutAnchorable>
 
@@ -110,107 +107,9 @@
                                                 Title="{x:Static Ressources:Strings.JobsRunning}"
                                                 CanAutoHide="False"
                                                 CanClose="False"
-                                                CanHide="False">
-                                                <DataGrid
-                                                    x:Name="dataGrid"
-                                                    AutoGenerateColumns="False"
-                                                    ItemsSource="{Binding JobVm.JobsRunning}">
-                                                    <DataGrid.Columns>
-                                                        <DataGridTextColumn Binding="{Binding Path=Name}" Header="{x:Static Ressources:Strings.Name}" />
-
-                                                        <DataGridTemplateColumn Header="{x:Static Ressources:Strings.Progress}">
-                                                            <DataGridTemplateColumn.CellTemplate>
-                                                                <DataTemplate>
-                                                                    <Grid>
-                                                                        <ProgressBar
-                                                                            x:Name="MyProgressBar"
-                                                                            MinWidth="200"
-                                                                            MaxWidth="50"
-                                                                            Value="{Binding Path=SauveJobs.LogState.Progress, Mode=TwoWay}" />
-                                                                        <WrapPanel
-                                                                            HorizontalAlignment="Right"
-                                                                            VerticalAlignment="Bottom"
-                                                                            Orientation="Horizontal">
-                                                                            <TextBlock
-                                                                                Margin="0,0,10,5"
-                                                                                Foreground="Black"
-                                                                                Text="{Binding Path=SauveJobs.LogState.ElapsedMilisecond, Mode=OneWay, Converter={StaticResource SecondConverter}}" />
-                                                                        </WrapPanel>
-                                                                    </Grid>
-
-                                                                </DataTemplate>
-                                                            </DataGridTemplateColumn.CellTemplate>
-
-                                                        </DataGridTemplateColumn>
-
-
-                                                        <!--  LogSstate Column Datagrid JobsRunning  -->
-                                                        <DataGridTemplateColumn Header="{x:Static Ressources:Strings.LogState}">
-                                                            <DataGridTemplateColumn.CellTemplate>
-                                                                <!--  LogSstate  -->
-                                                                <DataTemplate>
-                                                                    <StackPanel>
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock>
-                                                                                <Run FontWeight="DemiBold" Text="TotalTransferedFile : " />
-                                                                                <Run Text="{Binding Path=SauveJobs.LogState.TotalTransferedFile, Mode=OneWay}" />
-
-
-                                                                                <Run
-                                                                                    FontWeight="Bold"
-                                                                                    Foreground="#00266e"
-                                                                                    Text="/" />
-                                                                                <Run Text="{Binding Path=SauveJobs.LogState.EligibleFileCount, Mode=OneWay}" />
-                                                                            </TextBlock>
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-
-                                                                            <TextBlock>
-                                                                                <Run FontWeight="DemiBold" Text="{x:Static Ressources:Strings.ByteCopied}" />
-                                                                                <Run FontWeight="DemiBold" Text=" : " />
-                                                                                <Run Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
-
-                                                                                <Run
-                                                                                    FontWeight="Bold"
-                                                                                    Foreground="#00266e"
-                                                                                    Text="/" />
-                                                                                <Run Text="{Binding Path=SauveJobs.LogState.TotalSize, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
-                                                                            </TextBlock>
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="DemiBold" Text="{x:Static Ressources:Strings.SourceDirectory}" />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory, Mode=OneWay}" />
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="DemiBold" Text="{x:Static Ressources:Strings.TargetDirectory}" />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory, Mode=OneWay}" />
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="DemiBold" Text="Derniere activitée : " />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.Date, Mode=OneWay}" />
-                                                                        </StackPanel>
-
-                                                                    </StackPanel>
-                                                                </DataTemplate>
-
-                                                            </DataGridTemplateColumn.CellTemplate>
-                                                        </DataGridTemplateColumn>
-
-                                                        <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="{x:Static Ressources:Strings.SourceDir}" />
-
-                                                        <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="{x:Static Ressources:Strings.TargetDir}" />
-
-                                                    </DataGrid.Columns>
-
-                                                </DataGrid>
-
+                                                CanHide="False"
+                                                ContentId="JobsRunningDocument">
+                                                <Usr:JobRunningControl />
                                             </LayoutAnchorable>
 
                                             <!--  ConfigInfo  -->

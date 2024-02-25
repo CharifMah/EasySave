@@ -30,7 +30,9 @@ namespace EasySaveGUI.ViewModels
                 NotifyPropertyChanged();
             }
         }
-
+        /// <summary>
+        /// Job selectionnée par l'utilisateur
+        /// </summary>
         public CJob SelectedJob
         {
             get { return _SelectedJob; }
@@ -40,7 +42,9 @@ namespace EasySaveGUI.ViewModels
                 NotifyPropertyChanged();
             }
         }
-
+        /// <summary>
+        /// Job charger du job manager
+        /// </summary>
         public ObservableCollection<CJob> Jobs
         {
             get
@@ -53,6 +57,9 @@ namespace EasySaveGUI.ViewModels
                 NotifyPropertyChanged();
             }
         }
+        /// <summary>
+        /// Les job en cours execution du job manager
+        /// </summary>
         public ObservableCollection<CJob> JobsRunning { get => _jobManager.JobsRunning; set { _jobManager.JobsRunning = value; NotifyPropertyChanged(); } }
         #endregion
 

@@ -57,8 +57,17 @@ namespace Models.Settings
         /// Emplacement par défaut du répertoire dans lequel le fichier de configuration du travail est stocké
         /// </summary>
         public string JobDefaultConfigPath { get => _JobDefaultConfigPath; }
+        /// <summary>
+        /// Chemin du dossier par default des logs
+        /// </summary>
         public string LogDefaultFolderPath { get => _LogDefaultFolderPath; set => _LogDefaultFolderPath = value; }
+        /// <summary>
+        /// Chemin par defaut du dossier de sauvegarde des layouts
+        /// </summary>
         public string LayoutDefaultFolderPath { get => _LayoutDefaultFolderPath; set => _LayoutDefaultFolderPath = value; }
+        /// <summary>
+        /// Theme de l'application
+        /// </summary>
         public CTheme Theme { get => _Theme; set => _Theme = value; }
 
         public static CSettings Instance
@@ -70,7 +79,6 @@ namespace Models.Settings
                 return _Instance;
             }
         }
-
 
         #endregion
 
@@ -105,12 +113,13 @@ namespace Models.Settings
         public void LoadSettings()
         {
             _loadSettings = new ChargerCollection(Environment.CurrentDirectory);
+            // cm - Charge les settings
             CSettings lInstance = _loadSettings.Charger<CSettings>(Path.Combine("Settings"));
             if (lInstance != null)
             {
                 _Instance = lInstance;
             }
-            if (_Instance != null)
+            if (_Instance != null) // cm - Initialisation pour ne pas avoir d'instance null
             {
                 if (_Instance.Langue == null)
                     _Instance.Langue = new CLangue();
@@ -152,12 +161,17 @@ namespace Models.Settings
 
             return lJobManager;
         }
-
+        /// <summary>
+        /// Reset le chemin de sauvegarde du jobmanager
+        /// </summary>
         public void ResetJobConfigPath()
         {
             _JobConfigFolderPath = new FileInfo(_JobDefaultConfigPath).DirectoryName;
         }
-
+        /// <summary>
+        /// Définit le chemin de sauvegarde du job manager a partir d'un chemin correspondant a un fichier
+        /// </summary>
+        /// <param name="pFullPath">chemin du fichier complet</param>
         public void SetJobConfigPath(string pFullPath)
         {
             _JobConfigFolderPath = new FileInfo(pFullPath).DirectoryName;

@@ -11,8 +11,7 @@ namespace EasySaveGUI.ViewModels
     public class BusinessSoftwareViewModel : BaseViewModel
     {
         private ObservableCollection<CBusinessSoftware> _businessSoftwares;
-        private readonly string[] _acceptableExtensions = new string[] { ".exe", ".app", ".bat", ".sh", ".jar" }; // Extensions de fichiers acceptables
-
+     
         public ObservableCollection<CBusinessSoftware> BusinessSoftwares
         {
             get => _businessSoftwares;
@@ -32,19 +31,11 @@ namespace EasySaveGUI.ViewModels
         }
 
         /// <summary>
-        /// Ajoute un nouveau logiciel métier à la collection après vérification de son extension.
+        /// Ajoute un nouveau logiciel métier à la collection.
         /// </summary>
-        /// <param name="software">Le logiciel métier à ajouter.</param>
+        /// <param name="software">Nom du logiciel métier</param>
         public bool AddBusinessSoftware(CBusinessSoftware software)
         {
-            // Vérifie l'extension du logiciel
-            string extension = Path.GetExtension(software.Name);
-            if (!_acceptableExtensions.Contains(extension.ToLower()))
-            {
-                // Extension non acceptable, retourne false
-                return false;
-            }
-
             if (!CSettings.Instance.BusinessSoftwares.ContainsKey(software.Name))
             {
                 _businessSoftwares.Add(software);

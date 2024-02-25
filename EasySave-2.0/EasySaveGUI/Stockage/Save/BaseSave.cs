@@ -10,14 +10,20 @@ namespace Stockage.Save
     /// </summary>
     public abstract class BaseSave : ISauve
     {
+        #region Attributes
         private string _path;
 
-        private readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
+        private readonly JsonSerializerSettings _options;
+        #endregion
+
+        #region Property
 
         public JsonSerializerSettings Options => _options;
 
         public string FolderPath { get => _path; set => _path = value; }
+        #endregion
 
+        #region CTOR
         /// <summary>
         /// Sauvegarde
         /// </summary>
@@ -27,7 +33,12 @@ namespace Stockage.Save
             if (!string.IsNullOrEmpty(pPath) && !Directory.Exists(pPath) && !File.Exists(pPath) && !String.IsNullOrEmpty(Path.GetFileName(pPath)))
                 Directory.CreateDirectory(pPath);
             _path = pPath;
+            _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
         }
+
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Crée un fichier Json par default avec les Settings
         /// </summary>
@@ -95,5 +106,6 @@ namespace Stockage.Save
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 }

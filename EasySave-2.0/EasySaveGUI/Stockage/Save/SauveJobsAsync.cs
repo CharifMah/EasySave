@@ -19,7 +19,7 @@ namespace Stockage.Save
         /// Constructeur de SauveJobs
         /// </summary>
         /// <param name="pPath">Le chemin du dossier</param>
-        public SauveJobsAsync(string pPath = null, string pFormatLog = "json", Stopwatch pStopwatch = null) : base(pPath)
+        public SauveJobsAsync(string? pPath = null, string pFormatLog = "json", Stopwatch? pStopwatch = null) : base(pPath)
         {
             _LogState = new CLogState();
             _LogState.TotalTransferedFile = 0;
@@ -62,9 +62,9 @@ namespace Stockage.Save
                     if (lFiles[i].Exists && pDiffertielle)
                     {
                         // Compare les dates  
-                        FileInfo destInfo = new FileInfo(lTargetFilePath);
+                        FileInfo ldestInfo = new FileInfo(lTargetFilePath);
 
-                        if (lFiles[i].LastWriteTime > destInfo.LastWriteTime)
+                        if (lFiles[i].LastWriteTime > ldestInfo.LastWriteTime)
                         {
                             // cm -  Copy the file async if the target file is newer
                             await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
@@ -120,30 +120,11 @@ namespace Stockage.Save
             CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, pName, "DailyLogs", _FormatLog);
         }
 
-        public async Task CopyFileAsync(string sourcePath, string destinationPath)
+        public async Task CopyFileAsync(string pSourcePath, string pDestinationPath)
         {
-            using Stream source = File.OpenRead(sourcePath);
-            using Stream destination = File.Create(destinationPath);
-            await source.CopyToAsync(destination);
-        }
-
-        /// <summary>
-        /// Calcule la taille d'un repertoire
-        /// </summary>
-        /// <param name="pPath">Chemin du repertoire</param>
-        /// <returns>la taille du repertoire en bytes</returns>
-        public long GetDirSize(string pPath)
-        {
-            try
-            {
-                return Directory.EnumerateFiles(pPath).Sum(x => new FileInfo(x).Length)
-                    +
-                       Directory.EnumerateDirectories(pPath).Sum(x => GetDirSize(x));
-            }
-            catch
-            {
-                return 0L;
-            }
+            using Stream lSource = File.OpenRead(pSourcePath);
+            using Stream lDestination = File.Create(pDestinationPath);
+            await lSource.CopyToAsync(lDestination);
         }
     }
 }

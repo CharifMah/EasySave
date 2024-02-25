@@ -11,7 +11,7 @@ namespace EasySaveGUI.UserControls
     /// </summary>
     public partial class JobMenuControl : UserControl
     {
-        private MainWindow _MainWindow;
+        private MainWindow? _MainWindow;
         public JobMenuControl()
         {
             InitializeComponent();
@@ -23,7 +23,7 @@ namespace EasySaveGUI.UserControls
         {
             if (_MainWindow.MenuPage.JobUsr.JobsList.SelectedItems.Count > 0)
             {
-                Button lButton = sender as Button;
+                Button? lButton = sender as Button;
                 lButton.IsEnabled = false;
                 System.Collections.IList lJobs = _MainWindow.MenuPage.JobUsr.JobsList.SelectedItems;
 

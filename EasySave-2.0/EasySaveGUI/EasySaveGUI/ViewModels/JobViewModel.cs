@@ -123,7 +123,7 @@ namespace EasySaveGUI.ViewModels
         /// </summary>
         /// <param name="IsDefaultFile"> Indique si le fichier par défaut doit être chargé </param>
         /// <param name="pPath"> Chemin du fichier à charger, vide pour le fichier par défaut </param>
-        public void LoadJobs(bool IsDefaultFile = true, string pPath = null)
+        public void LoadJobs(bool IsDefaultFile = true, string? pPath = null)
         {
             if (IsDefaultFile)
                 _jobManager = CSettings.Instance.LoadJobsFile();

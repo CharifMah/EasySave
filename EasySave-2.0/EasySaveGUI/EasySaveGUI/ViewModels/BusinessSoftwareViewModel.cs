@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Models;
 using System.Collections.ObjectModel;
 
-namespace ViewModels
+namespace EasySaveGUI.ViewModels
 {
     public class BusinessSoftwareViewModel : BaseViewModel
     {

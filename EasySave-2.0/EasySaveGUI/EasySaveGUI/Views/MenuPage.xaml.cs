@@ -1,16 +1,12 @@
-﻿using AvalonDock.Layout;
+﻿using AvalonDock;
 using EasySaveGUI.UserControls;
+using EasySaveGUI.ViewModels;
 using LogsModels;
 using Models;
-using Models.Backup;
 using OpenDialog;
-using Ressources;
 using Stockage.Logs;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModels;
 
 namespace EasySaveGUI.Views
 {
@@ -28,26 +24,11 @@ namespace EasySaveGUI.Views
             InitializeComponent();
             _MainVm = pMainVm;
             DataContext = _MainVm;
-            ListElements.Content = new JobMenuControl();
-            LayoutAnchorableCreateJob.IsVisible = false;
+            _MainVm.LayoutVm.ElementsContent = new JobMenuControl();
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
 
-            LayoutAnchorableCreateJob.ToggleAutoHide();
-            ConfigInfoDocument.Close();
             JobsListDocument.IsSelected = true;
-        }
-
-        private void MenuButtons_MouseClick(object sender, RoutedEventArgs e)
-        {
-            ListElements.Show();
-            Button lButton = sender as Button;
-            if (lButton.Content == Strings.Config)
-                ListElements.Content = new ConfigMenuControl();
-            if (lButton.Content == Strings.Settings)
-                ListElements.Content = new OptionsMenuControl();
-            if (lButton.Content == Strings.Jobs)
-                ListElements.Content = new JobMenuControl();
         }
 
         public void ClearLists()
@@ -58,23 +39,6 @@ namespace EasySaveGUI.Views
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
         }
-
-        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            Grid lGrid = sender as Grid;
-
-            if (lGrid.ActualWidth >= lGrid.ActualHeight)
-            {
-                HorizontalMenu.Visibility = Visibility.Visible;
-                VerticalMenu.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                VerticalMenu.Visibility = Visibility.Visible;
-                HorizontalMenu.Visibility = Visibility.Hidden;
-            }
-        }
-
 
         private void ListLogs_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
         {
@@ -90,7 +54,7 @@ namespace EasySaveGUI.Views
 
         private void OpenLogButton_Click(object sender, RoutedEventArgs e)
         {
-            CDialog.ReadFile("",null,CSettings.Instance.LogDefaultFolderPath,true);
+            CDialog.ReadFile("", null, CSettings.Instance.LogDefaultFolderPath, true);
         }
     }
 }

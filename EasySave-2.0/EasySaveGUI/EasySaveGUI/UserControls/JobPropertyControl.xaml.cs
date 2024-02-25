@@ -1,7 +1,7 @@
-﻿using OpenDialog;
+﻿using EasySaveGUI.ViewModels;
+using OpenDialog;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModels;
 
 namespace EasySaveGUI.UserControls
 {
@@ -17,14 +17,13 @@ namespace EasySaveGUI.UserControls
             InitializeComponent();
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
-
+            DataContext = _MainVm;
         }
 
         private void TextBoxDirectory_Error(object sender, ValidationErrorEventArgs e)
         {
             _MainVm.PopupVm.Message = e.Error.ErrorContent.ToString();
             _MainWindow.MenuPage.PopupError.Show();
-
         }
 
         private void FolderSourcePropertyButton_Click(object sender, RoutedEventArgs e)

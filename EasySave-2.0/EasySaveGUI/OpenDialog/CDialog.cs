@@ -14,7 +14,7 @@ namespace OpenDialog
         /// </summary>
         /// <param name="pDescription">Description for the interface</param>
         /// <returns>return the selected file full path</returns>
-        public static string ReadFile(string pDescription, Regex pRegexExtentions = null, string pCurrentFolder = null,bool pOpenFile = false)
+        public static string ReadFile(string pDescription, Regex? pRegexExtensions = null, string? pCurrentFolder = null, bool pOpenFile = false)
         {
 
             string lSelectedFile = null;
@@ -28,7 +28,7 @@ namespace OpenDialog
                        parent: null,
                        action: FileChooserAction.Open);
                 lFileDialog.FontOptions = null;
-                if (pRegexExtentions != null && pRegexExtentions.ToString().Contains("json"))
+                if (pRegexExtensions != null && pRegexExtensions.ToString().Contains("json"))
                 {
                     FileFilter lFilter = new FileFilter();
                     lFilter.Name = pDescription;
@@ -69,7 +69,7 @@ namespace OpenDialog
             return lSelectedFile;
         }
 
-        public static string ReadFolder(string pDescription = "",string pPath = null)
+        public static string ReadFolder(string pDescription = "", string? pPath = null)
         {
             string lSelectedFolder = null;
 

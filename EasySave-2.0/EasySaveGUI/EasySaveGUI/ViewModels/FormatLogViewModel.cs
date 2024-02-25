@@ -1,6 +1,6 @@
 ﻿using Models;
 
-namespace ViewModels
+namespace EasySaveGUI.ViewModels
 {
     public class FormatLogViewModel : BaseViewModel
     {
@@ -9,9 +9,9 @@ namespace ViewModels
         /// <summary>
         /// Classe model FormatLog
         /// </summary>
-        public CFormatLog FormatLog 
-        { 
-            get => _FormatLog; 
+        public CFormatLog FormatLog
+        {
+            get => _FormatLog;
             set { _FormatLog = value; NotifyPropertyChanged(); }
         }
 
@@ -30,7 +30,7 @@ namespace ViewModels
         public bool SetFormatLog(string pFormatLogInfo)
         {
             bool result = _FormatLog.SetFormatLog(pFormatLogInfo);
-            Models.CSettings.Instance.SaveSettings();
+            CSettings.Instance.SaveSettings();
             NotifyPropertyChanged("FormatLog");
             return result;
         }

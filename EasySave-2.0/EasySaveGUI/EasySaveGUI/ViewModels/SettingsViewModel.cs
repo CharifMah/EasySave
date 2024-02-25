@@ -1,6 +1,6 @@
 ﻿using Models;
 
-namespace ViewModels
+namespace EasySaveGUI.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
@@ -10,6 +10,19 @@ namespace ViewModels
             get
             {
                 return CSettings.Instance;
+            }
+        }
+
+        public string CurrentLayout
+        {
+            get
+            {
+                return CSettings.Instance.Theme.CurrentLayout;
+            }
+            set
+            {
+                CSettings.Instance.Theme.CurrentLayout = value;
+                NotifyPropertyChanged();
             }
         }
 

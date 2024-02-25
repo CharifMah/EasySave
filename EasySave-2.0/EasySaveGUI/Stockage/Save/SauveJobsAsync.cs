@@ -20,14 +20,14 @@ namespace Stockage.Save
         /// Constructeur de SauveJobs
         /// </summary>
         /// <param name="pPath">Le chemin du dossier</param>
-        public SauveJobsAsync(string pPath = null, string pFormatLog = "json",Stopwatch pStopwatch = null) : base(pPath)
+        public SauveJobsAsync(string pPath = null, string pFormatLog = "json", Stopwatch pStopwatch = null) : base(pPath)
         {
             _LogStates = new List<CLogState>();
             _LogState = new CLogState();
             _LogState.TotalTransferedFile = 0;
             _FormatLog = pFormatLog;
             if (pStopwatch != null)
-            _StopWatch = pStopwatch;
+                _StopWatch = pStopwatch;
             else
                 _StopWatch = Stopwatch.StartNew();
         }

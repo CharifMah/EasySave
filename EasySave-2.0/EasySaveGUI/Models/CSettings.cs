@@ -15,17 +15,24 @@ namespace Models
 
         private ICharge _loadSettings;
         private ISauve _saveSettings;
-
+        private string _LayoutDefaultFolderPath;
         private string _JobDefaultConfigPath;
+        private string _LogDefaultFolderPath;
+        [DataMember]
+        private CTheme _Theme;
         [DataMember]
         private string _JobConfigFolderPath;
         [DataMember]
         private CLangue _Langue;
         [DataMember]
         private CFormatLog _FormatLog;
-        private string _LogDefaultFolderPath;
+        [DataMember]
+        private Dictionary<string, CBusinessSoftware> _BusinessSoftwares = new Dictionary<string, CBusinessSoftware>();
+
+        private static CSettings? _Instance;
         #endregion
 
+        #region Property
         /// <summary>
         /// Langue préférer de l'utilisateur
         /// </summary>
@@ -35,6 +42,11 @@ namespace Models
         /// Format de logs
         /// </summary>
         public CFormatLog FormatLog { get => _FormatLog; set => _FormatLog = value; }
+
+        /// <summary>
+        /// Logiciels métiers
+        /// </summary>
+        public Dictionary<string, CBusinessSoftware> BusinessSoftwares { get => _BusinessSoftwares; set => _BusinessSoftwares = value; }
 
         /// <summary>
         /// Emplacement du répertoire dans lequel le fichier de configuration du travail est stocké
@@ -51,10 +63,10 @@ namespace Models
         /// Emplacement par défaut du répertoire dans lequel le fichier de configuration du travail est stocké
         /// </summary>
         public string JobDefaultConfigPath { get => _JobDefaultConfigPath; }
+        public string LogDefaultFolderPath { get => _LogDefaultFolderPath; set => _LogDefaultFolderPath = value; }
+        public string LayoutDefaultFolderPath { get => _LayoutDefaultFolderPath; set => _LayoutDefaultFolderPath = value; }
+        public CTheme Theme { get => _Theme; set => _Theme = value; }
 
-
-        #region CTOR
-        private static CSettings? _Instance;
         public static CSettings Instance
         {
             get
@@ -65,7 +77,10 @@ namespace Models
             }
         }
 
-        public string LogDefaultFolderPath { get => _LogDefaultFolderPath; set => _LogDefaultFolderPath = value; }
+
+        #endregion
+
+        #region CTOR
 
         /// <summary>
         /// Constructeur Settings initialise le path par default de la configuration des jobs
@@ -74,6 +89,7 @@ namespace Models
         {
             _JobDefaultConfigPath = Path.Combine(Environment.CurrentDirectory, "Jobs", "JobManager.json");
             _LogDefaultFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EasySave");
+            _LayoutDefaultFolderPath = Path.Combine(_LogDefaultFolderPath, "Layout");
         }
 
         #endregion
@@ -106,6 +122,12 @@ namespace Models
                     _Instance.Langue = new CLangue();
                 if (_Instance.FormatLog == null)
                     _Instance.FormatLog = new CFormatLog();
+                if(_Instance.BusinessSoftwares == null)
+                    _Instance.BusinessSoftwares = new Dictionary<string, CBusinessSoftware>();
+                if (_Instance.Theme == null)
+                {
+                    _Instance._Theme = new CTheme();
+                }
             }
         }
 

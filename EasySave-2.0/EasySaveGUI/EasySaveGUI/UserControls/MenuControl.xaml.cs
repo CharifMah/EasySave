@@ -1,32 +1,37 @@
 ﻿using EasySaveGUI.ViewModels;
-using Models;
+using Ressources;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace EasySaveGUI.UserControls
 {
     /// <summary>
-    /// Interaction logic for OptionsMenuControl.xaml
+    /// Interaction logic for MenuControl.xaml
     /// </summary>
-    public partial class OptionsMenuControl : UserControl
+    public partial class MenuControl : UserControl
     {
         private MainWindow _MainWindow;
         private MainViewModel _MainVm;
-        public OptionsMenuControl()
+        public MenuControl()
         {
             InitializeComponent();
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
         }
 
-        private void ApplyDefaultStyleButton_Click(object sender, RoutedEventArgs e)
+        private void MenuButtons_MouseClick(object sender, RoutedEventArgs e)
         {
-            _MainWindow.RefreshMenu(false);
-        }
 
-        private void Clear_Click(object sender, RoutedEventArgs e)
-        {
-            _MainWindow.MenuPage.ClearLists();
+            Button lButton = sender as Button;
+            if (lButton.Content == Strings.Settings)
+                _MainVm.LayoutVm.ElementsContent.Content = new ConfigMenuControl();
+            if (lButton.Content == Strings.Preference)
+                _MainVm.LayoutVm.ElementsContent.Content = new OptionsMenuControl();
+            if (lButton.Content == Strings.Jobs)
+                _MainVm.LayoutVm.ElementsContent.Content = new JobMenuControl();
+
+            _MainWindow.MenuPage.ListElements.Show();
+            _MainWindow.MenuPage.ListElements.IsActive = true;
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -43,11 +48,6 @@ namespace EasySaveGUI.UserControls
                 VerticalMenu.Visibility = Visibility.Visible;
                 HorizontalMenu.Visibility = Visibility.Hidden;
             }
-        }
-
-        private void SaveLayoutButton_Click(object sender, RoutedEventArgs e)
-        {
-            _MainVm.LayoutVm.SaveLayout(_MainWindow.MenuPage.Dock, CSettings.Instance.Theme.CurrentTheme);
         }
     }
 }

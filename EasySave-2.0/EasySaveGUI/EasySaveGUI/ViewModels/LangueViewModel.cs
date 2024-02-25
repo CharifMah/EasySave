@@ -1,6 +1,6 @@
 ﻿using Models;
 
-namespace ViewModels
+namespace EasySaveGUI.ViewModels
 {
     /// <summary>
     /// Classe View Model de la langue
@@ -33,7 +33,7 @@ namespace ViewModels
         public bool SetLanguage(string pCultureInfo)
         {
             bool result = _Langue.SetLanguage(pCultureInfo);
-            Models.CSettings.Instance.SaveSettings();
+            CSettings.Instance.SaveSettings();
             NotifyPropertyChanged("Langue");
             return result;
         }

@@ -20,7 +20,7 @@
                                 <Rectangle
                                     x:Name="PART_Indicator"
                                     HorizontalAlignment="Left"
-                                    Fill="#9FFF73"
+                                    Fill="{DynamicResource LoadingBarColor}"
                                     RadiusX="10"
                                     RadiusY="10" />
                             </Grid>

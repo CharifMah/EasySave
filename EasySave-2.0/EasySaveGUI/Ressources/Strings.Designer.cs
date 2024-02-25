@@ -90,6 +90,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string ByteCopied {
+            get {
+                return ResourceManager.GetString("ByteCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string bytes {
             get {
                 return ResourceManager.GetString("bytes", resourceCulture);
@@ -180,6 +189,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string CountLogs {
+            get {
+                return ResourceManager.GetString("CountLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string CreateJob {
             get {
                 return ResourceManager.GetString("CreateJob", resourceCulture);
@@ -197,6 +215,15 @@ namespace Ressources {
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string DailyLogs {
+            get {
+                return ResourceManager.GetString("DailyLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string Date {
             get {
@@ -405,6 +432,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string LoadDefaultFile {
+            get {
+                return ResourceManager.GetString("LoadDefaultFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Loaded {
             get {
                 return ResourceManager.GetString("Loaded", resourceCulture);
@@ -431,6 +467,42 @@ namespace Ressources {
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string LogState {
+            get {
+                return ResourceManager.GetString("LogState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MenuJob {
+            get {
+                return ResourceManager.GetString("MenuJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MenuPreference {
+            get {
+                return ResourceManager.GetString("MenuPreference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MenuSettings {
+            get {
+                return ResourceManager.GetString("MenuSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string MultipleIndexes {
             get {
@@ -477,6 +549,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string OtherLogs {
+            get {
+                return ResourceManager.GetString("OtherLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PasteClipboard {
             get {
                 return ResourceManager.GetString("PasteClipboard", resourceCulture);
@@ -495,6 +576,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string Paths {
+            get {
+                return ResourceManager.GetString("Paths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PossibleTypeBackup {
             get {
                 return ResourceManager.GetString("PossibleTypeBackup", resourceCulture);
@@ -503,6 +593,33 @@ namespace Ressources {
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string Preference {
+            get {
+                return ResourceManager.GetString("Preference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Progress {
+            get {
+                return ResourceManager.GetString("Progress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Property {
+            get {
+                return ResourceManager.GetString("Property", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string Quit {
             get {
@@ -557,6 +674,15 @@ namespace Ressources {
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string SaveLayout {
+            get {
+                return ResourceManager.GetString("SaveLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string Select {
             get {
@@ -630,6 +756,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string Size {
+            get {
+                return ResourceManager.GetString("Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SourceDir {
             get {
                 return ResourceManager.GetString("SourceDir", resourceCulture);
@@ -701,6 +836,15 @@ namespace Ressources {
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string TransfertTime {
+            get {
+                return ResourceManager.GetString("TransfertTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string Type {
             get {

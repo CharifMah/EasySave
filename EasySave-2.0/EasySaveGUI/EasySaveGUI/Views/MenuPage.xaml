@@ -33,16 +33,18 @@
             x:Name="Dock"
             Grid.Row="1"
             Grid.Column="1"
-            Background="#EDF5FD">
+            Background="#EDF5FD"
+            Foreground="Red">
             <DockingManager.Theme>
                 <Vs2013LightTheme />
             </DockingManager.Theme>
             <!--  Content  -->
             <DockingManager.Layout>
                 <LayoutRoot>
+
                     <LayoutPanel Orientation="Vertical">
+
                         <LayoutAnchorablePane
-                            AllowDuplicateContent="False"
                             DockHeight="70"
                             DockMinHeight="70"
                             DockMinWidth="80"
@@ -51,67 +53,9 @@
                                 Title="Menu"
                                 CanAutoHide="False"
                                 CanClose="False"
-                                CanHide="False">
-
-                                <Grid SizeChanged="Grid_SizeChanged">
-                                    <Grid
-                                        x:Name="HorizontalMenu"
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        Visibility="Visible">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Button
-                                            Grid.Column="0"
-                                            Click="MenuButtons_MouseClick"
-                                            Content="{x:Static Ressources:Strings.Jobs}"
-                                            Style="{StaticResource CustomButtonCreate}" />
-                                        <Button
-                                            Grid.Column="1"
-                                            Click="MenuButtons_MouseClick"
-                                            Content="{x:Static Ressources:Strings.Settings}"
-                                            Style="{StaticResource CustomButtonSettings}" />
-                                        <Button
-                                            Grid.Column="2"
-                                            Click="MenuButtons_MouseClick"
-                                            Content="{x:Static Ressources:Strings.Config}"
-                                            Style="{StaticResource CustomButtonFile}" />
-                                    </Grid>
-
-                                    <Grid
-                                        x:Name="VerticalMenu"
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        Visibility="Hidden">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
-
-                                        <Button
-                                            Grid.Row="0"
-                                            Click="MenuButtons_MouseClick"
-                                            Content="{x:Static Ressources:Strings.Jobs}"
-                                            Style="{StaticResource CustomButtonCreate}" />
-                                        <Button
-                                            Grid.Row="1"
-                                            Click="MenuButtons_MouseClick"
-                                            Content="{x:Static Ressources:Strings.Settings}"
-                                            Style="{StaticResource CustomButtonSettings}" />
-                                        <Button
-                                            Grid.Row="2"
-                                            Click="MenuButtons_MouseClick"
-                                            Content="{x:Static Ressources:Strings.Config}"
-                                            Style="{StaticResource CustomButtonFile}" />
-                                    </Grid>
-
-                                </Grid>
-
+                                CanHide="False"
+                                ContentId="Menu">
+                                <Usr:MenuControl />
                             </LayoutAnchorable>
                         </LayoutAnchorablePane>
 
@@ -130,7 +74,11 @@
                                     x:Name="ListElements"
                                     Title="Elements"
                                     CanAutoHide="False"
-                                    CanClose="False" />
+                                    CanClose="False"
+                                    ContentId="Elements">
+                                    <ContentPresenter Content="{Binding LayoutVm.ElementsContent}" />
+
+                                </LayoutAnchorable>
 
                             </LayoutAnchorablePane>
 
@@ -146,7 +94,7 @@
 
                                             <LayoutDocument
                                                 x:Name="JobsListDocument"
-                                                Title="Jobs"
+                                                Title="{x:Static Ressources:Strings.Jobs}"
                                                 CanClose="False"
                                                 IsSelected="True">
                                                 <Usr:JobListControl x:Name="JobUsr" />
@@ -162,9 +110,9 @@
                                                     AutoGenerateColumns="False"
                                                     ItemsSource="{Binding JobVm.JobsRunning}">
                                                     <DataGrid.Columns>
-                                                        <DataGridTextColumn Binding="{Binding Path=Name}" Header="Nom" />
+                                                        <DataGridTextColumn Binding="{Binding Path=Name}" Header="{x:Static Ressources:Strings.Name}" />
 
-                                                        <DataGridTemplateColumn Header="Progress">
+                                                        <DataGridTemplateColumn Header="{x:Static Ressources:Strings.Progress}">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
                                                                     <Grid>
@@ -191,7 +139,7 @@
 
 
                                                         <!--  LogSstate Column Datagrid JobsRunning  -->
-                                                        <DataGridTemplateColumn Header="LogState">
+                                                        <DataGridTemplateColumn Header="{x:Static Ressources:Strings.LogState}">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <!--  LogSstate  -->
                                                                 <DataTemplate>
@@ -213,7 +161,8 @@
                                                                         <StackPanel Orientation="Horizontal">
 
                                                                             <TextBlock>
-                                                                                <Run FontWeight="DemiBold" Text="Octets copiés : " />
+                                                                                <Run FontWeight="DemiBold" Text="{x:Static Ressources:Strings.ByteCopied}" />
+                                                                                <Run FontWeight="DemiBold" Text=" : " />
                                                                                 <Run Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
 
                                                                                 <Run
@@ -225,13 +174,13 @@
                                                                         </StackPanel>
 
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="Bold" Text="SourceDirectory : " />
+                                                                            <TextBlock FontWeight="DemiBold" Text="{x:Static Ressources:Strings.SourceDirectory}" />
 
                                                                             <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory, Mode=OneWay}" />
                                                                         </StackPanel>
 
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="DemiBold" Text="TargetDirectory : " />
+                                                                            <TextBlock FontWeight="DemiBold" Text="{x:Static Ressources:Strings.TargetDirectory}" />
 
                                                                             <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory, Mode=OneWay}" />
                                                                         </StackPanel>
@@ -248,9 +197,9 @@
                                                             </DataGridTemplateColumn.CellTemplate>
                                                         </DataGridTemplateColumn>
 
-                                                        <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="Répertoire source" />
+                                                        <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="{x:Static Ressources:Strings.SourceDir}" />
 
-                                                        <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="Répertoire cible" />
+                                                        <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="{x:Static Ressources:Strings.TargetDir}" />
 
                                                     </DataGrid.Columns>
 
@@ -262,7 +211,8 @@
                                             <LayoutDocument
                                                 x:Name="ConfigInfoDocument"
                                                 Title="ConfigInfo"
-                                                CanClose="True">
+                                                CanClose="False"
+                                                ContentId="ConfigInfoDocument">
                                                 <Usr:ConfigInfoControl />
 
                                             </LayoutDocument>
@@ -279,8 +229,7 @@
 
                                             <!--  Property Pane  -->
                                             <LayoutAnchorable
-                                                x:Name="PropertyPane"
-                                                Title="Property"
+                                                Title="{x:Static Ressources:Strings.Property}"
                                                 AutoHideMinWidth="150"
                                                 CanClose="False"
                                                 CanHide="False"
@@ -293,12 +242,12 @@
                                             <!--  CreateJob Pane  -->
                                             <LayoutAnchorable
                                                 x:Name="LayoutAnchorableCreateJob"
-                                                Title="CreateJob"
+                                                Title="{x:Static Ressources:Strings.CreateJob}"
                                                 AutoHideMinWidth="150"
                                                 CanClose="False"
-                                                CanHide="True"
+                                                CanHide="False"
                                                 CanShowOnHover="False">
-                                                <Usr:CreateJobControl />
+                                                <Usr:CreateJobControl x:Name="CreateJob" />
                                             </LayoutAnchorable>
 
                                         </LayoutAnchorablePane>
@@ -317,13 +266,14 @@
                                     <LayoutAnchorablePane>
 
                                         <LayoutAnchorable
-                                            Title="Daily Logs"
+                                            Title="{x:Static Ressources:Strings.DailyLogs}"
                                             CanClose="False"
                                             CanHide="False">
 
                                             <DockPanel x:Name="DockPanelListDailyLogs">
                                                 <TextBlock DockPanel.Dock="Top" FontWeight="DemiBold">
-                                                    <Run Text="Count Logs : " />
+                                                    <Run Text="{x:Static Ressources:Strings.CountLogs}" />
+                                                    <Run Text=" : " />
                                                     <Run Text="{Binding Datas.Count, Mode=OneWay}" />
 
 
@@ -334,8 +284,18 @@
                                                     Style="{StaticResource CustomButtonLogFile}" />
                                                 <DataGrid
                                                     x:Name="ListLogsDaily"
+                                                    AutoGenerateColumns="False"
                                                     IsReadOnly="True"
-                                                    ItemsSource="{Binding Datas, Mode=OneWay}" />
+                                                    ItemsSource="{Binding Datas, Mode=OneWay}">
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Binding="{Binding TransfertTime}" Header="{x:Static Ressources:Strings.TransfertTime}" />
+                                                        <DataGridTextColumn Binding="{Binding Name}" Header="{x:Static Ressources:Strings.Name}" />
+                                                        <DataGridTextColumn Binding="{Binding Date}" Header="{x:Static Ressources:Strings.Date}" />
+                                                        <DataGridTextColumn Binding="{Binding TotalSize}" Header="{x:Static Ressources:Strings.Size}" />
+                                                        <DataGridTextColumn Binding="{Binding SourceDirectory}" Header="{x:Static Ressources:Strings.SourceDir}" />
+                                                        <DataGridTextColumn Binding="{Binding TargetDirectory}" Header="{x:Static Ressources:Strings.TargetDir}" />
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
                                             </DockPanel>
 
                                         </LayoutAnchorable>
@@ -344,13 +304,14 @@
                                     <LayoutAnchorablePane>
 
                                         <LayoutAnchorable
-                                            Title="All Logs"
+                                            Title="{x:Static Ressources:Strings.OtherLogs}"
                                             CanClose="False"
                                             CanHide="False">
 
                                             <DockPanel x:Name="DockPanelListLogs">
                                                 <TextBlock DockPanel.Dock="Top" FontWeight="DemiBold">
-                                                    <Run Text="Count Logs : " />
+                                                    <Run Text="{x:Static Ressources:Strings.CountLogs}" />
+                                                    <Run Text=" : " />
                                                     <Run Text="{Binding Datas.Count, Mode=OneWay}" />
                                                 </TextBlock>
                                                 <ListBox x:Name="ListLogs" ItemsSource="{Binding Datas, Mode=OneWay}" />
@@ -368,6 +329,7 @@
                         </LayoutPanel>
 
                     </LayoutPanel>
+
                 </LayoutRoot>
             </DockingManager.Layout>
 

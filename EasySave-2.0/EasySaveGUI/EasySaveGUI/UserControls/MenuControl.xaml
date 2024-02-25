@@ -1,0 +1,78 @@
+﻿<UserControl
+    x:Class="EasySaveGUI.UserControls.MenuControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:EasySaveGUI.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid SizeChanged="Grid_SizeChanged">
+        <Grid
+            x:Name="HorizontalMenu"
+            Grid.Row="1"
+            Grid.Column="0"
+            Visibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                Click="MenuButtons_MouseClick"
+                Content="{x:Static Ressources:Strings.Jobs}"
+                Style="{StaticResource CustomButtonJobs}"
+                ToolTip="{x:Static Ressources:Strings.MenuJob}" />
+
+            <Button
+                Grid.Column="1"
+                Click="MenuButtons_MouseClick"
+                Content="{x:Static Ressources:Strings.Preference}"
+                Style="{StaticResource CustomButtonPreference}"
+                ToolTip="{x:Static Ressources:Strings.MenuPreference}" />
+            <Button
+                Grid.Column="2"
+                Click="MenuButtons_MouseClick"
+                Content="{x:Static Ressources:Strings.Settings}"
+                Style="{StaticResource CustomButtonSettings}"
+                ToolTip="{x:Static Ressources:Strings.MenuSettings}" />
+        </Grid>
+
+        <Grid
+            x:Name="VerticalMenu"
+            Grid.Row="1"
+            Grid.Column="0"
+            Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button
+                Grid.Row="0"
+                Click="MenuButtons_MouseClick"
+                Content="{x:Static Ressources:Strings.Jobs}"
+                Style="{StaticResource CustomButtonJobs}"
+                ToolTip="{x:Static Ressources:Strings.MenuJob}" />
+            <Button
+                Grid.Row="1"
+                Click="MenuButtons_MouseClick"
+                Content="{x:Static Ressources:Strings.Preference}"
+                Style="{StaticResource CustomButtonPreference}"
+                ToolTip="{x:Static Ressources:Strings.MenuPreference}" />
+            <Button
+                Grid.Row="2"
+                Click="MenuButtons_MouseClick"
+                Content="{x:Static Ressources:Strings.Settings}"
+                Style="{StaticResource CustomButtonSettings}"
+                ToolTip="{x:Static Ressources:Strings.MenuSettings}" />
+        </Grid>
+
+    </Grid>
+
+</UserControl>

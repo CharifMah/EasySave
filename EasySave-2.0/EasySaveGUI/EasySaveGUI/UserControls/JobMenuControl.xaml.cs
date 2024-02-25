@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModels;
 
 namespace EasySaveGUI.UserControls
 {
@@ -13,13 +12,11 @@ namespace EasySaveGUI.UserControls
     public partial class JobMenuControl : UserControl
     {
         private MainWindow _MainWindow;
-        private MainViewModel _MainVm;
         public JobMenuControl()
         {
             InitializeComponent();
 
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
-            _MainVm = _MainWindow.MainVm;
         }
 
         private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
@@ -34,7 +31,7 @@ namespace EasySaveGUI.UserControls
                 _MainWindow.MenuPage.ClearLists();
 
                 _MainWindow.MenuPage.JobsRunningDocument.IsActive = true;
-                await _MainVm.JobVm.RunJobs(lSelectedJobs);
+                await _MainWindow.MainVm.JobVm.RunJobs(lSelectedJobs);
 
                 lButton.IsEnabled = true;
             }
@@ -48,13 +45,8 @@ namespace EasySaveGUI.UserControls
 
                 List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
 
-                _MainVm.JobVm.DeleteJobs(lSelectedJobs);
+                _MainWindow.MainVm.JobVm.DeleteJobs(lSelectedJobs);
             }
-        }
-
-        private void CreateJobButton_Click(object sender, RoutedEventArgs e)
-        {
-            _MainWindow.MenuPage.LayoutAnchorableCreateJob.Show();
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

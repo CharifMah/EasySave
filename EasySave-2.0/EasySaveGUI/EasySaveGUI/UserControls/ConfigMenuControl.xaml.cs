@@ -1,12 +1,10 @@
-﻿using AvalonDock.Layout;
-using Gtk;
+﻿using EasySaveGUI.ViewModels;
 using Models;
 using OpenDialog;
 using Ressources;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModels;
 using Grid = System.Windows.Controls.Grid;
 
 namespace EasySaveGUI.UserControls
@@ -38,25 +36,12 @@ namespace EasySaveGUI.UserControls
             {
                 CSettings.Instance.SetJobConfigPath(lConfigPath);
                 _MainVm.JobVm.LoadJobs(false, lConfigPath);
-            } 
+            }
         }
 
         private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.SaveJobs();
-        }
-
-        private void InfoConfigButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!_MainWindow.MenuPage.JobsPaneGroup.Children.Contains(_MainWindow.MenuPage.ConfigInfoDocument))
-            {
-                _MainWindow.MenuPage.ConfigInfoDocument.Dock();
-                _MainWindow.MenuPage.ConfigInfoDocument.Content = new ConfigInfoControl();
-            }
-            else
-            {
-                _MainWindow.MenuPage.ConfigInfoDocument.IsActive = true;
-            }
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

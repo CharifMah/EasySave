@@ -38,6 +38,7 @@ namespace EasySaveGUI.UserControls
             {
                 _MainVm.JobVm.CreateBackupJob(new CJob(TextBoxJobName.Text,
                     TextBoxJobSourceDirectory.Text, TextBoxJobTargetDirectory.Text, (ETypeBackup)ComboboxCreateJob.SelectedIndex));
+                _MainWindow.MenuPage.ShowValidation();
             }
         }
 
@@ -81,6 +82,7 @@ namespace EasySaveGUI.UserControls
         private void SaveConfigFileButton_Click(object sender, RoutedEventArgs e)
         {
             _MainVm.JobVm.SaveJobs();
+            _MainWindow.MenuPage.ShowValidation();
         }
 
         #endregion

@@ -78,7 +78,7 @@
             </TextBlock>
 
             <ComboBox x:Name="ComboboxCreateJob">
-                <ComboBoxItem>COMPLET</ComboBoxItem>
+                <ComboBoxItem IsSelected="True">COMPLET</ComboBoxItem>
                 <ComboBoxItem>DIFFERENTIEL</ComboBoxItem>
             </ComboBox>
             <Separator Height="20" />

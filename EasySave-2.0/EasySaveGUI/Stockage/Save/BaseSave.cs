@@ -10,11 +10,13 @@ namespace Stockage.Save
     /// </summary>
     public abstract class BaseSave : ISauve
     {
-        protected string _path;
+        private string _path;
 
         private readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
 
         public JsonSerializerSettings Options => _options;
+
+        public string FolderPath { get => _path; set => _path = value; }
 
         /// <summary>
         /// Sauvegarde

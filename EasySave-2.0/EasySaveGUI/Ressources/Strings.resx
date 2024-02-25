@@ -362,4 +362,7 @@
   <data name="DefaultLayout" xml:space="preserve">
     <value></value>
   </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

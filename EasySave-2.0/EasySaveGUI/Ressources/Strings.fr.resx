@@ -382,4 +382,7 @@
   <data name="DefaultLayout" xml:space="preserve">
     <value>Présentation par défaut</value>
   </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Tout sélectionner</value>
+  </data>
 </root>

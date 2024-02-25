@@ -10,6 +10,7 @@ namespace Stockage.Logs
     public abstract class BaseLogger<T> : ILogger<T>
     {
         private ObservableCollection<T> _Datas;
+        private SauveCollection _Save;
         /// <summary>
         /// Collection de données observables
         /// </summary>
@@ -17,6 +18,7 @@ namespace Stockage.Logs
         protected BaseLogger()
         {
             _Datas = new ObservableCollection<T>();
+            _Save = new SauveCollection("");
         }
         /// <summary>
         /// Méthode de logging des données
@@ -31,17 +33,12 @@ namespace Stockage.Logs
             {
                 string lAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 string lLogsFolder = Path.Combine(lAppDataFolder, "EasySave");
-                string lPath = string.IsNullOrEmpty(pFolderName) ? lLogsFolder : Path.Combine(lLogsFolder, pFolderName);
 
-
-                ISauve lSave = new SauveCollection(lPath);
-
-                lSave.Sauver(pData, pFileName, pAppend, pExtension);
+                _Save.FolderPath = string.IsNullOrEmpty(pFolderName) ? lLogsFolder : Path.Combine(lLogsFolder, pFolderName);
+                _Save.Sauver(pData, pFileName, pAppend, pExtension);
             }
 
-
             _Datas.Add(pData);
-
         }
         /// <summary>
         /// Vide la collection de données

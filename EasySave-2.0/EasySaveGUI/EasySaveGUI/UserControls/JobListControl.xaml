@@ -14,38 +14,43 @@
     <UserControl.Resources>
         <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
     </UserControl.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Click="SelectAllMenuItem_Click" Header="{x:Static Ressources:Strings.SelectAll}" />
+        </Menu>
+        <ListBox
+            x:Name="JobsList"
+            ItemsSource="{Binding JobVm.Jobs, Mode=OneWay}"
+            ScrollViewer.CanContentScroll="False"
+            SelectionChanged="JobsList_SelectionChanged"
+            SelectionMode="Multiple">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <TextBlock>
+                                <Run Text="{x:Static Ressources:Strings.Name}" />
+                                <Run Text=" : " />
+                                <Run Text="{Binding Name, Mode=OneWay}" />
+                            </TextBlock>
+                            <TextBlock>
+                                <Run Text="{x:Static Ressources:Strings.SourceDirectory}" />
+                                <Run Text="{Binding SourceDirectory, Mode=OneWay}" />
+                            </TextBlock>
+                            <TextBlock>
+                                <Run Text="{x:Static Ressources:Strings.TargetDirectory}" />
+                                <Run Text="{Binding TargetDirectory, Mode=OneWay}" />
+                            </TextBlock>
+                            <TextBlock>
+                                <Run Text="{x:Static Ressources:Strings.Type}" />
+                                <Run Text=" : " />
+                                <Run Text="{Binding BackupType, Mode=OneWay, Converter={StaticResource ETypeBackupConverter}}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </WrapPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
 
-    <ListBox
-        x:Name="JobsList"
-        ItemsSource="{Binding JobVm.Jobs, Mode=OneWay}"
-        ScrollViewer.CanContentScroll="False"
-        SelectionChanged="JobsList_SelectionChanged"
-        SelectionMode="Multiple">
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <WrapPanel Orientation="Horizontal">
-                    <StackPanel>
-                        <TextBlock>
-                            <Run Text="{x:Static Ressources:Strings.Name}" />
-                            <Run Text=" : " />
-                            <Run Text="{Binding Name, Mode=OneWay}" />
-                        </TextBlock>
-                        <TextBlock>
-                            <Run Text="{x:Static Ressources:Strings.SourceDirectory}" />
-                            <Run Text="{Binding SourceDirectory, Mode=OneWay}" />
-                        </TextBlock>
-                        <TextBlock>
-                            <Run Text="{x:Static Ressources:Strings.TargetDirectory}" />
-                            <Run Text="{Binding TargetDirectory, Mode=OneWay}" />
-                        </TextBlock>
-                        <TextBlock>
-                            <Run Text="{x:Static Ressources:Strings.Type}" />
-                            <Run Text=" : " />
-                            <Run Text="{Binding BackupType, Mode=OneWay, Converter={StaticResource ETypeBackupConverter}}" />
-                        </TextBlock>
-                    </StackPanel>
-                </WrapPanel>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
 </UserControl>

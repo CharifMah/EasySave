@@ -21,10 +21,9 @@ namespace EasySaveGUI.ViewModels
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
-        List<CLogDaily?> _LogDailyBuffer = new List<CLogDaily?>();
-        private readonly int _BufferSize = 100;
+        private List<CLogDaily?> _LogDailyBuffer;
         private readonly Timer _Timer;
-        private readonly int flushDelay = 1000;
+        private readonly int _FlushDelay;
 
         private CJob _SelectedJob;
 
@@ -82,17 +81,18 @@ namespace EasySaveGUI.ViewModels
         public JobViewModel()
         {
             _Name = "JobManager";
+            _LogDailyBuffer = new List<CLogDaily?>();
             _Jobs = new ObservableCollection<CJob>();
             _jobsRunning = new ObservableCollection<CJob>();
+            _FlushDelay = 100;
             //Init la classe de sauvegarde avec le chemin definit par l'utilisateur ou celui par default
             if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
                 _SauveCollection = new SauveCollection(new FileInfo(CSettings.Instance.JobDefaultConfigPath).DirectoryName);
             else
                 _SauveCollection = new SauveCollection(CSettings.Instance.JobConfigFolderPath);
 
-            _Timer = new Timer(flushDelay);
-            _Timer.Elapsed += Timer_Elapsed; ;
-            _Timer.AutoReset = false;
+            _Timer = new Timer(_FlushDelay);
+            _Timer.Elapsed += Timer_Elapsed;
         }
 
         #endregion
@@ -192,13 +192,17 @@ namespace EasySaveGUI.ViewModels
                 lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
 
                 CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
-                LogFileDaily(lLogFilesDaily);
+                lock(_LogDailyBuffer)
+                {
+                    LogFileDaily(lLogFilesDaily);
+                }
+              
             });
         }
 
         public void LogFileDaily(CLogDaily pLogDaily)
         {
-            if (pLogDaily.Progress < 99 || _BufferSize >= _LogDailyBuffer.Count)
+            if (pLogDaily.Progress < 99)
             {
                 _LogDailyBuffer.Add(pLogDaily);
             }
@@ -209,7 +213,7 @@ namespace EasySaveGUI.ViewModels
         }
         private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            App.Current.Dispatcher.BeginInvoke(() =>
+            App.Current.Dispatcher.Invoke(() =>
             {
                 foreach (var lLogDaily in _LogDailyBuffer)
                 {

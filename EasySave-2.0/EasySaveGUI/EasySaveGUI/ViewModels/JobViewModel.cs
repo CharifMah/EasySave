@@ -137,7 +137,7 @@ namespace EasySaveGUI.ViewModels
                          lJob.SauveJobs.LogState.EligibleFileCount = lFiles.Count;
 
                          // cm - Lance le job
-                         lErrors = lJob.Run(UpdateLog);
+                         lJob.Run(UpdateLog);
 
                          lStopWatch.Stop();
 
@@ -146,15 +146,15 @@ namespace EasySaveGUI.ViewModels
                     {
                         _Timer.Stop();
                         Timer_Elapsed(this, null);
-                    });
 
-                    if (!string.IsNullOrEmpty(lErrors))
-                    {
-                        App.Current.Dispatcher.BeginInvoke(() =>
+                        if (!string.IsNullOrEmpty(lJob.SauveJobs.Errors))
                         {
-                            CLogger<CLogBase>.Instance.StringLogger.Log(lErrors, false);
-                        });
-                    }
+                            App.Current.Dispatcher.BeginInvoke(() =>
+                            {
+                                CLogger<CLogBase>.Instance.StringLogger.Log(lJob.SauveJobs.Errors, false);
+                            });
+                        }
+                    });
 
                     lJob.SauveJobs.LogState.Date = DateTime.Now;
                     lIndex++;

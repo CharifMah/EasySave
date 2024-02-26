@@ -89,20 +89,18 @@ namespace Models.Backup
         /// Lance l'exécution du job de sauvegarde
         /// </summary>
         /// <param name="pSauveJobs">Objet de sauvegarde des données de jobs</param>
-        public string Run(UpdateLogDelegate pUpdateLog)
+        public void Run(UpdateLogDelegate pUpdateLog)
         {
             string lResult = String.Empty;
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:
-                    lResult =  Backup(pUpdateLog);
+                    Backup(pUpdateLog);
                     break;
                 case ETypeBackup.DIFFERENTIEL:
-                    lResult =  Backup(pUpdateLog, true);
+                    Backup(pUpdateLog, true);
                     break;
             }
-
-            return lResult;
         }
 
         /// <summary>
@@ -110,9 +108,8 @@ namespace Models.Backup
         /// </summary>
         /// <param name="pDifferentiel = false">Indique une recopie forcée</param>
         /// <param name="pSauveJobs">Objet de sauvegarde des jobs</param>
-        private string Backup(UpdateLogDelegate pUpdateLog, bool pDifferentiel = false)
+        private void Backup(UpdateLogDelegate pUpdateLog, bool pDifferentiel = false)
         {
-            string lErrors = String.Empty;
             try
             {
                 DirectoryInfo lSourceDir = new DirectoryInfo(_SourceDirectory);
@@ -120,7 +117,7 @@ namespace Models.Backup
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    lErrors =  _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, pUpdateLog, true, pDifferentiel);
+                    _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, pUpdateLog, true, pDifferentiel);
                 }
                 else
                 {
@@ -131,8 +128,6 @@ namespace Models.Backup
             {
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
-
-            return lErrors;
         }
 
         public override bool Equals(object? obj)

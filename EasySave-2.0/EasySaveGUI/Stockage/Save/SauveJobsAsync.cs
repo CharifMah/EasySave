@@ -15,11 +15,13 @@ namespace Stockage.Save
         private CLogState _LogState;
         private string _FormatLog;
         private Stopwatch _StopWatch;
+        private string _Errors;
         #endregion
 
         #region Property
         public CLogState LogState { get => _LogState; set => _LogState = value; }
         public Stopwatch StopWatch { get => _StopWatch; set => _StopWatch = value; }
+        public string Errors { get => _Errors; set => _Errors = value; }
 
         #endregion
 
@@ -37,6 +39,7 @@ namespace Stockage.Save
                 _StopWatch = pStopwatch;
             else
                 _StopWatch = Stopwatch.StartNew();
+            _Errors = String.Empty;
         }
         ~SauveJobsAsync()
         {
@@ -53,10 +56,9 @@ namespace Stockage.Save
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pDiffertielle">true if the backup is differential</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public string CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false)
+        public override void CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false)
         {
             FileInfo[] lFiles = pSourceDir.GetFiles();
-            string lErrors = String.Empty;
 
             try
             {
@@ -85,7 +87,7 @@ namespace Stockage.Save
                         if (lFiles[i].LastWriteTime > ldestInfo.LastWriteTime)
                         {
                             // cm -  Copy the file async if the target file is newer
-                            lErrors += CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
+                            CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
                             lock (_lock)
                             {
                                 pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
@@ -95,7 +97,7 @@ namespace Stockage.Save
                     else
                     {
                         // cm -  Copy the file async
-                        lErrors += CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
+                        CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
                         lock (_lock)
                         {
                             pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
@@ -109,19 +111,17 @@ namespace Stockage.Save
                     foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
                     {
                         DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
-                        lErrors += CopyDirectoryAsync(lSubDir, lNewDestinationDir, pUpdateLog, true, pDiffertielle);
+                        CopyDirectoryAsync(lSubDir, lNewDestinationDir, pUpdateLog, true, pDiffertielle);
                     }
                 }
             }
             catch (Exception ex)
             {
-                lErrors += "\n" + ex;
+                _Errors += "\n" + ex;
             }
-
-            return lErrors;
         }
 
-        public  string CopyFileAsync(string pSourcePath, string pDestinationPath)
+        public void CopyFileAsync(string pSourcePath, string pDestinationPath)
         {
             string lErrors = String.Empty;
             try
@@ -132,9 +132,8 @@ namespace Stockage.Save
             }
             catch (Exception ex)
             {
-                lErrors += "\n" + ex;
+                _Errors += "\n" + ex;
             }
-            return lErrors;
         }
 
         public void Dispose()

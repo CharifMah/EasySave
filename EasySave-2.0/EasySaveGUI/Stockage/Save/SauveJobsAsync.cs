@@ -91,7 +91,7 @@ namespace Stockage.Save
                         if (lFiles[i].LastWriteTime > ldestInfo.LastWriteTime)
                         {
                             // cm -  Copy the file async if the target file is newer
-                            CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
+                            CopyFileAsync(lFiles[i].FullName, lTargetFilePath,_LogState);
                             lock (_lock)
                             {
                                 pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
@@ -101,7 +101,7 @@ namespace Stockage.Save
                     else
                     {
                         // cm -  Copy the file async
-                        CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
+                        CopyFileAsync(lFiles[i].FullName, lTargetFilePath,_LogState);
                         lock (_lock)
                         {
                             pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
@@ -130,7 +130,7 @@ namespace Stockage.Save
         /// <param name="pSourcePath">chemin source</param>
         /// <param name="pDestinationPath">chemin cible</param>
         /// <returns></returns>
-        public async Task CopyFileAsync(string pSourcePath, string pDestinationPath)
+        public void CopyFileAsync(string pSourcePath, string pDestinationPath,CLogState pLogState)
         {
             try
             {
@@ -142,7 +142,7 @@ namespace Stockage.Save
                         if (!_BlackList.Any(lPath => pSourcePath.EndsWith(lPath, StringComparison.OrdinalIgnoreCase)))
                         {
                             // cm - If the file is blacklisted, we copy without encryption
-                            await lSource.CopyToAsync(lDestination);
+                            lSource.CopyTo(lDestination);
                         }
                         else
                         {
@@ -150,16 +150,16 @@ namespace Stockage.Save
                             using (MemoryStream lMemoryStream = new MemoryStream())
                             {
                                 // cm - Copy the content of the file to a memory buffer
-                                await lSource.CopyToAsync(lMemoryStream);
+                                lSource.CopyTo(lMemoryStream);
                                 byte[] lFileBytes = lMemoryStream.ToArray();
 
                                 // cm - Encrypt the buffer with the XOR encryption
                                 CXorChiffrement lXorEncryptor = new CXorChiffrement();
                                 byte[] lKey = Encoding.UTF8.GetBytes("secret"); // Convert the string key to byte array
                                 byte[] lEncryptedBytes = lXorEncryptor.Encrypt(lFileBytes, lKey);
-
+                                pLogState.EncryptTime = lXorEncryptor.EncryptTime;
                                 // cm - Write the encrypted data to the destination file
-                                await lDestination.WriteAsync(lEncryptedBytes, 0, lEncryptedBytes.Length);
+                                lDestination.Write(lEncryptedBytes, 0, lEncryptedBytes.Length);
                             }
                         }
                     }

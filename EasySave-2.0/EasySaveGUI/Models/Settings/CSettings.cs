@@ -33,9 +33,6 @@ namespace Models.Settings
         [DataMember]
         private List<string> _EncryptionExtensions = new List<string>();
 
-
-
-
         private static CSettings? _Instance;
         #endregion
 

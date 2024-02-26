@@ -28,6 +28,11 @@ namespace Models.Settings
         private CLangue _Langue;
         [DataMember]
         private CFormatLog _FormatLog;
+        [DataMember]
+        private List<string> _BusinessSoftware = new List<string>();
+        [DataMember]
+        public List<string> _EncryptionExtensions = new List<string>();
+
         private static CSettings? _Instance;
         #endregion
 
@@ -41,6 +46,21 @@ namespace Models.Settings
         /// Format de logs
         /// </summary>
         public CFormatLog FormatLog { get => _FormatLog; set => _FormatLog = value; }
+
+        /// <summary>
+        /// Logiciels métiers
+        /// </summary>
+        public List<string> BusinessSoftware
+        {
+            get => _BusinessSoftware;
+            set => _BusinessSoftware = value;
+        }
+
+        public List<string> EncryptionExtensions
+        {
+            get => _EncryptionExtensions; 
+            set => _EncryptionExtensions = value;
+        }
 
         /// <summary>
         /// Emplacement du répertoire dans lequel le fichier de configuration du travail est stocké

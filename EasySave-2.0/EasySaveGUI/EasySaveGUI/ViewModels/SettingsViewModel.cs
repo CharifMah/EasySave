@@ -1,5 +1,7 @@
 ﻿using Models.Settings;
 using Ressources;
+using Models;
+using System.Collections.ObjectModel;
 
 namespace EasySaveGUI.ViewModels
 {
@@ -8,8 +10,10 @@ namespace EasySaveGUI.ViewModels
         #region Attributes
         private string _CurrentLayout;
         private FormatLogViewModel _logViewModel;
+        private BusinessSoftwareViewModel _businessSoftwareViewModel;
+        private FileExtensionViewModel _fileExtensionViewModel;
         #endregion
-        
+
         #region Property
         /// <summary>
         /// Les parameter global pour le binding
@@ -43,6 +47,10 @@ namespace EasySaveGUI.ViewModels
         public FormatLogViewModel LogVm { get => _logViewModel; set => _logViewModel = value; } 
         #endregion
 
+        public BusinessSoftwareViewModel BusinessSoftwareVm { get => _businessSoftwareViewModel; set => _businessSoftwareViewModel = value; }
+
+        public FileExtensionViewModel FileExtensionVm { get => _fileExtensionViewModel; set => _fileExtensionViewModel = value; }
+
         #region CTOR
         /// <summary>
         /// Constructeur du settings view model
@@ -50,6 +58,8 @@ namespace EasySaveGUI.ViewModels
         public SettingsViewModel()
         {
             _logViewModel = new FormatLogViewModel();
+            _businessSoftwareViewModel = new BusinessSoftwareViewModel();
+            _fileExtensionViewModel = new FileExtensionViewModel();
 
             string lLayout = CSettings.Instance.Theme.CurrentLayout;
 

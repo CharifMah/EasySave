@@ -385,4 +385,7 @@
   <data name="SelectAll" xml:space="preserve">
     <value>Tout sélectionner</value>
   </data>
+  <data name="BusinessSoftware" xml:space="preserve">
+    <value>Logiciels Métiers</value>
+  </data>
 </root>

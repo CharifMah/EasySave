@@ -16,6 +16,8 @@ namespace EasySaveGUI.ViewModels
         private PopupViewModel _PopupVm;
         private SettingsViewModel _SettingsVm;
         private LayoutViewModel _LayoutVm;
+        private BusinessSoftwareViewModel _BusinessSoftwareVm;
+        private FileExtensionViewModel _FileExtensionVm;
         /// <summary>
         /// View Model de la langue
         /// </summary>
@@ -31,6 +33,21 @@ namespace EasySaveGUI.ViewModels
         public PopupViewModel PopupVm { get => _PopupVm; set => _PopupVm = value; }
         public SettingsViewModel SettingsVm { get => _SettingsVm; set => _SettingsVm = value; }
         public LayoutViewModel LayoutVm { get => _LayoutVm; set => _LayoutVm = value; }
+        
+        /// <summary>
+        /// View Model pour la gestion des logiciels métiers
+        /// </summary>
+        public BusinessSoftwareViewModel BusinessSoftwareVm
+        {
+            get => _BusinessSoftwareVm;
+            set => _BusinessSoftwareVm = value;
+        }
+
+        public FileExtensionViewModel FileExtensionVm
+        {
+            get => _FileExtensionVm;
+            set => _FileExtensionVm = value;
+        }
 
         /// <summary>
         /// Le constructeur MainViewModel initialise les modèles de vue et charge les paramètres de l'utilisateur
@@ -55,6 +72,8 @@ namespace EasySaveGUI.ViewModels
             _PopupVm = new PopupViewModel();
             _SettingsVm = new SettingsViewModel();
             _LayoutVm = new LayoutViewModel();
+            _BusinessSoftwareVm = new BusinessSoftwareViewModel();
+            _FileExtensionVm = new FileExtensionViewModel();
         }
 
         /// <summary>

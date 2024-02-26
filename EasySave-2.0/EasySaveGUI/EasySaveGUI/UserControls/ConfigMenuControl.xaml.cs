@@ -26,7 +26,7 @@ namespace EasySaveGUI.UserControls
         private void LoadConfigDefaultFileButton_Click(object sender, RoutedEventArgs e)
         {
             CSettings.Instance.ResetJobConfigPath();
-            _MainVm.JobVm.LoadJobs();
+            _MainVm.LoadJobs();
             _MainWindow.MenuPage.ShowValidation();
         }
 
@@ -36,7 +36,7 @@ namespace EasySaveGUI.UserControls
             if (lConfigPath != "-1")
             {
                 CSettings.Instance.SetJobConfigPath(lConfigPath);
-                _MainVm.JobVm.LoadJobs(false, lConfigPath);
+                _MainVm.LoadJobs(false, lConfigPath);
                 _MainWindow.MenuPage.ShowValidation();
             }
         }

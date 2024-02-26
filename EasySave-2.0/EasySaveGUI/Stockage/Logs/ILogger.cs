@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using LogsModels;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 namespace Stockage.Logs
 {
     /// <summary>
@@ -24,5 +26,7 @@ namespace Stockage.Logs
         /// <remarks>Mahmoud Charif - 10/02/2024 - Création</remarks>
         /// <remarks>Mehmeti faik - 16/02/2024 - Ajout de params</remarks>
         void Log(T pData, bool pSerialize, bool pAppend = true, string pFileName = "Logs", string pFolderName = "", string pExtension = "json");
+
+        public delegate void UpdateLogDelegate(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw, string pName);
     }
 }

@@ -1,20 +1,29 @@
 ﻿using LogsModels;
 using Stockage.Logs;
 using System.Diagnostics;
+using static Stockage.Logs.ILogger<uint>;
 
 namespace Stockage.Save
 {
     /// <summary>
     /// Classe permettant de sauvegarder des jobs et de les logger
     /// </summary>
-    public class SauveJobsAsync : BaseSave
+    public class SauveJobsAsync : BaseSave, IDisposable
     {
+        #region Attributes
+        private readonly object _lock = new object();
         private CLogState _LogState;
         private string _FormatLog;
         private Stopwatch _StopWatch;
+        #endregion
+
+        #region Property
         public CLogState LogState { get => _LogState; set => _LogState = value; }
         public Stopwatch StopWatch { get => _StopWatch; set => _StopWatch = value; }
 
+        #endregion
+
+        #region CTOR
         /// <summary>
         /// Constructeur de SauveJobs
         /// </summary>
@@ -29,7 +38,13 @@ namespace Stockage.Save
             else
                 _StopWatch = Stopwatch.StartNew();
         }
+        ~SauveJobsAsync()
+        {
+            Dispose();
+        }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Copy files and directory from the source path to the destinationPath
         /// </summary>
@@ -38,11 +53,12 @@ namespace Stockage.Save
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pDiffertielle">true if the backup is differential</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public override async Task CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, List<CLogState> pLogStates, bool pDiffertielle = false)
+        public string CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false)
         {
             string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
 
             FileInfo[] lFiles = pSourceDir.GetFiles();
+            string lErrors = String.Empty;
 
             try
             {
@@ -52,10 +68,14 @@ namespace Stockage.Save
 
                 Directory.CreateDirectory(pTargetDir.FullName);
 
-                // cm - Get files in the source directory and copy to the destination directory
-                for (int i = 0; i < lFiles.Length; i++)
+                ParallelOptions lParallelOptions = new ParallelOptions
                 {
-
+                    MaxDegreeOfParallelism = 20
+                };
+             
+                // cm - Get files in the source directory and copy to the destination directory
+                Parallel.For(0, lFiles.Length, lParallelOptions, i =>
+                {
                     string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
 
                     // Vérifie si le fichier existe déjà  
@@ -67,18 +87,25 @@ namespace Stockage.Save
                         if (lFiles[i].LastWriteTime > ldestInfo.LastWriteTime)
                         {
                             // cm -  Copy the file async if the target file is newer
-                            await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
-
-                            UpdateLog(lFiles[i], lTargetFilePath, _StopWatch, lName, pLogStates);
+                            lErrors += CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
+                            lock (_lock)
+                            {
+                                pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch, lName);
+                            }
+                        
                         }
                     }
                     else
                     {
                         // cm -  Copy the file async
-                        await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
-                        UpdateLog(lFiles[i], lTargetFilePath, _StopWatch, lName, pLogStates);
+                        lErrors += CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
+                        lock (_lock)
+                        {
+                            pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch, lName);
+                        }
+                   
                     }
-                }
+                });
 
                 // cm - If recursive and copying subdirectories, recursively call this method
                 if (pRecursive)
@@ -86,45 +113,43 @@ namespace Stockage.Save
                     foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
                     {
                         DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
-                        await CopyDirectoryAsync(lSubDir, lNewDestinationDir, true, pLogStates, pDiffertielle);
+                        lErrors += CopyDirectoryAsync(lSubDir, lNewDestinationDir, pUpdateLog, true, pDiffertielle);
                     }
                 }
             }
             catch (Exception ex)
             {
-                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false, true, lName, "", _FormatLog);
+                lErrors += "\n" + ex;
             }
+
+            return lErrors;
         }
 
-        private void UpdateLog(FileInfo pFileInfo, string pTargetFilePath, Stopwatch pSw, string pName, List<CLogState> pLogStates)
+        public  string CopyFileAsync(string pSourcePath, string pDestinationPath)
         {
-            _LogState.TotalTransferedFile++;
-            _LogState.SourceDirectory = pFileInfo.FullName;
-            _LogState.TargetDirectory = pTargetFilePath;
-            _LogState.RemainingFiles = _LogState.EligibleFileCount - _LogState.TotalTransferedFile;
-            _LogState.BytesCopied += pFileInfo.Length;
-            _LogState.Progress = _LogState.BytesCopied / _LogState.TotalSize * 100;
-            _LogState.ElapsedMilisecond = (long)pSw.Elapsed.TotalSeconds;
-            _LogState.Date = DateTime.Now;
-            CLogDaily lLogFilesDaily = new CLogDaily();
-            lLogFilesDaily.Name = pFileInfo.Name;
-            lLogFilesDaily.SourceDirectory = pFileInfo.FullName;
-            lLogFilesDaily.TargetDirectory = pTargetFilePath;
-            lLogFilesDaily.Date = DateTime.Now;
-            lLogFilesDaily.TotalSize = pFileInfo.Length;
-            lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
-
-
-            CLogger<List<CLogState>>.Instance.GenericLogger.Log(pLogStates, true, false, "Logs", "", _FormatLog);
-
-            CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, pName, "DailyLogs", _FormatLog);
+            string lErrors = String.Empty;
+            try
+            {
+                using Stream lSource = File.OpenRead(pSourcePath);
+                using Stream lDestination = File.Create(pDestinationPath);
+                lSource.CopyTo(lDestination);
+            }
+            catch (Exception ex)
+            {
+                lErrors += "\n" + ex;
+            }
+            return lErrors;
         }
 
-        public async Task CopyFileAsync(string pSourcePath, string pDestinationPath)
+        public void Dispose()
         {
-            using Stream lSource = File.OpenRead(pSourcePath);
-            using Stream lDestination = File.Create(pDestinationPath);
-            await lSource.CopyToAsync(lDestination);
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SuppressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }

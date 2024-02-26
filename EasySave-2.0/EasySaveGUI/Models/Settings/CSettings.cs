@@ -139,35 +139,7 @@ namespace Models.Settings
             }
         }
 
-        /// <summary>
-        /// Charge la liste des jobs depuis un fichier
-        /// </summary>
-        /// <param name="pPath"> Chemin du fichier de configuration. Null pour le fichier par défaut. </param>
-        /// <returns> Instance du gestionnaire de jobs chargé </returns>
-        public CJobManager LoadJobsFile(string pPath = null)
-        {
-            // cm - Si le path est null on init le path par default
-            if (string.IsNullOrEmpty(pPath))
-                pPath = _JobDefaultConfigPath;
 
-            ICharge lChargerCollection = new ChargerCollection(null);
-
-            // cm - Charge le job manager
-            CJobManager lJobManager = lChargerCollection.Charger<CJobManager>(pPath, true);
-            // cm - Si aucun fichier n'a été charger on crée un nouveau JobManager
-            if (lJobManager == null)
-            {
-                lJobManager = new CJobManager();
-            }
-            else
-            {
-                _JobConfigFolderPath = new FileInfo(pPath).DirectoryName;
-            }
-
-            SaveSettings();
-
-            return lJobManager;
-        }
         /// <summary>
         /// Reset le chemin de sauvegarde du jobmanager
         /// </summary>

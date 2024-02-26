@@ -19,7 +19,7 @@ namespace EasySaveGUI.UserControls
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
         }
 
-        private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
+        private void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
             if (_MainWindow.MenuPage.JobUsr.JobsList.SelectedItems.Count > 0)
             {
@@ -32,7 +32,7 @@ namespace EasySaveGUI.UserControls
 
                 _MainWindow.MenuPage.JobsRunningDocument.IsActive = true;
 
-                await _MainWindow.MainVm.JobVm.RunJobs(lSelectedJobs);
+                _MainWindow.MainVm.JobVm.RunJobs(lSelectedJobs);
 
                 lButton.IsEnabled = true;
             }

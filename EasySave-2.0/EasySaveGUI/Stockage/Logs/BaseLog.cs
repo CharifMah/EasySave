@@ -11,15 +11,19 @@ namespace Stockage.Logs
     {
         private ObservableCollection<T> _Datas;
         private SauveCollection _Save;
+
         /// <summary>
         /// Collection de données observables
         /// </summary>
         public ObservableCollection<T> Datas => _Datas;
+
         protected BaseLogger()
         {
             _Datas = new ObservableCollection<T>();
             _Save = new SauveCollection("");
+
         }
+
         /// <summary>
         /// Méthode de logging des données
         /// </summary>
@@ -42,6 +46,7 @@ namespace Stockage.Logs
 
             _Datas.Add(pData);
         }
+
         /// <summary>
         /// Vide la collection de données
         /// </summary>

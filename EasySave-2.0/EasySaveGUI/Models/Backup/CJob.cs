@@ -2,13 +2,14 @@
 using Stockage.Logs;
 using Stockage.Save;
 using System.Runtime.Serialization;
+using static Stockage.Logs.ILogger<uint>;
 namespace Models.Backup
 {
     /// <summary>
     /// Représente un travail/tâche à exécuter
     /// </summary>
     [DataContract]
-    public class CJob : BaseModel, IPath
+    public class CJob : BaseModel, IPath, IDisposable
     {
         #region Attribute
         [DataMember]
@@ -77,6 +78,10 @@ namespace Models.Backup
             _BackupType = pTypeBackup;
             _SauveJobs = new SauveJobsAsync();
         }
+        ~CJob()
+        {
+            this.Dispose();
+        }
         #endregion
 
         #region Methods
@@ -84,17 +89,20 @@ namespace Models.Backup
         /// Lance l'exécution du job de sauvegarde
         /// </summary>
         /// <param name="pSauveJobs">Objet de sauvegarde des données de jobs</param>
-        public async Task Run(List<CLogState> pLogState)
+        public string Run(UpdateLogDelegate pUpdateLog)
         {
+            string lResult = String.Empty;
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:
-                    await Backup(pLogState);
+                    lResult =  Backup(pUpdateLog);
                     break;
                 case ETypeBackup.DIFFERENTIEL:
-                    await Backup(pLogState, true);
+                    lResult =  Backup(pUpdateLog, true);
                     break;
             }
+
+            return lResult;
         }
 
         /// <summary>
@@ -102,8 +110,9 @@ namespace Models.Backup
         /// </summary>
         /// <param name="pDifferentiel = false">Indique une recopie forcée</param>
         /// <param name="pSauveJobs">Objet de sauvegarde des jobs</param>
-        private async Task Backup(List<CLogState> pLogStates, bool pDifferentiel = false)
+        private string Backup(UpdateLogDelegate pUpdateLog, bool pDifferentiel = false)
         {
+            string lErrors = String.Empty;
             try
             {
                 DirectoryInfo lSourceDir = new DirectoryInfo(_SourceDirectory);
@@ -111,7 +120,7 @@ namespace Models.Backup
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    await _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, true, pLogStates, pDifferentiel);
+                    lErrors =  _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, pUpdateLog, true, pDifferentiel);
                 }
                 else
                 {
@@ -122,6 +131,8 @@ namespace Models.Backup
             {
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
+
+            return lErrors;
         }
 
         public override bool Equals(object? obj)
@@ -136,6 +147,16 @@ namespace Models.Backup
         public override int GetHashCode()
         {
             return HashCode.Combine(_Name, _SourceDirectory, _TargetDirectory, _BackupType);
+        }
+
+        public void Dispose()
+        {
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SuppressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
         }
 
         #endregion

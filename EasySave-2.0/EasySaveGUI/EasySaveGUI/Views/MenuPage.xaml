@@ -14,6 +14,7 @@
 
     <!--  Main Content  -->
     <Grid>
+        
         <Usr:ValidationAnimationControl
             x:Name="ValidationAnimation"
             HorizontalAlignment="Center"
@@ -26,6 +27,7 @@
             DataContext="{Binding PopupVm}" />
 
         <DockingManager x:Name="Dock" Background="#EDF5FD">
+          
             <DockingManager.Theme>
                 <Vs2013LightTheme />
             </DockingManager.Theme>
@@ -189,9 +191,7 @@
                                                         <DataGridTextColumn Binding="{Binding TransfertTime}" Header="{x:Static Ressources:Strings.TransfertTime}" />
                                                         <DataGridTextColumn Binding="{Binding Name}" Header="{x:Static Ressources:Strings.Name}" />
                                                         <DataGridTextColumn Binding="{Binding Date}" Header="{x:Static Ressources:Strings.Date}" />
-                                                        <DataGridTextColumn Binding="{Binding TotalSize}" Header="{x:Static Ressources:Strings.Size}" />
-                                                        <DataGridTextColumn Binding="{Binding SourceDirectory}" Header="{x:Static Ressources:Strings.SourceDir}" />
-                                                        <DataGridTextColumn Binding="{Binding TargetDirectory}" Header="{x:Static Ressources:Strings.TargetDir}" />
+                                                        <DataGridTextColumn Binding="{Binding TotalSize}" Header="{x:Static Ressources:Strings.Size}" />    
                                                     </DataGrid.Columns>
                                                 </DataGrid>
                                             </DockPanel>

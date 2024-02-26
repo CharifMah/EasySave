@@ -1,9 +1,6 @@
 ﻿using CryptoSoft;
 using LogsModels;
-using Stockage.Logs;
 using System.Diagnostics;
-using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 using static Stockage.Logs.ILogger<uint>;
 

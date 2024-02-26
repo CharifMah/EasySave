@@ -1,6 +1,10 @@
-﻿using LogsModels;
+﻿using CryptoSoft;
+using LogsModels;
 using Stockage.Logs;
 using System.Diagnostics;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using static Stockage.Logs.ILogger<uint>;
 
 namespace Stockage.Save
@@ -16,6 +20,7 @@ namespace Stockage.Save
         private string _FormatLog;
         private Stopwatch _StopWatch;
         private string _Errors;
+        private string[] _BlackList;
         #endregion
 
         #region Property
@@ -30,7 +35,7 @@ namespace Stockage.Save
         /// Constructeur de SauveJobs
         /// </summary>
         /// <param name="pPath">Le chemin du dossier</param>
-        public SauveJobsAsync(string? pPath = null, string pFormatLog = "json", Stopwatch? pStopwatch = null) : base(pPath)
+        public SauveJobsAsync(List<string> pBlackList, string? pPath = null, string pFormatLog = "json", Stopwatch? pStopwatch = null) : base(pPath)
         {
             _LogState = new CLogState();
             _LogState.TotalTransferedFile = 0;
@@ -40,6 +45,8 @@ namespace Stockage.Save
             else
                 _StopWatch = Stopwatch.StartNew();
             _Errors = String.Empty;
+
+            _BlackList = pBlackList.ToArray();
         }
         ~SauveJobsAsync()
         {
@@ -72,7 +79,7 @@ namespace Stockage.Save
                 {
                     MaxDegreeOfParallelism = 20
                 };
-             
+
                 // cm - Get files in the source directory and copy to the destination directory
                 Parallel.For(0, lFiles.Length, lParallelOptions, i =>
                 {
@@ -120,14 +127,46 @@ namespace Stockage.Save
                 _Errors += "\n" + ex.Message;
             }
         }
-
-        public void CopyFileAsync(string pSourcePath, string pDestinationPath)
+        /// <summary>
+        /// Copie une fichier de maniere asychrone et chiffre le fichier si il sont blacklister
+        /// </summary>
+        /// <param name="pSourcePath">chemin source</param>
+        /// <param name="pDestinationPath">chemin cible</param>
+        /// <returns></returns>
+        public async Task CopyFileAsync(string pSourcePath, string pDestinationPath)
         {
             try
             {
-                using Stream lSource = File.OpenRead(pSourcePath);
-                using Stream lDestination = File.Create(pDestinationPath);
-                lSource.CopyTo(lDestination);
+                using (Stream lSource = File.OpenRead(pSourcePath))
+                {
+                    using (Stream lDestination = File.Create(pDestinationPath))
+                    {
+                        // cm - Check if the sourcePath is blacklisted
+                        if (!_BlackList.Any(lPath => pSourcePath.EndsWith(lPath, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            // cm - If the file is blacklisted, we copy without encryption
+                            await lSource.CopyToAsync(lDestination);
+                        }
+                        else
+                        {
+                            // cm - If the file is not blacklisted, encrypt and then copy
+                            using (MemoryStream lMemoryStream = new MemoryStream())
+                            {
+                                // cm - Copy the content of the file to a memory buffer
+                                await lSource.CopyToAsync(lMemoryStream);
+                                byte[] lFileBytes = lMemoryStream.ToArray();
+
+                                // cm - Encrypt the buffer with the XOR encryption
+                                CXorChiffrement lXorEncryptor = new CXorChiffrement();
+                                byte[] lKey = Encoding.UTF8.GetBytes("secret"); // Convert the string key to byte array
+                                byte[] lEncryptedBytes = lXorEncryptor.Encrypt(lFileBytes, lKey);
+
+                                // cm - Write the encrypted data to the destination file
+                                await lDestination.WriteAsync(lEncryptedBytes, 0, lEncryptedBytes.Length);
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

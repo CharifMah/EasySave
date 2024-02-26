@@ -183,7 +183,6 @@
                                                     Style="{StaticResource CustomButtonLogFile}" />
                                                 <ListBox
                                                     x:Name="ListLogsDaily"
- 
                                                     ItemsSource="{Binding Datas, Mode=OneWay}"
                                                     ScrollViewer.CanContentScroll="False">
 
@@ -191,27 +190,19 @@
                                                         <DataTemplate>
                                                             <Grid>
                                                                 <TextBlock>
-                                                                    <Run Text="{x:Static Ressources:Strings.TransfertTime}"/>
-                                                                     : 
-                                                                    <Run Text="{Binding TransfertTime}"/>
+                                                                    <Run Text="{x:Static Ressources:Strings.TransfertTime}" />
+                                                                    :<Run Text="{Binding TransfertTime}" />
                                                                 </TextBlock>
                                                                 <TextBlock>
-                  <Run Text="{x:Static Ressources:Strings.TransfertTime}"/>
-                   : 
-                  <Run Text="{Binding TransfertTime}"/>
+                                                                    <Run Text="{x:Static Ressources:Strings.Name}" />
+                                                                    :<Run Text="{Binding Name}" />
                                                                 </TextBlock>
                                                                 <TextBlock>
-                  <Run Text="{x:Static Ressources:Strings.TransfertTime}"/>
-                   : 
-                  <Run Text="{Binding TransfertTime}"/>
+                                                                    <Run Text="{x:Static Ressources:Strings.Size}" />
+                                                                    :<Run Text="{Binding TotalSize}" />
                                                                 </TextBlock>
-                                                                <!--<TextBlock Binding="{Binding Name}" Te="{x:Static Ressources:Strings.Name}" />
-                                                                <TextBlock Binding="{Binding Date}" Header="{x:Static Ressources:Strings.Date}" />
-                                                                <TextBlock Binding="{Binding TotalSize}" Header="{x:Static Ressources:Strings.Size}" />-->
                                                             </Grid>
-
                                                         </DataTemplate>
-
                                                     </ListBox.ItemTemplate>
                                                 </ListBox>
                                             </DockPanel>

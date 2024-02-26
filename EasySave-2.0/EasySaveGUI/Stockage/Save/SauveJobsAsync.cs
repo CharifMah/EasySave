@@ -117,13 +117,12 @@ namespace Stockage.Save
             }
             catch (Exception ex)
             {
-                _Errors += "\n" + ex;
+                _Errors += "\n" + ex.Message;
             }
         }
 
         public void CopyFileAsync(string pSourcePath, string pDestinationPath)
         {
-            string lErrors = String.Empty;
             try
             {
                 using Stream lSource = File.OpenRead(pSourcePath);
@@ -132,7 +131,7 @@ namespace Stockage.Save
             }
             catch (Exception ex)
             {
-                _Errors += "\n" + ex;
+                _Errors += "\n" + ex.Message;
             }
         }
 

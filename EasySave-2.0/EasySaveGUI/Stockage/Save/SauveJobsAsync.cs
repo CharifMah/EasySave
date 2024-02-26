@@ -90,7 +90,6 @@ namespace Stockage.Save
                             {
                                 pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
                             }
-                        
                         }
                     }
                     else
@@ -101,7 +100,6 @@ namespace Stockage.Save
                         {
                             pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
                         }
-                   
                     }
                 });
 

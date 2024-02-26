@@ -4,6 +4,7 @@ using Stockage.Logs;
 using Stockage.Save;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Runtime.Serialization;
 namespace Models.Backup
 {
@@ -76,14 +77,21 @@ namespace Models.Backup
         /// <returns>
         /// La liste des jobs, mise à jour avec leur état après exécution
         /// </returns>
-        public async Task RunJobs(List<CJob> pJobs)
+        public async Task RunJobs(List<CJob> pJobs, List<string> pBusinessSoftware)
         {
             try
             {
                 uint lIndex = 0;
+                bool isBusinessSoftwareRunningAtStart = IsBusinessSoftwareRunning(pBusinessSoftware);
+
                 // cm - parcours les jobs
                 foreach (CJob lJob in pJobs)
                 {
+                    if (pJobs.Count <= 1 && isBusinessSoftwareRunningAtStart)
+                    {
+                        CLogger<CLogBase>.Instance.StringLogger.Log("Logiciel métier détecté.Les travaux sont annulés", false);
+                        break;
+                    }
                     Stopwatch lStopWatch = new Stopwatch();
                     lStopWatch.Start();
                     SauveJobsAsync _SauveJobs = new SauveJobsAsync("", CSettings.Instance.FormatLog.SelectedFormatLog.Value, lStopWatch);
@@ -110,6 +118,21 @@ namespace Models.Backup
             {
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
+        }
+
+        private bool IsBusinessSoftwareRunning(List<string> pBusinessSoftware)
+        {
+            foreach (string software in pBusinessSoftware)
+            {
+                string processName = Path.GetFileNameWithoutExtension(software);
+
+                if (Process.GetProcessesByName(processName).Length > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

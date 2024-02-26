@@ -89,7 +89,9 @@ namespace EasySaveGUI.ViewModels
         /// <returns> Liste mise à jour des jobs avec leur état après exécution </returns>
         public async Task RunJobs(List<CJob> pJobs)
         {
-            await _jobManager.RunJobs(pJobs);
+            List<string> businessSoftwareNames = CSettings.Instance.BusinessSoftware;
+
+            await _jobManager.RunJobs(pJobs, businessSoftwareNames);
             NotifyPropertyChanged("Jobs");
             NotifyPropertyChanged("JobsRunning");
         }

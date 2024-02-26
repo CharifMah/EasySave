@@ -430,7 +430,7 @@ namespace Ressources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Recherche une chaîne localisée semblable à .
         /// </summary>
         public static string Lang {
             get {

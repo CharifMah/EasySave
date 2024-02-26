@@ -27,6 +27,6 @@ namespace Stockage.Logs
         /// <remarks>Mehmeti faik - 16/02/2024 - Ajout de params</remarks>
         void Log(T pData, bool pSerialize, bool pAppend = true, string pFileName = "Logs", string pFolderName = "", string pExtension = "json");
 
-        public delegate void UpdateLogDelegate(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw, string pName);
+        public delegate void UpdateLogDelegate(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw);
     }
 }

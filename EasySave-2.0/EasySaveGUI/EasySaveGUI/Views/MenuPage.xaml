@@ -184,24 +184,25 @@
                                                 <ListBox
                                                     x:Name="ListLogsDaily"
                                                     ItemsSource="{Binding Datas, Mode=OneWay}"
-                                                    ScrollViewer.CanContentScroll="False">
-
+                                                    ScrollViewer.CanContentScroll="False"
+                                                    VirtualizingPanel.IsVirtualizing="True"
+                                                    VirtualizingPanel.VirtualizationMode="Recycling">
                                                     <ListBox.ItemTemplate>
                                                         <DataTemplate>
-                                                            <Grid>
+                                                            <StackPanel>
                                                                 <TextBlock>
                                                                     <Run Text="{x:Static Ressources:Strings.TransfertTime}" />
-                                                                    :<Run Text="{Binding TransfertTime}" />
+                                                                    :<Run Text="{Binding TransfertTime, Mode=OneTime}" />
                                                                 </TextBlock>
                                                                 <TextBlock>
                                                                     <Run Text="{x:Static Ressources:Strings.Name}" />
-                                                                    :<Run Text="{Binding Name}" />
+                                                                    :<Run Text="{Binding Name, Mode=OneTime}" />
                                                                 </TextBlock>
                                                                 <TextBlock>
                                                                     <Run Text="{x:Static Ressources:Strings.Size}" />
-                                                                    :<Run Text="{Binding TotalSize}" />
+                                                                    :<Run Text="{Binding TotalSize, Mode=OneTime}" />
                                                                 </TextBlock>
-                                                            </Grid>
+                                                            </StackPanel>
                                                         </DataTemplate>
                                                     </ListBox.ItemTemplate>
                                                 </ListBox>

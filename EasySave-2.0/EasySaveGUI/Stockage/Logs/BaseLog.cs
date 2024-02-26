@@ -21,7 +21,6 @@ namespace Stockage.Logs
         {
             _Datas = new ObservableCollection<T>();
             _Save = new SauveCollection("");
-
         }
 
         /// <summary>

@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace EasySaveGUI.ViewModels
 {
@@ -20,9 +21,13 @@ namespace EasySaveGUI.ViewModels
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
+        List<CLogDaily?> _LogDailyBuffer = new List<CLogDaily?>();
+        private readonly int _BufferSize = 100;
+        private readonly Timer _Timer;
+        private readonly int flushDelay = 1000;
 
-        private int _BufferUpdateLog;
         private CJob _SelectedJob;
+
         [DataMember]
         private ObservableCollection<CJob> _Jobs;
         [DataMember]
@@ -84,11 +89,16 @@ namespace EasySaveGUI.ViewModels
                 _SauveCollection = new SauveCollection(new FileInfo(CSettings.Instance.JobDefaultConfigPath).DirectoryName);
             else
                 _SauveCollection = new SauveCollection(CSettings.Instance.JobConfigFolderPath);
+
+            _Timer = new Timer(flushDelay);
+            _Timer.Elapsed += Timer_Elapsed; ;
+            _Timer.AutoReset = false;
         }
 
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Lance l'exécution des jobs sélectionnés
         /// </summary>
@@ -98,7 +108,6 @@ namespace EasySaveGUI.ViewModels
         {
             try
             {
-                _BufferUpdateLog = 0;
                 uint lIndex = 0;
                 // cm - parcours les jobs
                 foreach (CJob lJob in pJobs)
@@ -114,7 +123,6 @@ namespace EasySaveGUI.ViewModels
 
                     List<string> lFiles = new List<string>();
 
-
                     App.Current.Dispatcher.BeginInvoke(() =>
                     {
                         // cm - Ajoute le job lancer dans la liste des job en cours cette liste est vidée lors du lancement d'autre job
@@ -122,19 +130,23 @@ namespace EasySaveGUI.ViewModels
                     });
                     string lErrors = String.Empty;
 
-                    Task.Run(() =>
+                    Task lTask = Task.Run(() =>
+                     {
+                         lFiles = GetAccessibleFiles(lJob.SourceDirectory);
+                         lJob.SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
+                         lJob.SauveJobs.LogState.EligibleFileCount = lFiles.Count;
+
+                         // cm - Lance le job
+                         lErrors = lJob.Run(UpdateLog);
+
+                         lStopWatch.Stop();
+
+                     });
+                    lTask.ContinueWith(t =>
                     {
-                        lFiles = GetAccessibleFiles(lJob.SourceDirectory);
-                        lJob.SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
-                        lJob.SauveJobs.LogState.EligibleFileCount = lFiles.Count;
-
-                        // cm - Lance le job
-                        lErrors = lJob.Run(UpdateLog);
-
-                        lStopWatch.Stop();
+                        _Timer.Stop();
+                        Timer_Elapsed(this, null);
                     });
-
-
 
                     if (!string.IsNullOrEmpty(lErrors))
                     {
@@ -156,43 +168,57 @@ namespace EasySaveGUI.ViewModels
             }
         }
 
-        private void UpdateLog(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw, string pName)
+        private void UpdateLog(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw)
         {
-
             App.Current.Dispatcher.BeginInvoke(() =>
             {
                 pLogState.TotalTransferedFile++;
-                if (pFileInfo != null)
-                {
-                    pLogState.SourceDirectory = pFileInfo.FullName;
-                    pLogState.BytesCopied += pFileInfo.Length;
-                }
-
+                pLogState.SourceDirectory = pFileInfo.FullName;
+                pLogState.BytesCopied += pFileInfo.Length;
                 pLogState.TargetDirectory = pTargetFilePath;
                 pLogState.RemainingFiles = pLogState.EligibleFileCount - pLogState.TotalTransferedFile;
-
                 pLogState.Progress = pLogState.BytesCopied / pLogState.TotalSize * 100;
                 pLogState.ElapsedMilisecond = (long)pSw.Elapsed.TotalSeconds;
                 pLogState.Date = DateTime.Now;
+
                 CLogDaily lLogFilesDaily = new CLogDaily();
-
-                if (pFileInfo != null)
-                {
-                    lLogFilesDaily.Name = pFileInfo.Name;
-                    lLogFilesDaily.SourceDirectory = pFileInfo.FullName;
-                    lLogFilesDaily.TotalSize = pFileInfo.Length;
-                }
-
+                lLogFilesDaily.Name = pFileInfo.Name;
+                lLogFilesDaily.SourceDirectory = pFileInfo.FullName;
+                lLogFilesDaily.TotalSize = pFileInfo.Length;
                 lLogFilesDaily.TargetDirectory = pTargetFilePath;
                 lLogFilesDaily.Date = DateTime.Now;
-
+                lLogFilesDaily.FormatLog = pFormatLog;
+                lLogFilesDaily.Progress = pLogState.Progress;
                 lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
 
-
                 CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
+                LogFileDaily(lLogFilesDaily);
+            });
+        }
 
-                CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, pName, "DailyLogs", pFormatLog);
-            }).Priority = System.Windows.Threading.DispatcherPriority.Render;
+        public void LogFileDaily(CLogDaily pLogDaily)
+        {
+            if (pLogDaily.Progress < 99 || _BufferSize >= _LogDailyBuffer.Count)
+            {
+                _LogDailyBuffer.Add(pLogDaily);
+            }
+            else
+            {
+                _Timer.Start();
+            }
+        }
+        private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                foreach (var lLogDaily in _LogDailyBuffer)
+                {
+
+                    CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogDaily, true, true, lLogDaily.Name, "DailyLogs", lLogDaily.FormatLog);
+
+                }
+                _LogDailyBuffer.Clear();
+            });
         }
 
         /// <summary>

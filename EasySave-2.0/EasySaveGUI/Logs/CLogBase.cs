@@ -20,7 +20,24 @@ namespace LogsModels
         [DataMember]
         private string _TargetDirectory;
 
+        private double _Progress;
+
+        private string _FormatLog;
+
         #region Property
+
+        public double Progress
+        {
+            get
+            {
+                return _Progress;
+            }
+            set
+            {
+                _Progress = value;
+                NotifyPropertyChanged();
+            }
+        }
         /// <summary>
         /// Name of the Log
         /// </summary>
@@ -57,6 +74,10 @@ namespace LogsModels
         {
             get => _TargetDirectory; set { _TargetDirectory = value; NotifyPropertyChanged(); }
         }
+        /// <summary>
+        /// Format de log
+        /// </summary>
+        public string FormatLog { get => _FormatLog; set => _FormatLog = value; }
 
         #endregion
 

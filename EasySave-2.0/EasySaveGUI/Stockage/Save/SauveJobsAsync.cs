@@ -55,8 +55,6 @@ namespace Stockage.Save
         /// <exception cref="DirectoryNotFoundException"></exception>
         public string CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false)
         {
-            string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
-
             FileInfo[] lFiles = pSourceDir.GetFiles();
             string lErrors = String.Empty;
 
@@ -90,7 +88,7 @@ namespace Stockage.Save
                             lErrors += CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
                             lock (_lock)
                             {
-                                pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch, lName);
+                                pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
                             }
                         
                         }
@@ -101,7 +99,7 @@ namespace Stockage.Save
                         lErrors += CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
                         lock (_lock)
                         {
-                            pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch, lName);
+                            pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
                         }
                    
                     }

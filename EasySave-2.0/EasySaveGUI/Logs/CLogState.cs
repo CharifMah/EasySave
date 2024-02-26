@@ -18,8 +18,6 @@ namespace LogsModels
         [DataMember]
         private double _BytesCopied;
         [DataMember]
-        private double _Progress;
-        [DataMember]
         private int _TotalTransfered;
 
         public override string Name
@@ -30,6 +28,8 @@ namespace LogsModels
                 base.Name = value;
             }
         }
+
+
 
         /// <summary>
         /// Nombre de fichier restant
@@ -61,20 +61,6 @@ namespace LogsModels
         public bool IsActive
         {
             get => _IsActive; set { _IsActive = value; NotifyPropertyChanged(); }
-        }
-
-        public double Progress
-        {
-            get
-            {
-                return _Progress;
-            }
-            set
-            {
-                _Progress = value;
-                NotifyPropertyChanged();
-            }
-
         }
 
         public double BytesCopied { get => _BytesCopied; set { _BytesCopied = value; NotifyPropertyChanged(); } }

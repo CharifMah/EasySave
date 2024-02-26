@@ -11,7 +11,7 @@ namespace EasySaveGUI.UserControls
     /// </summary>
     public partial class JobMenuControl : UserControl
     {
-        private MainWindow _MainWindow;
+        private MainWindow? _MainWindow;
         public JobMenuControl()
         {
             InitializeComponent();
@@ -19,11 +19,11 @@ namespace EasySaveGUI.UserControls
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
         }
 
-        private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
+        private void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
             if (_MainWindow.MenuPage.JobUsr.JobsList.SelectedItems.Count > 0)
             {
-                Button lButton = sender as Button;
+                Button? lButton = sender as Button;
                 lButton.IsEnabled = false;
                 System.Collections.IList lJobs = _MainWindow.MenuPage.JobUsr.JobsList.SelectedItems;
 
@@ -31,7 +31,8 @@ namespace EasySaveGUI.UserControls
                 _MainWindow.MenuPage.ClearLists();
 
                 _MainWindow.MenuPage.JobsRunningDocument.IsActive = true;
-                await _MainWindow.MainVm.JobVm.RunJobs(lSelectedJobs);
+
+                _MainWindow.MainVm.JobVm.RunJobs(lSelectedJobs);
 
                 lButton.IsEnabled = true;
             }

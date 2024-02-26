@@ -252,6 +252,15 @@ namespace Ressources {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à .
         /// </summary>
+        public static string DefaultLayout {
+            get {
+                return ResourceManager.GetString("DefaultLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
         public static string DeleteJob {
             get {
                 return ResourceManager.GetString("DeleteJob", resourceCulture);
@@ -705,6 +714,15 @@ namespace Ressources {
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
             }
         }
         

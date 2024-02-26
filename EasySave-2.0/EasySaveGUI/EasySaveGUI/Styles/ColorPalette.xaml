@@ -6,7 +6,7 @@
 
     <SolidColorBrush x:Key="LightGray" Color="LightGray" />
 
-    <SolidColorBrush x:Key="GenericBackground" Color="White" />
+    <SolidColorBrush x:Key="GenericBackground" Color="#FFFFFF" />
 
     <SolidColorBrush x:Key="TextColor" Color="#2F2D30" />
 

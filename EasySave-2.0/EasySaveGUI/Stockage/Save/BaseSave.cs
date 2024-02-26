@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Stockage.Logs;
 using System.Xml.Serialization;
+using static Stockage.Logs.ILogger<uint>;
 
 namespace Stockage.Save
 {
@@ -10,12 +11,20 @@ namespace Stockage.Save
     /// </summary>
     public abstract class BaseSave : ISauve
     {
-        protected string _path;
+        #region Attributes
+        private string _path;
 
-        private readonly JsonSerializerSettings _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
+        private readonly JsonSerializerSettings _options;
+        #endregion
+
+        #region Property
 
         public JsonSerializerSettings Options => _options;
 
+        public string FolderPath { get => _path; set => _path = value; }
+        #endregion
+
+        #region CTOR
         /// <summary>
         /// Sauvegarde
         /// </summary>
@@ -25,7 +34,12 @@ namespace Stockage.Save
             if (!string.IsNullOrEmpty(pPath) && !Directory.Exists(pPath) && !File.Exists(pPath) && !String.IsNullOrEmpty(Path.GetFileName(pPath)))
                 Directory.CreateDirectory(pPath);
             _path = pPath;
+            _options = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto, NullValueHandling = NullValueHandling.Ignore };
         }
+
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Crée un fichier Json par default avec les Settings
         /// </summary>
@@ -49,20 +63,20 @@ namespace Stockage.Save
                 // cm - Check if the directory exist
                 if (Directory.Exists(_path) || pIsFullPath)
                 {
-                    string dataString = "";
+                    string lDataString = "";
 
                     if (pExtention == "xml")
                     {
                         XmlSerializer serializer = new XmlSerializer(typeof(T));
                         StringWriter stringWriter = new StringWriter();
                         serializer.Serialize(stringWriter, pData);
-                        dataString = stringWriter.ToString();
+                        lDataString = stringWriter.ToString();
                         stringWriter.Close();
                     }
                     else
                     {
                         // cm - Serialize data to json
-                        dataString = JsonConvert.SerializeObject(pData, Formatting.Indented, Options);
+                        lDataString = JsonConvert.SerializeObject(pData, Formatting.Indented, Options);
                     }
 
                     if (!pIsFullPath)
@@ -74,10 +88,10 @@ namespace Stockage.Save
                     if (!pAppend)
                     {
                         // cm - Write json or xml data into the file
-                        File.WriteAllText(lPath, dataString);
+                        File.WriteAllText(lPath, lDataString);
                     }
                     if (pAppend)
-                        File.AppendAllText(lPath, dataString);
+                        File.AppendAllText(lPath, lDataString);
                 }
             }
             catch (Exception ex)
@@ -89,9 +103,10 @@ namespace Stockage.Save
         {
             throw new NotImplementedException();
         }
-        public virtual async Task CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, List<CLogState> pLogState, bool pDiffertielle = false)
+        public virtual void CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false)
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 }

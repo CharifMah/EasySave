@@ -123,8 +123,15 @@ namespace Models.Settings
         /// </summary>
         public void SaveSettings()
         {
-            _saveSettings = new SauveCollection(Environment.CurrentDirectory);
+            _saveSettings = new SauveCollection(GetSettingsFolderPath());
             _saveSettings.Sauver(this, "Settings");
+        }
+
+        private string GetSettingsFolderPath()
+        {
+            string lAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string lLogsFolder = Path.Combine(lAppDataFolder, "EasySave");
+            return lLogsFolder;
         }
 
         /// <summary>
@@ -132,7 +139,7 @@ namespace Models.Settings
         /// </summary>
         public void LoadSettings()
         {
-            _loadSettings = new ChargerCollection(Environment.CurrentDirectory);
+            _loadSettings = new ChargerCollection(GetSettingsFolderPath());
             // cm - Charge les settings
             CSettings lInstance = _loadSettings.Charger<CSettings>(Path.Combine("Settings"));
             if (lInstance != null)
@@ -152,35 +159,7 @@ namespace Models.Settings
             }
         }
 
-        /// <summary>
-        /// Charge la liste des jobs depuis un fichier
-        /// </summary>
-        /// <param name="pPath"> Chemin du fichier de configuration. Null pour le fichier par défaut. </param>
-        /// <returns> Instance du gestionnaire de jobs chargé </returns>
-        public CJobManager LoadJobsFile(string pPath = null)
-        {
-            // cm - Si le path est null on init le path par default
-            if (string.IsNullOrEmpty(pPath))
-                pPath = _JobDefaultConfigPath;
 
-            ICharge lChargerCollection = new ChargerCollection(null);
-
-            // cm - Charge le job manager
-            CJobManager lJobManager = lChargerCollection.Charger<CJobManager>(pPath, true);
-            // cm - Si aucun fichier n'a été charger on crée un nouveau JobManager
-            if (lJobManager == null)
-            {
-                lJobManager = new CJobManager();
-            }
-            else
-            {
-                _JobConfigFolderPath = new FileInfo(pPath).DirectoryName;
-            }
-
-            SaveSettings();
-
-            return lJobManager;
-        }
         /// <summary>
         /// Reset le chemin de sauvegarde du jobmanager
         /// </summary>

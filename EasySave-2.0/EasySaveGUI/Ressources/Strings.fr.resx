@@ -379,6 +379,12 @@
   <data name="JobsRunning" xml:space="preserve">
     <value>Travaux de sauvegarde en cours</value>
   </data>
+  <data name="DefaultLayout" xml:space="preserve">
+    <value>Présentation par défaut</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Tout sélectionner</value>
+  </data>
   <data name="BusinessSoftware" xml:space="preserve">
     <value>Logiciels Métiers</value>
   </data>

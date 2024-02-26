@@ -1,35 +1,45 @@
-﻿using Models.Backup;
+﻿using LogsModels;
+using Models.Backup;
 using Models.Settings;
+using Stockage.Logs;
+using Stockage.Save;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace EasySaveGUI.ViewModels
 {
     /// <summary>
-    /// Classe JobViewModel
-    /// </summary>
+    /// Classe JobViewModel  Gestionnaire de jobs
+    [DataContract]
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
+        List<CLogDaily?> _LogDailyBuffer = new List<CLogDaily?>();
+        private readonly int _BufferSize = 100;
+        private readonly Timer _Timer;
+        private readonly int flushDelay = 1000;
+
         private CJob _SelectedJob;
-        private CJobManager _jobManager;
+
+        [DataMember]
+        private ObservableCollection<CJob> _Jobs;
+        [DataMember]
+        private string _Name;
+
+        private ObservableCollection<CJob> _jobsRunning;
+
+        private ISauve _SauveCollection;
         #endregion
 
         #region Property
-        /// <summary>
-        /// JobManager
-        /// </summary>
-        public CJobManager JobManager
-        {
-            get => _jobManager;
-            set
-            {
-                _jobManager = value;
-                NotifyPropertyChanged();
-            }
-        }
+
         /// <summary>
         /// Job selectionnée par l'utilisateur
         /// </summary>
@@ -42,107 +52,280 @@ namespace EasySaveGUI.ViewModels
                 NotifyPropertyChanged();
             }
         }
+
         /// <summary>
-        /// Job charger du job manager
+        /// Liste des jobs gérés
         /// </summary>
-        public ObservableCollection<CJob> Jobs
-        {
-            get
-            {
-                return _jobManager.Jobs;
-            }
-            set
-            {
-                _jobManager.Jobs = value;
-                NotifyPropertyChanged();
-            }
-        }
+        public ObservableCollection<CJob> Jobs { get => _Jobs; set { _Jobs = value; } }
+
         /// <summary>
-        /// Les job en cours execution du job manager
+        /// Nom du gestionnaire
         /// </summary>
-        public ObservableCollection<CJob> JobsRunning { get => _jobManager.JobsRunning; set { _jobManager.JobsRunning = value; NotifyPropertyChanged(); } }
+        public string Name { get => _Name; set => _Name = value; }
+
+        /// <summary>
+        /// Interface de sauvegarde des données
+        /// </summary>
+        public ISauve SauveCollection { get => _SauveCollection; set => _SauveCollection = value; }
+        /// <summary>
+        /// Les jobs en cours d’exécution
+        /// </summary>
+        public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; } }
+
         #endregion
 
         #region CTOR
 
         /// <summary>
-        /// Constructeur de JobViewModel initialise le JobManager
+        /// Constructeur de JobViewModel initialise le chemin de sauvegarde
         /// </summary>
         public JobViewModel()
         {
-            string lPath;
-            string lFolderPath = CSettings.Instance.JobConfigFolderPath;
-            if (!string.IsNullOrEmpty(lFolderPath))
-                lPath = Path.Combine(lFolderPath, "JobManager.json");
+            _Name = "JobManager";
+            _Jobs = new ObservableCollection<CJob>();
+            _jobsRunning = new ObservableCollection<CJob>();
+            //Init la classe de sauvegarde avec le chemin definit par l'utilisateur ou celui par default
+            if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
+                _SauveCollection = new SauveCollection(new FileInfo(CSettings.Instance.JobDefaultConfigPath).DirectoryName);
             else
-                lPath = CSettings.Instance.JobDefaultConfigPath;
+                _SauveCollection = new SauveCollection(CSettings.Instance.JobConfigFolderPath);
 
-            _jobManager = CSettings.Instance.LoadJobsFile(lPath);
+            _Timer = new Timer(flushDelay);
+            _Timer.Elapsed += Timer_Elapsed; ;
+            _Timer.AutoReset = false;
         }
 
         #endregion
+
+        #region Methods
 
         /// <summary>
         /// Lance l'exécution des jobs sélectionnés
         /// </summary>
         /// <param name="pJobs">Liste des jobs à lancer</param>
         /// <returns> Liste mise à jour des jobs avec leur état après exécution </returns>
-        public async Task RunJobs(List<CJob> pJobs)
+        public void RunJobs(List<CJob> pJobs)
         {
-            List<string> businessSoftwareNames = CSettings.Instance.BusinessSoftware;
+            try
+            {
+                uint lIndex = 0;
+                // cm - parcours les jobs
+                foreach (CJob lJob in pJobs)
+                {
+                    Stopwatch lStopWatch = new Stopwatch();
+                    lStopWatch.Start();
+                    SauveJobsAsync _SauveJobs = new SauveJobsAsync("", CSettings.Instance.FormatLog.SelectedFormatLog.Value, lStopWatch);
+                    lJob.SauveJobs = _SauveJobs;
+                    lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalMilliseconds;
+                    lJob.SauveJobs.LogState.Name = lIndex + ' ' + _SauveJobs.LogState.Name;
+                    lJob.SauveJobs.LogState.TotalTransferedFile = 0;
+                    lJob.SauveJobs.LogState.BytesCopied = 0;
 
-            await _jobManager.RunJobs(pJobs, businessSoftwareNames);
-            NotifyPropertyChanged("Jobs");
-            NotifyPropertyChanged("JobsRunning");
+                    List<string> lFiles = new List<string>();
+
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        // cm - Ajoute le job lancer dans la liste des job en cours cette liste est vidée lors du lancement d'autre job
+                        _jobsRunning.Add(lJob);
+                    });
+                    string lErrors = String.Empty;
+
+                    Task lTask = Task.Run(() =>
+                     {
+                         lFiles = GetAccessibleFiles(lJob.SourceDirectory);
+                         lJob.SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
+                         lJob.SauveJobs.LogState.EligibleFileCount = lFiles.Count;
+
+                         // cm - Lance le job
+                         lJob.Run(UpdateLog);
+
+                         lStopWatch.Stop();
+
+                     });
+                    lTask.ContinueWith(t =>
+                    {
+                        _Timer.Stop();
+                        Timer_Elapsed(this, null);
+
+                        if (!string.IsNullOrEmpty(lJob.SauveJobs.Errors))
+                        {
+                            App.Current.Dispatcher.BeginInvoke(() =>
+                            {
+                                CLogger<CLogBase>.Instance.StringLogger.Log(lJob.SauveJobs.Errors, false);
+                            });
+                        }
+                    });
+
+                    lJob.SauveJobs.LogState.Date = DateTime.Now;
+                    lIndex++;
+
+                    lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalSeconds;
+                }
+            }
+            catch (Exception ex)
+            {
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+            }
+        }
+
+        private void UpdateLog(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw)
+        {
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                pLogState.TotalTransferedFile++;
+                pLogState.SourceDirectory = pFileInfo.FullName;
+                pLogState.BytesCopied += pFileInfo.Length;
+                pLogState.TargetDirectory = pTargetFilePath;
+                pLogState.RemainingFiles = pLogState.EligibleFileCount - pLogState.TotalTransferedFile;
+                pLogState.Progress = pLogState.BytesCopied / pLogState.TotalSize * 100;
+                pLogState.ElapsedMilisecond = (long)pSw.Elapsed.TotalSeconds;
+                pLogState.Date = DateTime.Now;
+
+                CLogDaily lLogFilesDaily = new CLogDaily();
+                lLogFilesDaily.Name = pFileInfo.Name;
+                lLogFilesDaily.SourceDirectory = pFileInfo.FullName;
+                lLogFilesDaily.TotalSize = pFileInfo.Length;
+                lLogFilesDaily.TargetDirectory = pTargetFilePath;
+                lLogFilesDaily.Date = DateTime.Now;
+                lLogFilesDaily.FormatLog = pFormatLog;
+                lLogFilesDaily.Progress = pLogState.Progress;
+                lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
+
+                CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
+                LogFileDaily(lLogFilesDaily);
+            });
+        }
+
+        public void LogFileDaily(CLogDaily pLogDaily)
+        {
+            if (pLogDaily.Progress < 99 || _BufferSize >= _LogDailyBuffer.Count)
+            {
+                _LogDailyBuffer.Add(pLogDaily);
+            }
+            else
+            {
+                _Timer.Start();
+            }
+        }
+        private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                foreach (var lLogDaily in _LogDailyBuffer)
+                {
+
+                    CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogDaily, true, true, lLogDaily.Name, "DailyLogs", lLogDaily.FormatLog);
+
+                }
+                _LogDailyBuffer.Clear();
+            });
         }
 
         /// <summary>
         /// Crée un nouveau job de sauvegarde
         /// </summary>
-        /// <param name="lJob">Job à créer</param>
-        /// <returns>Succès de la création</returns>
+        /// <param name="lJob">Objet représentant le job de sauvegarde à créer</param>
+        /// <returns>True si le job a été créé avec succès, false sinon</returns>
+        /// <remarks> Created by Mehmeti Faik on 06/02/2024 Updated validation logic to handle null parameters</remarks>
         public bool CreateBackupJob(CJob lJob)
         {
-            bool lResult = _jobManager.CreateBackupJob(lJob);
-            NotifyPropertyChanged("Jobs");
-            NotifyPropertyChanged("JobsRunning");
+            bool lResult = true;
+            // cm - Verifies que on n'a pas atteint la maximum de job
+            if (!_Jobs.Contains(lJob))
+                _Jobs.Add(lJob);
+            else
+                lResult = false;
             return lResult;
         }
 
         /// <summary>
-        /// Supprimer un ou plusieurs jobs
+        /// Supprimé un job
         /// </summary>
-        /// <param name="pJobs">List de jobs a delete</param>
-        /// <returns>vrai si les jobs on été delete</returns>
+        /// <param name="pJobs">List de jobs à supprimer</param>
+        /// <returns>true si réussi</returns>
+        /// <remarks>Mehmeti faik</remarks>
         public bool DeleteJobs(List<CJob> pJobs)
         {
-            return _jobManager.DeleteJobs(pJobs);
+            foreach (CJob lJob in pJobs)
+            {
+                _Jobs.Remove(lJob);
+            }
+            return true;
         }
 
         /// <summary>
-        /// Sauvegarde la configuration des jobs
+        /// Sauvegarde le JobViewModel
         /// </summary>
         public void SaveJobs()
         {
-            _jobManager.SaveJobs();
-            NotifyPropertyChanged("SelectedJob");
-            NotifyPropertyChanged("Jobs");
-
+            _SauveCollection.Sauver(this, _Name);
         }
 
-        /// <summary>
-        /// Charge la liste des jobs depuis un fichier
-        /// </summary>
-        /// <param name="IsDefaultFile"> Indique si le fichier par défaut doit être chargé </param>
-        /// <param name="pPath"> Chemin du fichier à charger, vide pour le fichier par défaut </param>
-        public void LoadJobs(bool IsDefaultFile = true, string pPath = null)
+        private List<string> GetAccessibleFiles(string rootPath)
         {
-            if (IsDefaultFile)
-                _jobManager = CSettings.Instance.LoadJobsFile();
-            else
-                _jobManager = CSettings.Instance.LoadJobsFile(pPath);
+            var accessibleFiles = new List<string>();
+            var directories = new Stack<string>();
+            directories.Push(rootPath);
 
-            NotifyPropertyChanged("Jobs");
+            while (directories.Count > 0)
+            {
+                string currentDir = directories.Pop();
+                string[] subDirs;
+
+                try
+                {
+                    subDirs = Directory.GetDirectories(currentDir);
+                }
+                catch (UnauthorizedAccessException e)
+                {
+                    CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to directory {currentDir}: {e.Message}", false);
+                    continue;
+                }
+                catch (Exception e)
+                {
+                    CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing directory {currentDir}: {e.Message}", false);
+                    continue;
+                }
+
+                string[] files;
+                try
+                {
+                    files = Directory.GetFiles(currentDir);
+                }
+                catch (UnauthorizedAccessException e)
+                {
+                    CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to files in directory {currentDir}: {e.Message}", false);
+                    continue;
+                }
+                catch (Exception e)
+                {
+                    CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing files in directory {currentDir}: {e.Message}", false);
+                    continue;
+                }
+
+                foreach (string file in files)
+                {
+                    try
+                    {
+                        // The FileInfo call can trigger an UnauthorizedAccessException
+                        var fileInfo = new FileInfo(file);
+                        accessibleFiles.Add(file); // If we get here, the file is accessible
+                    }
+                    catch (UnauthorizedAccessException e)
+                    {
+                        CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to file {file}: {e.Message}", false);
+                    }
+                }
+
+                // Push the subdirectories onto the stack for traversal.
+                // This could also throw an UnauthorizedAccessException, but we've already
+                // caught that possibility above.
+                foreach (string str in subDirs)
+                    directories.Push(str);
+            }
+
+            return accessibleFiles;
         }
+        #endregion
     }
 }

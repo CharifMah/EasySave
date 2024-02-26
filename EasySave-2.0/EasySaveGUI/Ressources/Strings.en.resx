@@ -382,4 +382,10 @@
   <data name="JobsRunning" xml:space="preserve">
     <value>Jobs running</value>
   </data>
+  <data name="DefaultLayout" xml:space="preserve">
+    <value>DefaultLayout</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Select all</value>
+  </data>
 </root>

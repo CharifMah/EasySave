@@ -2,7 +2,6 @@
     x:Class="EasySaveGUI.Views.MenuPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Converter="clr-namespace:EasySaveGUI.Converters"
     xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
     xmlns:Usr="clr-namespace:EasySaveGUI.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,14 +12,9 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <Page.Resources>
-        <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
-        <Converter:BytesValueConverter x:Key="BytesValueConverter" />
-        <Converter:SecondConverter x:Key="SecondConverter" />
-    </Page.Resources>
-
     <!--  Main Content  -->
     <Grid>
+
         <Usr:ValidationAnimationControl
             x:Name="ValidationAnimation"
             HorizontalAlignment="Center"
@@ -33,6 +27,7 @@
             DataContext="{Binding PopupVm}" />
 
         <DockingManager x:Name="Dock" Background="#EDF5FD">
+
             <DockingManager.Theme>
                 <Vs2013LightTheme />
             </DockingManager.Theme>
@@ -159,9 +154,6 @@
 
                                         </LayoutAnchorablePane>
 
-
-
-
                                     </LayoutAnchorablePaneGroup>
 
                                 </LayoutPanel>
@@ -189,20 +181,31 @@
                                                     Click="OpenLogButton_Click"
                                                     DockPanel.Dock="Right"
                                                     Style="{StaticResource CustomButtonLogFile}" />
-                                                <DataGrid
+                                                <ListBox
                                                     x:Name="ListLogsDaily"
-                                                    AutoGenerateColumns="False"
-                                                    IsReadOnly="True"
-                                                    ItemsSource="{Binding Datas, Mode=OneWay}">
-                                                    <DataGrid.Columns>
-                                                        <DataGridTextColumn Binding="{Binding TransfertTime}" Header="{x:Static Ressources:Strings.TransfertTime}" />
-                                                        <DataGridTextColumn Binding="{Binding Name}" Header="{x:Static Ressources:Strings.Name}" />
-                                                        <DataGridTextColumn Binding="{Binding Date}" Header="{x:Static Ressources:Strings.Date}" />
-                                                        <DataGridTextColumn Binding="{Binding TotalSize}" Header="{x:Static Ressources:Strings.Size}" />
-                                                        <DataGridTextColumn Binding="{Binding SourceDirectory}" Header="{x:Static Ressources:Strings.SourceDir}" />
-                                                        <DataGridTextColumn Binding="{Binding TargetDirectory}" Header="{x:Static Ressources:Strings.TargetDir}" />
-                                                    </DataGrid.Columns>
-                                                </DataGrid>
+                                                    ItemsSource="{Binding Datas, Mode=OneWay}"
+                                                    ScrollViewer.CanContentScroll="False"
+                                                    VirtualizingPanel.IsVirtualizing="True"
+                                                    VirtualizingPanel.VirtualizationMode="Recycling">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.TransfertTime}" />
+                                                                    :<Run Text="{Binding TransfertTime, Mode=OneTime}" />
+                                                                </TextBlock>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.Name}" />
+                                                                    :<Run Text="{Binding Name, Mode=OneTime}" />
+                                                                </TextBlock>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.Size}" />
+                                                                    :<Run Text="{Binding TotalSize, Mode=OneTime}" />
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
                                             </DockPanel>
 
                                         </LayoutAnchorable>
@@ -221,7 +224,10 @@
                                                     <Run Text=" : " />
                                                     <Run Text="{Binding Datas.Count, Mode=OneWay}" />
                                                 </TextBlock>
-                                                <ListBox x:Name="ListLogs" ItemsSource="{Binding Datas, Mode=OneWay}" />
+                                                <ListBox
+                                                    x:Name="ListLogs"
+                                                    ItemsSource="{Binding Datas, Mode=OneWay}"
+                                                    ScrollViewer.CanContentScroll="False" />
                                             </DockPanel>
 
 

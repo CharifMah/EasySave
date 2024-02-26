@@ -27,5 +27,13 @@ namespace EasySaveGUI.UserControls
                 _MainWindow.MenuPage.JobPropertyUsr.PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
             }
         }
+
+        private void SelectAllMenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (JobsList.SelectedItems.Count == JobsList.Items.Count)
+                JobsList.UnselectAll();
+            else
+                JobsList.SelectAll();
+        }
     }
 }

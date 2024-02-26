@@ -213,9 +213,8 @@ namespace EasySaveGUI.ViewModels
             {
                 foreach (var lLogDaily in _LogDailyBuffer)
                 {
-
-                    CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogDaily, true, true, lLogDaily.Name, "DailyLogs", lLogDaily.FormatLog);
-
+                    string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
+                    CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogDaily, true, true, lName, "DailyLogs", lLogDaily.FormatLog);
                 }
                 _LogDailyBuffer.Clear();
             });

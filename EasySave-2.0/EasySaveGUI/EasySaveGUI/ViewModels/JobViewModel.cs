@@ -191,7 +191,7 @@ namespace EasySaveGUI.ViewModels
 
                 CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
 
-                //CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, pName, "DailyLogs", pFormatLog);
+                CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, pName, "DailyLogs", pFormatLog);
             }).Priority = System.Windows.Threading.DispatcherPriority.Render;
         }
 

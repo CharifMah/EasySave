@@ -1,6 +1,7 @@
 ﻿using LogsModels;
 using Models.Backup;
 using Models.Settings;
+using Newtonsoft.Json;
 using Stockage.Logs;
 using Stockage.Save;
 using System;
@@ -9,7 +10,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -86,7 +86,7 @@ namespace EasySaveGUI.ViewModels
             _jobsRunning = new ObservableCollection<CJob>();
             _CancellationTokenSource = new CancellationTokenSource();
             //Init la classe de sauvegarde avec le chemin definit par l'utilisateur ou celui par default
-            if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
+            if (string.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
                 _SauveCollection = new SauveCollection(new FileInfo(CSettings.Instance.JobDefaultConfigPath).DirectoryName);
             else
                 _SauveCollection = new SauveCollection(CSettings.Instance.JobConfigFolderPath);
@@ -122,7 +122,7 @@ namespace EasySaveGUI.ViewModels
                 });
 
                 // cm - parcours les jobs
-                await Parallel.ForEachAsync(pJobs, async (lJob,lCancellationTokenSource) =>
+                await Parallel.ForEachAsync(pJobs, async (lJob, lCancellationTokenSource) =>
                 {
                     Stopwatch lStopWatch = new Stopwatch();
                     lStopWatch.Start();
@@ -138,12 +138,12 @@ namespace EasySaveGUI.ViewModels
 
                     List<string> lFiles = new List<string>();
 
-                    await App.Current.Dispatcher.BeginInvoke(() =>
+                    await System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         // cm - Ajoute le job lancer dans la liste des job en cours cette liste est vidée lors du lancement d'autre job
                         _jobsRunning.Add(lJob);
                     });
-                    string lErrors = String.Empty;
+                    string lErrors = string.Empty;
 
                     Task lTask = Task.Run(() =>
                     {
@@ -159,7 +159,7 @@ namespace EasySaveGUI.ViewModels
                     });
                     await lTask.ContinueWith(t =>
                     {
-                        App.Current.Dispatcher.BeginInvoke(() =>
+                        System.Windows.Application.Current.Dispatcher.BeginInvoke(async () =>
                         {
                             foreach (var lLogDaily in _LogDailyBuffer)
                             {
@@ -167,11 +167,13 @@ namespace EasySaveGUI.ViewModels
                                 CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogDaily, true, true, lName, "DailyLogs", lLogDaily.FormatLog);
                             }
                             _LogDailyBuffer.Clear();
+
+                            await ClientViewModel.Instance.UserSignalRService.SendJobsRunning(this.ToJson());
                         });
 
                         if (!string.IsNullOrEmpty(lJob.SauveJobs.Errors))
                         {
-                            App.Current.Dispatcher.BeginInvoke(() =>
+                            System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
                             {
                                 CLogger<CLogBase>.Instance.StringLogger.Log(lJob.SauveJobs.Errors, false);
                             });
@@ -188,6 +190,10 @@ namespace EasySaveGUI.ViewModels
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
         }
+        /// <summary>
+        /// Reprend les jobs selectionnée en cours
+        /// </summary>
+        /// <param name="pJobs">job qu'on veux reprendre</param>
         public void Resume(List<CJob> pJobs)
         {
             foreach (CJob lJob in pJobs)
@@ -195,7 +201,10 @@ namespace EasySaveGUI.ViewModels
                 lJob.SauveJobs.PauseEvent.Set();
             }
         }
-
+        /// <summary>
+        /// Met en pause les jobs
+        /// </summary>
+        /// <param name="pJobs">jobs a mettre en pause</param>
         public void Pause(List<CJob> pJobs)
         {
             foreach (CJob lJob in pJobs)
@@ -203,7 +212,10 @@ namespace EasySaveGUI.ViewModels
                 lJob.SauveJobs.PauseEvent.Reset();
             }
         }
-
+        /// <summary>
+        /// Arrete definitivement les jobs
+        /// </summary>
+        /// <param name="pJobs">jobs a arreter</param>
         public void Stop(List<CJob> pJobs)
         {
             foreach (CJob lJob in pJobs)
@@ -258,7 +270,7 @@ namespace EasySaveGUI.ViewModels
 
         private void UpdateLog(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw)
         {
-            App.Current.Dispatcher.BeginInvoke(() =>
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 pLogState.TotalTransferedFile++;
                 pLogState.SourceDirectory = pFileInfo.FullName;
@@ -337,7 +349,7 @@ namespace EasySaveGUI.ViewModels
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    App.Current.Dispatcher.BeginInvoke(() =>
+                    System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to directory {lCurrentDir}: {e.Message}", false);
 
@@ -346,7 +358,7 @@ namespace EasySaveGUI.ViewModels
                 }
                 catch (Exception e)
                 {
-                    App.Current.Dispatcher.BeginInvoke(() =>
+                    System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing directory {lCurrentDir}: {e.Message}", false);
 
@@ -361,7 +373,7 @@ namespace EasySaveGUI.ViewModels
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    App.Current.Dispatcher.BeginInvoke(() =>
+                    System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to files in directory {lCurrentDir}: {e.Message}", false);
 
@@ -370,7 +382,7 @@ namespace EasySaveGUI.ViewModels
                 }
                 catch (Exception e)
                 {
-                    App.Current.Dispatcher.BeginInvoke(() =>
+                    System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
                     {
                         CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing files in directory {lCurrentDir}: {e.Message}", false);
 
@@ -388,7 +400,7 @@ namespace EasySaveGUI.ViewModels
                     }
                     catch (UnauthorizedAccessException e)
                     {
-                        App.Current.Dispatcher.BeginInvoke(() =>
+                        System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
                         {
                             CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to file {file}: {e.Message}", false);
                         });
@@ -406,6 +418,11 @@ namespace EasySaveGUI.ViewModels
             return lAccessibleFiles;
         }
         #endregion
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
 
         #endregion
     }

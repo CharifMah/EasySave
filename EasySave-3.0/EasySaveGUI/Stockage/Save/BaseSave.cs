@@ -1,7 +1,6 @@
 ﻿using LogsModels;
 using Newtonsoft.Json;
 using Stockage.Logs;
-using System.Threading;
 using System.Xml.Serialization;
 using static Stockage.Logs.ILogger<uint>;
 

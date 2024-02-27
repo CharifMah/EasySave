@@ -1,7 +1,6 @@
 ﻿using Models.Settings;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace EasySaveGUI.ViewModels
 {
@@ -28,7 +27,7 @@ namespace EasySaveGUI.ViewModels
 
         public void RemoveBusinessSoftwares(List<string> pSoftwareList)
         {
-            List<string> softwaresList = pSoftwareList.ToList();
+            List<string> softwaresList = pSoftwareList;
 
             foreach (string software in softwaresList)
             {

@@ -3,7 +3,6 @@ using Models.Settings;
 using Stockage.Logs;
 using Stockage.Save;
 using System.Runtime.Serialization;
-using System.Threading;
 using static Stockage.Logs.ILogger<uint>;
 namespace Models.Backup
 {
@@ -83,7 +82,7 @@ namespace Models.Backup
             _TargetDirectory = pTargetDirectory;
             _BackupType = pTypeBackup;
             _SauveJobs = new SauveJobsAsync(CSettings.Instance.EncryptionExtensions);
-   
+
         }
         ~CJob()
         {

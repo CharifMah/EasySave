@@ -47,5 +47,10 @@ namespace EasySaveGUI.UserControls
                 HorizontalMenu.Visibility = Visibility.Hidden;
             }
         }
+
+        private async void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            await ClientViewModel.Instance.ConnectLobby();
+        }
     }
 }

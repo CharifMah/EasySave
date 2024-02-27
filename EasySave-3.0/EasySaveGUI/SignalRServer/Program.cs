@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Builder;
-using ServeurSignalR.Hubs;
+using SignalRServer.Hubs;
 
 namespace SignalRServer
 {

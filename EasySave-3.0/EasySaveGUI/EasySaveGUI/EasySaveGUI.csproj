@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\OpenDialog\OpenDialog.csproj" />
     <ProjectReference Include="..\Ressources\Ressources.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,12 +35,6 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="UserControls\LoadingAnimationControl.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
 
 </Project>

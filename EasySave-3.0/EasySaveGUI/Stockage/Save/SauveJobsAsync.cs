@@ -2,7 +2,6 @@
 using LogsModels;
 using System.Diagnostics;
 using System.Text;
-using System.Threading;
 using static Stockage.Logs.ILogger<uint>;
 
 namespace Stockage.Save
@@ -99,11 +98,11 @@ namespace Stockage.Save
                         try
                         {
                             _PauseEvent.Wait(_CancelationTokenSource.Token);
-                        } 
+                        }
                         catch (Exception)
                         {
                         }
-                      
+
                     }
 
 

@@ -28,7 +28,7 @@ namespace EasySaveGUI.ViewModels
         /// <summary>
         /// View model des jobs
         /// </summary>
-        public JobViewModel JobVm { get => _JobVm; set => _JobVm = value; }
+        public JobViewModel JobVm { get => _JobVm; set { _JobVm = value; NotifyPropertyChanged(); } }
         public PopupViewModel PopupVm { get => _PopupVm; set => _PopupVm = value; }
         public SettingsViewModel SettingsVm { get => _SettingsVm; set => _SettingsVm = value; }
         public LayoutViewModel LayoutVm { get => _LayoutVm; set => _LayoutVm = value; }

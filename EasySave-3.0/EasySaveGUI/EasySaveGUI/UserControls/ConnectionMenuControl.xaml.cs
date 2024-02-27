@@ -20,6 +20,7 @@ using Application = System.Windows.Application;
 using Button = System.Windows.Controls.Button;
 using Grid = System.Windows.Controls.Grid;
 using Style = System.Windows.Style;
+using Window = System.Windows.Window;
 
 namespace EasySaveGUI.UserControls
 {
@@ -28,9 +29,14 @@ namespace EasySaveGUI.UserControls
     /// </summary>
     public partial class ConnectionMenuControl : UserControl
     {
+        private MainWindow? _MainWindow;
+        private MainViewModel _MainVm;
         public ConnectionMenuControl()
         {
             InitializeComponent();
+
+            _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
+            _MainVm = _MainWindow.MainVm;
         }
 
         public void UpdateListClients(ObservableCollection<ClientViewModel> pClients)
@@ -49,16 +55,26 @@ namespace EasySaveGUI.UserControls
                 lButtonHorizontal.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 Grid.SetColumn(lButtonHorizontal, i);
                 lButtonHorizontal.Content = pClients[i].Client.ConnectionId;
+                lButtonHorizontal.Click += UpdateJobViewModelButton_Click;
 
                 Button lButton = new Button();
                 lButton.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 lButton.Content = pClients[i].Client.ConnectionId;
+                lButton.Click += UpdateJobViewModelButton_Click;
                 Grid.SetRow(lButton, i);
 
                 VerticalMenu.Children.Add(lButton);
                 HorizontalMenu.Children.Add(lButtonHorizontal);
             }
         }
+
+        private void UpdateJobViewModelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button? button = sender as Button;
+            _MainVm.JobVm = UserViewModel.Instance.Clients.First(cl => cl.Client.ConnectionId == button.Content.ToString()).JobViewModel;
+            _MainWindow.RefreshMenu();
+        }
+
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Grid lGrid = sender as Grid;

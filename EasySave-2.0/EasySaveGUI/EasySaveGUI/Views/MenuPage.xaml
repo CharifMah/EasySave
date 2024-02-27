@@ -28,7 +28,7 @@
             x:Name="LoadingAnimationControl"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Panel.ZIndex="10" />
+            Panel.ZIndex="11" />
 
         <Usr:ValidationPopupControl
             x:Name="PopupError"

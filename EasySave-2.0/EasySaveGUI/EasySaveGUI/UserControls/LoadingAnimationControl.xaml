@@ -35,24 +35,17 @@
             <Ellipse.Triggers>
                 <EventTrigger RoutedEvent="Ellipse.Loaded">
                     <BeginStoryboard>
-                        <Storyboard x:Name="StoryBoard" Completed="Storyboard_Completed">
+                        <Storyboard x:Name="StoryBoard">
                             <DoubleAnimation
+                                RepeatBehavior="Forever"
                                 Storyboard.TargetName="MyEclipse"
                                 Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.RelativeTransform).(RotateTransform.Angle)"
                                 From="0"
-                                To="360"
-                                Duration="0:0:0:0.5" />
+                                To="360" />
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
             </Ellipse.Triggers>
         </Ellipse>
-        <!--  Apply animations to 'outlineCircle' using its x:Name in a Storyboard  -->
-        <Path
-            Margin="-10,-10,10,10"
-            Data="M41,70 L56,85 L92,49"
-            Stroke="Green"
-            StrokeLineJoin="Round"
-            StrokeThickness="5.5" />
     </Grid>
 </UserControl>

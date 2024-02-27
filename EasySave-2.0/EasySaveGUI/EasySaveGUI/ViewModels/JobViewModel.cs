@@ -253,12 +253,18 @@ namespace EasySaveGUI.ViewModels
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to directory {currentDir}: {e.Message}", false);
+                    App.Current.Dispatcher.BeginInvoke(() => {
+                        CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to directory {currentDir}: {e.Message}", false);
+
+                    });
                     continue;
                 }
                 catch (Exception e)
                 {
-                    CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing directory {currentDir}: {e.Message}", false);
+                    App.Current.Dispatcher.BeginInvoke(() => {
+                        CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing directory {currentDir}: {e.Message}", false);
+
+                    });
                     continue;
                 }
 
@@ -269,12 +275,18 @@ namespace EasySaveGUI.ViewModels
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to files in directory {currentDir}: {e.Message}", false);
+                    App.Current.Dispatcher.BeginInvoke(() => {
+                        CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to files in directory {currentDir}: {e.Message}", false);
+
+                    });
                     continue;
                 }
                 catch (Exception e)
                 {
-                    CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing files in directory {currentDir}: {e.Message}", false);
+                    App.Current.Dispatcher.BeginInvoke(() => {
+                        CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing files in directory {currentDir}: {e.Message}", false);
+
+                    });
                     continue;
                 }
 
@@ -288,7 +300,10 @@ namespace EasySaveGUI.ViewModels
                     }
                     catch (UnauthorizedAccessException e)
                     {
-                        CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to file {file}: {e.Message}", false);
+                        App.Current.Dispatcher.BeginInvoke(() => {
+                            CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to file {file}: {e.Message}", false);
+                        });
+                 
                     }
                 }
 

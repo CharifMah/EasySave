@@ -12,10 +12,6 @@ namespace EasySaveGUI.UserControls
         public LoadingAnimationControl()
         {
             InitializeComponent();
-        }
-
-        private void Storyboard_Completed(object sender, EventArgs e)
-        {
             Hide();
         }
 

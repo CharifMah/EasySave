@@ -15,12 +15,18 @@ namespace EasySaveGUI.UserControls
 
         public void Hide()
         {
-            MainGrid.Visibility = Visibility.Hidden;
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                MainGrid.Visibility = Visibility.Hidden;
+            });
         }
 
         public void Show()
         {
-            MainGrid.Visibility = Visibility.Visible;
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                MainGrid.Visibility = Visibility.Visible;
+            });
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

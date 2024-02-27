@@ -36,7 +36,7 @@ namespace EasySaveGUI
         {
             InitializeComponent();
             _MainVm = new MainViewModel();
-            WindowState = WindowState.Maximized;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             DataContext = _MainVm;
             RefreshMenu();
         }

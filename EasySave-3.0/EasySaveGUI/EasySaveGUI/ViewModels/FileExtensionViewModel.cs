@@ -9,9 +9,12 @@ namespace EasySaveGUI.ViewModels
     {
         public ObservableCollection<string> EncryptionExtensions { get; private set; }
 
+        public ObservableCollection<string> PriorityFileExtensions { get; private set; }
+
         public FileExtensionViewModel()
         {
             EncryptionExtensions = new ObservableCollection<string>(CSettings.Instance.EncryptionExtensions);
+            PriorityFileExtensions = new ObservableCollection<string>(CSettings.Instance.PriorityFileExtensions);
         }
 
         public void AddEncryptionExtension(string pExtension)
@@ -27,8 +30,7 @@ namespace EasySaveGUI.ViewModels
 
         public void RemoveEncryptionExtensions(List<string> pExtensions)
         {
-            List<string> extensionsList = pExtensions.ToList();
-            foreach (string extension in extensionsList)
+            foreach (string extension in pExtensions)
             {
                 if (EncryptionExtensions.Contains(extension))
                 {
@@ -38,6 +40,31 @@ namespace EasySaveGUI.ViewModels
             }
             CSettings.Instance.SaveSettings();
             NotifyPropertyChanged(nameof(EncryptionExtensions));
+        }
+
+        public void AddPriorityFileExtension(string pExtension)
+        {
+            if (!string.IsNullOrWhiteSpace(pExtension) && !PriorityFileExtensions.Contains(pExtension))
+            {
+                PriorityFileExtensions.Add(pExtension);
+                CSettings.Instance.PriorityFileExtensions.Add(pExtension);
+                CSettings.Instance.SaveSettings();
+                NotifyPropertyChanged(nameof(PriorityFileExtensions));
+            }
+        }
+
+        public void RemovePriorityFileExtensions(List<string> pExtensions)
+        {
+            foreach (string extension in pExtensions)
+            {
+                if (PriorityFileExtensions.Contains(extension))
+                {
+                    PriorityFileExtensions.Remove(extension);
+                    CSettings.Instance.PriorityFileExtensions.Remove(extension);
+                }
+            }
+            CSettings.Instance.SaveSettings();
+            NotifyPropertyChanged(nameof(PriorityFileExtensions));
         }
     }
 }

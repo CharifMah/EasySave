@@ -17,6 +17,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button
+                x:Name="RunJobsButton"
                 Grid.Column="0"
                 Click="RunJobsButton_Click"
                 Content="{x:Static Ressources:Strings.RunJobs}"

@@ -388,4 +388,13 @@
   <data name="BusinessSoftware" xml:space="preserve">
     <value>Logiciels Métiers</value>
   </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Démarrer</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Arrêter</value>
+  </data>
 </root>

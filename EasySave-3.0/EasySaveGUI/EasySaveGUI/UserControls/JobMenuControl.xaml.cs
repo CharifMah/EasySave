@@ -34,7 +34,7 @@ namespace EasySaveGUI.UserControls
                 _MainWindow.MenuPage.ClearLists();
 
                 _MainWindow.MenuPage.JobsRunningDocument.IsActive = true;
-
+ 
                 // S'abonne à l'événement pour la detection d'un logiciel métier
                 _MainWindow.MainVm.JobVm.OnBusinessSoftwareDetected += ShowError;
 
@@ -43,10 +43,9 @@ namespace EasySaveGUI.UserControls
                 // Se désabonne de l'événement pour la detection du logiciel métier
                 _MainWindow.MainVm.JobVm.OnBusinessSoftwareDetected -= ShowError;
 
-
                 lButton.IsEnabled = true;
+                _MainWindow.MenuPage.ShowValidation();
             }
-            _MainWindow.MenuPage.ShowValidation();
         }
 
         private void ButtonDeletesJobs_Click(object sender, RoutedEventArgs e)

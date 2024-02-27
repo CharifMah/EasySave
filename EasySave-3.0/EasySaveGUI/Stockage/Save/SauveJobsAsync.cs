@@ -2,6 +2,7 @@
 using LogsModels;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using static Stockage.Logs.ILogger<uint>;
 
 namespace Stockage.Save
@@ -18,12 +19,17 @@ namespace Stockage.Save
         private Stopwatch _StopWatch;
         private string _Errors;
         private string[] _BlackList;
+        private CancellationTokenSource _CancelationTokenSource;
+        private ManualResetEventSlim _PauseEvent;
+
         #endregion
 
         #region Property
+        public CancellationTokenSource CancelationTokenSource { get => _CancelationTokenSource; set => _CancelationTokenSource = value; }
         public CLogState LogState { get => _LogState; set => _LogState = value; }
         public Stopwatch StopWatch { get => _StopWatch; set => _StopWatch = value; }
         public string Errors { get => _Errors; set => _Errors = value; }
+        public ManualResetEventSlim PauseEvent { get => _PauseEvent; set => _PauseEvent = value; }
 
         #endregion
 
@@ -44,6 +50,8 @@ namespace Stockage.Save
             _Errors = String.Empty;
 
             _BlackList = pBlackList.ToArray();
+            _CancelationTokenSource = new CancellationTokenSource();
+            _PauseEvent = new ManualResetEventSlim(true);
         }
         ~SauveJobsAsync()
         {
@@ -52,6 +60,7 @@ namespace Stockage.Save
         #endregion
 
         #region Methods
+
         /// <summary>
         /// Copy files and directory from the source path to the destinationPath
         /// </summary>
@@ -74,12 +83,14 @@ namespace Stockage.Save
 
                 ParallelOptions lParallelOptions = new ParallelOptions
                 {
-                    MaxDegreeOfParallelism = 20
+                    MaxDegreeOfParallelism = 20,
+                    CancellationToken = _CancelationTokenSource.Token,
                 };
 
                 // cm - Get files in the source directory and copy to the destination directory
                 Parallel.For(0, lFiles.Length, lParallelOptions, i =>
                 {
+                    _PauseEvent.Wait(_CancelationTokenSource.Token);
                     string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
 
                     // Vérifie si le fichier existe déjà  
@@ -112,6 +123,10 @@ namespace Stockage.Save
                 // cm - If recursive and copying subdirectories, recursively call this method
                 if (pRecursive)
                 {
+                    if (_CancelationTokenSource.Token.IsCancellationRequested)
+                        return;
+                    _PauseEvent.Wait(_CancelationTokenSource.Token);
+
                     foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
                     {
                         DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
@@ -124,6 +139,7 @@ namespace Stockage.Save
                 _Errors += "\n" + ex.Message;
             }
         }
+
         /// <summary>
         /// Copie une fichier de maniere asychrone et chiffre le fichier si il sont blacklister
         /// </summary>

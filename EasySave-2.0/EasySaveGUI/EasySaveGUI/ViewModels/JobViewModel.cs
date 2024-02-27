@@ -159,7 +159,6 @@ namespace EasySaveGUI.ViewModels
 
                     lJob.SauveJobs.LogState.Date = DateTime.Now;
                     lIndex++;
-
                     lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalSeconds;
                 }
             }

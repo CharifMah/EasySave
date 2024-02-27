@@ -24,6 +24,12 @@
             VerticalAlignment="Center"
             Panel.ZIndex="10" />
 
+        <Usr:LoadingAnimationControl
+            x:Name="LoadingAnimationControl"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Panel.ZIndex="10" />
+
         <Usr:ValidationPopupControl
             x:Name="PopupError"
             Panel.ZIndex="2"

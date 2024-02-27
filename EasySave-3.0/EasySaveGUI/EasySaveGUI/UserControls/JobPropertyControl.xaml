@@ -45,6 +45,7 @@
                     x:Name="TextBoxJobSourceDirectory"
                     Grid.Row="1"
                     Grid.Column="0"
+                    TextWrapping="WrapWithOverflow"
                     Validation.Error="TextBoxDirectory_Error">
                     <TextBox.Text>
 
@@ -74,6 +75,7 @@
                     x:Name="TextBoxJobTargetDirectory"
                     Grid.Row="3"
                     Grid.Column="0"
+                    TextWrapping="WrapWithOverflow"
                     Validation.Error="TextBoxDirectory_Error">
                     <TextBox.Text>
                         <Binding

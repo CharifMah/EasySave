@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using Models;
 using Models.Backup;
 using Newtonsoft.Json;
 using Services;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -13,7 +15,7 @@ namespace EasySaveGUI.ViewModels
         private HubConnection _Connection;
         private UserSignalRService _UserSignalRService;
         private JobViewModel _JobViewModel;
-
+        private ObservableCollection<CClient> _Clients;
         public UserSignalRService UserSignalRService { get => _UserSignalRService; set => _UserSignalRService = value; }
         private static ClientViewModel _Instance;
         public static ClientViewModel Instance
@@ -27,6 +29,7 @@ namespace EasySaveGUI.ViewModels
         }
 
         public JobViewModel JobViewModel { get => _JobViewModel; set => _JobViewModel = value; }
+        public ObservableCollection<CClient> Clients { get => _Clients; set => _Clients = value; }
 
         private ClientViewModel()
         {
@@ -34,12 +37,24 @@ namespace EasySaveGUI.ViewModels
             _UserSignalRService = new UserSignalRService(_Connection);
             _IsConnectedToLobby = false;
             _UserSignalRService.JobUpdated += _UserSignalRService_JobUpdated;
+            _UserSignalRService.ClientsUpdated += _UserSignalRService_ClientsUpdated;
             _JobViewModel = new JobViewModel();
+            _Clients = new ObservableCollection<CClient>();
+        }
+
+        private void _UserSignalRService_ClientsUpdated(string obj)
+        {
+            HashSet<CClient>? lClients = JsonConvert.DeserializeObject<HashSet<CClient>>(obj);
+            if (lClients != null && lClients.Count > 0)
+            {
+                _Clients = new ObservableCollection<CClient>(lClients);
+                NotifyPropertyChanged("Clients");
+            }
         }
 
         private void _UserSignalRService_JobUpdated(string obj)
         {
-            JobViewModel lJobs = JsonConvert.DeserializeObject<JobViewModel>(obj);
+            JobViewModel? lJobs = JsonConvert.DeserializeObject<JobViewModel>(obj);
             _JobViewModel = lJobs;
         }
 

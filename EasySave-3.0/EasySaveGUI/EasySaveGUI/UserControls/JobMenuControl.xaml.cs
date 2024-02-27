@@ -36,8 +36,6 @@ namespace EasySaveGUI.UserControls
             }
         }
 
-       
-
         private void ButtonDeletesJobs_Click(object sender, RoutedEventArgs e)
         {
             if (_MainWindow.MenuPage.JobUsr.JobsList.SelectedItems.Count > 0)

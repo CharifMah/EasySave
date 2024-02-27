@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,17 +22,16 @@ namespace EasySaveGUI.ViewModels
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
-
+        private CancellationTokenSource _CancellationTokenSource;
         private List<CLogDaily?> _LogDailyBuffer;
         private CJob _SelectedJob;
+
         [DataMember]
         private ObservableCollection<CJob> _Jobs;
         [DataMember]
         private string _Name;
         private ObservableCollection<CJob> _jobsRunning;
         private ISauve _SauveCollection;
-
-        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         public event Action<string> OnBusinessSoftwareDetected;
 
@@ -69,7 +69,7 @@ namespace EasySaveGUI.ViewModels
         /// <summary>
         /// Les jobs en cours d’exécution
         /// </summary>
-        public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; } }
+        public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; NotifyPropertyChanged(); } }
 
         #endregion
 
@@ -84,7 +84,7 @@ namespace EasySaveGUI.ViewModels
             _LogDailyBuffer = new List<CLogDaily?>();
             _Jobs = new ObservableCollection<CJob>();
             _jobsRunning = new ObservableCollection<CJob>();
-
+            _CancellationTokenSource = new CancellationTokenSource();
             //Init la classe de sauvegarde avec le chemin definit par l'utilisateur ou celui par default
             if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
                 _SauveCollection = new SauveCollection(new FileInfo(CSettings.Instance.JobDefaultConfigPath).DirectoryName);
@@ -96,6 +96,7 @@ namespace EasySaveGUI.ViewModels
 
         #region Methods
 
+        #region Public
         /// <summary>
         /// Lance l'exécution des jobs sélectionnés
         /// </summary>
@@ -105,6 +106,9 @@ namespace EasySaveGUI.ViewModels
         {
             try
             {
+                Resume(pJobs);
+                uint lIndex = 0;
+
                 if (CheckBusinessSoftwareRunning(CSettings.Instance.BusinessSoftware))
                 {
                     // popup + boutons fermer les processus des logiciels detectés
@@ -112,13 +116,13 @@ namespace EasySaveGUI.ViewModels
                     return;
                 }
 
-
-                uint lIndex = 0;
-
-                Task lMonitoringBusinessSoftware = Task.Run(() => MonitorBusinessSoftware(_cancellationTokenSource.Token));
+                Task lMonitoringBusinessSoftware = Task.Run(async () =>
+                {
+                    await MonitorBusinessSoftware(_CancellationTokenSource.Token);
+                });
 
                 // cm - parcours les jobs
-                foreach (CJob lJob in pJobs)
+                await Parallel.ForEachAsync(pJobs, async (lJob,lCancellationTokenSource) =>
                 {
                     Stopwatch lStopWatch = new Stopwatch();
                     lStopWatch.Start();
@@ -126,6 +130,7 @@ namespace EasySaveGUI.ViewModels
                     SauveJobsAsync _SauveJobs = new SauveJobsAsync(CSettings.Instance.EncryptionExtensions, "", CSettings.Instance.FormatLog.SelectedFormatLog.Value, lStopWatch);
 
                     lJob.SauveJobs = _SauveJobs;
+
                     lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalMilliseconds;
                     lJob.SauveJobs.LogState.Name = lIndex + ' ' + _SauveJobs.LogState.Name;
                     lJob.SauveJobs.LogState.TotalTransferedFile = 0;
@@ -141,17 +146,17 @@ namespace EasySaveGUI.ViewModels
                     string lErrors = String.Empty;
 
                     Task lTask = Task.Run(() =>
-                     {
-                         lFiles = GetAccessibleFiles(lJob.SourceDirectory);
-                         lJob.SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
-                         lJob.SauveJobs.LogState.EligibleFileCount = lFiles.Count;
+                    {
+                        lFiles = GetAccessibleFiles(lJob.SourceDirectory);
+                        lJob.SauveJobs.LogState.TotalSize = lFiles.Sum(file => new FileInfo(file).Length);
+                        lJob.SauveJobs.LogState.EligibleFileCount = lFiles.Count;
 
-                         // cm - Lance le job
-                         lJob.Run(UpdateLog);
+                        // cm - Lance le job
+                        lJob.Run(UpdateLog);
 
-                         lStopWatch.Stop();
+                        lStopWatch.Stop();
 
-                     });
+                    });
                     await lTask.ContinueWith(t =>
                     {
                         App.Current.Dispatcher.BeginInvoke(() =>
@@ -176,80 +181,35 @@ namespace EasySaveGUI.ViewModels
                     lJob.SauveJobs.LogState.Date = DateTime.Now;
                     lIndex++;
                     lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalSeconds;
-                }
+                });
             }
             catch (Exception ex)
             {
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
         }
-
-        private async Task MonitorBusinessSoftware(CancellationToken cancellationToken)
+        public void Resume(List<CJob> pJobs)
         {
-            List<string> businessSoftware = CSettings.Instance.BusinessSoftware;
-
-            while (!cancellationToken.IsCancellationRequested)
+            foreach (CJob lJob in pJobs)
             {
-                if (CheckBusinessSoftwareRunning(businessSoftware))
-                {
-                    // Met en pause les jobs
-                    // .... To do pause jobs
-                    await Task.Delay(5000);
-                }
-                else
-                {
-                    // Reprend les jobs
-                    // .... To do continue jobs
-                    await Task.Delay(1000);
-                }
+                lJob.SauveJobs.PauseEvent.Set();
             }
         }
 
-        private bool CheckBusinessSoftwareRunning(List<string> pBusinessSoftware)
+        public void Pause(List<CJob> pJobs)
         {
-            foreach (string software in pBusinessSoftware)
+            foreach (CJob lJob in pJobs)
             {
-                string processName = Path.GetFileNameWithoutExtension(software);
-
-                if (Process.GetProcessesByName(processName).Length > 0)
-                {
-                    return true;
-                }
+                lJob.SauveJobs.PauseEvent.Reset();
             }
-            return false;
         }
 
-        public void Stop()
+        public void Stop(List<CJob> pJobs)
         {
-            _cancellationTokenSource.Cancel();
-        }
-
-        private void UpdateLog(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw)
-        {
-            App.Current.Dispatcher.BeginInvoke(() =>
+            foreach (CJob lJob in pJobs)
             {
-                pLogState.TotalTransferedFile++;
-                pLogState.SourceDirectory = pFileInfo.FullName;
-                pLogState.BytesCopied += pFileInfo.Length;
-                pLogState.TargetDirectory = pTargetFilePath;
-                pLogState.RemainingFiles = pLogState.EligibleFileCount - pLogState.TotalTransferedFile;
-                pLogState.Progress = pLogState.BytesCopied / pLogState.TotalSize * 100;
-                pLogState.ElapsedMilisecond = (long)pSw.Elapsed.TotalSeconds;
-                pLogState.Date = DateTime.Now;
-
-                CLogDaily lLogFilesDaily = new CLogDaily();
-                lLogFilesDaily.Name = pFileInfo.Name;
-                lLogFilesDaily.SourceDirectory = pFileInfo.FullName;
-                lLogFilesDaily.TotalSize = pFileInfo.Length;
-                lLogFilesDaily.TargetDirectory = pTargetFilePath;
-                lLogFilesDaily.Date = DateTime.Now;
-                lLogFilesDaily.FormatLog = pFormatLog;
-                lLogFilesDaily.Progress = pLogState.Progress;
-                lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
-
-                CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
-                _LogDailyBuffer.Add(lLogFilesDaily);
-            });
+                lJob.SauveJobs.CancelationTokenSource.Cancel();
+            }
         }
 
         /// <summary>
@@ -291,27 +251,95 @@ namespace EasySaveGUI.ViewModels
         {
             _SauveCollection.Sauver(this, _Name);
         }
+        #endregion
+
+        #region private
+
+
+        private void UpdateLog(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw)
+        {
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                pLogState.TotalTransferedFile++;
+                pLogState.SourceDirectory = pFileInfo.FullName;
+                pLogState.BytesCopied += pFileInfo.Length;
+                pLogState.TargetDirectory = pTargetFilePath;
+                pLogState.RemainingFiles = pLogState.EligibleFileCount - pLogState.TotalTransferedFile;
+                pLogState.Progress = pLogState.BytesCopied / pLogState.TotalSize * 100;
+                pLogState.ElapsedMilisecond = (long)pSw.Elapsed.TotalSeconds;
+                pLogState.Date = DateTime.Now;
+
+                CLogDaily lLogFilesDaily = new CLogDaily();
+                lLogFilesDaily.Name = pFileInfo.Name;
+                lLogFilesDaily.SourceDirectory = pFileInfo.FullName;
+                lLogFilesDaily.TotalSize = pFileInfo.Length;
+                lLogFilesDaily.TargetDirectory = pTargetFilePath;
+                lLogFilesDaily.Date = DateTime.Now;
+                lLogFilesDaily.FormatLog = pFormatLog;
+                lLogFilesDaily.Progress = pLogState.Progress;
+                lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
+
+                CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
+                _LogDailyBuffer.Add(lLogFilesDaily);
+            });
+        }
+
+        private async Task MonitorBusinessSoftware(CancellationToken cancellationToken)
+        {
+            List<string> businessSoftware = CSettings.Instance.BusinessSoftware;
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                if (CheckBusinessSoftwareRunning(businessSoftware))
+                {
+                    // Met en pause les jobs
+                    // .... To do pause jobs
+                    await Task.Delay(5000);
+                }
+                else
+                {
+                    // Reprend les jobs
+                    // .... To do continue jobs
+                    await Task.Delay(1000);
+                }
+            }
+        }
+
+        private bool CheckBusinessSoftwareRunning(List<string> pBusinessSoftware)
+        {
+            foreach (string lSoftware in pBusinessSoftware)
+            {
+                string lProcessName = Path.GetFileNameWithoutExtension(lSoftware);
+
+                if (Process.GetProcessesByName(lProcessName).Length > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         private List<string> GetAccessibleFiles(string rootPath)
         {
-            var accessibleFiles = new List<string>();
-            var directories = new Stack<string>();
-            directories.Push(rootPath);
+            var lAccessibleFiles = new List<string>();
+            var lDirectories = new Stack<string>();
+            lDirectories.Push(rootPath);
 
-            while (directories.Count > 0)
+            while (lDirectories.Count > 0)
             {
-                string currentDir = directories.Pop();
-                string[] subDirs;
+                string lCurrentDir = lDirectories.Pop();
+                string[] lSubDirs;
 
                 try
                 {
-                    subDirs = Directory.GetDirectories(currentDir);
+                    lSubDirs = Directory.GetDirectories(lCurrentDir);
                 }
                 catch (UnauthorizedAccessException e)
                 {
                     App.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to directory {currentDir}: {e.Message}", false);
+                        CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to directory {lCurrentDir}: {e.Message}", false);
 
                     });
                     continue;
@@ -320,7 +348,7 @@ namespace EasySaveGUI.ViewModels
                 {
                     App.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing directory {currentDir}: {e.Message}", false);
+                        CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing directory {lCurrentDir}: {e.Message}", false);
 
                     });
                     continue;
@@ -329,13 +357,13 @@ namespace EasySaveGUI.ViewModels
                 string[] files;
                 try
                 {
-                    files = Directory.GetFiles(currentDir);
+                    files = Directory.GetFiles(lCurrentDir);
                 }
                 catch (UnauthorizedAccessException e)
                 {
                     App.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to files in directory {currentDir}: {e.Message}", false);
+                        CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to files in directory {lCurrentDir}: {e.Message}", false);
 
                     });
                     continue;
@@ -344,7 +372,7 @@ namespace EasySaveGUI.ViewModels
                 {
                     App.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing files in directory {currentDir}: {e.Message}", false);
+                        CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing files in directory {lCurrentDir}: {e.Message}", false);
 
                     });
                     continue;
@@ -355,8 +383,8 @@ namespace EasySaveGUI.ViewModels
                     try
                     {
                         // The FileInfo call can trigger an UnauthorizedAccessException
-                        var fileInfo = new FileInfo(file);
-                        accessibleFiles.Add(file); // If we get here, the file is accessible
+                        var lFileInfo = new FileInfo(file);
+                        lAccessibleFiles.Add(file); // If we get here, the file is accessible
                     }
                     catch (UnauthorizedAccessException e)
                     {
@@ -371,12 +399,14 @@ namespace EasySaveGUI.ViewModels
                 // Push the subdirectories onto the stack for traversal.
                 // This could also throw an UnauthorizedAccessException, but we've already
                 // caught that possibility above.
-                foreach (string str in subDirs)
-                    directories.Push(str);
+                foreach (string str in lSubDirs)
+                    lDirectories.Push(str);
             }
 
-            return accessibleFiles;
+            return lAccessibleFiles;
         }
+        #endregion
+
         #endregion
     }
 }

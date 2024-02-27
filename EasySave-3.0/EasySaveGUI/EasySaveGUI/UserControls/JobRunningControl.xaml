@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converter="clr-namespace:EasySaveGUI.Converters"
+    xmlns:MaterialIcon="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
     xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EasySaveGUI.UserControls"
@@ -18,12 +19,39 @@
     </UserControl.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="{x:Static Ressources:Strings.SelectAll}" />
+            <MenuItem Click="SelectAllMenuItem_Click" Header="{x:Static Ressources:Strings.SelectAll}">
+                <MenuItem.Icon>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}" Kind="SelectAll" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem
+                x:Name="StartButton"
+                Click="StartMenuItem_Click"
+                Header="{x:Static Ressources:Strings.Start}"
+                Visibility="Hidden">
+                <MenuItem.Icon>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource LightGreenColor}" Kind="Play" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Click="PauseMenuItem_Click" Header="{x:Static Ressources:Strings.Pause}">
+                <MenuItem.Icon>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource YellowHoverButtonColor}" Kind="Pause" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Click="StopMenuItem_Click" Header="{x:Static Ressources:Strings.Stop}">
+                <MenuItem.Icon>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource RedHoverButtonColor}" Kind="Stop" />
+                </MenuItem.Icon>
+            </MenuItem>
+
         </Menu>
         <DataGrid
+            x:Name="DataGrid"
             AutoGenerateColumns="False"
             ItemsSource="{Binding JobVm.JobsRunning}"
-            ScrollViewer.CanContentScroll="False">
+            ScrollViewer.CanContentScroll="False"
+            SelectionMode="Extended">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="{x:Static Ressources:Strings.Name}">
                     <DataGridTemplateColumn.CellTemplate>
@@ -102,13 +130,19 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock FontWeight="DemiBold" Text="{x:Static Ressources:Strings.SourceDirectory}" />
 
-                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory, Mode=OneWay}" />
+                                    <TextBlock
+                                        MaxWidth="600"
+                                        Text="{Binding Path=SauveJobs.LogState.SourceDirectory, Mode=OneWay}"
+                                        TextWrapping="WrapWithOverflow" />
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock FontWeight="DemiBold" Text="{x:Static Ressources:Strings.TargetDirectory}" />
 
-                                    <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory, Mode=OneWay}" />
+                                    <TextBlock
+                                        MaxWidth="600"
+                                        Text="{Binding Path=SauveJobs.LogState.TargetDirectory, Mode=OneWay}"
+                                        TextWrapping="Wrap" />
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal">

@@ -3,6 +3,7 @@ using Models.Settings;
 using Stockage.Logs;
 using Stockage.Save;
 using System.Runtime.Serialization;
+using System.Threading;
 using static Stockage.Logs.ILogger<uint>;
 namespace Models.Backup
 {
@@ -22,6 +23,8 @@ namespace Models.Backup
         [DataMember]
         private ETypeBackup _BackupType;
         private SauveJobsAsync _SauveJobs;
+
+
         #endregion
 
         #region Property
@@ -60,6 +63,8 @@ namespace Models.Backup
 
 
 
+
+
         #endregion
 
         #region CTOR
@@ -78,6 +83,7 @@ namespace Models.Backup
             _TargetDirectory = pTargetDirectory;
             _BackupType = pTypeBackup;
             _SauveJobs = new SauveJobsAsync(CSettings.Instance.EncryptionExtensions);
+   
         }
         ~CJob()
         {

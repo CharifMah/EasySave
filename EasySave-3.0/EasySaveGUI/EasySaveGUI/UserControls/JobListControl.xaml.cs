@@ -1,5 +1,8 @@
 ﻿using EasySaveGUI.ViewModels;
 using Models.Backup;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Window = System.Windows.Window;
 
@@ -34,6 +37,51 @@ namespace EasySaveGUI.UserControls
                 JobsList.UnselectAll();
             else
                 JobsList.SelectAll();
+
+            _MainWindow.MenuPage.ShowValidation();
+        }
+
+        private async void RunJobsMenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (_MainWindow.MenuPage.JobUsr.JobsList.SelectedItems.Count > 0)
+            {
+                await RunSelectJobs();
+            }
+
+        }
+
+        public async Task RunSelectJobs(Button pButton = null)
+        {
+            RunButton.IsEnabled = false;
+            if (pButton != null)
+                pButton.IsEnabled = false;
+
+            System.Collections.IList lJobs = JobsList.SelectedItems;
+
+            List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
+            _MainWindow.MenuPage.ClearLists();
+
+            _MainWindow.MenuPage.JobsRunningDocument.IsActive = true;
+
+            // S'abonne à l'événement pour la detection d'un logiciel métier
+            _MainVm.JobVm.OnBusinessSoftwareDetected += ShowError;
+
+            await _MainVm.JobVm.RunJobs(lSelectedJobs);
+
+            // Se désabonne de l'événement pour la detection du logiciel métier
+            _MainVm.JobVm.OnBusinessSoftwareDetected -= ShowError;
+
+            if (pButton != null)
+                pButton.IsEnabled = true;
+            RunButton.IsEnabled = true;
+
+            _MainWindow.MenuPage.ShowValidation();
+        }
+
+        private void ShowError(string pMessage)
+        {
+            _MainVm.PopupVm.Message = pMessage;
+            _MainWindow.MenuPage.PopupError.Show();
         }
     }
 }

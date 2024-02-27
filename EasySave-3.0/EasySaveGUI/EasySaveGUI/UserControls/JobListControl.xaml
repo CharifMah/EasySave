@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converter="clr-namespace:EasySaveGUI.Converters"
+    xmlns:MaterialIcon="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
     xmlns:Ressources="clr-namespace:Ressources;assembly=Ressources"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:EasySaveGUI.UserControls"
@@ -16,7 +17,20 @@
     </UserControl.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Click="SelectAllMenuItem_Click" Header="{x:Static Ressources:Strings.SelectAll}" />
+            <MenuItem Click="SelectAllMenuItem_Click" Header="{x:Static Ressources:Strings.SelectAll}">
+                <MenuItem.Icon>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}" Kind="SelectAll" />
+                </MenuItem.Icon>
+            </MenuItem>
+
+            <MenuItem
+                x:Name="RunButton"
+                Click="RunJobsMenuItem_Click"
+                Header="{x:Static Ressources:Strings.RunJobs}">
+                <MenuItem.Icon>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource LightGreenColor}" Kind="Run" />
+                </MenuItem.Icon>
+            </MenuItem>
         </Menu>
         <ListBox
             x:Name="JobsList"

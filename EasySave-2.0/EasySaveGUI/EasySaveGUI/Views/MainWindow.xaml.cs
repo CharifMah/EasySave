@@ -27,18 +27,40 @@ namespace EasySaveGUI
         public static extern bool ReleaseCapture();
         #endregion
 
+        #region Attributes
         private MainViewModel _MainVm;
-        private MenuPage _MenuPage;
+        private MenuPage _MenuPage; 
+        #endregion
+
+        #region Property
         public MainViewModel MainVm { get => _MainVm; set => _MainVm = value; }
         public MenuPage MenuPage { get => _MenuPage; set => _MenuPage = value; }
+        #endregion
 
+        #region CTOR
         public MainWindow()
         {
             InitializeComponent();
             _MainVm = new MainViewModel();
-            WindowState = WindowState.Maximized;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             DataContext = _MainVm;
             RefreshMenu();
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Rafraîchie le menu avec le layout sélectionnée
+        /// </summary>
+        /// <param name="pSetLayout">false pour reset le layout</param>
+        public void RefreshMenu(bool pSetLayout = true)
+        {
+            _MenuPage = new MenuPage(_MainVm);
+            frame.NavigationService.Navigate(_MenuPage);
+            if (pSetLayout)
+                SetLayout(_MainVm.SettingsVm.CurrentLayout);
+            else
+                _MainVm.SettingsVm.ResetCurrentLayout();
         }
 
         #region TitleBarReleaseCapture
@@ -74,7 +96,9 @@ namespace EasySaveGUI
             if (WindowState == WindowState.Maximized)
                 WindowState = WindowState.Normal;
             else
+            {
                 WindowState = WindowState.Maximized;
+            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -140,20 +164,7 @@ namespace EasySaveGUI
         }
         #endregion
 
-        /// <summary>
-        /// Rafraîchie le menu avec le layout sélectionnée
-        /// </summary>
-        /// <param name="pSetLayout">false pour reset le layout</param>
-        public void RefreshMenu(bool pSetLayout = true)
-        {
-            _MenuPage = new MenuPage(_MainVm);
-            frame.NavigationService.Navigate(_MenuPage);
-            if (pSetLayout)
-                SetLayout(_MainVm.SettingsVm.CurrentLayout);
-            else
-                _MainVm.SettingsVm.ResetCurrentLayout();
-        }
-
+        #region Theme/Layout
         private void ComboBoxLayout_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox lComboBox = sender as ComboBox;
@@ -276,7 +287,8 @@ namespace EasySaveGUI
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
         }
+        #endregion
 
-
+        #endregion
     }
 }

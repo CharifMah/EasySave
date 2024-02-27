@@ -35,12 +35,12 @@ namespace EasySaveGUI.UserControls
 
                 _MainWindow.MenuPage.JobsRunningDocument.IsActive = true;
 
-                // S'abonner à l'événement avant de commencer le traitement
+                // S'abonne à l'événement pour la detection d'un logiciel métier
                 _MainWindow.MainVm.JobVm.OnBusinessSoftwareDetected += ShowError;
 
                 await _MainWindow.MainVm.JobVm.RunJobs(lSelectedJobs);
 
-                // Se désabonner de l'événement une fois le traitement terminé
+                // Se désabonne de l'événement pour la detection du logiciel métier
                 _MainWindow.MainVm.JobVm.OnBusinessSoftwareDetected -= ShowError;
 
 

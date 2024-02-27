@@ -24,6 +24,12 @@
             VerticalAlignment="Center"
             Panel.ZIndex="10" />
 
+        <Usr:LoadingAnimationControl
+            x:Name="LoadingAnimationControl"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Panel.ZIndex="11" />
+
         <Usr:ValidationPopupControl
             x:Name="PopupError"
             Panel.ZIndex="2"
@@ -207,7 +213,7 @@
                                                                 </TextBlock>
                                                                 <TextBlock>
                                                                     <Run Text="{x:Static Ressources:Strings.TransfertTime}" />
-                                                                    CryptoSoft :<Run Text="{Binding EncryptTime.TotalMilliseconds, Mode=OneTime, Converter={StaticResource SecondConverter}}" />
+                                                                    CryptoSoft :<Run Text="{Binding EncryptTime.TotalMilliseconds, Mode=OneWay, Converter={StaticResource SecondConverter}}" />
                                                                 </TextBlock>
                                                             </StackPanel>
                                                         </DataTemplate>

@@ -91,7 +91,7 @@ namespace Stockage.Save
                         if (lFiles[i].LastWriteTime > ldestInfo.LastWriteTime)
                         {
                             // cm -  Copy the file async if the target file is newer
-                            CopyFileAsync(lFiles[i].FullName, lTargetFilePath,_LogState);
+                            CopyFileAsync(lFiles[i], lTargetFilePath,_LogState);
                             lock (_lock)
                             {
                                 pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
@@ -101,7 +101,7 @@ namespace Stockage.Save
                     else
                     {
                         // cm -  Copy the file async
-                        CopyFileAsync(lFiles[i].FullName, lTargetFilePath,_LogState);
+                        CopyFileAsync(lFiles[i], lTargetFilePath,_LogState);
                         lock (_lock)
                         {
                             pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
@@ -130,16 +130,16 @@ namespace Stockage.Save
         /// <param name="pSourcePath">chemin source</param>
         /// <param name="pDestinationPath">chemin cible</param>
         /// <returns></returns>
-        public void CopyFileAsync(string pSourcePath, string pDestinationPath,CLogState pLogState)
+        public void CopyFileAsync(FileInfo pSourcePath, string pDestinationPath,CLogState pLogState)
         {
             try
             {
-                using (Stream lSource = File.OpenRead(pSourcePath))
+                using (Stream lSource = File.OpenRead(pSourcePath.FullName))
                 {
                     using (Stream lDestination = File.Create(pDestinationPath))
                     {
                         // cm - Check if the sourcePath is blacklisted
-                        if (!_BlackList.Any(lPath => pSourcePath.EndsWith(lPath, StringComparison.OrdinalIgnoreCase)))
+                        if (!_BlackList.Any(lPath => pSourcePath.Extension.EndsWith(lPath, StringComparison.OrdinalIgnoreCase)))
                         {
                             // cm - If the file is blacklisted, we copy without encryption
                             lSource.CopyTo(lDestination);

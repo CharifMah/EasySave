@@ -41,10 +41,12 @@ namespace EasySaveGUI.UserControls
             if (DataGrid.SelectedItems.Count == DataGrid.Items.Count)
                 DataGrid.UnselectAll();
             else
-                DataGrid.SelectAll(); ;
+                DataGrid.SelectAll();
+
+            _MainWindow.MenuPage.ShowValidation();
         }
 
-        private async void StartMenuItem_Click(object sender, RoutedEventArgs e)
+        private void StartMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (DataGrid.SelectedItems.Count > 0)
             {
@@ -67,9 +69,10 @@ namespace EasySaveGUI.UserControls
             _MainVm.JobVm.Stop(lSelectedJobs);
   
             ClearSelectedJobRunningList(lSelectedJobs);
+            _MainWindow.MenuPage.ShowValidation();
         }
 
-        public void ClearSelectedJobRunningList(List<CJob> pJobs)
+        private void ClearSelectedJobRunningList(List<CJob> pJobs)
         {
             foreach (CJob lItem in pJobs)
             {
@@ -77,20 +80,14 @@ namespace EasySaveGUI.UserControls
             }
         }
 
-        private void ShowError(string pMessage)
-        {
-            _MainVm.PopupVm.Message = pMessage;
-            _MainWindow.MenuPage.PopupError.Show();
-        }
-
         private void PauseMenuItem_Click(object sender, RoutedEventArgs e)
         {
             StartButton.Visibility = Visibility.Visible;
 
-
             IList lItems = DataGrid.SelectedItems;
             List<CJob> lSelectedJobs = lItems.Cast<CJob>().ToList();
             _MainVm.JobVm.Pause(lSelectedJobs);
+            _MainWindow.MenuPage.ShowValidation();
         }
     }
 }

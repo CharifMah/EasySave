@@ -94,8 +94,11 @@ namespace Stockage.Save
                     // Check for cancellation before doing work
                     if (_CancelationTokenSource.Token.IsCancellationRequested)
                         _CancelationTokenSource.Token.ThrowIfCancellationRequested();
+                    else
+                    {
+                        _PauseEvent.Wait(_CancelationTokenSource.Token);
+                    }
 
-                    _PauseEvent.Wait(_CancelationTokenSource.Token);
 
                     // Vérifie si le fichier existe déjà  
                     if (lFiles[i].Exists && pDiffertielle)

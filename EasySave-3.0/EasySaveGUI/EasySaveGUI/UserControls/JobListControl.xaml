@@ -22,6 +22,15 @@
                     <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}" Kind="SelectAll" />
                 </MenuItem.Icon>
             </MenuItem>
+
+            <MenuItem
+                x:Name="RunButton"
+                Click="RunJobsMenuItem_Click"
+                Header="{x:Static Ressources:Strings.RunJobs}">
+                <MenuItem.Icon>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource LightGreenColor}" Kind="Run" />
+                </MenuItem.Icon>
+            </MenuItem>
         </Menu>
         <ListBox
             x:Name="JobsList"

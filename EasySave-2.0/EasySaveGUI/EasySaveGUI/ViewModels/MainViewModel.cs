@@ -1,6 +1,4 @@
-﻿using EasySaveGUI.UserControls;
-using Models.Backup;
-using Models.Settings;
+﻿using Models.Settings;
 using Stockage.Load;
 using System.IO;
 
@@ -34,7 +32,7 @@ namespace EasySaveGUI.ViewModels
         public PopupViewModel PopupVm { get => _PopupVm; set => _PopupVm = value; }
         public SettingsViewModel SettingsVm { get => _SettingsVm; set => _SettingsVm = value; }
         public LayoutViewModel LayoutVm { get => _LayoutVm; set => _LayoutVm = value; }
-        
+
         /// <summary>
         /// View Model pour la gestion des logiciels métiers
         /// </summary>

@@ -91,7 +91,7 @@ namespace Stockage.Save
                         if (lFiles[i].LastWriteTime > ldestInfo.LastWriteTime)
                         {
                             // cm -  Copy the file async if the target file is newer
-                            CopyFileAsync(lFiles[i], lTargetFilePath,_LogState);
+                            CopyFileAsync(lFiles[i], lTargetFilePath, _LogState);
                             lock (_lock)
                             {
                                 pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
@@ -101,7 +101,7 @@ namespace Stockage.Save
                     else
                     {
                         // cm -  Copy the file async
-                        CopyFileAsync(lFiles[i], lTargetFilePath,_LogState);
+                        CopyFileAsync(lFiles[i], lTargetFilePath, _LogState);
                         lock (_lock)
                         {
                             pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
@@ -130,7 +130,7 @@ namespace Stockage.Save
         /// <param name="pSourcePath">chemin source</param>
         /// <param name="pDestinationPath">chemin cible</param>
         /// <returns></returns>
-        public void CopyFileAsync(FileInfo pSourcePath, string pDestinationPath,CLogState pLogState)
+        public void CopyFileAsync(FileInfo pSourcePath, string pDestinationPath, CLogState pLogState)
         {
             try
             {

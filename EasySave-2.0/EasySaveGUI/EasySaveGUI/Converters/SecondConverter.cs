@@ -41,17 +41,17 @@ namespace EasySaveGUI.Converters
             {
                 return $"{totalDays} {abbreviationDay} {totalHours % 24} {abbreviationHr} {totalMinutes % 60} {abbreviationMin} {totalSeconds % 60} {abbreviationSec}";
             }
-            else if (totalHours > 0)
-            {
-                return $"{totalHours} {abbreviationHr} {totalMinutes % 60} {abbreviationMin} {totalSeconds % 60} {abbreviationSec}";
-            }
             else if (totalMinutes > 0)
             {
-                return $"{totalMinutes} {abbreviationMin} {totalSeconds % 60} {abbreviationSec}";
+                return $"{totalMinutes} {abbreviationMin} {totalSeconds} {abbreviationSec}";
             }
-            else if (totalSeconds > 0)
+            else if (lMs > 60)
             {
-                return $"{totalSeconds} {abbreviationSec} {lMs % 1000} {abbreviationMs}";
+                return $"{totalSeconds} {abbreviationMin} {lMs} {abbreviationMs}";
+            }
+            else if (lMs > 0)
+            {
+                return $"{lMs} {abbreviationMs}";
             }
             else
             {

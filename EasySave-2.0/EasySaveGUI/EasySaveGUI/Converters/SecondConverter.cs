@@ -47,9 +47,9 @@ namespace EasySaveGUI.Converters
             }
             else if (lMs > 60)
             {
-                return $"{totalSeconds} {abbreviationMin} {lMs} {abbreviationMs}";
+                return $"{totalSeconds} {abbreviationSec} {lMs} {abbreviationMs}";
             }
-            else if (lMs > 0)
+            else if (lMs < 0)
             {
                 return $"{lMs} {abbreviationMs}";
             }

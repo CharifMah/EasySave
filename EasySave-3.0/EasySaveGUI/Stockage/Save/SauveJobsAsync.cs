@@ -84,15 +84,18 @@ namespace Stockage.Save
                 ParallelOptions lParallelOptions = new ParallelOptions
                 {
                     MaxDegreeOfParallelism = 20,
-                    CancellationToken = _CancelationTokenSource.Token,
+                    CancellationToken = _CancelationTokenSource.Token
                 };
 
                 // cm - Get files in the source directory and copy to the destination directory
                 Parallel.For(0, lFiles.Length, lParallelOptions, i =>
                 {
-                    if (!_CancelationTokenSource.Token.IsCancellationRequested)
-                        _PauseEvent.Wait(_CancelationTokenSource.Token);
                     string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
+                    // Check for cancellation before doing work
+                    if (_CancelationTokenSource.Token.IsCancellationRequested)
+                        _CancelationTokenSource.Token.ThrowIfCancellationRequested();
+
+                    _PauseEvent.Wait(_CancelationTokenSource.Token);
 
                     // Vérifie si le fichier existe déjà  
                     if (lFiles[i].Exists && pDiffertielle)

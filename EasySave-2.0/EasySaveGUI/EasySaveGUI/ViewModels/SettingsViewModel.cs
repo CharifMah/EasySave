@@ -1,7 +1,5 @@
 ﻿using Models.Settings;
 using Ressources;
-using Models;
-using System.Collections.ObjectModel;
 
 namespace EasySaveGUI.ViewModels
 {
@@ -44,7 +42,7 @@ namespace EasySaveGUI.ViewModels
         /// <summary>
         /// Format de log view model
         /// </summary>
-        public FormatLogViewModel LogVm { get => _logViewModel; set => _logViewModel = value; } 
+        public FormatLogViewModel LogVm { get => _logViewModel; set => _logViewModel = value; }
         #endregion
 
         public BusinessSoftwareViewModel BusinessSoftwareVm { get => _businessSoftwareViewModel; set => _businessSoftwareViewModel = value; }
@@ -67,7 +65,7 @@ namespace EasySaveGUI.ViewModels
                 _CurrentLayout = lLayout;
             else
                 ResetCurrentLayout();
-        } 
+        }
         #endregion
 
         public void ResetCurrentLayout()

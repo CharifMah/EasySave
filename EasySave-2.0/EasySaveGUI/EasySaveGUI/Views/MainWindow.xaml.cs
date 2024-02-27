@@ -29,7 +29,7 @@ namespace EasySaveGUI
 
         #region Attributes
         private MainViewModel _MainVm;
-        private MenuPage _MenuPage; 
+        private MenuPage _MenuPage;
         #endregion
 
         #region Property

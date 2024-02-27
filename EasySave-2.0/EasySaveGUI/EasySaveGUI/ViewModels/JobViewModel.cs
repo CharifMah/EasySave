@@ -11,7 +11,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using System.Timers;
 
 namespace EasySaveGUI.ViewModels
 {
@@ -253,7 +252,8 @@ namespace EasySaveGUI.ViewModels
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    App.Current.Dispatcher.BeginInvoke(() => {
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
                         CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to directory {currentDir}: {e.Message}", false);
 
                     });
@@ -261,7 +261,8 @@ namespace EasySaveGUI.ViewModels
                 }
                 catch (Exception e)
                 {
-                    App.Current.Dispatcher.BeginInvoke(() => {
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
                         CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing directory {currentDir}: {e.Message}", false);
 
                     });
@@ -275,7 +276,8 @@ namespace EasySaveGUI.ViewModels
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    App.Current.Dispatcher.BeginInvoke(() => {
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
                         CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to files in directory {currentDir}: {e.Message}", false);
 
                     });
@@ -283,7 +285,8 @@ namespace EasySaveGUI.ViewModels
                 }
                 catch (Exception e)
                 {
-                    App.Current.Dispatcher.BeginInvoke(() => {
+                    App.Current.Dispatcher.BeginInvoke(() =>
+                    {
                         CLogger<CLogBase>.Instance.StringLogger.Log($"An error occurred while accessing files in directory {currentDir}: {e.Message}", false);
 
                     });
@@ -300,10 +303,11 @@ namespace EasySaveGUI.ViewModels
                     }
                     catch (UnauthorizedAccessException e)
                     {
-                        App.Current.Dispatcher.BeginInvoke(() => {
+                        App.Current.Dispatcher.BeginInvoke(() =>
+                        {
                             CLogger<CLogBase>.Instance.StringLogger.Log($"Access denied to file {file}: {e.Message}", false);
                         });
-                 
+
                     }
                 }
 

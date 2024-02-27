@@ -1,5 +1,4 @@
-﻿using Models.Backup;
-using Models.Langue;
+﻿using Models.Langue;
 using Models.Settings.Theme;
 using Stockage.Load;
 using Stockage.Save;
@@ -58,7 +57,7 @@ namespace Models.Settings
 
         public List<string> EncryptionExtensions
         {
-            get => _EncryptionExtensions; 
+            get => _EncryptionExtensions;
             set => _EncryptionExtensions = value;
         }
 

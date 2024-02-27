@@ -116,6 +116,8 @@ namespace EasySaveGUI.ViewModels
                     return;
                 }
 
+
+
                 Task lMonitoringBusinessSoftware = Task.Run(async () =>
                 {
                     await MonitorBusinessSoftware(_CancellationTokenSource.Token);
@@ -292,16 +294,15 @@ namespace EasySaveGUI.ViewModels
             {
                 if (CheckBusinessSoftwareRunning(businessSoftware))
                 {
-                    // Met en pause les jobs
-                    // .... To do pause jobs
+                    Pause(this._jobsRunning.ToList());
+                    OnBusinessSoftwareDetected?.Invoke("Un logiciel métier est actuellement en exécution.\nVeuillez fermer le(s) processus en cours.");
                     await Task.Delay(5000);
-                }
-                else
+                } else
                 {
-                    // Reprend les jobs
-                    // .... To do continue jobs
+                    // .... To do start jobs
                     await Task.Delay(1000);
                 }
+                
             }
         }
 

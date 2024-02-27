@@ -143,6 +143,42 @@
                                 </StackPanel>
                             </Grid>
                         </GroupBox>
+
+                        <GroupBox Header="Extensions de fichiers prioritaires" Grid.Column="2" Grid.Row="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="txtPriorityFileExtension"
+                                     Grid.Column="0"
+                                     Grid.Row="0"
+                                     Margin="5"
+                                 />
+                                <ListBox x:Name="ListBoxPriorityFileExtensions"
+                                     ItemsSource="{Binding FileExtensionVm.PriorityFileExtensions}"
+                                     Grid.Column="0"
+                                     Grid.Row="1"
+                                     SelectionMode="Multiple" Height="100"
+                                 />
+                                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Vertical" HorizontalAlignment="Center">
+                                    <Button 
+                                        Click="AddPriorityFileExtension_Click"
+                                        Style="{StaticResource CustomButtonAdd}"
+                                        Margin="5"
+                                     />
+                                    <Button
+                                        Click="RemovePriorityFileExtensions_Click"
+                                        Style="{StaticResource CustomButtonRemove}"
+                                        Margin="5"
+                                     />
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
                     </Grid>
                 </StackPanel>
             </GroupBox>

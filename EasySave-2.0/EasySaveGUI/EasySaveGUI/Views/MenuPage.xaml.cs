@@ -1,14 +1,12 @@
-﻿using AvalonDock;
-using EasySaveGUI.UserControls;
+﻿using EasySaveGUI.UserControls;
 using EasySaveGUI.ViewModels;
 using LogsModels;
-using Models;
+using Models.Settings;
 using OpenDialog;
 using Stockage.Logs;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 
 namespace EasySaveGUI.Views
 {
@@ -27,9 +25,8 @@ namespace EasySaveGUI.Views
             _MainVm = pMainVm;
             DataContext = _MainVm;
             _MainVm.LayoutVm.ElementsContent = new JobMenuControl();
-            DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
-            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
 
+            SetDataContextLogs();
             JobsListDocument.IsSelected = true;
 
             ValidationAnimation.Hide();
@@ -37,23 +34,20 @@ namespace EasySaveGUI.Views
 
         public void ClearLists()
         {
-            CLogger<CLogBase>.Instance.Clear();
-            CLogger<CLogDaily>.Instance.Clear();
-            _MainVm.JobVm.JobsRunning.Clear();
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                CLogger<CLogBase>.Instance.Clear();
+                CLogger<CLogDaily>.Instance.Clear();
+                CLogger<List<CLogState>>.Instance.Clear();
+                _MainVm.JobVm.JobsRunning.Clear();
+                SetDataContextLogs();
+            });
+        }
+
+        private void SetDataContextLogs()
+        {
             DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
             DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
-        }
-
-        private void ListLogs_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
-        {
-            if (ListLogs.Items.Count > 0)
-                ListLogs.ScrollIntoView(ListLogs.Items[ListLogs.Items.Count - 1]);
-        }
-
-        private void ListLogsDaily_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            if (ListLogsDaily.Items.Count > 0)
-                ListLogsDaily.ScrollIntoView(ListLogsDaily.Items[ListLogsDaily.Items.Count - 1]);
         }
 
         private void OpenLogButton_Click(object sender, RoutedEventArgs e)

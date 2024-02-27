@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Models
+namespace Models.Settings
 {
     /// <summary>
     /// Log format Class

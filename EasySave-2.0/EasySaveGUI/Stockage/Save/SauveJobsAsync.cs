@@ -1,28 +1,39 @@
-﻿using LogsModels;
-using Stockage.Logs;
+﻿using CryptoSoft;
+using LogsModels;
 using System.Diagnostics;
+using System.Text;
+using static Stockage.Logs.ILogger<uint>;
 
 namespace Stockage.Save
 {
     /// <summary>
     /// Classe permettant de sauvegarder des jobs et de les logger
     /// </summary>
-    public class SauveJobsAsync : BaseSave
+    public class SauveJobsAsync : BaseSave, IDisposable
     {
-        private List<CLogState> _LogStates;
+        #region Attributes
+        private readonly object _lock = new object();
         private CLogState _LogState;
         private string _FormatLog;
         private Stopwatch _StopWatch;
+        private string _Errors;
+        private string[] _BlackList;
+        #endregion
+
+        #region Property
         public CLogState LogState { get => _LogState; set => _LogState = value; }
         public Stopwatch StopWatch { get => _StopWatch; set => _StopWatch = value; }
+        public string Errors { get => _Errors; set => _Errors = value; }
 
+        #endregion
+
+        #region CTOR
         /// <summary>
         /// Constructeur de SauveJobs
         /// </summary>
         /// <param name="pPath">Le chemin du dossier</param>
-        public SauveJobsAsync(string pPath = null, string pFormatLog = "json", Stopwatch pStopwatch = null) : base(pPath)
+        public SauveJobsAsync(List<string> pBlackList, string? pPath = null, string pFormatLog = "json", Stopwatch? pStopwatch = null) : base(pPath)
         {
-            _LogStates = new List<CLogState>();
             _LogState = new CLogState();
             _LogState.TotalTransferedFile = 0;
             _FormatLog = pFormatLog;
@@ -30,8 +41,17 @@ namespace Stockage.Save
                 _StopWatch = pStopwatch;
             else
                 _StopWatch = Stopwatch.StartNew();
-        }
+            _Errors = String.Empty;
 
+            _BlackList = pBlackList.ToArray();
+        }
+        ~SauveJobsAsync()
+        {
+            Dispose();
+        }
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Copy files and directory from the source path to the destinationPath
         /// </summary>
@@ -40,10 +60,8 @@ namespace Stockage.Save
         /// <param name="pRecursive">True if recursive</param>
         /// <param name="pDiffertielle">true if the backup is differential</param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public override async Task CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, bool pRecursive, List<CLogState> pLogStates, bool pDiffertielle = false)
+        public override void CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false)
         {
-            string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
-
             FileInfo[] lFiles = pSourceDir.GetFiles();
 
             try
@@ -54,33 +72,42 @@ namespace Stockage.Save
 
                 Directory.CreateDirectory(pTargetDir.FullName);
 
-                // cm - Get files in the source directory and copy to the destination directory
-                for (int i = 0; i < lFiles.Length; i++)
+                ParallelOptions lParallelOptions = new ParallelOptions
                 {
+                    MaxDegreeOfParallelism = 20
+                };
 
+                // cm - Get files in the source directory and copy to the destination directory
+                Parallel.For(0, lFiles.Length, lParallelOptions, i =>
+                {
                     string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
 
                     // Vérifie si le fichier existe déjà  
                     if (lFiles[i].Exists && pDiffertielle)
                     {
                         // Compare les dates  
-                        FileInfo destInfo = new FileInfo(lTargetFilePath);
+                        FileInfo ldestInfo = new FileInfo(lTargetFilePath);
 
-                        if (lFiles[i].LastWriteTime > destInfo.LastWriteTime)
+                        if (lFiles[i].LastWriteTime > ldestInfo.LastWriteTime)
                         {
                             // cm -  Copy the file async if the target file is newer
-                            await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
-
-                            await UpdateLog(lFiles[i], lTargetFilePath, _StopWatch, lName, pLogStates);
+                            CopyFileAsync(lFiles[i], lTargetFilePath, _LogState);
+                            lock (_lock)
+                            {
+                                pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
+                            }
                         }
                     }
                     else
                     {
                         // cm -  Copy the file async
-                        await CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
-                        await UpdateLog(lFiles[i], lTargetFilePath, _StopWatch, lName, pLogStates);
+                        CopyFileAsync(lFiles[i], lTargetFilePath, _LogState);
+                        lock (_lock)
+                        {
+                            pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
+                        }
                     }
-                }
+                });
 
                 // cm - If recursive and copying subdirectories, recursively call this method
                 if (pRecursive)
@@ -88,64 +115,71 @@ namespace Stockage.Save
                     foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
                     {
                         DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
-                        await CopyDirectoryAsync(lSubDir, lNewDestinationDir, true, pLogStates, pDiffertielle);
+                        CopyDirectoryAsync(lSubDir, lNewDestinationDir, pUpdateLog, true, pDiffertielle);
                     }
                 }
             }
             catch (Exception ex)
             {
-                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false, true, lName, "", _FormatLog);
+                _Errors += "\n" + ex.Message;
             }
         }
-
-        private async Task UpdateLog(FileInfo pFileInfo, string pTargetFilePath, Stopwatch pSw, string pName, List<CLogState> pLogStates)
-        {
-            _LogState.TotalTransferedFile++;
-            _LogState.SourceDirectory = pFileInfo.FullName;
-            _LogState.TargetDirectory = pTargetFilePath;
-            _LogState.RemainingFiles = _LogState.EligibleFileCount - _LogState.TotalTransferedFile;
-            _LogState.BytesCopied += pFileInfo.Length;
-            _LogState.Progress = _LogState.BytesCopied / _LogState.TotalSize * 100;
-            _LogState.ElapsedMilisecond = (long)pSw.Elapsed.TotalSeconds;
-            _LogState.Date = DateTime.Now;
-            CLogDaily lLogFilesDaily = new CLogDaily();
-            lLogFilesDaily.Name = pFileInfo.Name;
-            lLogFilesDaily.SourceDirectory = pFileInfo.FullName;
-            lLogFilesDaily.TargetDirectory = pTargetFilePath;
-            lLogFilesDaily.Date = DateTime.Now;
-            lLogFilesDaily.TotalSize = pFileInfo.Length;
-            lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
-
-
-            CLogger<List<CLogState>>.Instance.GenericLogger.Log(pLogStates, true, false, "Logs", "", _FormatLog);
-
-            CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogFilesDaily, true, true, pName, "DailyLogs", _FormatLog);
-        }
-
-        public async Task CopyFileAsync(string sourcePath, string destinationPath)
-        {
-            using Stream source = File.OpenRead(sourcePath);
-            using Stream destination = File.Create(destinationPath);
-            await source.CopyToAsync(destination);
-        }
-
         /// <summary>
-        /// Calcule la taille d'un repertoire
+        /// Copie une fichier de maniere asychrone et chiffre le fichier si il sont blacklister
         /// </summary>
-        /// <param name="pPath">Chemin du repertoire</param>
-        /// <returns>la taille du repertoire en bytes</returns>
-        public long GetDirSize(string pPath)
+        /// <param name="pSourcePath">chemin source</param>
+        /// <param name="pDestinationPath">chemin cible</param>
+        /// <returns></returns>
+        public void CopyFileAsync(FileInfo pSourcePath, string pDestinationPath, CLogState pLogState)
         {
             try
             {
-                return Directory.EnumerateFiles(pPath).Sum(x => new FileInfo(x).Length)
-                    +
-                       Directory.EnumerateDirectories(pPath).Sum(x => GetDirSize(x));
+                using (Stream lSource = File.OpenRead(pSourcePath.FullName))
+                {
+                    using (Stream lDestination = File.Create(pDestinationPath))
+                    {
+                        // cm - Check if the sourcePath is blacklisted
+                        if (!_BlackList.Any(lPath => pSourcePath.Extension.EndsWith(lPath, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            // cm - If the file is blacklisted, we copy without encryption
+                            lSource.CopyTo(lDestination);
+                        }
+                        else
+                        {
+                            // cm - If the file is not blacklisted, encrypt and then copy
+                            using (MemoryStream lMemoryStream = new MemoryStream())
+                            {
+                                // cm - Copy the content of the file to a memory buffer
+                                lSource.CopyTo(lMemoryStream);
+                                byte[] lFileBytes = lMemoryStream.ToArray();
+
+                                // cm - Encrypt the buffer with the XOR encryption
+                                CXorChiffrement lXorEncryptor = new CXorChiffrement();
+                                byte[] lKey = Encoding.UTF8.GetBytes("secret"); // Convert the string key to byte array
+                                byte[] lEncryptedBytes = lXorEncryptor.Encrypt(lFileBytes, lKey);
+                                pLogState.EncryptTime = lXorEncryptor.EncryptTime;
+                                // cm - Write the encrypted data to the destination file
+                                lDestination.Write(lEncryptedBytes, 0, lEncryptedBytes.Length);
+                            }
+                        }
+                    }
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return 0L;
+                _Errors += "\n" + ex.Message;
             }
         }
+
+        public void Dispose()
+        {
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SuppressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

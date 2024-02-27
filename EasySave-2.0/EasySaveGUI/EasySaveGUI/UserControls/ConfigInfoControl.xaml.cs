@@ -1,4 +1,7 @@
 ﻿using EasySaveGUI.ViewModels;
+using OpenDialog;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,6 +26,42 @@ namespace EasySaveGUI.UserControls
             if (e.AddedItems.Count > 0)
             {
                 _MainVm.FormatLogVm.SetFormatLog(e.AddedItems[0].ToString());
+            }
+        }
+
+        private void LoadSoftwareFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            string lApplicationPath = CDialog.ReadFile("");
+            if (lApplicationPath != "-1")
+            {
+                string lApplicationName = System.IO.Path.GetFileName(lApplicationPath);
+
+                _MainVm.BusinessSoftwareVm.AddBusinessSoftware(lApplicationName);
+            }
+        }
+
+        private void RemoveSoftwareButton_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> selectedSoftware = ListBoxBusinessSoftware.SelectedItems.Cast<string>().ToList();
+            if (selectedSoftware.Any())
+            {
+                _MainVm.BusinessSoftwareVm.RemoveBusinessSoftwares(selectedSoftware);
+            }
+        }
+
+        private void AddEncryptionExtension_Click(object sender, RoutedEventArgs e)
+        {
+            string lEncryptionExtension = txtEncryptionExtension.Text;
+            _MainVm.FileExtensionVm.AddEncryptionExtension(lEncryptionExtension);
+            txtEncryptionExtension.Text = string.Empty;
+        }
+
+        private void RemoveEncryptionExtensions_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> selectedExtensions = ListBoxEncryptionExtensions.SelectedItems.Cast<string>().ToList();
+            if (selectedExtensions.Any())
+            {
+                _MainVm.FileExtensionVm.RemoveEncryptionExtensions(selectedExtensions);
             }
         }
     }

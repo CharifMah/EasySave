@@ -8,6 +8,7 @@ namespace LogsModels
     {
         [DataMember]
         private double _TransfertTime;
+
         /// <summary>
         /// Temps de transfert en milliseconde
         /// </summary>

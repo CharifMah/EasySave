@@ -2,14 +2,13 @@
 using EasySaveGUI.ViewModels;
 using EasySaveGUI.Views;
 using LogsModels;
-using Models;
-using Ressources;
+using Models.Settings;
+using Models.Settings.Theme;
 using Stockage.Logs;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -28,18 +27,40 @@ namespace EasySaveGUI
         public static extern bool ReleaseCapture();
         #endregion
 
+        #region Attributes
         private MainViewModel _MainVm;
         private MenuPage _MenuPage;
+        #endregion
+
+        #region Property
         public MainViewModel MainVm { get => _MainVm; set => _MainVm = value; }
         public MenuPage MenuPage { get => _MenuPage; set => _MenuPage = value; }
+        #endregion
 
+        #region CTOR
         public MainWindow()
         {
             InitializeComponent();
             _MainVm = new MainViewModel();
-            WindowState = WindowState.Maximized;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             DataContext = _MainVm;
             RefreshMenu();
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Rafraîchie le menu avec le layout sélectionnée
+        /// </summary>
+        /// <param name="pSetLayout">false pour reset le layout</param>
+        public void RefreshMenu(bool pSetLayout = true)
+        {
+            _MenuPage = new MenuPage(_MainVm);
+            frame.NavigationService.Navigate(_MenuPage);
+            if (pSetLayout)
+                SetLayout(_MainVm.SettingsVm.CurrentLayout);
+            else
+                _MainVm.SettingsVm.ResetCurrentLayout();
         }
 
         #region TitleBarReleaseCapture
@@ -75,7 +96,9 @@ namespace EasySaveGUI
             if (WindowState == WindowState.Maximized)
                 WindowState = WindowState.Normal;
             else
+            {
                 WindowState = WindowState.Maximized;
+            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -140,89 +163,8 @@ namespace EasySaveGUI
 
         }
         #endregion
-        /// <summary>
-        /// Rafraîchie le menu avec le layout sélectionnée
-        /// </summary>
-        /// <param name="pSetLayout">false pour reset le layout</param>
-        public void RefreshMenu(bool pSetLayout = true)
-        {
-            _MenuPage = new MenuPage(_MainVm);
-            frame.NavigationService.Navigate(_MenuPage);
-            if (pSetLayout)
-                SetLayout(_MainVm.SettingsVm.CurrentLayout);
-            else
-                _MainVm.SettingsVm.CurrentLayout = "";
-        }
 
-        private void BlueTheme()
-        {
-            try
-            {
-                _MenuPage.Dock.Theme = new Vs2013BlueTheme();
-                CSettings.Instance.Theme.CurrentTheme = ETheme.BLUE;
-                _MenuPage.Dock.Background = Brushes.White;
-                _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
-                _MenuPage.Resources["GenericBackground"] = Brushes.White;
-                _MenuPage.Resources["LightGray"] = Brushes.LightBlue;
-                _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEE6FD"));
-                _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
-                _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
-                _MenuPage.Resources["LoadingBarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#9FFF73"));
-                CSettings.Instance.SaveSettings();
-            }
-            catch (Exception ex)
-            {
-                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
-            }
-
-        }
-
-        private void LightTheme()
-        {
-            try
-            {
-                _MenuPage.Dock.Theme = new Vs2013LightTheme();
-                CSettings.Instance.Theme.CurrentTheme = ETheme.LIGHT;
-                _MenuPage.Dock.Background = Brushes.White;
-                _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
-                _MenuPage.Resources["GenericBackground"] = Brushes.White;
-                _MenuPage.Resources["LightGray"] = Brushes.LightGray;
-                _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
-                _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
-                _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
-                _MenuPage.Resources["LoadingBarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#9FFF73"));
-                CSettings.Instance.SaveSettings();
-            }
-            catch (Exception ex)
-            {
-                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
-            }
-
-        }
-
-        private void DarkTheme()
-        {
-            try
-            {
-                _MenuPage.Dock.Theme = new AvalonDock.Themes.Vs2013DarkTheme();
-                CSettings.Instance.Theme.CurrentTheme = ETheme.DARK;
-                _MenuPage.Dock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
-                _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ebeef2"));
-                _MenuPage.Resources["GenericBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
-                _MenuPage.Resources["LightGray"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#111112"));
-                _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#424242"));
-                _MenuPage.Resources["LightDark"] = Brushes.White;
-                _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#757f86"));
-                _MenuPage.Resources["LoadingBarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1D8A1D"));
-                CSettings.Instance.SaveSettings();
-            }
-            catch (Exception ex)
-            {
-                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
-            }
-
-        }
-
+        #region Theme/Layout
         private void ComboBoxLayout_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox lComboBox = sender as ComboBox;
@@ -267,5 +209,86 @@ namespace EasySaveGUI
 
             CSettings.Instance.Theme.CurrentTheme = pTheme;
         }
+
+        private void BlueTheme()
+        {
+            try
+            {
+                _MenuPage.Dock.Theme = new Vs2013BlueTheme();
+                CSettings.Instance.Theme.CurrentTheme = ETheme.BLUE;
+                _MenuPage.Dock.Background = Brushes.White;
+                _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+                _MenuPage.Resources["GenericBackground"] = Brushes.White;
+                _MenuPage.Resources["LightGray"] = Brushes.LightBlue;
+                _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CEE6FD"));
+                _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
+                _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
+                _MenuPage.Resources["LoadingBarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#9FFF73"));
+                _MenuPage.Resources["DarkPinkColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF6B86"));
+                _MenuPage.Resources["PinkColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E1BFFF"));
+                _MenuPage.Resources["LightBlue"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1D4F6"));
+                _MenuPage.Resources["LightGreenColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7DC777"));
+                CSettings.Instance.SaveSettings();
+            }
+            catch (Exception ex)
+            {
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+            }
+        }
+
+        private void LightTheme()
+        {
+            try
+            {
+                _MenuPage.Dock.Theme = new Vs2013LightTheme();
+                CSettings.Instance.Theme.CurrentTheme = ETheme.LIGHT;
+                _MenuPage.Dock.Background = Brushes.White;
+                _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+                _MenuPage.Resources["GenericBackground"] = Brushes.White;
+                _MenuPage.Resources["LightGray"] = Brushes.LightGray;
+                _MenuPage.Resources["LightDark"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4D4D4D"));
+                _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
+                _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F5F5F5"));
+                _MenuPage.Resources["LoadingBarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#9FFF73"));
+                _MenuPage.Resources["DarkPinkColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF6B86"));
+                _MenuPage.Resources["PinkColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E1BFFF"));
+                _MenuPage.Resources["LightBlue"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1D4F6"));
+                _MenuPage.Resources["LightGreenColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7DC777"));
+                CSettings.Instance.SaveSettings();
+            }
+            catch (Exception ex)
+            {
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+            }
+        }
+
+        private void DarkTheme()
+        {
+            try
+            {
+                _MenuPage.Dock.Theme = new AvalonDock.Themes.Vs2013DarkTheme();
+                CSettings.Instance.Theme.CurrentTheme = ETheme.DARK;
+                _MenuPage.Dock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+                _MenuPage.Resources["TextColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ebeef2"));
+                _MenuPage.Resources["GenericBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2F2D30"));
+                _MenuPage.Resources["LightGray"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#111112"));
+                _MenuPage.Resources["ButtonBackground"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#424242"));
+                _MenuPage.Resources["LightDark"] = Brushes.White;
+                _MenuPage.Resources["HoverColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#757f86"));
+                _MenuPage.Resources["LoadingBarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1D8A1D"));
+                _MenuPage.Resources["DarkPinkColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#6E1946"));
+                _MenuPage.Resources["PinkColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C76F9D"));
+                _MenuPage.Resources["LightBlue"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#245889"));
+                _MenuPage.Resources["LightGreenColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#248955"));
+                CSettings.Instance.SaveSettings();
+            }
+            catch (Exception ex)
+            {
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+            }
+        }
+        #endregion
+
+        #endregion
     }
 }

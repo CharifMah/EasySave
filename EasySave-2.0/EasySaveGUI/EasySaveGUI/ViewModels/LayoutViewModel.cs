@@ -1,16 +1,19 @@
 ﻿using AvalonDock;
 using AvalonDock.Layout.Serialization;
 using EasySaveGUI.UserControls;
-using Models;
+using Models.Settings;
+using Models.Settings.Theme;
 using Stockage.Save;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace EasySaveGUI.ViewModels
 {
+    /// <summary>
+    /// View model du layout de l'application
+    /// </summary>
     public class LayoutViewModel : BaseViewModel
     {
         private ContentControl _ElementsContent;
@@ -18,7 +21,9 @@ namespace EasySaveGUI.ViewModels
         public ObservableCollection<string> LayoutNames { get => _LayoutNames; set => _LayoutNames = value; }
         public ContentControl ElementsContent { get => _ElementsContent; set { _ElementsContent = value; NotifyPropertyChanged(); } }
 
-
+        /// <summary>
+        /// Constructeur du layout view model charge les layout disponibles
+        /// </summary>
         public LayoutViewModel()
         {
             DirectoryInfo lDirInfo = new DirectoryInfo(CSettings.Instance.LayoutDefaultFolderPath);
@@ -34,7 +39,12 @@ namespace EasySaveGUI.ViewModels
 
             _ElementsContent = new JobMenuControl();
         }
-
+        /// <summary>
+        /// Sauvegarde le layout
+        /// </summary>
+        /// <param name="pDock">layout a sauvegarder</param>
+        /// <param name="pTheme">theme a sauvegarder</param>
+        /// <param name="pLayoutName">nom du layout</param>
         public void SaveLayout(DockingManager pDock, ETheme pTheme, string pLayoutName = "Layout")
         {
             if (!_LayoutNames.Contains(pLayoutName))
@@ -52,9 +62,12 @@ namespace EasySaveGUI.ViewModels
             new SauveCollection(CSettings.Instance.LayoutDefaultFolderPath);
             layoutSerializer.Serialize(Path.Combine(CSettings.Instance.LayoutDefaultFolderPath, pLayoutName));
             CSettings.Instance.SaveSettings();
-            MessageBox.Show("LayoutSaved");
         }
-
+        /// <summary>
+        /// Charge le layout
+        /// </summary>
+        /// <param name="pDock">Dockmanager a mettre a jour</param>
+        /// <param name="pLayoutName">Nom du layout a charger</param>
         public void LoadLayout(DockingManager pDock, string pLayoutName = "Layout")
         {
             XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(pDock);

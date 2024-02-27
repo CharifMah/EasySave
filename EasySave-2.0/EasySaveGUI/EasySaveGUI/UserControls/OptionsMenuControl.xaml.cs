@@ -1,5 +1,5 @@
 ﻿using EasySaveGUI.ViewModels;
-using Models;
+using Models.Settings;
 using System.Windows;
 using System.Windows.Controls;
 

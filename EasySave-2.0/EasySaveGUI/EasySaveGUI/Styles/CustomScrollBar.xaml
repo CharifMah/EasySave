@@ -12,7 +12,7 @@
                             Height="Auto"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
-                            Background="White"
+                            Background="{DynamicResource LightGray}"
                             CornerRadius="2" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -29,7 +29,7 @@
     <!--  ScrollBars  -->
     <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
-        <Setter Property="Foreground" Value="#8C8C8C" />
+        <Setter Property="Foreground" Value="{DynamicResource LightGray}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Width" Value="8" />
         <Setter Property="Template">
@@ -47,7 +47,7 @@
                             Height="Auto"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
-                            Background="Black"
+                            Background="{DynamicResource LightDark}"
                             CornerRadius="2" />
 
                         <Track

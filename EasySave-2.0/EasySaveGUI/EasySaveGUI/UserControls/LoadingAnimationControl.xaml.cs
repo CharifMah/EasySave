@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace EasySaveGUI.UserControls
@@ -7,15 +6,11 @@ namespace EasySaveGUI.UserControls
     /// <summary>
     /// Interaction logic for ValidationAnimationControl.xaml
     /// </summary>
-    public partial class ValidationAnimationControl : UserControl
+    public partial class LoadingAnimationControl : UserControl
     {
-        public ValidationAnimationControl()
+        public LoadingAnimationControl()
         {
             InitializeComponent();
-        }
-
-        private void Storyboard_Completed(object sender, EventArgs e)
-        {
             Hide();
         }
 

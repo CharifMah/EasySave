@@ -1,4 +1,5 @@
-﻿using Models.Backup;
+﻿using EasySaveGUI.ViewModels;
+using Models.Backup;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -11,19 +12,21 @@ namespace EasySaveGUI.UserControls
     /// </summary>
     public partial class JobMenuControl : UserControl
     {
-        private MainWindow _MainWindow;
+        private MainWindow? _MainWindow;
+        private MainViewModel _MainVm;
         public JobMenuControl()
         {
             InitializeComponent();
 
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
+            _MainVm = _MainWindow.MainVm;
         }
 
         private async void RunJobsButton_Click(object sender, RoutedEventArgs e)
         {
             if (_MainWindow.MenuPage.JobUsr.JobsList.SelectedItems.Count > 0)
             {
-                Button lButton = sender as Button;
+                Button? lButton = sender as Button;
                 lButton.IsEnabled = false;
                 System.Collections.IList lJobs = _MainWindow.MenuPage.JobUsr.JobsList.SelectedItems;
 
@@ -31,7 +34,15 @@ namespace EasySaveGUI.UserControls
                 _MainWindow.MenuPage.ClearLists();
 
                 _MainWindow.MenuPage.JobsRunningDocument.IsActive = true;
+
+                // S'abonne à l'événement pour la detection d'un logiciel métier
+                _MainWindow.MainVm.JobVm.OnBusinessSoftwareDetected += ShowError;
+
                 await _MainWindow.MainVm.JobVm.RunJobs(lSelectedJobs);
+
+                // Se désabonne de l'événement pour la detection du logiciel métier
+                _MainWindow.MainVm.JobVm.OnBusinessSoftwareDetected -= ShowError;
+
 
                 lButton.IsEnabled = true;
             }
@@ -65,6 +76,12 @@ namespace EasySaveGUI.UserControls
                 VerticalMenu.Visibility = Visibility.Visible;
                 HorizontalMenu.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void ShowError(string pMessage)
+        {
+            _MainVm.PopupVm.Message = pMessage;
+            _MainWindow.MenuPage.PopupError.Show();
         }
     }
 }

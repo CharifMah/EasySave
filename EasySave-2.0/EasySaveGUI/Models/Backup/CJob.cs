@@ -1,14 +1,16 @@
 ﻿using LogsModels;
+using Models.Settings;
 using Stockage.Logs;
 using Stockage.Save;
 using System.Runtime.Serialization;
+using static Stockage.Logs.ILogger<uint>;
 namespace Models.Backup
 {
     /// <summary>
     /// Représente un travail/tâche à exécuter
     /// </summary>
     [DataContract]
-    public class CJob : IPath
+    public class CJob : BaseModel, IPath, IDisposable
     {
         #region Attribute
         [DataMember]
@@ -26,23 +28,35 @@ namespace Models.Backup
         /// <summary>
         /// Nom du job de sauvegarde
         /// </summary>
-        public string Name { get => _Name; set => _Name = value; }
+        public string Name { get => _Name; set { _Name = value; NotifyPropertyChanged(); } }
 
         /// <summary>
         /// Répertoire source à sauvegarder
         /// </summary>
-        public string SourceDirectory { get => _SourceDirectory; set => _SourceDirectory = value; }
+        public string SourceDirectory
+        {
+            get => _SourceDirectory; set { _SourceDirectory = value; NotifyPropertyChanged(); }
+        }
 
         /// <summary>
         /// Répertoire cible de la sauvegarde
         /// </summary>
-        public string TargetDirectory { get => _TargetDirectory; set => _TargetDirectory = value; }
+        public string TargetDirectory
+        {
+            get => _TargetDirectory; set { _TargetDirectory = value; NotifyPropertyChanged(); }
+        }
 
         /// <summary>
         /// Type de sauvegarde
         /// </summary>
-        public ETypeBackup BackupType { get => _BackupType; set => _BackupType = value; }
-        public SauveJobsAsync SauveJobs { get => _SauveJobs; set => _SauveJobs = value; }
+        public ETypeBackup BackupType
+        {
+            get => _BackupType; set { _BackupType = value; NotifyPropertyChanged(); }
+        }
+        public SauveJobsAsync SauveJobs
+        {
+            get => _SauveJobs; set { _SauveJobs = value; NotifyPropertyChanged(); }
+        }
 
 
 
@@ -63,7 +77,11 @@ namespace Models.Backup
             _SourceDirectory = pSourceDirectory;
             _TargetDirectory = pTargetDirectory;
             _BackupType = pTypeBackup;
-            _SauveJobs = new SauveJobsAsync();
+            _SauveJobs = new SauveJobsAsync(CSettings.Instance.EncryptionExtensions);
+        }
+        ~CJob()
+        {
+            this.Dispose();
         }
         #endregion
 
@@ -72,15 +90,16 @@ namespace Models.Backup
         /// Lance l'exécution du job de sauvegarde
         /// </summary>
         /// <param name="pSauveJobs">Objet de sauvegarde des données de jobs</param>
-        public async Task Run(List<CLogState> pLogState)
+        public void Run(UpdateLogDelegate pUpdateLog)
         {
+            string lResult = String.Empty;
             switch (BackupType)
             {
                 case ETypeBackup.COMPLET:
-                    await Backup(pLogState);
+                    Backup(pUpdateLog);
                     break;
                 case ETypeBackup.DIFFERENTIEL:
-                    await Backup(pLogState, true);
+                    Backup(pUpdateLog, true);
                     break;
             }
         }
@@ -90,7 +109,7 @@ namespace Models.Backup
         /// </summary>
         /// <param name="pDifferentiel = false">Indique une recopie forcée</param>
         /// <param name="pSauveJobs">Objet de sauvegarde des jobs</param>
-        private async Task Backup(List<CLogState> pLogStates, bool pDifferentiel = false)
+        private void Backup(UpdateLogDelegate pUpdateLog, bool pDifferentiel = false)
         {
             try
             {
@@ -99,7 +118,7 @@ namespace Models.Backup
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    await _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, true, pLogStates, pDifferentiel);
+                    _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, pUpdateLog, true, pDifferentiel);
                 }
                 else
                 {
@@ -124,6 +143,16 @@ namespace Models.Backup
         public override int GetHashCode()
         {
             return HashCode.Combine(_Name, _SourceDirectory, _TargetDirectory, _BackupType);
+        }
+
+        public void Dispose()
+        {
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SuppressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
         }
 
         #endregion

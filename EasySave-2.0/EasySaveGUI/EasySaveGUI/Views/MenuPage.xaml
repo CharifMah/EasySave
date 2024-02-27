@@ -12,20 +12,23 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
     <Page.Resources>
-        <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
-        <Converter:BytesValueConverter x:Key="BytesValueConverter" />
         <Converter:SecondConverter x:Key="SecondConverter" />
     </Page.Resources>
-
     <!--  Main Content  -->
     <Grid>
+
         <Usr:ValidationAnimationControl
             x:Name="ValidationAnimation"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Panel.ZIndex="10" />
+
+        <Usr:LoadingAnimationControl
+            x:Name="LoadingAnimationControl"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Panel.ZIndex="11" />
 
         <Usr:ValidationPopupControl
             x:Name="PopupError"
@@ -40,11 +43,9 @@
             <!--  Content  -->
             <DockingManager.Layout>
                 <LayoutRoot>
-
                     <LayoutPanel Orientation="Vertical">
-
                         <LayoutAnchorablePane
-                            DockHeight="70"
+                            DockHeight="0.13592233009708737*"
                             DockMinHeight="70"
                             DockMinWidth="80"
                             DockWidth="80">
@@ -58,7 +59,7 @@
                             </LayoutAnchorable>
                         </LayoutAnchorablePane>
 
-                        <LayoutPanel Orientation="Horizontal">
+                        <LayoutPanel DockHeight="1.87*" Orientation="Horizontal">
 
                             <!--  Elements Pane Left  -->
                             <!--  MenuButtons  -->
@@ -67,7 +68,7 @@
                                 DockHeight="80"
                                 DockMinHeight="80"
                                 DockMinWidth="90"
-                                DockWidth="90">
+                                DockWidth="0.1*">
 
                                 <LayoutAnchorable
                                     x:Name="ListElements"
@@ -81,147 +82,58 @@
 
                             </LayoutAnchorablePane>
 
-                            <LayoutPanel Orientation="Vertical">
+                            <LayoutPanel
+                                DockHeight="500"
+                                DockWidth="1.9*"
+                                Orientation="Vertical">
 
                                 <!--  Jobs Pane  -->
-                                <LayoutPanel Orientation="Horizontal">
+                                <LayoutPanel DockHeight="1.7*" Orientation="Horizontal">
 
                                     <!--  Jobs Pane  -->
-                                    <LayoutDocumentPaneGroup DockWidth="200" Orientation="Vertical">
+                                    <LayoutAnchorablePaneGroup DockWidth="1600" Orientation="Vertical">
                                         <!--  jobs list  -->
-                                        <LayoutDocumentPane x:Name="JobsPaneGroup">
+                                        <LayoutAnchorablePane x:Name="JobsPaneGroup" DockWidth="1600">
 
-                                            <LayoutDocument
+                                            <LayoutAnchorable
                                                 x:Name="JobsListDocument"
                                                 Title="{x:Static Ressources:Strings.Jobs}"
+                                                CanAutoHide="False"
                                                 CanClose="False"
-                                                IsSelected="True">
+                                                CanHide="False"
+                                                ContentId="JobsListDocument">
                                                 <Usr:JobListControl x:Name="JobUsr" />
-                                            </LayoutDocument>
+                                            </LayoutAnchorable>
 
                                             <!--  JobsRunning  -->
-                                            <LayoutDocument
+                                            <LayoutAnchorable
                                                 x:Name="JobsRunningDocument"
-                                                Title="JobsRunning"
-                                                CanClose="False">
-                                                <DataGrid
-                                                    x:Name="dataGrid"
-                                                    AutoGenerateColumns="False"
-                                                    ItemsSource="{Binding JobVm.JobsRunning}">
-                                                    <DataGrid.Columns>
-                                                        <DataGridTextColumn Binding="{Binding Path=Name}" Header="{x:Static Ressources:Strings.Name}" />
-
-                                                        <DataGridTemplateColumn Header="{x:Static Ressources:Strings.Progress}">
-                                                            <DataGridTemplateColumn.CellTemplate>
-                                                                <DataTemplate>
-                                                                    <Grid>
-                                                                        <ProgressBar
-                                                                            x:Name="MyProgressBar"
-                                                                            MinWidth="200"
-                                                                            MaxWidth="50"
-                                                                            Value="{Binding Path=SauveJobs.LogState.Progress, Mode=TwoWay}" />
-                                                                        <WrapPanel
-                                                                            HorizontalAlignment="Right"
-                                                                            VerticalAlignment="Bottom"
-                                                                            Orientation="Horizontal">
-                                                                            <TextBlock
-                                                                                Margin="0,0,10,5"
-                                                                                Foreground="Black"
-                                                                                Text="{Binding Path=SauveJobs.LogState.ElapsedMilisecond, Mode=OneWay, Converter={StaticResource SecondConverter}}" />
-                                                                        </WrapPanel>
-                                                                    </Grid>
-
-                                                                </DataTemplate>
-                                                            </DataGridTemplateColumn.CellTemplate>
-
-                                                        </DataGridTemplateColumn>
-
-
-                                                        <!--  LogSstate Column Datagrid JobsRunning  -->
-                                                        <DataGridTemplateColumn Header="{x:Static Ressources:Strings.LogState}">
-                                                            <DataGridTemplateColumn.CellTemplate>
-                                                                <!--  LogSstate  -->
-                                                                <DataTemplate>
-                                                                    <StackPanel>
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock>
-                                                                                <Run FontWeight="DemiBold" Text="TotalTransferedFile : " />
-                                                                                <Run Text="{Binding Path=SauveJobs.LogState.TotalTransferedFile, Mode=OneWay}" />
-
-
-                                                                                <Run
-                                                                                    FontWeight="Bold"
-                                                                                    Foreground="#00266e"
-                                                                                    Text="/" />
-                                                                                <Run Text="{Binding Path=SauveJobs.LogState.EligibleFileCount, Mode=OneWay}" />
-                                                                            </TextBlock>
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-
-                                                                            <TextBlock>
-                                                                                <Run FontWeight="DemiBold" Text="{x:Static Ressources:Strings.ByteCopied}" />
-                                                                                <Run FontWeight="DemiBold" Text=" : " />
-                                                                                <Run Text="{Binding Path=SauveJobs.LogState.BytesCopied, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
-
-                                                                                <Run
-                                                                                    FontWeight="Bold"
-                                                                                    Foreground="#00266e"
-                                                                                    Text="/" />
-                                                                                <Run Text="{Binding Path=SauveJobs.LogState.TotalSize, Mode=OneWay, Converter={StaticResource BytesValueConverter}}" />
-                                                                            </TextBlock>
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="DemiBold" Text="{x:Static Ressources:Strings.SourceDirectory}" />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.SourceDirectory, Mode=OneWay}" />
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="DemiBold" Text="{x:Static Ressources:Strings.TargetDirectory}" />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.TargetDirectory, Mode=OneWay}" />
-                                                                        </StackPanel>
-
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <TextBlock FontWeight="DemiBold" Text="Derniere activitée : " />
-
-                                                                            <TextBlock Text="{Binding Path=SauveJobs.LogState.Date, Mode=OneWay}" />
-                                                                        </StackPanel>
-
-                                                                    </StackPanel>
-                                                                </DataTemplate>
-
-                                                            </DataGridTemplateColumn.CellTemplate>
-                                                        </DataGridTemplateColumn>
-
-                                                        <DataGridTextColumn Binding="{Binding Path=SourceDirectory}" Header="{x:Static Ressources:Strings.SourceDir}" />
-
-                                                        <DataGridTextColumn Binding="{Binding Path=TargetDirectory}" Header="{x:Static Ressources:Strings.TargetDir}" />
-
-                                                    </DataGrid.Columns>
-
-                                                </DataGrid>
-
-                                            </LayoutDocument>
+                                                Title="{x:Static Ressources:Strings.JobsRunning}"
+                                                CanAutoHide="False"
+                                                CanClose="False"
+                                                CanHide="False"
+                                                ContentId="JobsRunningDocument">
+                                                <Usr:JobRunningControl />
+                                            </LayoutAnchorable>
 
                                             <!--  ConfigInfo  -->
-                                            <LayoutDocument
+                                            <LayoutAnchorable
                                                 x:Name="ConfigInfoDocument"
-                                                Title="ConfigInfo"
+                                                Title="{x:Static Ressources:Strings.Config}"
+                                                CanAutoHide="False"
                                                 CanClose="False"
+                                                CanHide="False"
                                                 ContentId="ConfigInfoDocument">
                                                 <Usr:ConfigInfoControl />
 
-                                            </LayoutDocument>
+                                            </LayoutAnchorable>
 
-                                        </LayoutDocumentPane>
+                                        </LayoutAnchorablePane>
 
-                                    </LayoutDocumentPaneGroup>
+                                    </LayoutAnchorablePaneGroup>
 
                                     <!--  Property Pane  -->
-                                    <LayoutAnchorablePaneGroup DockWidth="200">
+                                    <LayoutAnchorablePaneGroup DockWidth="0.15*">
 
                                         <!--  Property Pane  -->
                                         <LayoutAnchorablePane DockMinWidth="200">
@@ -251,15 +163,12 @@
 
                                         </LayoutAnchorablePane>
 
-
-
-
                                     </LayoutAnchorablePaneGroup>
 
                                 </LayoutPanel>
 
                                 <!--  Logs  -->
-                                <LayoutAnchorablePaneGroup DockHeight="120" Orientation="Horizontal">
+                                <LayoutAnchorablePaneGroup DockHeight="0.2976939203354298*" Orientation="Horizontal">
 
                                     <!--  Logs  -->
                                     <LayoutAnchorablePane>
@@ -281,20 +190,35 @@
                                                     Click="OpenLogButton_Click"
                                                     DockPanel.Dock="Right"
                                                     Style="{StaticResource CustomButtonLogFile}" />
-                                                <DataGrid
+                                                <ListBox
                                                     x:Name="ListLogsDaily"
-                                                    AutoGenerateColumns="False"
-                                                    IsReadOnly="True"
-                                                    ItemsSource="{Binding Datas, Mode=OneWay}">
-                                                    <DataGrid.Columns>
-                                                        <DataGridTextColumn Binding="{Binding TransfertTime}" Header="{x:Static Ressources:Strings.TransfertTime}" />
-                                                        <DataGridTextColumn Binding="{Binding Name}" Header="{x:Static Ressources:Strings.Name}" />
-                                                        <DataGridTextColumn Binding="{Binding Date}" Header="{x:Static Ressources:Strings.Date}" />
-                                                        <DataGridTextColumn Binding="{Binding TotalSize}" Header="{x:Static Ressources:Strings.Size}" />
-                                                        <DataGridTextColumn Binding="{Binding SourceDirectory}" Header="{x:Static Ressources:Strings.SourceDir}" />
-                                                        <DataGridTextColumn Binding="{Binding TargetDirectory}" Header="{x:Static Ressources:Strings.TargetDir}" />
-                                                    </DataGrid.Columns>
-                                                </DataGrid>
+                                                    ItemsSource="{Binding Datas, Mode=OneWay}"
+                                                    ScrollViewer.CanContentScroll="False"
+                                                    VirtualizingPanel.IsVirtualizing="True"
+                                                    VirtualizingPanel.VirtualizationMode="Recycling">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.TransfertTime}" />
+                                                                    :<Run Text="{Binding TransfertTime, Mode=OneTime}" />
+                                                                </TextBlock>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.Name}" />
+                                                                    :<Run Text="{Binding Name, Mode=OneTime}" />
+                                                                </TextBlock>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.Size}" />
+                                                                    :<Run Text="{Binding TotalSize, Mode=OneTime}" />
+                                                                </TextBlock>
+                                                                <TextBlock>
+                                                                    <Run Text="{x:Static Ressources:Strings.TransfertTime}" />
+                                                                    CryptoSoft :<Run Text="{Binding EncryptTime.TotalMilliseconds, Mode=OneWay, Converter={StaticResource SecondConverter}}" />
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
                                             </DockPanel>
 
                                         </LayoutAnchorable>
@@ -313,7 +237,10 @@
                                                     <Run Text=" : " />
                                                     <Run Text="{Binding Datas.Count, Mode=OneWay}" />
                                                 </TextBlock>
-                                                <ListBox x:Name="ListLogs" ItemsSource="{Binding Datas, Mode=OneWay}" />
+                                                <ListBox
+                                                    x:Name="ListLogs"
+                                                    ItemsSource="{Binding Datas, Mode=OneWay}"
+                                                    ScrollViewer.CanContentScroll="False" />
                                             </DockPanel>
 
 

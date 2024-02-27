@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Models.Langue;
+using Models.Settings;
 
 namespace EasySaveGUI.ViewModels
 {

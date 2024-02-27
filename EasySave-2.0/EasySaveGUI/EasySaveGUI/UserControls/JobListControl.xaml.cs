@@ -17,7 +17,6 @@ namespace EasySaveGUI.UserControls
             InitializeComponent();
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
-            DataContext = _MainVm;
         }
 
         private void JobsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -27,6 +26,14 @@ namespace EasySaveGUI.UserControls
                 _MainVm.JobVm.SelectedJob = e.AddedItems[0] as CJob;
                 _MainWindow.MenuPage.JobPropertyUsr.PropertyComboBox.SelectedIndex = (int)_MainVm.JobVm.SelectedJob.BackupType;
             }
+        }
+
+        private void SelectAllMenuItem_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (JobsList.SelectedItems.Count == JobsList.Items.Count)
+                JobsList.UnselectAll();
+            else
+                JobsList.SelectAll();
         }
     }
 }

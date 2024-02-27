@@ -7,7 +7,7 @@ namespace LogsModels
     /// Log de base
     /// </summary>
     [DataContract]
-    public abstract class CLogBase : IPath, INotifyPropertyChanged
+    public abstract class CLogBase : IPath, INotifyPropertyChanged, IDisposable
     {
         [DataMember]
         private string _Name;
@@ -19,7 +19,26 @@ namespace LogsModels
         private string _SourceDirectory;
         [DataMember]
         private string _TargetDirectory;
+        [DataMember]
+        private TimeSpan _EncryptTime;
+        private double _Progress;
 
+        private string _FormatLog;
+
+        #region Property
+
+        public double Progress
+        {
+            get
+            {
+                return _Progress;
+            }
+            set
+            {
+                _Progress = value;
+                NotifyPropertyChanged();
+            }
+        }
         /// <summary>
         /// Name of the Log
         /// </summary>
@@ -56,7 +75,25 @@ namespace LogsModels
         {
             get => _TargetDirectory; set { _TargetDirectory = value; NotifyPropertyChanged(); }
         }
+        /// <summary>
+        /// Format de log
+        /// </summary>
+        public string FormatLog { get => _FormatLog; set => _FormatLog = value; }
+        /// <summary>
+        /// Temps de chiffrement
+        /// </summary>
+        public TimeSpan EncryptTime
+        {
+            get => _EncryptTime; set { _EncryptTime = value; NotifyPropertyChanged(); }
+        }
 
+
+        #endregion
+
+        ~CLogBase()
+        {
+            Dispose();
+        }
         public override bool Equals(object? obj)
         {
             return obj is CLogBase @base &&
@@ -75,6 +112,16 @@ namespace LogsModels
         public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void Dispose()
+        {
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SuppressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
         }
     }
 }

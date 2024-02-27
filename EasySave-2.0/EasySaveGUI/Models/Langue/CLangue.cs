@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Runtime.Serialization;
 
-namespace Models
+namespace Models.Langue
 {
     /// <summary>
     /// Classe de la langue de l'application

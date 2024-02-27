@@ -56,8 +56,8 @@ namespace EasySaveGUI.UserControls
             ConnectionMenuControl lConnectionMenuControl = new ConnectionMenuControl();
             _MainVm.LayoutVm.ElementsContent.Content = lConnectionMenuControl;
 
-            await ClientViewModel.Instance.ConnectLobby();
-            lConnectionMenuControl.UpdateListClients(ClientViewModel.Instance.Clients);
+            await UserViewModel.Instance.ConnectLobby(_MainVm.JobVm);
+            lConnectionMenuControl.UpdateListClients(UserViewModel.Instance.Clients);
 
             _MainWindow.MenuPage.ListElements.Show();
             _MainWindow.MenuPage.ListElements.IsActive = true;

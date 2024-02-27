@@ -6,36 +6,36 @@ namespace SignalRServer.Hubs
 {
     public class UserHub : Hub
     {
-
-        public async Task UpdateJobs(string pJobsJson)
-        {
-            await Clients.All.SendAsync("UpdateJobs", pJobsJson);
-            Console.WriteLine("JobUpdated");
-        }
-
         private async Task UpdateClients(string pClientsJson)
         {
             await Clients.All.SendAsync("UpdateClients", pClientsJson);
             Console.WriteLine("pClients Updated");
         }
 
+        public async Task ReceiveClientViewModel(string pClientsJson)
+        {
+            string? lClientViewModel = pClientsJson;
+            if (lClientViewModel != null)
+            {
+                ClientsManager.Instance.Clients.Add(lClientViewModel);
+                await UpdateClients(JsonConvert.SerializeObject(ClientsManager.Instance.Clients));
+
+                Console.WriteLine("User Connected");
+            }
+            else
+                Console.WriteLine("Client null");
+        }
+
         public override Task OnConnectedAsync()
         {
             Task lTask = base.OnConnectedAsync();
-            Console.WriteLine("User Connected");
-
-            CClient lClient = new CClient();
-            lClient.ConnectionId = this.Context.ConnectionId;
-            ClientsManager.Instance.Clients.Add(lClient);
-
-            UpdateClients(JsonConvert.SerializeObject(ClientsManager.Instance.Clients));
 
             return lTask;
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            ClientsManager.Instance.Clients.RemoveWhere(Cl => Cl.ConnectionId == this.Context.ConnectionId);
+            ClientsManager.Instance.Clients.RemoveWhere(Cl => Cl.Contains(this.Context.ConnectionId));
 
             UpdateClients(JsonConvert.SerializeObject(ClientsManager.Instance.Clients));
 

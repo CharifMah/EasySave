@@ -21,5 +21,10 @@ namespace Services
         {
             await _Connection.SendAsync("UpdateJobs", pJobs);
         }
+
+        public async Task SendClientViewModel(string pClientViewModel)
+        {
+            await _Connection.SendAsync("ReceiveClientViewModel", pClientViewModel);
+        }
     }
 }

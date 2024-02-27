@@ -33,7 +33,7 @@ namespace EasySaveGUI.UserControls
             InitializeComponent();
         }
 
-        public void UpdateListClients(ObservableCollection<CClient> pClients)
+        public void UpdateListClients(ObservableCollection<ClientViewModel> pClients)
         {
             VerticalMenu.Children.Clear();
             HorizontalMenu.Children.Clear();
@@ -48,11 +48,11 @@ namespace EasySaveGUI.UserControls
                 Button lButtonHorizontal = new Button();
                 lButtonHorizontal.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 Grid.SetColumn(lButtonHorizontal, i);
-                lButtonHorizontal.Content = pClients[i].ConnectionId;
+                lButtonHorizontal.Content = pClients[i].Client.ConnectionId;
 
                 Button lButton = new Button();
                 lButton.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
-                lButton.Content = pClients[i].ConnectionId;
+                lButton.Content = pClients[i].Client.ConnectionId;
                 Grid.SetRow(lButton, i);
 
                 VerticalMenu.Children.Add(lButton);

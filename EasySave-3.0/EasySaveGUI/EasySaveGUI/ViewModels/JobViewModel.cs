@@ -168,7 +168,7 @@ namespace EasySaveGUI.ViewModels
                             }
                             _LogDailyBuffer.Clear();
 
-                            await ClientViewModel.Instance.UserSignalRService.SendJobsRunning(this.ToJson());
+                            await UserViewModel.Instance.UserSignalRService.SendJobsRunning(this.ToJson());
                         });
 
                         if (!string.IsNullOrEmpty(lJob.SauveJobs.Errors))

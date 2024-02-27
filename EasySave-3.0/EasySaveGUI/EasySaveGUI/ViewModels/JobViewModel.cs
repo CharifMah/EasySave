@@ -304,8 +304,7 @@ namespace EasySaveGUI.ViewModels
             {
                 if (CheckBusinessSoftwareRunning(businessSoftware))
                 {
-                    // Met en pause les jobs
-                    // .... To do pause jobs
+                    Pause(this._jobsRunning.ToList());
                     await Task.Delay(5000);
                 }
                 else

@@ -96,7 +96,9 @@ namespace EasySaveGUI
             if (WindowState == WindowState.Maximized)
                 WindowState = WindowState.Normal;
             else
+            {
                 WindowState = WindowState.Maximized;
+            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

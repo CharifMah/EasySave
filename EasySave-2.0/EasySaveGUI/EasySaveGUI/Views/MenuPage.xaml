@@ -213,7 +213,7 @@
                                                                 </TextBlock>
                                                                 <TextBlock>
                                                                     <Run Text="{x:Static Ressources:Strings.TransfertTime}" />
-                                                                    CryptoSoft :<Run Text="{Binding EncryptTime.TotalMilliseconds, Mode=OneTime, Converter={StaticResource SecondConverter}}" />
+                                                                    CryptoSoft :<Run Text="{Binding EncryptTime.TotalMilliseconds, Mode=OneWay, Converter={StaticResource SecondConverter}}" />
                                                                 </TextBlock>
                                                             </StackPanel>
                                                         </DataTemplate>

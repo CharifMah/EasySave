@@ -1,4 +1,5 @@
-﻿using Models.Backup;
+﻿using EasySaveGUI.UserControls;
+using Models.Backup;
 using Models.Settings;
 using Stockage.Load;
 using System.IO;
@@ -56,7 +57,6 @@ namespace EasySaveGUI.ViewModels
         {
             string lPath;
             string lFolderPath = CSettings.Instance.JobConfigFolderPath;
-
             CSettings.Instance.LoadSettings();
 
             _LangueVm = new LangueViewModel();
@@ -89,12 +89,12 @@ namespace EasySaveGUI.ViewModels
 
             ICharge lChargerCollection = new ChargerCollection(null);
 
-            // cm - Charge le job manager
-            JobViewModel lJobManager = lChargerCollection.Charger<JobViewModel>(pPath, true);
-            // cm - Si aucun fichier n'a été charger on crée un nouveau JobManager
-            if (lJobManager == null)
+            // cm - Charge le JobViewModel
+            JobViewModel lJobViewModel = lChargerCollection.Charger<JobViewModel>(pPath, true);
+            // cm - Si aucun fichier n'a été charger on crée un nouveau JobViewModel
+            if (lJobViewModel == null)
             {
-                lJobManager = new JobViewModel();
+                lJobViewModel = new JobViewModel();
             }
             else
             {
@@ -103,7 +103,7 @@ namespace EasySaveGUI.ViewModels
 
             CSettings.Instance.SaveSettings();
 
-            return lJobManager;
+            return lJobViewModel;
         }
 
         /// <summary>

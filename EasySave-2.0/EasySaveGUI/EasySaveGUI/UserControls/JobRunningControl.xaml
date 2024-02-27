@@ -22,7 +22,19 @@
         ItemsSource="{Binding JobVm.JobsRunning}"
         ScrollViewer.CanContentScroll="False">
         <DataGrid.Columns>
-            <DataGridTextColumn Binding="{Binding Path=Name}" Header="{x:Static Ressources:Strings.Name}" />
+            <DataGridTemplateColumn Header="{x:Static Ressources:Strings.Name}">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Path=Name}" />
+                            <Button
+                                Click="OpenTargetFolderButton_Click"
+                                Style="{StaticResource CustomButtonFile}"
+                                ToolTip="{x:Static Ressources:Strings.Open}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
 
             <DataGridTemplateColumn Header="{x:Static Ressources:Strings.Progress}">
                 <DataGridTemplateColumn.CellTemplate>

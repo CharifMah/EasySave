@@ -276,7 +276,5 @@ namespace EasySaveGUI
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
         }
-
-
     }
 }

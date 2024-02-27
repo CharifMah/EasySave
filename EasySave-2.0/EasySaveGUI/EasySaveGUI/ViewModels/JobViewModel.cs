@@ -10,8 +10,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace EasySaveGUI.ViewModels
 {
@@ -22,9 +24,14 @@ namespace EasySaveGUI.ViewModels
     {
         #region Attribute
         List<CLogDaily?> _LogDailyBuffer = new List<CLogDaily?>();
+
         private readonly int _BufferSize = 100;
         private readonly Timer _Timer;
         private readonly int flushDelay = 1000;
+
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+
 
         private CJob _SelectedJob;
 
@@ -108,7 +115,17 @@ namespace EasySaveGUI.ViewModels
         {
             try
             {
+                if (IsBusinessSoftwareRunning(CSettings.Instance.BusinessSoftware))
+                {
+                    //Notify pour popup + boutons fermer les processus des logiciels detectés
+                    return;
+                }
+
+
                 uint lIndex = 0;
+
+                Task.Run(() => MonitorBusinessSoftware(_cancellationTokenSource.Token));
+
                 // cm - parcours les jobs
                 foreach (CJob lJob in pJobs)
                 {
@@ -166,6 +183,46 @@ namespace EasySaveGUI.ViewModels
             {
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
+        }
+
+        private async Task MonitorBusinessSoftware(CancellationToken cancellationToken)
+        {
+            List<string> businessSoftware = CSettings.Instance.BusinessSoftware;
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                if (IsBusinessSoftwareRunning(businessSoftware))
+                {
+                    // Met en pause les jobs
+                    // ....
+                    await Task.Delay(5000);
+                }
+                else
+                {
+                    // Reprend les jobs
+                    // ....
+                    await Task.Delay(1000);
+                }
+            }
+        }
+
+        private bool IsBusinessSoftwareRunning(List<string> pBusinessSoftware)
+        {
+            foreach (string software in pBusinessSoftware)
+            {
+                string processName = Path.GetFileNameWithoutExtension(software);
+
+                if (Process.GetProcessesByName(processName).Length > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void Stop()
+        {
+            _cancellationTokenSource.Cancel();
         }
 
         private void UpdateLog(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw)

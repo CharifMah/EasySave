@@ -31,7 +31,7 @@ namespace Models.Settings
         [DataMember]
         private List<string> _BusinessSoftware = new List<string>();
         [DataMember]
-        public List<string> _EncryptionExtensions = new List<string>();
+        private List<string> _EncryptionExtensions = new List<string>();
 
         private static CSettings? _Instance;
         #endregion

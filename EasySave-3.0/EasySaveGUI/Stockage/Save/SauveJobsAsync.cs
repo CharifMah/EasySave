@@ -96,7 +96,14 @@ namespace Stockage.Save
                         _CancelationTokenSource.Token.ThrowIfCancellationRequested();
                     else
                     {
-                        _PauseEvent.Wait(_CancelationTokenSource.Token);
+                        try
+                        {
+                            _PauseEvent.Wait(_CancelationTokenSource.Token);
+                        } 
+                        catch (Exception)
+                        {
+                        }
+                      
                     }
 
 

@@ -31,6 +31,8 @@ namespace Models.Settings
         private List<string> _BusinessSoftware = new List<string>();
         [DataMember]
         private List<string> _EncryptionExtensions = new List<string>();
+        [DataMember]
+        private List<string> _PriorityFileExtensions = new List<string>();
 
         private static CSettings? _Instance;
         #endregion
@@ -55,10 +57,22 @@ namespace Models.Settings
             set => _BusinessSoftware = value;
         }
 
+        /// <summary>
+        /// Extensions de fichiers à chiffrer
+        /// </summary>
         public List<string> EncryptionExtensions
         {
             get => _EncryptionExtensions;
             set => _EncryptionExtensions = value;
+        }
+
+        /// <summary>
+        /// Extensions de fichiers prioritaires
+        /// </summary>
+        public List<string> PriorityFileExtensions
+        {
+            get => _PriorityFileExtensions;
+            set => _PriorityFileExtensions = value;
         }
 
         /// <summary>

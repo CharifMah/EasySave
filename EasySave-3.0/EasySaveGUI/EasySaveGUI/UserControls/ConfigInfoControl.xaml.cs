@@ -64,5 +64,21 @@ namespace EasySaveGUI.UserControls
                 _MainVm.FileExtensionVm.RemoveEncryptionExtensions(selectedExtensions);
             }
         }
+
+        private void AddPriorityFileExtension_Click(object sender, RoutedEventArgs e)
+        {
+            string lPriorityExtension = txtPriorityFileExtension.Text;
+            _MainVm.FileExtensionVm.AddPriorityFileExtension(lPriorityExtension);
+            txtPriorityFileExtension.Text = string.Empty;
+        }
+
+        private void RemovePriorityFileExtensions_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> selectedExtensions = ListBoxPriorityFileExtensions.SelectedItems.Cast<string>().ToList();
+            if (selectedExtensions.Any())
+            {
+                _MainVm.FileExtensionVm.RemovePriorityFileExtensions(selectedExtensions);
+            }
+        }
     }
 }

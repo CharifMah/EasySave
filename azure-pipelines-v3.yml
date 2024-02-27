@@ -1,0 +1,70 @@
+trigger: none
+
+pool:
+  name: 'my-agent-pool'
+
+variables:
+  BuildPlatform: 'Any CPU'
+  BuildConfiguration: 'Release'
+  BasePath: 'EasySave-3.0/'
+  CLIPath: 'EasySave-1.0/'
+  GUIPath: 'EasySaveGUI/'
+  Solution: '$(BasePath)**/*.sln'
+  RestoreBuildProjects: '$(BasePath)**/*.csproj'
+  PublishProjects: '$(BasePath)**/!(*UnitTest*)/*.csproj'
+  PublishFolder: '$(Build.ArtifactStagingDirectory)/publish'
+
+name: Release-3.0.$(Build.BuildId)
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    version: '6.x'
+    includePreviewVersions: false
+
+# Restauration pour CLI et GUI
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '$(RestoreBuildProjects)'
+
+# Construction pour la solution CLI
+- task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
+  inputs:
+    command: 'build'
+    projects: '$(Solution)'
+    arguments: '--configuration $(BuildConfiguration)'
+
+# Tests unitaires
+- task: DotNetCoreCLI@2
+  displayName: 'Run Unit Tests'
+  inputs:
+    command: 'test'
+    projects: '$(BasePath)**/UnitTest*/*.csproj'
+    arguments: '--configuration $(BuildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Projects'
+  inputs:
+    command: 'publish'
+    projects: '$(PublishProjects)'
+    publishWebProjects: false
+    arguments: '--configuration $(BuildConfiguration) --output $(PublishFolder)'
+    zipAfterPublish: false
+
+- task: ArchiveFiles@2
+  displayName: 'Zip CLI and GUI Applications'
+  inputs:
+    rootFolderOrFile: '$(PublishFolder)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/EasySave3.0.zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: EasySave3.0.zip'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/EasySave3.0.zip'
+    ArtifactName: 'EasySave3.0'
+    publishLocation: 'Container'

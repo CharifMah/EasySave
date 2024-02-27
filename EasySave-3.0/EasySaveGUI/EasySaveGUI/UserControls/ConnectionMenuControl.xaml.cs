@@ -16,8 +16,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Application = System.Windows.Application;
 using Button = System.Windows.Controls.Button;
 using Grid = System.Windows.Controls.Grid;
+using Style = System.Windows.Style;
 
 namespace EasySaveGUI.UserControls
 {
@@ -44,11 +46,15 @@ namespace EasySaveGUI.UserControls
                 VerticalMenu.RowDefinitions.Add(lRow);
 
                 Button lButtonHorizontal = new Button();
+                lButtonHorizontal.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 Grid.SetColumn(lButtonHorizontal, i);
                 lButtonHorizontal.Content = pClients[i].ConnectionId;
+
                 Button lButton = new Button();
+                lButton.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 lButton.Content = pClients[i].ConnectionId;
                 Grid.SetRow(lButton, i);
+
                 VerticalMenu.Children.Add(lButton);
                 HorizontalMenu.Children.Add(lButtonHorizontal);
             }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using EasySaveGUI.UserControls;
+using Microsoft.AspNetCore.SignalR.Client;
 using Models;
 using Models.Backup;
 using Newtonsoft.Json;
@@ -6,6 +7,7 @@ using Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EasySaveGUI.ViewModels
 {
@@ -50,6 +52,14 @@ namespace EasySaveGUI.ViewModels
                 _Clients = new ObservableCollection<CClient>(lClients);
                 NotifyPropertyChanged("Clients");
             }
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                MainWindow lMainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
+                if (lMainWindow.MainVm.LayoutVm.ElementsContent.Content is ConnectionMenuControl)
+                {
+                    (lMainWindow.MainVm.LayoutVm.ElementsContent.Content as ConnectionMenuControl).UpdateListClients(_Clients);
+                }
+            });
         }
 
         private void _UserSignalRService_JobUpdated(string obj)

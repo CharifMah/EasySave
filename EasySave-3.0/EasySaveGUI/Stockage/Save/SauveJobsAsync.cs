@@ -90,7 +90,8 @@ namespace Stockage.Save
                 // cm - Get files in the source directory and copy to the destination directory
                 Parallel.For(0, lFiles.Length, lParallelOptions, i =>
                 {
-                    _PauseEvent.Wait(_CancelationTokenSource.Token);
+                    if (!_CancelationTokenSource.Token.IsCancellationRequested)
+                        _PauseEvent.Wait(_CancelationTokenSource.Token);
                     string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
 
                     // Vérifie si le fichier existe déjà  

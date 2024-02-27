@@ -19,7 +19,8 @@ namespace LogsModels
         private string _SourceDirectory;
         [DataMember]
         private string _TargetDirectory;
-
+        [DataMember]
+        private TimeSpan _EncryptTime;
         private double _Progress;
 
         private string _FormatLog;
@@ -78,6 +79,14 @@ namespace LogsModels
         /// Format de log
         /// </summary>
         public string FormatLog { get => _FormatLog; set => _FormatLog = value; }
+        /// <summary>
+        /// Temps de chiffrement
+        /// </summary>
+        public TimeSpan EncryptTime
+        {
+            get => _EncryptTime; set { _EncryptTime = value; NotifyPropertyChanged(); }
+        }
+
 
         #endregion
 

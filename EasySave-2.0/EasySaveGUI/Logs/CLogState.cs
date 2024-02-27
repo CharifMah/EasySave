@@ -20,6 +20,7 @@ namespace LogsModels
         [DataMember]
         private int _TotalTransfered;
 
+
         public override string Name
         {
             get => base.Name;
@@ -68,6 +69,8 @@ namespace LogsModels
         /// Le nombre de fichier transférer
         /// </summary>
         public int TotalTransferedFile { get => _TotalTransfered; set { _TotalTransfered = value; NotifyPropertyChanged(); } }
+
+
 
         /// <summary>
         /// Constructeur de CLogState

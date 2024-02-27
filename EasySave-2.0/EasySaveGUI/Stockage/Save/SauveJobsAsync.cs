@@ -1,6 +1,7 @@
-﻿using LogsModels;
-using Stockage.Logs;
+﻿using CryptoSoft;
+using LogsModels;
 using System.Diagnostics;
+using System.Text;
 using static Stockage.Logs.ILogger<uint>;
 
 namespace Stockage.Save
@@ -16,6 +17,7 @@ namespace Stockage.Save
         private string _FormatLog;
         private Stopwatch _StopWatch;
         private string _Errors;
+        private string[] _BlackList;
         #endregion
 
         #region Property
@@ -30,7 +32,7 @@ namespace Stockage.Save
         /// Constructeur de SauveJobs
         /// </summary>
         /// <param name="pPath">Le chemin du dossier</param>
-        public SauveJobsAsync(string? pPath = null, string pFormatLog = "json", Stopwatch? pStopwatch = null) : base(pPath)
+        public SauveJobsAsync(List<string> pBlackList, string? pPath = null, string pFormatLog = "json", Stopwatch? pStopwatch = null) : base(pPath)
         {
             _LogState = new CLogState();
             _LogState.TotalTransferedFile = 0;
@@ -40,6 +42,8 @@ namespace Stockage.Save
             else
                 _StopWatch = Stopwatch.StartNew();
             _Errors = String.Empty;
+
+            _BlackList = pBlackList.ToArray();
         }
         ~SauveJobsAsync()
         {
@@ -72,7 +76,7 @@ namespace Stockage.Save
                 {
                     MaxDegreeOfParallelism = 20
                 };
-             
+
                 // cm - Get files in the source directory and copy to the destination directory
                 Parallel.For(0, lFiles.Length, lParallelOptions, i =>
                 {
@@ -87,7 +91,7 @@ namespace Stockage.Save
                         if (lFiles[i].LastWriteTime > ldestInfo.LastWriteTime)
                         {
                             // cm -  Copy the file async if the target file is newer
-                            CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
+                            CopyFileAsync(lFiles[i].FullName, lTargetFilePath,_LogState);
                             lock (_lock)
                             {
                                 pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
@@ -97,7 +101,7 @@ namespace Stockage.Save
                     else
                     {
                         // cm -  Copy the file async
-                        CopyFileAsync(lFiles[i].FullName, lTargetFilePath);
+                        CopyFileAsync(lFiles[i].FullName, lTargetFilePath,_LogState);
                         lock (_lock)
                         {
                             pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
@@ -117,22 +121,53 @@ namespace Stockage.Save
             }
             catch (Exception ex)
             {
-                _Errors += "\n" + ex;
+                _Errors += "\n" + ex.Message;
             }
         }
-
-        public void CopyFileAsync(string pSourcePath, string pDestinationPath)
+        /// <summary>
+        /// Copie une fichier de maniere asychrone et chiffre le fichier si il sont blacklister
+        /// </summary>
+        /// <param name="pSourcePath">chemin source</param>
+        /// <param name="pDestinationPath">chemin cible</param>
+        /// <returns></returns>
+        public void CopyFileAsync(string pSourcePath, string pDestinationPath,CLogState pLogState)
         {
-            string lErrors = String.Empty;
             try
             {
-                using Stream lSource = File.OpenRead(pSourcePath);
-                using Stream lDestination = File.Create(pDestinationPath);
-                lSource.CopyTo(lDestination);
+                using (Stream lSource = File.OpenRead(pSourcePath))
+                {
+                    using (Stream lDestination = File.Create(pDestinationPath))
+                    {
+                        // cm - Check if the sourcePath is blacklisted
+                        if (!_BlackList.Any(lPath => pSourcePath.EndsWith(lPath, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            // cm - If the file is blacklisted, we copy without encryption
+                            lSource.CopyTo(lDestination);
+                        }
+                        else
+                        {
+                            // cm - If the file is not blacklisted, encrypt and then copy
+                            using (MemoryStream lMemoryStream = new MemoryStream())
+                            {
+                                // cm - Copy the content of the file to a memory buffer
+                                lSource.CopyTo(lMemoryStream);
+                                byte[] lFileBytes = lMemoryStream.ToArray();
+
+                                // cm - Encrypt the buffer with the XOR encryption
+                                CXorChiffrement lXorEncryptor = new CXorChiffrement();
+                                byte[] lKey = Encoding.UTF8.GetBytes("secret"); // Convert the string key to byte array
+                                byte[] lEncryptedBytes = lXorEncryptor.Encrypt(lFileBytes, lKey);
+                                pLogState.EncryptTime = lXorEncryptor.EncryptTime;
+                                // cm - Write the encrypted data to the destination file
+                                lDestination.Write(lEncryptedBytes, 0, lEncryptedBytes.Length);
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
-                _Errors += "\n" + ex;
+                _Errors += "\n" + ex.Message;
             }
         }
 

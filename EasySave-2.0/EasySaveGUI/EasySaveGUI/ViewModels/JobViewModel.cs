@@ -12,8 +12,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
-using Timer = System.Timers.Timer;
 
 namespace EasySaveGUI.ViewModels
 {
@@ -23,26 +21,20 @@ namespace EasySaveGUI.ViewModels
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
-        List<CLogDaily?> _LogDailyBuffer = new List<CLogDaily?>();
 
-        private readonly int _BufferSize = 100;
-        private readonly Timer _Timer;
-        private readonly int flushDelay = 1000;
-
-        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
-
-
+        private List<CLogDaily?> _LogDailyBuffer;
         private CJob _SelectedJob;
-
         [DataMember]
         private ObservableCollection<CJob> _Jobs;
         [DataMember]
         private string _Name;
-
         private ObservableCollection<CJob> _jobsRunning;
-
         private ISauve _SauveCollection;
+
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        public event Action<string> OnBusinessSoftwareDetected;
+
         #endregion
 
         #region Property
@@ -89,17 +81,15 @@ namespace EasySaveGUI.ViewModels
         public JobViewModel()
         {
             _Name = "JobManager";
+            _LogDailyBuffer = new List<CLogDaily?>();
             _Jobs = new ObservableCollection<CJob>();
             _jobsRunning = new ObservableCollection<CJob>();
+
             //Init la classe de sauvegarde avec le chemin definit par l'utilisateur ou celui par default
             if (String.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
                 _SauveCollection = new SauveCollection(new FileInfo(CSettings.Instance.JobDefaultConfigPath).DirectoryName);
             else
                 _SauveCollection = new SauveCollection(CSettings.Instance.JobConfigFolderPath);
-
-            _Timer = new Timer(flushDelay);
-            _Timer.Elapsed += Timer_Elapsed; ;
-            _Timer.AutoReset = false;
         }
 
         #endregion
@@ -111,27 +101,30 @@ namespace EasySaveGUI.ViewModels
         /// </summary>
         /// <param name="pJobs">Liste des jobs à lancer</param>
         /// <returns> Liste mise à jour des jobs avec leur état après exécution </returns>
-        public void RunJobs(List<CJob> pJobs)
+        public async Task RunJobs(List<CJob> pJobs)
         {
             try
             {
-                if (IsBusinessSoftwareRunning(CSettings.Instance.BusinessSoftware))
+                if (CheckBusinessSoftwareRunning(CSettings.Instance.BusinessSoftware))
                 {
-                    //Notify pour popup + boutons fermer les processus des logiciels detectés
+                    // popup + boutons fermer les processus des logiciels detectés
+                    OnBusinessSoftwareDetected?.Invoke("Un logiciel métier est actuellement en exécution.\nVeuillez fermer le(s) processus en cours.");
                     return;
                 }
 
 
                 uint lIndex = 0;
 
-                Task.Run(() => MonitorBusinessSoftware(_cancellationTokenSource.Token));
+                Task lMonitoringBusinessSoftware = Task.Run(() => MonitorBusinessSoftware(_cancellationTokenSource.Token));
 
                 // cm - parcours les jobs
                 foreach (CJob lJob in pJobs)
                 {
                     Stopwatch lStopWatch = new Stopwatch();
                     lStopWatch.Start();
-                    SauveJobsAsync _SauveJobs = new SauveJobsAsync("", CSettings.Instance.FormatLog.SelectedFormatLog.Value, lStopWatch);
+
+                    SauveJobsAsync _SauveJobs = new SauveJobsAsync(CSettings.Instance.EncryptionExtensions, "", CSettings.Instance.FormatLog.SelectedFormatLog.Value, lStopWatch);
+
                     lJob.SauveJobs = _SauveJobs;
                     lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalMilliseconds;
                     lJob.SauveJobs.LogState.Name = lIndex + ' ' + _SauveJobs.LogState.Name;
@@ -140,7 +133,7 @@ namespace EasySaveGUI.ViewModels
 
                     List<string> lFiles = new List<string>();
 
-                    App.Current.Dispatcher.BeginInvoke(() =>
+                    await App.Current.Dispatcher.BeginInvoke(() =>
                     {
                         // cm - Ajoute le job lancer dans la liste des job en cours cette liste est vidée lors du lancement d'autre job
                         _jobsRunning.Add(lJob);
@@ -159,10 +152,17 @@ namespace EasySaveGUI.ViewModels
                          lStopWatch.Stop();
 
                      });
-                    lTask.ContinueWith(t =>
+                    await lTask.ContinueWith(t =>
                     {
-                        _Timer.Stop();
-                        Timer_Elapsed(this, null);
+                        App.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            foreach (var lLogDaily in _LogDailyBuffer)
+                            {
+                                string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
+                                CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogDaily, true, true, lName, "DailyLogs", lLogDaily.FormatLog);
+                            }
+                            _LogDailyBuffer.Clear();
+                        });
 
                         if (!string.IsNullOrEmpty(lJob.SauveJobs.Errors))
                         {
@@ -191,22 +191,22 @@ namespace EasySaveGUI.ViewModels
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (IsBusinessSoftwareRunning(businessSoftware))
+                if (CheckBusinessSoftwareRunning(businessSoftware))
                 {
                     // Met en pause les jobs
-                    // ....
+                    // .... To do pause jobs
                     await Task.Delay(5000);
                 }
                 else
                 {
                     // Reprend les jobs
-                    // ....
+                    // .... To do continue jobs
                     await Task.Delay(1000);
                 }
             }
         }
 
-        private bool IsBusinessSoftwareRunning(List<string> pBusinessSoftware)
+        private bool CheckBusinessSoftwareRunning(List<string> pBusinessSoftware)
         {
             foreach (string software in pBusinessSoftware)
             {
@@ -249,31 +249,7 @@ namespace EasySaveGUI.ViewModels
                 lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
 
                 CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
-                LogFileDaily(lLogFilesDaily);
-            });
-        }
-
-        public void LogFileDaily(CLogDaily pLogDaily)
-        {
-            if (pLogDaily.Progress < 99 || _BufferSize >= _LogDailyBuffer.Count)
-            {
-                _LogDailyBuffer.Add(pLogDaily);
-            }
-            else
-            {
-                _Timer.Start();
-            }
-        }
-        private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            App.Current.Dispatcher.BeginInvoke(() =>
-            {
-                foreach (var lLogDaily in _LogDailyBuffer)
-                {
-                    string lName = "Logs - " + DateTime.Now.ToString("yyyy-MM-dd");
-                    CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogDaily, true, true, lName, "DailyLogs", lLogDaily.FormatLog);
-                }
-                _LogDailyBuffer.Clear();
+                _LogDailyBuffer.Add(lLogFilesDaily);
             });
         }
 

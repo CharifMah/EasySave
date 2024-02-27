@@ -52,47 +52,44 @@ namespace Stockage.Save
         {
             try
             {
-                string lPath;
+                string lPath = String.Empty;
+                string lDataString = "";
 
                 if (string.IsNullOrEmpty(_path))
                     throw new ArgumentNullException("Path is null");
-
+                if (!Directory.Exists(_path))
+                    Directory.CreateDirectory(_path);
                 if (pIsFullPath)
                     _path = pFileName;
 
-                // cm - Check if the directory exist
-                if (Directory.Exists(_path) || pIsFullPath)
+                if (pExtention == "xml")
                 {
-                    string lDataString = "";
-
-                    if (pExtention == "xml")
-                    {
-                        XmlSerializer serializer = new XmlSerializer(typeof(T));
-                        StringWriter stringWriter = new StringWriter();
-                        serializer.Serialize(stringWriter, pData);
-                        lDataString = stringWriter.ToString();
-                        stringWriter.Close();
-                    }
-                    else
-                    {
-                        // cm - Serialize data to json
-                        lDataString = JsonConvert.SerializeObject(pData, Formatting.Indented, Options);
-                    }
-
-                    if (!pIsFullPath)
-                        lPath = Path.Combine(_path, $"{pFileName}.{pExtention}");
-                    else
-                        lPath = _path;
-
-                    // cm - delete the file if exist
-                    if (!pAppend)
-                    {
-                        // cm - Write json or xml data into the file
-                        File.WriteAllText(lPath, lDataString);
-                    }
-                    if (pAppend)
-                        File.AppendAllText(lPath, lDataString);
+                    XmlSerializer serializer = new XmlSerializer(typeof(T));
+                    StringWriter stringWriter = new StringWriter();
+                    serializer.Serialize(stringWriter, pData);
+                    lDataString = stringWriter.ToString();
+                    stringWriter.Close();
                 }
+                else
+                {
+                    // cm - Serialize data to json
+                    lDataString = JsonConvert.SerializeObject(pData, Formatting.Indented, Options);
+                }
+
+                if (!pIsFullPath)
+                    lPath = Path.Combine(_path, $"{pFileName}.{pExtention}");
+                else
+                    lPath = _path;
+
+                // cm - delete the file if exist
+                if (!pAppend)
+                {
+                    // cm - Write json or xml data into the file
+                    File.WriteAllText(lPath, lDataString);
+                }
+                if (pAppend)
+                    File.AppendAllText(lPath, lDataString);
+
             }
             catch (Exception ex)
             {

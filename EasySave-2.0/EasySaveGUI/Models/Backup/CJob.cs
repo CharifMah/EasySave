@@ -1,4 +1,5 @@
 ﻿using LogsModels;
+using Models.Settings;
 using Stockage.Logs;
 using Stockage.Save;
 using System.Runtime.Serialization;
@@ -76,7 +77,7 @@ namespace Models.Backup
             _SourceDirectory = pSourceDirectory;
             _TargetDirectory = pTargetDirectory;
             _BackupType = pTypeBackup;
-            _SauveJobs = new SauveJobsAsync();
+            _SauveJobs = new SauveJobsAsync(CSettings.Instance.EncryptionExtensions);
         }
         ~CJob()
         {

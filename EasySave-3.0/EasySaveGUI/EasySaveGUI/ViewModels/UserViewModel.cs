@@ -26,6 +26,8 @@ namespace EasySaveGUI.ViewModels
         public ClientViewModel ClientViewModel { get => _ClientViewModel; set => _ClientViewModel = value; }
         public ObservableCollection<ClientViewModel> Clients { get => _Clients; set => _Clients = value; }
 
+
+
         #region CTOR
         private static UserViewModel _Instance;
         public static UserViewModel Instance
@@ -49,6 +51,7 @@ namespace EasySaveGUI.ViewModels
             _IsConnectedToLobby = false;
 
         }
+
         #endregion
 
         /// <summary>
@@ -72,40 +75,40 @@ namespace EasySaveGUI.ViewModels
                         lClient.ConnectionId = _Connection.ConnectionId;
                         _ClientViewModel = new ClientViewModel(lClient, pJobViewModel);
 
-                        await _UserSignalRService.SendClientViewModel(_ClientViewModel.ToJson());
+                        await _UserSignalRService.SendClientViewModel(_ClientViewModel.ToJson(), _ClientViewModel.Client.ConnectionId);
                     }
                 });
             }
         }
 
-        private void _UserSignalRService_ClientsUpdated(string obj)
+        private void _UserSignalRService_ClientsUpdated(string pJsonClientVmHashSet, string pSenderConnectionId)
         {
-            HashSet<string>? lClients = JsonConvert.DeserializeObject<HashSet<string>>(obj);
-            ObservableCollection<ClientViewModel> lClientViewModels = new ObservableCollection<ClientViewModel>();
-            foreach (string lClient in lClients)
-            {
-                ClientViewModel? lClientVm = JsonConvert.DeserializeObject<ClientViewModel>(lClient);
-                lClientViewModels.Add(lClientVm);
-            }
-            if (lClients != null && lClients.Count > 0)
-            {
-                _Clients = lClientViewModels;
-
-                NotifyPropertyChanged("Clients");
-            }
-
+            
+            HashSet<string>? lClients = JsonConvert.DeserializeObject<HashSet<string>>(pJsonClientVmHashSet);
+            string lSenderConnectionString = pSenderConnectionId;
             App.Current.Dispatcher.Invoke(() =>
             {
-                MainWindow lMainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
-
-                if (lMainWindow.MainVm.LayoutVm.ElementsContent.Content is ConnectionMenuControl)
-                    (lMainWindow.MainVm.LayoutVm.ElementsContent.Content as ConnectionMenuControl).UpdateListClients(_Clients);
-
-                ClientViewModel? lCurrentClientVm = _Clients.FirstOrDefault(l => l.Client.ConnectionId == UserViewModel.Instance.ClientViewModel.Client.ConnectionId);
-                if (lCurrentClientVm != null)
+                int lCountClient = _Clients.Count;
+                foreach (string lClient in lClients)
                 {
-                    lMainWindow.MainVm.JobVm.JobsRunning = lCurrentClientVm.JobVm.JobsRunning;
-                    this._ClientViewModel.JobVm.JobsRunning = lCurrentClientVm.JobVm.JobsRunning;
+                    ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(lClient);
+                    ClientViewModel? lClientLocal = _Clients.FirstOrDefault(c => c.Client.ConnectionId == lSenderConnectionString);
+                    if (lClientVmDistant != null && lClientLocal != null && lClientLocal.Client.ConnectionId == lSenderConnectionString)
+                    {
+
+                        lClientLocal = lClientVmDistant;
+                    }
+                    else
+                    {
+                        _Clients.Add(lClientVmDistant);
+                    }
+                }
+                if (lCountClient < _Clients.Count)
+                {
+                    MainWindow lMainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
+
+                    if (lMainWindow.MainVm.LayoutVm.ElementsContent.Content is ConnectionMenuControl)
+                        (lMainWindow.MainVm.LayoutVm.ElementsContent.Content as ConnectionMenuControl).UpdateListClients(_Clients);
                 }
             });
         }

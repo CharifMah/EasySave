@@ -210,7 +210,7 @@ namespace EasySaveGUI.ViewModels
             {
                 lJob.SauveJobs.PauseEvent.Set();
 
-                if(isResumeByMonitor)
+                if (isResumeByMonitor)
                 {
                     App.Current.Dispatcher.Invoke(() => _PausedJobsByMonitor.Remove(lJob));
                 }
@@ -319,7 +319,15 @@ namespace EasySaveGUI.ViewModels
                 {
                     UserViewModel.Instance.ClientViewModel.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
 
-                    Task.Run(async () => { await UserViewModel.Instance.UserSignalRService.SendClientViewModel(UserViewModel.Instance.ClientViewModel.ToJson());  }); 
+                    Task.Run(async () =>
+                    {
+                        await UserViewModel.Instance.UserSignalRService
+                        .SendClientViewModel
+                        (
+                            UserViewModel.Instance.ClientViewModel.ToJson(),
+                            UserViewModel.Instance.ClientViewModel.Client.ConnectionId
+                        );
+                    });
                 }
             });
         }
@@ -349,7 +357,7 @@ namespace EasySaveGUI.ViewModels
                     if (this._PausedJobsByMonitor.Count > 0)
                     {
                         Resume(this._PausedJobsByMonitor.ToList(), true);
-                    
+
                         if (!this._PausedJobsByMonitor.Any())
                         {
                             previousCount = 0;

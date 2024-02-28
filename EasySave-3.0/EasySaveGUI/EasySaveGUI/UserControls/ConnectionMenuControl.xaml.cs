@@ -1,4 +1,5 @@
-﻿using AvalonDock.Layout;
+﻿using AvalonDock.Controls;
+using AvalonDock.Layout;
 using EasySaveGUI.ViewModels;
 using EasySaveGUI.Views;
 using Gtk;
@@ -59,14 +60,12 @@ namespace EasySaveGUI.UserControls
                 lButtonHorizontal.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 Grid.SetColumn(lButtonHorizontal, i);
                 lButtonHorizontal.Content = pClients[i].Client.ConnectionId;
-      
 
                 Button lButton = new Button();
                 lButton.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 lButton.Content = pClients[i].Client.ConnectionId;
      
                 Grid.SetRow(lButton, i);
-
 
                 if (UserViewModel.Instance.ClientViewModel.Client.ConnectionId == pClients[i].Client.ConnectionId)
                 {
@@ -87,12 +86,22 @@ namespace EasySaveGUI.UserControls
         private void UpdateJobViewModelButton_Click(object sender, RoutedEventArgs e)
         {
             Button? button = sender as Button;
+
+            LayoutDocumentPane? lLayoutDocumentPane = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
+            
+            LayoutDocument? lLayoutDocument1 = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutDocument>().FirstOrDefault(c => c.ContentId == "Jobs for " + button.Content.ToString());
+            if (lLayoutDocument1 != null)
+            {
+                lLayoutDocument1.Close();
+            }
+
             ClientViewModel lClientViewModel = UserViewModel.Instance.Clients.First(cl => cl.Client.ConnectionId == button.Content.ToString());
 
             // Crée un LayoutDocument
             LayoutDocument layoutDocument = new LayoutDocument
             {
-                Title = "Jobs for " + button.Content.ToString()
+                Title = "Jobs for " + button.Content.ToString(),
+                ContentId = "Jobs for " + button.Content.ToString()
             };
 
             StackPanel stackPanel = new StackPanel();
@@ -100,9 +109,8 @@ namespace EasySaveGUI.UserControls
             stackPanel.Children.Add(new JobListControl { DataContext = lClientViewModel });
             // Affecte le content
             layoutDocument.Content = stackPanel;
-
-            LayoutDocumentPane lLayoutDocumentPane = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
-
+            layoutDocument.IsActive = true;
+            layoutDocument.IsSelected = true;
             lLayoutDocumentPane.Children.Add(layoutDocument);
         }
 

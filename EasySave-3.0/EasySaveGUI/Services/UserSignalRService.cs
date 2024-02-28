@@ -6,19 +6,19 @@ namespace Services
     {
         private readonly HubConnection _Connection;
 
-        public event Action<string> ClientsUpdated;
+        public event Action<string, string> ClientsUpdated;
 
 
         public UserSignalRService(HubConnection pConnection)
         {
             _Connection = pConnection;
-            _Connection.On<string>("UpdateClients",(lClients) => ClientsUpdated?.Invoke(lClients));
+            _Connection.On<string,string>("UpdateClients",(lClients,pConnectionId) => ClientsUpdated?.Invoke(lClients,pConnectionId));
 
         }
 
-        public async Task SendClientViewModel(string pClientViewModel)
+        public async Task SendClientViewModel(string pClientViewModel,string pConnectionId)
         {
-            await _Connection.SendAsync("ReceiveClientViewModel", pClientViewModel);
+            await _Connection.SendAsync("ReceiveClientViewModel", pClientViewModel, pConnectionId);
         }
     }
 }

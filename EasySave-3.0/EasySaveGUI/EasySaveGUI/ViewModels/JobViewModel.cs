@@ -18,14 +18,13 @@ namespace EasySaveGUI.ViewModels
 {
     /// <summary>
     /// Classe JobViewModel  Gestionnaire de jobs
-    [DataContract]
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
-        [DataMember]
+
         private CancellationTokenSource _CancellationTokenSource;
         [DataMember]
-        private List<CLogDaily?> _LogDailyBuffer;
+        private List<CLogDaily> _LogDailyBuffer;
         [DataMember]
         private CJob _SelectedJob;
         [DataMember]

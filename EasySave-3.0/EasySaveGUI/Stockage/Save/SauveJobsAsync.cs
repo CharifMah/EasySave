@@ -24,9 +24,9 @@ namespace Stockage.Save
         private string _Errors;
         [DataMember]
         private string[] _BlackList;
-        [DataMember]
+ 
         private CancellationTokenSource _CancelationTokenSource;
-        [DataMember]
+  
         private ManualResetEventSlim _PauseEvent;
 
         #endregion

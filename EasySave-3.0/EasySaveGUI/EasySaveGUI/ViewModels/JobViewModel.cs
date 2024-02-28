@@ -89,7 +89,7 @@ namespace EasySaveGUI.ViewModels
         public JobViewModel()
         {
             _Name = "JobManager";
-            _LogDailyBuffer = new List<CLogDaily?>();
+            _LogDailyBuffer = new List<CLogDaily>();
             _Jobs = new ObservableCollection<CJob>();
             _jobsRunning = new ObservableCollection<CJob>();
             _PausedJobsByMonitor = new ObservableCollection<CJob>();
@@ -184,8 +184,7 @@ namespace EasySaveGUI.ViewModels
                                 CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogDaily, true, true, lName, "DailyLogs", lLogDaily.FormatLog);
                             }
                             _LogDailyBuffer.Clear();
-                            if (UserViewModel.Instance.ClientViewModel != null)
-                                await UserViewModel.Instance.UserSignalRService.SendClientViewModel(UserViewModel.Instance.ClientViewModel.ToJson());
+
                             if (!string.IsNullOrEmpty(lJob.SauveJobs.Errors))
                                 CLogger<CLogBase>.Instance.StringLogger.Log(lJob.SauveJobs.Errors, false);
                         });
@@ -292,7 +291,7 @@ namespace EasySaveGUI.ViewModels
 
         private void UpdateLog(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw)
         {
-            System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(async () =>
             {
                 pLogState.TotalTransferedFile++;
                 pLogState.SourceDirectory = pFileInfo.FullName;
@@ -315,6 +314,13 @@ namespace EasySaveGUI.ViewModels
 
                 CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
                 _LogDailyBuffer.Add(lLogFilesDaily);
+
+                if (UserViewModel.Instance.ClientViewModel != null)
+                {
+                    UserViewModel.Instance.ClientViewModel.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
+
+                    await UserViewModel.Instance.UserSignalRService.SendClientViewModel(UserViewModel.Instance.ClientViewModel.ToJson());
+                }
             });
         }
 

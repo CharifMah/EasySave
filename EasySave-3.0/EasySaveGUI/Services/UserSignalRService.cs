@@ -13,6 +13,7 @@ namespace Services
         {
             _Connection = pConnection;
             _Connection.On<string>("UpdateClients",(lClients) => ClientsUpdated?.Invoke(lClients));
+
         }
 
         public async Task SendClientViewModel(string pClientViewModel)

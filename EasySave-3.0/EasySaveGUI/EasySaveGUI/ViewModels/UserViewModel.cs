@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -37,6 +38,8 @@ namespace EasySaveGUI.ViewModels
             }
         }
 
+        public HubConnection Connection { get => _Connection; set => _Connection = value; }
+
         public UserViewModel()
         {
             _Clients = new ObservableCollection<ClientViewModel>();
@@ -47,8 +50,6 @@ namespace EasySaveGUI.ViewModels
 
         }
         #endregion
-
-
 
         /// <summary>
         /// Connecte le lobby a la connection
@@ -92,6 +93,7 @@ namespace EasySaveGUI.ViewModels
 
                 NotifyPropertyChanged("Clients");
             }
+      
             App.Current.Dispatcher.Invoke(() =>
             {
                 MainWindow lMainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
@@ -99,7 +101,15 @@ namespace EasySaveGUI.ViewModels
                 {
                     (lMainWindow.MainVm.LayoutVm.ElementsContent.Content as ConnectionMenuControl).UpdateListClients(_Clients);
                 }
+
+                ClientViewModel? lCurrentClientVm = _Clients.FirstOrDefault(l => l.Client.ConnectionId == UserViewModel.Instance.ClientViewModel.Client.ConnectionId);
+                if (lCurrentClientVm != null)
+                {
+                    lMainWindow.MainVm.JobVm.JobsRunning = lCurrentClientVm.JobViewModel.JobsRunning;
+                    this._ClientViewModel.JobViewModel.JobsRunning = lCurrentClientVm.JobViewModel.JobsRunning;
+                }
             });
+
         }
 
         /// <summary>

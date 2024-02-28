@@ -10,15 +10,21 @@ namespace SignalRServer.Hubs
         {
             await Clients.All.SendAsync("UpdateClients", pClientsJson);
             Console.WriteLine("pClients Updated");
-        }
+          }
 
         public async Task ReceiveClientViewModel(string pClientsJson)
         {
             string? lClientViewModel = pClientsJson;
             if (lClientViewModel != null)
             {
-                if (!lClientViewModel.Contains(Context.ConnectionId))
+                string? lClientVmJson = ClientsManager.Instance.Clients.FirstOrDefault(cl => cl.Contains(Context.ConnectionId));
+                if (string.IsNullOrEmpty(lClientVmJson))
                     ClientsManager.Instance.Clients.Add(lClientViewModel);
+                else
+                {
+                    ClientsManager.Instance.Clients.Remove(lClientVmJson);
+                    ClientsManager.Instance.Clients.Add(lClientViewModel);
+                }
 
                 await UpdateClients(JsonConvert.SerializeObject(ClientsManager.Instance.Clients));
 

@@ -44,7 +44,8 @@ namespace EasySaveGUI.UserControls
         {
             VerticalMenu.Children.Clear();
             HorizontalMenu.Children.Clear();
-            
+            HorizontalMenu.ColumnDefinitions.Clear();
+            VerticalMenu.RowDefinitions.Clear();
             for (int i = 0; i < pClients.Count; i++)
             {
                 ColumnDefinition lCol = new ColumnDefinition();
@@ -80,7 +81,6 @@ namespace EasySaveGUI.UserControls
         {
             Button? button = sender as Button;
             _MainVm.JobVm = UserViewModel.Instance.Clients.First(cl => cl.Client.ConnectionId == button.Content.ToString()).JobViewModel;
-            _MainWindow.RefreshMenu();
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

@@ -21,6 +21,7 @@ namespace Models.Backup
         private string _TargetDirectory;
         [DataMember]
         private ETypeBackup _BackupType;
+        [DataMember]
         private SauveJobsAsync _SauveJobs;
 
 

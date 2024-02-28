@@ -67,9 +67,9 @@ namespace EasySaveGUI.ViewModels
                         _IsConnectedToLobby = true;
                         CClient lClient = new CClient();
                         lClient.ConnectionId = _Connection.ConnectionId;
-                        ClientViewModel lClientViewModel = new ClientViewModel(lClient, pJobViewModel);
+                        _ClientViewModel = new ClientViewModel(lClient, pJobViewModel);
 
-                        await _UserSignalRService.SendClientViewModel(JsonConvert.SerializeObject(lClientViewModel));
+                        await _UserSignalRService.SendClientViewModel(JsonConvert.SerializeObject(_ClientViewModel));
                     }
                 });
             }

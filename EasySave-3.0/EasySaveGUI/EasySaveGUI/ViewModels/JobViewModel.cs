@@ -22,15 +22,19 @@ namespace EasySaveGUI.ViewModels
     public class JobViewModel : BaseViewModel
     {
         #region Attribute
+        [DataMember]
         private CancellationTokenSource _CancellationTokenSource;
+        [DataMember]
         private List<CLogDaily?> _LogDailyBuffer;
+        [DataMember]
         private CJob _SelectedJob;
-
         [DataMember]
         private ObservableCollection<CJob> _Jobs;
         [DataMember]
         private string _Name;
+        [DataMember]
         private ObservableCollection<CJob> _jobsRunning;
+
         private ISauve _SauveCollection;
 
         public event Action<string> OnBusinessSoftwareDetected;
@@ -168,7 +172,7 @@ namespace EasySaveGUI.ViewModels
                             }
                             _LogDailyBuffer.Clear();
 
-                            await UserViewModel.Instance.UserSignalRService.SendJobsRunning(this.ToJson());
+                            await UserViewModel.Instance.UserSignalRService.SendClientViewModel(UserViewModel.Instance.ClientViewModel.ToJson());
                         });
 
                         if (!string.IsNullOrEmpty(lJob.SauveJobs.Errors))

@@ -1,6 +1,7 @@
 ﻿using CryptoSoft;
 using LogsModels;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 using System.Text;
 using static Stockage.Logs.ILogger<uint>;
 
@@ -9,16 +10,23 @@ namespace Stockage.Save
     /// <summary>
     /// Classe permettant de sauvegarder des jobs et de les logger
     /// </summary>
+    [DataContract]
     public class SauveJobsAsync : BaseSave, IDisposable
     {
         #region Attributes
         private readonly object _lock = new object();
+        [DataMember]
         private CLogState _LogState;
         private string _FormatLog;
+        [DataMember]
         private Stopwatch _StopWatch;
+        [DataMember]
         private string _Errors;
+        [DataMember]
         private string[] _BlackList;
+        [DataMember]
         private CancellationTokenSource _CancelationTokenSource;
+        [DataMember]
         private ManualResetEventSlim _PauseEvent;
 
         #endregion
@@ -47,6 +55,8 @@ namespace Stockage.Save
             else
                 _StopWatch = Stopwatch.StartNew();
             _Errors = String.Empty;
+            if (pBlackList == null)
+                pBlackList = new List<string>();
 
             _BlackList = pBlackList.ToArray();
             _CancelationTokenSource = new CancellationTokenSource();

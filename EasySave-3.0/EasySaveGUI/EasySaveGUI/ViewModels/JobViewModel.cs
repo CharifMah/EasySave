@@ -37,6 +37,8 @@ namespace EasySaveGUI.ViewModels
 
         private ISauve _SauveCollection;
 
+        private ObservableCollection<CJob> _PausedJobsByMonitor;
+
         public event Action<string> OnBusinessSoftwareDetected;
 
         #endregion
@@ -75,6 +77,9 @@ namespace EasySaveGUI.ViewModels
         /// </summary>
         public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; NotifyPropertyChanged(); } }
 
+        public ObservableCollection<CJob> PausedJobsByMonitor { get => _PausedJobsByMonitor; set => _PausedJobsByMonitor = value; }
+
+
         #endregion
 
         #region CTOR
@@ -88,6 +93,7 @@ namespace EasySaveGUI.ViewModels
             _LogDailyBuffer = new List<CLogDaily?>();
             _Jobs = new ObservableCollection<CJob>();
             _jobsRunning = new ObservableCollection<CJob>();
+            _PausedJobsByMonitor = new ObservableCollection<CJob>();
             _CancellationTokenSource = new CancellationTokenSource();
             //Init la classe de sauvegarde avec le chemin definit par l'utilisateur ou celui par default
             if (string.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
@@ -119,6 +125,8 @@ namespace EasySaveGUI.ViewModels
                     return;
                 }
 
+
+
                 Task lMonitoringBusinessSoftware = Task.Run(async () =>
                 {
                     await MonitorBusinessSoftware(_CancellationTokenSource.Token);
@@ -132,7 +140,7 @@ namespace EasySaveGUI.ViewModels
 
 
                 // cm - parcours les jobs
-                await Parallel.ForEachAsync(pJobs, lParallelOptions, async (lJob, lCancellationTokenSource) =>
+                await Parallel.ForEachAsync(pJobs, async (lJob, lCancellationTokenSource) =>
                 {
                     Stopwatch lStopWatch = new Stopwatch();
                     lStopWatch.Start();
@@ -198,22 +206,33 @@ namespace EasySaveGUI.ViewModels
         /// Reprend les jobs selectionnée en cours
         /// </summary>
         /// <param name="pJobs">job qu'on veux reprendre</param>
-        public void Resume(List<CJob> pJobs)
+        public void Resume(List<CJob> pJobs, bool isResumeByMonitor = false)
         {
             foreach (CJob lJob in pJobs)
             {
                 lJob.SauveJobs.PauseEvent.Set();
+
+                if(isResumeByMonitor)
+                {
+                    App.Current.Dispatcher.Invoke(() => _PausedJobsByMonitor.Remove(lJob));
+                }
             }
         }
         /// <summary>
         /// Met en pause les jobs
         /// </summary>
         /// <param name="pJobs">jobs a mettre en pause</param>
-        public void Pause(List<CJob> pJobs)
+        public void Pause(List<CJob> pJobs, bool isPausedByMonitor = false)
         {
             foreach (CJob lJob in pJobs)
             {
                 lJob.SauveJobs.PauseEvent.Reset();
+
+                // Si le job est mis en pause par le moniteur et qu'il n'est pas déjà dans la collection des jobs en pause du monitor
+                if (isPausedByMonitor && !_PausedJobsByMonitor.Contains(lJob))
+                {
+                    App.Current.Dispatcher.Invoke(() => _PausedJobsByMonitor.Add(lJob));
+                }
             }
         }
         /// <summary>
@@ -303,18 +322,34 @@ namespace EasySaveGUI.ViewModels
         private async Task MonitorBusinessSoftware(CancellationToken cancellationToken)
         {
             List<string> businessSoftware = CSettings.Instance.BusinessSoftware;
+            int previousCount = 0;
 
             while (!cancellationToken.IsCancellationRequested)
             {
                 if (CheckBusinessSoftwareRunning(businessSoftware))
                 {
+                    int currentCountBeforePause = _PausedJobsByMonitor.Count;
+                    Pause(this._jobsRunning.ToList(), true);
 
+                    if (_PausedJobsByMonitor.Count > currentCountBeforePause || (currentCountBeforePause == 0 && _PausedJobsByMonitor.Any()))
+                    {
+                        OnBusinessSoftwareDetected?.Invoke("Un logiciel métier est actuellement en exécution.\nVeuillez fermer le(s) processus en cours.");
+                    }
+
+                    previousCount = _PausedJobsByMonitor.Count;
                     await Task.Delay(5000);
                 }
                 else
                 {
-                    // Reprend les jobs
-                    // .... To do continue jobs
+                    if (this._PausedJobsByMonitor.Count > 0)
+                    {
+                        Resume(this._PausedJobsByMonitor.ToList(), true);
+                    
+                        if (!this._PausedJobsByMonitor.Any())
+                        {
+                            previousCount = 0;
+                        }
+                    }
                     await Task.Delay(1000);
                 }
             }

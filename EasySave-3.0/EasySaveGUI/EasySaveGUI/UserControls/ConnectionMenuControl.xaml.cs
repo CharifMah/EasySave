@@ -1,7 +1,9 @@
-﻿using EasySaveGUI.ViewModels;
+﻿using AvalonDock.Layout;
+using EasySaveGUI.ViewModels;
 using EasySaveGUI.Views;
 using Gtk;
 using Models;
+using Ressources;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -85,7 +87,32 @@ namespace EasySaveGUI.UserControls
         private void UpdateJobViewModelButton_Click(object sender, RoutedEventArgs e)
         {
             Button? button = sender as Button;
-            _MainVm.JobVm = UserViewModel.Instance.Clients.First(cl => cl.Client.ConnectionId == button.Content.ToString()).JobViewModel;
+            ClientViewModel lClientViewModel = UserViewModel.Instance.Clients.First(cl => cl.Client.ConnectionId == button.Content.ToString());
+
+            LayoutDocument layoutDocumentPane = new LayoutDocument();
+
+            LayoutAnchorablePane jobsPaneGroup = new LayoutAnchorablePane();
+            jobsPaneGroup.FloatingHeight = 10;
+            var jobsListAnchor = new LayoutAnchorable();
+            jobsListAnchor.Title = Strings.Jobs + " " + button.Content.ToString();
+
+            jobsListAnchor.ContentId = "JobsListDocument";
+            JobListControl lJobListControl = new JobListControl();
+            lJobListControl.DataContext = lClientViewModel;
+            jobsListAnchor.Content = new JobListControl();
+            jobsListAnchor.CanClose = true;
+            jobsPaneGroup.Children.Add(jobsListAnchor);
+
+            var jobsRunningAnchor = new LayoutAnchorable();
+            jobsRunningAnchor.Title = Strings.JobsRunning + " " + button.Content.ToString();
+            jobsRunningAnchor.ContentId = "JobsRunningDocument";
+            JobRunningControl lJobRunningControl = new JobRunningControl();
+            lJobRunningControl.DataContext = lClientViewModel;
+            jobsRunningAnchor.Content = lJobRunningControl;
+            jobsRunningAnchor.CanClose = true;
+            jobsPaneGroup.Children.Add(jobsRunningAnchor);
+
+            layoutDocumentPane.Content = jobsPaneGroup;
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

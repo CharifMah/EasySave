@@ -20,7 +20,7 @@ namespace EasySaveGUI.ViewModels
         [DataMember]
         private JobViewModel _JobViewModel;
 
-        public JobViewModel JobViewModel { get => _JobViewModel; set => _JobViewModel = value; }
+        public JobViewModel JobVm { get => _JobViewModel; set => _JobViewModel = value; }
         public CClient Client { get => _Client; set => _Client = value; }
 
         public ClientViewModel(CClient pClient, JobViewModel pJobViewModel)

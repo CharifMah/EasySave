@@ -104,8 +104,8 @@ namespace EasySaveGUI.ViewModels
                 ClientViewModel? lCurrentClientVm = _Clients.FirstOrDefault(l => l.Client.ConnectionId == UserViewModel.Instance.ClientViewModel.Client.ConnectionId);
                 if (lCurrentClientVm != null)
                 {
-                    lMainWindow.MainVm.JobVm.JobsRunning = lCurrentClientVm.JobViewModel.JobsRunning;
-                    this._ClientViewModel.JobViewModel.JobsRunning = lCurrentClientVm.JobViewModel.JobsRunning;
+                    lMainWindow.MainVm.JobVm.JobsRunning = lCurrentClientVm.JobVm.JobsRunning;
+                    this._ClientViewModel.JobVm.JobsRunning = lCurrentClientVm.JobVm.JobsRunning;
                 }
             });
         }

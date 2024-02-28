@@ -89,11 +89,10 @@
 
                                 <!--  Jobs Pane  -->
                                 <LayoutPanel DockHeight="1.7*" Orientation="Horizontal">
-
                                     <!--  Jobs Pane  -->
-                                    <LayoutAnchorablePaneGroup DockWidth="1600" Orientation="Vertical">
+                                    <LayoutDocumentPaneGroup Orientation="Vertical">
                                         <!--  jobs list  -->
-                                        <LayoutAnchorablePane x:Name="JobsPaneGroup" DockWidth="1600">
+                                        <LayoutDocumentPane>
 
                                             <LayoutAnchorable
                                                 x:Name="JobsListDocument"
@@ -128,9 +127,9 @@
 
                                             </LayoutAnchorable>
 
-                                        </LayoutAnchorablePane>
+                                        </LayoutDocumentPane>
 
-                                    </LayoutAnchorablePaneGroup>
+                                    </LayoutDocumentPaneGroup>
 
                                     <!--  Property Pane  -->
                                     <LayoutAnchorablePaneGroup DockWidth="0.15*">
@@ -168,7 +167,7 @@
                                 </LayoutPanel>
 
                                 <!--  Logs  -->
-                                <LayoutAnchorablePaneGroup DockHeight="0.2976939203354298*" Orientation="Horizontal">
+                                <LayoutAnchorablePaneGroup DockHeight="0.3*" Orientation="Horizontal">
 
                                     <!--  Logs  -->
                                     <LayoutAnchorablePane>

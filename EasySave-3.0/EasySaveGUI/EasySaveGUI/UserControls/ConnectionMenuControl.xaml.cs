@@ -112,6 +112,7 @@ namespace EasySaveGUI.UserControls
             layoutDocument.IsActive = true;
             layoutDocument.IsSelected = true;
             lLayoutDocumentPane.Children.Add(layoutDocument);
+            layoutDocument.Float();
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

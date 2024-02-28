@@ -107,8 +107,11 @@ namespace EasySaveGUI.ViewModels
             {
                 if (lClientVmDistant != null && lClientLocal != null && lClientLocal.Client.ConnectionId == pSenderConnectionId)
                 {
-
-                    lClientLocal = lClientVmDistant;
+                    int lIndex = _Clients.IndexOf(lClientLocal);
+                    if (lIndex != -1)
+                    {
+                        _Clients[lIndex] = lClientVmDistant;
+                    }
                 }
                 else
                 {

@@ -89,6 +89,7 @@ namespace EasySaveGUI.ViewModels
             if (lClients != null && lClients.Count > 0)
             {
                 _Clients = lClientViewModels;
+
                 NotifyPropertyChanged("Clients");
             }
             App.Current.Dispatcher.Invoke(() =>

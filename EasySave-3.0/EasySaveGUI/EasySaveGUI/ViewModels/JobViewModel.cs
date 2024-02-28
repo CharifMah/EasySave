@@ -291,7 +291,7 @@ namespace EasySaveGUI.ViewModels
 
         private void UpdateLog(CLogState pLogState, string pFormatLog, FileInfo? pFileInfo, string pTargetFilePath, Stopwatch pSw)
         {
-            System.Windows.Application.Current.Dispatcher.BeginInvoke(async () =>
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 pLogState.TotalTransferedFile++;
                 pLogState.SourceDirectory = pFileInfo.FullName;
@@ -319,7 +319,7 @@ namespace EasySaveGUI.ViewModels
                 {
                     UserViewModel.Instance.ClientViewModel.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
 
-                    await UserViewModel.Instance.UserSignalRService.SendClientViewModel(UserViewModel.Instance.ClientViewModel.ToJson());
+                    Task.Run(async () => { await UserViewModel.Instance.UserSignalRService.SendClientViewModel(UserViewModel.Instance.ClientViewModel.ToJson());  }); 
                 }
             });
         }

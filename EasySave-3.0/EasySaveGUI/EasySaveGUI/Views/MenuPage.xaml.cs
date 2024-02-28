@@ -23,7 +23,7 @@ namespace EasySaveGUI.Views
         {
             InitializeComponent();
             _MainVm = pMainVm;
-            DataContext = _MainVm;
+            
             _MainVm.LayoutVm.ElementsContent = new JobMenuControl();
 
             SetDataContextLogs();
@@ -50,6 +50,7 @@ namespace EasySaveGUI.Views
             {
                 DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
                 DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+                DataContext = _MainVm;
             });
         }
 

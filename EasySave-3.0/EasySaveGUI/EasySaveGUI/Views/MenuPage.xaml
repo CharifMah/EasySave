@@ -88,12 +88,12 @@
                                 Orientation="Vertical">
 
                                 <!--  Jobs Pane  -->
-                                <LayoutPanel DockHeight="1.7*" Orientation="Horizontal">
+                                <LayoutPanel DockHeight="1*" Orientation="Horizontal">
                                     <!--  Jobs Pane  -->
                                     <LayoutDocumentPaneGroup Orientation="Vertical">
 
                                         <!--  jobs list  -->
-                                        <LayoutDocumentPane x:Name="DocumentPane">
+                                        <LayoutDocumentPane x:Uid="LayoutDocumentPaneJobs">
 
                                             <LayoutAnchorable
                                                 x:Name="JobsListDocument"

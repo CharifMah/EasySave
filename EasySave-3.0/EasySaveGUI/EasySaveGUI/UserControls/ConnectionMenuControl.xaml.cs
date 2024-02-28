@@ -101,7 +101,9 @@ namespace EasySaveGUI.UserControls
             // Affecte le content
             layoutDocument.Content = stackPanel;
 
-            _MainWindow.MenuPage.DocumentPane.Children.Add(layoutDocument);
+            LayoutDocumentPane lLayoutDocumentPane = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
+
+            lLayoutDocumentPane.Children.Add(layoutDocument);
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

@@ -63,7 +63,6 @@ namespace EasySaveGUI.UserControls
 
             _MainWindow.MenuPage.JobsRunningDocument.IsActive = true;
 
-            // S'abonne à l'événement pour la detection d'un logiciel métier
             _MainVm.JobVm.OnBusinessSoftwareDetected += ShowError;
 
             await _MainVm.JobVm.RunJobs(lSelectedJobs);
@@ -76,12 +75,16 @@ namespace EasySaveGUI.UserControls
             RunButton.IsEnabled = true;
 
             _MainWindow.MenuPage.ShowValidation();
+            await Task.Delay(2000);
         }
 
         private void ShowError(string pMessage)
         {
-            _MainVm.PopupVm.Message = pMessage;
-            _MainWindow.MenuPage.PopupError.Show();
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                _MainVm.PopupVm.Message = pMessage;
+                _MainWindow.MenuPage.PopupError.Show();
+            });
         }
     }
 }

@@ -46,7 +46,7 @@
                 Click="ConnectButton_Click"
                 Content="Connect"
                 Style="{StaticResource CustomButtonSettings}"
-                ToolTip="{x:Static Ressources:Strings.MenuSettings}" />
+                ToolTip="{x:Static Ressources:Strings.Name}" />
 
         </Grid>
 
@@ -79,7 +79,7 @@
                 Click="MenuButtons_MouseClick"
                 Content="{x:Static Ressources:Strings.Settings}"
                 Style="{StaticResource CustomButtonSettings}"
-                ToolTip="{x:Static Ressources:Strings.MenuSettings}" />
+                ToolTip="{x:Static Ressources:Strings.Name}" />
 
             <Button
                 Grid.Row="3"

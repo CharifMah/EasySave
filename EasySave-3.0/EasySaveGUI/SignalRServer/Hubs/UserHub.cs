@@ -17,7 +17,9 @@ namespace SignalRServer.Hubs
             string? lClientViewModel = pClientsJson;
             if (lClientViewModel != null)
             {
-                ClientsManager.Instance.Clients.Add(lClientViewModel);
+                if (!lClientViewModel.Contains(Context.ConnectionId))
+                    ClientsManager.Instance.Clients.Add(lClientViewModel);
+
                 await UpdateClients(JsonConvert.SerializeObject(ClientsManager.Instance.Clients));
 
                 Console.WriteLine("User Connected");

@@ -50,13 +50,13 @@ namespace EasySaveGUI.UserControls
         {
             if (DataGrid.SelectedItems.Count > 0)
             {
-                MenuItem? lMenuItem = sender as MenuItem;
-                lMenuItem.IsEnabled = false;
+                Button? lButton = sender as Button;
+                lButton.IsEnabled = false;
                 IList lItems = DataGrid.SelectedItems;
                 List<CJob> lSelectedJobs = lItems.Cast<CJob>().ToList();
                 _MainVm.JobVm.Resume(lSelectedJobs);
                 
-                lMenuItem.IsEnabled = true;
+                lButton.IsEnabled = true;
                 _MainWindow.MenuPage.ShowValidation();
                 StartButton.Visibility = Visibility.Visible;
             }

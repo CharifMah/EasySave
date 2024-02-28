@@ -48,6 +48,8 @@ namespace EasySaveGUI.ViewModels
         }
         #endregion
 
+
+
         /// <summary>
         /// Connecte le lobby a la connection
         /// </summary>
@@ -69,7 +71,7 @@ namespace EasySaveGUI.ViewModels
                         lClient.ConnectionId = _Connection.ConnectionId;
                         _ClientViewModel = new ClientViewModel(lClient, pJobViewModel);
 
-                        await _UserSignalRService.SendClientViewModel(JsonConvert.SerializeObject(_ClientViewModel));
+                        await _UserSignalRService.SendClientViewModel(_ClientViewModel.ToJson());
                     }
                 });
             }

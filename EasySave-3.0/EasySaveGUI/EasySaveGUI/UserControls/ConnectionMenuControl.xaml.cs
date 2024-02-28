@@ -1,4 +1,5 @@
 ﻿using EasySaveGUI.ViewModels;
+using EasySaveGUI.Views;
 using Gtk;
 using Models;
 using System;
@@ -62,6 +63,13 @@ namespace EasySaveGUI.UserControls
                 lButton.Content = pClients[i].Client.ConnectionId;
                 lButton.Click += UpdateJobViewModelButton_Click;
                 Grid.SetRow(lButton, i);
+
+
+                if (UserViewModel.Instance.ClientViewModel.Client.ConnectionId == pClients[i].Client.ConnectionId)
+                {
+                    lButton.Background = (Brush)_MainWindow.MenuPage.Resources["LightGreenColor"];
+                    lButtonHorizontal.Background = (Brush)_MainWindow.MenuPage.Resources["LightGreenColor"];
+                }
 
                 VerticalMenu.Children.Add(lButton);
                 HorizontalMenu.Children.Add(lButtonHorizontal);

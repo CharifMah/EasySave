@@ -110,7 +110,6 @@ namespace EasySaveGUI.ViewModels
         {
             try
             {
-                Resume(pJobs);
                 uint lIndex = 0;
 
                 if (CheckBusinessSoftwareRunning(CSettings.Instance.BusinessSoftware))
@@ -125,8 +124,15 @@ namespace EasySaveGUI.ViewModels
                     await MonitorBusinessSoftware(_CancellationTokenSource.Token);
                 });
 
+                ParallelOptions lParallelOptions = new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = 20,
+                    CancellationToken = _CancellationTokenSource.Token
+                };
+
+
                 // cm - parcours les jobs
-                await Parallel.ForEachAsync(pJobs, async (lJob, lCancellationTokenSource) =>
+                await Parallel.ForEachAsync(pJobs, lParallelOptions, async (lJob, lCancellationTokenSource) =>
                 {
                     Stopwatch lStopWatch = new Stopwatch();
                     lStopWatch.Start();
@@ -171,17 +177,11 @@ namespace EasySaveGUI.ViewModels
                                 CLogger<CLogDaily>.Instance.GenericLogger.Log(lLogDaily, true, true, lName, "DailyLogs", lLogDaily.FormatLog);
                             }
                             _LogDailyBuffer.Clear();
-
-                            await UserViewModel.Instance.UserSignalRService.SendClientViewModel(UserViewModel.Instance.ClientViewModel.ToJson());
-                        });
-
-                        if (!string.IsNullOrEmpty(lJob.SauveJobs.Errors))
-                        {
-                            System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
-                            {
+                            if (UserViewModel.Instance.ClientViewModel != null)
+                                await UserViewModel.Instance.UserSignalRService.SendClientViewModel(UserViewModel.Instance.ClientViewModel.ToJson());
+                            if (!string.IsNullOrEmpty(lJob.SauveJobs.Errors))
                                 CLogger<CLogBase>.Instance.StringLogger.Log(lJob.SauveJobs.Errors, false);
-                            });
-                        }
+                        });
                     });
 
                     lJob.SauveJobs.LogState.Date = DateTime.Now;
@@ -308,7 +308,7 @@ namespace EasySaveGUI.ViewModels
             {
                 if (CheckBusinessSoftwareRunning(businessSoftware))
                 {
-                    Pause(this._jobsRunning.ToList());
+
                     await Task.Delay(5000);
                 }
                 else

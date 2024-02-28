@@ -17,8 +17,8 @@
         <Converter:BytesValueConverter x:Key="BytesValueConverter" />
         <Converter:SecondConverter x:Key="SecondConverter" />
     </UserControl.Resources>
-    <DockPanel>
-        <WrapPanel Orientation="Horizontal"  MaxHeight="20" DockPanel.Dock="Top" >
+    <StackPanel>
+        <StackPanel Orientation="Horizontal"  MaxHeight="20" DockPanel.Dock="Top" >
 
             <Button Click="SelectAllMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
                 <WrapPanel>
@@ -53,7 +53,7 @@
                 </WrapPanel>
 
             </Button>
-        </WrapPanel>
+        </StackPanel>
         <DataGrid
             x:Name="DataGrid"
             AutoGenerateColumns="False"
@@ -172,5 +172,5 @@
             </DataGrid.Columns>
 
         </DataGrid>
-    </DockPanel>
+    </StackPanel>
 </UserControl>

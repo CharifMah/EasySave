@@ -16,18 +16,26 @@ namespace EasySaveGUI.UserControls
 
         private void Storyboard_Completed(object sender, EventArgs e)
         {
+
             Hide();
+
         }
 
         public void Hide()
         {
-            MainGrid.Visibility = Visibility.Hidden;
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                MainGrid.Visibility = Visibility.Hidden;
+            });
         }
 
         public void Show()
         {
-            MainGrid.Visibility = Visibility.Visible;
-            StoryBoard.Begin();
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                MainGrid.Visibility = Visibility.Visible;
+                StoryBoard.Begin();
+            });
         }
     }
 }

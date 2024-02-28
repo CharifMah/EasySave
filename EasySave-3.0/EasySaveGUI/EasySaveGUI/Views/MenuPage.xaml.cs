@@ -46,8 +46,11 @@ namespace EasySaveGUI.Views
 
         private void SetDataContextLogs()
         {
-            DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
-            DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                DockPanelListLogs.DataContext = CLogger<CLogBase>.Instance.StringLogger;
+                DockPanelListDailyLogs.DataContext = CLogger<CLogDaily>.Instance.GenericLogger;
+            });
         }
 
         private void OpenLogButton_Click(object sender, RoutedEventArgs e)
@@ -57,7 +60,9 @@ namespace EasySaveGUI.Views
 
         public void ShowValidation()
         {
+
             ValidationAnimation.Show();
+
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Models
+﻿using Newtonsoft.Json;
+
+namespace Models
 {
     public class ClientsManager
     {
@@ -21,6 +23,26 @@
         private ClientsManager()
         {
             _Clients = new HashSet<string>();
+        }
+
+        public void UpdateClient(string pClientViewModel, string pConnectionId)
+        {
+            string? lClientVmJson = _Clients.FirstOrDefault(cl => cl.Contains(pConnectionId));
+            if (string.IsNullOrEmpty(lClientVmJson))
+                _Clients.Add(pClientViewModel);
+            else
+            {
+                _Clients.Remove(lClientVmJson);
+                _Clients.Add(pClientViewModel);
+            }
+        }
+        /// <summary>
+        /// CLient to json
+        /// </summary>
+        /// <returns>List of clients in json</returns>
+        public string ToJson()
+        {
+           return JsonConvert.SerializeObject(_Clients, Formatting.Indented);
         }
     }
 }

@@ -315,17 +315,18 @@ namespace EasySaveGUI.ViewModels
                 CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
                 _LogDailyBuffer.Add(lLogFilesDaily);
 
-                if (UserViewModel.Instance.ClientViewModel != null)
+                if (UserViewModel.Instance.ClientVm != null)
                 {
-                    UserViewModel.Instance.ClientViewModel.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
+                    UserViewModel.Instance.ClientVm.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
 
                     Task.Run(async () =>
                     {
+                        UserViewModel.Instance.ClientVm.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
                         await UserViewModel.Instance.UserSignalRService
                         .SendClientViewModel
                         (
-                            UserViewModel.Instance.ClientViewModel.ToJson(),
-                            UserViewModel.Instance.ClientViewModel.Client.ConnectionId
+                            UserViewModel.Instance.ClientVm.ToJson(),
+                            UserViewModel.Instance.ClientVm.Client.ConnectionId
                         );
                     });
                 }

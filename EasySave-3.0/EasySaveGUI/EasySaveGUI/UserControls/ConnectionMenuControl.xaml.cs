@@ -67,7 +67,7 @@ namespace EasySaveGUI.UserControls
      
                 Grid.SetRow(lButton, i);
 
-                if (UserViewModel.Instance.ClientViewModel.Client.ConnectionId == pClients[i].Client.ConnectionId)
+                if (UserViewModel.Instance.ClientVm.Client.ConnectionId == pClients[i].Client.ConnectionId)
                 {
                     lButton.Background = (Brush)_MainWindow.MenuPage.Resources["LightGreenColor"];
                     lButtonHorizontal.Background = (Brush)_MainWindow.MenuPage.Resources["LightGreenColor"];

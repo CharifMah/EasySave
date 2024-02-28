@@ -6,37 +6,60 @@ namespace SignalRServer.Hubs
 {
     public class UserHub : Hub
     {
-        private async Task UpdateClients(string pClientsJson, string pConnectionId)
+        private async Task OnDisconnected(string pConnectionId)
         {
-            await Clients.Others.SendAsync("UpdateClients", pClientsJson, pConnectionId);
-            ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} Clients Updated | Sender : {pConnectionId}");
+            await Clients.Others.SendAsync("OnDisconnected", pConnectionId);
+            ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} OnDisconnected | Sender : {pConnectionId}");
         }
 
-        public async Task ReceiveClientViewModel(string pClientsJson, string pConnectionId)
+        public async Task UpdateClientViewModel(string pClientVmJson, string pConnectionId)
         {
-            string? lClientViewModel = pClientsJson;
-            if (lClientViewModel != null)
-            {
-                string? lClientVmJson = ClientsManager.Instance.Clients.FirstOrDefault(cl => cl.Contains(Context.ConnectionId));
-                if (string.IsNullOrEmpty(lClientVmJson))
-                    ClientsManager.Instance.Clients.Add(lClientViewModel);
-                else
-                {
-                    ClientsManager.Instance.Clients.Remove(lClientVmJson);
-                    ClientsManager.Instance.Clients.Add(lClientViewModel);
-                    ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} New ClientAdded | Sender : {Context.ConnectionId}");
-                }
+            CheckConnectionId(pClientVmJson, pConnectionId);
+            await Clients.Others.SendAsync("UpdateClientViewModel", pClientVmJson, pConnectionId);
+            ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} UpdateClientViewModel | Sender : {pConnectionId}");
+        }
 
-                await UpdateClients(JsonConvert.SerializeObject(ClientsManager.Instance.Clients), pConnectionId);
+        public async Task ReceiveClientViewModel(string pClientVmJson, string pConnectionId)
+        {
+            if (await CheckConnectionId(pClientVmJson, pConnectionId) && pClientVmJson != null)
+            {
+                ClientsManager.Instance.UpdateClient(pClientVmJson, pConnectionId);
+                await UpdateClientViewModel(pClientVmJson, pConnectionId);
+                ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} ReceiveClientViewModel | Sender : {Context.ConnectionId}");
             }
             else
                 ConsoleExtention.WriteLineError($"{ConsoleExtention.GetDate()} Client null");
         }
 
+        private async Task<bool> CheckConnectionId(string pJson,string pConnectionId)
+        {
+            bool lResult = true;
+            if (pConnectionId != Context.ConnectionId)
+            {
+                lResult = false;
+                await SyncConnectionId(pConnectionId);
+                ConsoleExtention.WriteLineError($"CheckConnectionId | Context ConnectionId {Context.ConnectionId} don't correspond to {pConnectionId} \n {pJson}");
+            }
+
+            return lResult;
+        }
+
+        public async Task SyncConnectionId(string pConnectionId)
+        {
+            await Clients.All.SendAsync("SyncConnectionId", Context.ConnectionId, pConnectionId);
+        }
+
         public override Task OnConnectedAsync()
         {
             Task lTask = base.OnConnectedAsync();
-            ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} ClientConnected | Sender : {Context.ConnectionId}");
+
+            CClient lClient = new CClient();
+            lClient.ConnectionId = Context.ConnectionId;
+            lClient.ClientId = Guid.NewGuid().ToString();
+
+            _ = Clients.All.SendAsync("OnConnected", JsonConvert.SerializeObject(lClient));
+
+            ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} OnConnectedAsync | Sender : {Context.ConnectionId}");
             return lTask;
         }
 
@@ -44,9 +67,9 @@ namespace SignalRServer.Hubs
         {
             ClientsManager.Instance.Clients.RemoveWhere(Cl => Cl.Contains(this.Context.ConnectionId));
 
-            UpdateClients(JsonConvert.SerializeObject(ClientsManager.Instance.Clients), this.Context.ConnectionId);
+            Task lTask = OnDisconnected(this.Context.ConnectionId);
 
-            ConsoleExtention.WriteLineWarning($"{ConsoleExtention.GetDate()} User Disconnected " + exception);
+            ConsoleExtention.WriteLineWarning($"{ConsoleExtention.GetDate()} OnDisconnectedAsync " + exception);
 
             return base.OnDisconnectedAsync(exception);
         }

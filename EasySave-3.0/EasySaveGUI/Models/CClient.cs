@@ -14,7 +14,10 @@ namespace Models
         private string _Name;
         [DataMember]
         private string _ConnectionId;
+        [DataMember]
+        private string _ClientId;
 
         public string ConnectionId { get => _ConnectionId; set => _ConnectionId = value; }
+        public string ClientId { get => _ClientId; set => _ClientId = value; }
     }
 }

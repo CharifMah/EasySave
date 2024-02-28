@@ -176,7 +176,7 @@ namespace EasySaveGUI.ViewModels
                     });
                     await lTask.ContinueWith(t =>
                     {
-                        System.Windows.Application.Current.Dispatcher.BeginInvoke(async () =>
+                        System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
                         {
                             foreach (var lLogDaily in _LogDailyBuffer)
                             {

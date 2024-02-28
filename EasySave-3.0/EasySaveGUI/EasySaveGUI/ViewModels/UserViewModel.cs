@@ -94,9 +94,16 @@ namespace EasySaveGUI.ViewModels
         {
             CClient? lClient = JsonConvert.DeserializeObject<CClient>(pClientJson);
 
-            _ClientViewModel = new ClientViewModel(lClient, _TempJobViemModel);
-            _ClientViewModel.Client.ConnectionId = _Connection.ConnectionId;
-            await _UserSignalRService.SendClientViewModel(_ClientViewModel.ToJson(), _ClientViewModel.Client.ConnectionId);
+            while (_Connection.State == HubConnectionState.Connecting)
+            {
+                await Task.Delay(500);
+            }
+            if (_Connection.State == HubConnectionState.Connected)
+            {
+                _ClientViewModel = new ClientViewModel(lClient, _TempJobViemModel);
+                _ClientViewModel.Client.ConnectionId = _Connection.ConnectionId;
+                await _UserSignalRService.SendClientViewModel(_ClientViewModel.ToJson(), _ClientViewModel.Client.ConnectionId);
+            }
         }
 
         private void UpdateClientViewModel(string pClientVm, string pSenderConnectionId)
@@ -123,6 +130,8 @@ namespace EasySaveGUI.ViewModels
                         (lMainWindow.MainVm.LayoutVm.ElementsContent.Content as ConnectionMenuControl).UpdateListClients(_Clients);
                 }
             });
+
+            NotifyPropertyChanged("Clients");
 
         }
 

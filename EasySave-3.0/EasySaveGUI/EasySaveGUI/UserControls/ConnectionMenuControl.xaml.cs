@@ -89,30 +89,19 @@ namespace EasySaveGUI.UserControls
             Button? button = sender as Button;
             ClientViewModel lClientViewModel = UserViewModel.Instance.Clients.First(cl => cl.Client.ConnectionId == button.Content.ToString());
 
-            LayoutDocument layoutDocumentPane = new LayoutDocument();
+            // Crée un LayoutDocument
+            LayoutDocument layoutDocument = new LayoutDocument
+            {
+                Title = "Jobs for " + button.Content.ToString()
+            };
 
-            LayoutAnchorablePane jobsPaneGroup = new LayoutAnchorablePane();
-            jobsPaneGroup.FloatingHeight = 10;
-            var jobsListAnchor = new LayoutAnchorable();
-            jobsListAnchor.Title = Strings.Jobs + " " + button.Content.ToString();
+            StackPanel stackPanel = new StackPanel();
+            stackPanel.Children.Add(new JobRunningControl { DataContext = lClientViewModel });
+            stackPanel.Children.Add(new JobListControl { DataContext = lClientViewModel });
+            // Affecte le content
+            layoutDocument.Content = stackPanel;
 
-            jobsListAnchor.ContentId = "JobsListDocument";
-            JobListControl lJobListControl = new JobListControl();
-            lJobListControl.DataContext = lClientViewModel;
-            jobsListAnchor.Content = new JobListControl();
-            jobsListAnchor.CanClose = true;
-            jobsPaneGroup.Children.Add(jobsListAnchor);
-
-            var jobsRunningAnchor = new LayoutAnchorable();
-            jobsRunningAnchor.Title = Strings.JobsRunning + " " + button.Content.ToString();
-            jobsRunningAnchor.ContentId = "JobsRunningDocument";
-            JobRunningControl lJobRunningControl = new JobRunningControl();
-            lJobRunningControl.DataContext = lClientViewModel;
-            jobsRunningAnchor.Content = lJobRunningControl;
-            jobsRunningAnchor.CanClose = true;
-            jobsPaneGroup.Children.Add(jobsRunningAnchor);
-
-            layoutDocumentPane.Content = jobsPaneGroup;
+            _MainWindow.MenuPage.DocumentPane.Children.Add(layoutDocument);
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

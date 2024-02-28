@@ -57,12 +57,12 @@ namespace EasySaveGUI.UserControls
                 lButtonHorizontal.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 Grid.SetColumn(lButtonHorizontal, i);
                 lButtonHorizontal.Content = pClients[i].Client.ConnectionId;
-                lButtonHorizontal.Click += UpdateJobViewModelButton_Click;
+      
 
                 Button lButton = new Button();
                 lButton.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 lButton.Content = pClients[i].Client.ConnectionId;
-                lButton.Click += UpdateJobViewModelButton_Click;
+     
                 Grid.SetRow(lButton, i);
 
 
@@ -70,6 +70,11 @@ namespace EasySaveGUI.UserControls
                 {
                     lButton.Background = (Brush)_MainWindow.MenuPage.Resources["LightGreenColor"];
                     lButtonHorizontal.Background = (Brush)_MainWindow.MenuPage.Resources["LightGreenColor"];
+                }
+                else
+                {
+                    lButtonHorizontal.Click += UpdateJobViewModelButton_Click;
+                    lButton.Click += UpdateJobViewModelButton_Click;
                 }
 
                 VerticalMenu.Children.Add(lButton);

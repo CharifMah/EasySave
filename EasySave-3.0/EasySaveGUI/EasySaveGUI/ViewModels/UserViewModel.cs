@@ -93,14 +93,13 @@ namespace EasySaveGUI.ViewModels
 
                 NotifyPropertyChanged("Clients");
             }
-      
+
             App.Current.Dispatcher.Invoke(() =>
             {
                 MainWindow lMainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
+
                 if (lMainWindow.MainVm.LayoutVm.ElementsContent.Content is ConnectionMenuControl)
-                {
                     (lMainWindow.MainVm.LayoutVm.ElementsContent.Content as ConnectionMenuControl).UpdateListClients(_Clients);
-                }
 
                 ClientViewModel? lCurrentClientVm = _Clients.FirstOrDefault(l => l.Client.ConnectionId == UserViewModel.Instance.ClientViewModel.Client.ConnectionId);
                 if (lCurrentClientVm != null)
@@ -109,7 +108,6 @@ namespace EasySaveGUI.ViewModels
                     this._ClientViewModel.JobViewModel.JobsRunning = lCurrentClientVm.JobViewModel.JobsRunning;
                 }
             });
-
         }
 
         /// <summary>

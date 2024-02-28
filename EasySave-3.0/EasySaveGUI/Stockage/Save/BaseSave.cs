@@ -101,7 +101,7 @@ namespace Stockage.Save
         {
             throw new NotImplementedException();
         }
-        public virtual void CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false)
+        public virtual void CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false, List<string>? pPriorityFileExtensions = null)
         {
             throw new NotImplementedException();
         }

@@ -21,6 +21,7 @@ namespace LogsModels
         private string _TargetDirectory;
         [DataMember]
         private TimeSpan _EncryptTime;
+        [DataMember]
         private double _Progress;
 
         private string _FormatLog;

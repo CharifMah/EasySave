@@ -120,6 +120,8 @@ namespace EasySaveGUI.ViewModels
             ClientViewModel? lClientLocal = _Clients.FirstOrDefault(c => c.Client.ConnectionId == pSenderConnectionId);
             App.Current.Dispatcher.BeginInvoke(() =>
             {
+                MainWindow lMainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
+
                 if (lClientVmDistant != null && lClientLocal != null && lClientLocal.Client.ConnectionId == pSenderConnectionId)
                 {
                     int lIndex = _Clients.IndexOf(lClientLocal);
@@ -128,14 +130,17 @@ namespace EasySaveGUI.ViewModels
                     {
                         _Clients[lIndex] = lClientVmDistant;
                     }
+                    lMainWindow.MainVm.ConnectionMenuControl.UpdateClientViewModel(pSenderConnectionId);
                 }
                 else
                 {
                     _Clients.Add(lClientVmDistant);
 
-                    MainWindow lMainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
+            
                     lMainWindow.MainVm.ConnectionMenuControl.UpdateListClients(_Clients);
                 }
+
+               
             });
 
             NotifyPropertyChanged("Clients");

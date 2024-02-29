@@ -93,6 +93,23 @@ namespace EasySaveGUI.UserControls
             OpenClientDocument(button.Content.ToString());
         }
 
+        public void UpdateClientViewModel(string pConnectionId)
+        {
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                LayoutDocument? lLayoutDocument = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutDocument>().FirstOrDefault(l => l.ContentId.Contains(pConnectionId));
+
+                if (lLayoutDocument != null)
+                {
+                    StackPanel stackPanel = (lLayoutDocument.Content as StackPanel);
+                    (stackPanel.Children[0] as JobRunningControl).DataContext = UserViewModel.Instance.Clients.First(c => c.Client.ConnectionId == pConnectionId);
+                    (stackPanel.Children[1] as JobListControl).DataContext = UserViewModel.Instance.Clients.First(c => c.Client.ConnectionId == pConnectionId);
+                    lLayoutDocument.IsActive = true;
+                    lLayoutDocument.IsSelected = true;
+                }
+            });
+        }
+
         private void OpenClientDocument(string pButtonContent)
         {
             LayoutDocumentPane? lLayoutDocumentPane = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
@@ -113,7 +130,7 @@ namespace EasySaveGUI.UserControls
             LayoutDocument lLayoutDocument = new LayoutDocument
             {
                 Title = "Jobs for " + pButtonContent,
-                ContentId = "Jobs for " + pButtonContent
+                ContentId = pButtonContent
             };
 
             StackPanel stackPanel = new StackPanel();
@@ -124,7 +141,7 @@ namespace EasySaveGUI.UserControls
             lLayoutDocument.IsActive = true;
             lLayoutDocument.IsSelected = true;
             lLayoutDocumentPane.Children.Add(lLayoutDocument);
-            lLayoutDocument.Closed += LLayoutDocument_Closed; ;
+            lLayoutDocument.Closed += LLayoutDocument_Closed;
             _Documents.Add(lLayoutDocument);
             lLayoutDocument.Float();
 

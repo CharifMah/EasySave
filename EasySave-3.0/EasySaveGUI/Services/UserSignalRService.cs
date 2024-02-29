@@ -2,6 +2,9 @@
 
 namespace Services
 {
+    /// <summary>
+    /// Service pour l'utilsateur permettant d'envoyer et recevoir des donnée au serveur
+    /// </summary>
     public class UserSignalRService
     {
         private readonly HubConnection _Connection;
@@ -11,6 +14,10 @@ namespace Services
         public event Action<string> OnConnected;
         public event Action<string, string> OnSyncConnectionId;
 
+        /// <summary>
+        /// Enregistre les Handlers qui seront invoker lors de l'appel du serveur
+        /// </summary>
+        /// <param name="pConnection"></param>
         public UserSignalRService(HubConnection pConnection)
         {
             _Connection = pConnection;
@@ -20,7 +27,12 @@ namespace Services
             _Connection.On<string, string>("SyncConnectionId", (pConnectionId,pOldConnectionId) => OnSyncConnectionId?.Invoke(pConnectionId, pOldConnectionId));
 
         }
-
+        /// <summary>
+        /// Envoie le view model au serveur
+        /// </summary>
+        /// <param name="pClientViewModel">le view model a envoyer en json</param>
+        /// <param name="pConnectionId">le connection id du client view model</param>
+        /// <returns>Task</returns>
         public async Task SendClientViewModel(string pClientViewModel,string pConnectionId)
         {
             await _Connection.SendAsync("ReceiveClientViewModel", pClientViewModel, pConnectionId);

@@ -78,7 +78,7 @@ namespace EasySaveGUI.ViewModels
                 _IsConnectedToLobby = true;
             else
             {
-                await _Connection.StartAsync().ContinueWith(async task =>
+                await _Connection.StartAsync().ContinueWith(task =>
                 {
                     if (task.Exception != null)
                         _IsConnectedToLobby = false;

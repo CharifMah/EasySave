@@ -2,6 +2,9 @@
 
 namespace Models
 {
+    /// <summary>
+    /// Singleton ClientManager du serveur sauvegarde l'etat des clients dans une liste
+    /// </summary>
     public class ClientsManager
     {
         private HashSet<string> _Clients;
@@ -18,12 +21,14 @@ namespace Models
             }
         }
 
-        public HashSet<string> Clients { get => _Clients; set => _Clients = value; }
-
         private ClientsManager()
         {
             _Clients = new HashSet<string>();
         }
+
+        public HashSet<string> Clients { get => _Clients; set => _Clients = value; }
+
+
 
         public void UpdateClient(string pClientViewModel, string pConnectionId)
         {

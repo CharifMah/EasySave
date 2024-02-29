@@ -40,7 +40,6 @@ namespace EasySaveGUI.UserControls
                 LayoutAnchorable? lLayoutAnchorable = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutAnchorable>().FirstOrDefault(l => l.ContentId.Contains(Strings.Jobs));
                 lLayoutAnchorable.IsSelected = true;
                 lLayoutAnchorable.IsActive = true;
-
             }
 
             _MainWindow.MenuPage.ListElements.Show();

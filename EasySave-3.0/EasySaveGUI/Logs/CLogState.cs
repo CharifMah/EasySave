@@ -12,7 +12,7 @@ namespace LogsModels
         [DataMember]
         private int _EligibleFileCount;
         [DataMember]
-        private long _ElapsedMilisecond;
+        private TimeSpan _Elapsed;
         [DataMember]
         private bool _IsActive;
         [DataMember]
@@ -51,9 +51,9 @@ namespace LogsModels
         /// <summary>
         /// Nombre de millisecondes écoulées
         /// </summary>
-        public long ElapsedMilisecond
+        public TimeSpan Elapsed
         {
-            get => _ElapsedMilisecond; set { _ElapsedMilisecond = value; NotifyPropertyChanged(); }
+            get => _Elapsed; set { _Elapsed = value; NotifyPropertyChanged(); }
         }
 
         /// <summary>

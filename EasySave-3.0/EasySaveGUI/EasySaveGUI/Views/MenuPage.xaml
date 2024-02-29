@@ -13,7 +13,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Page.Resources>
-        <Converter:SecondConverter x:Key="SecondConverter" />
+        <Converter:TimeSpanConverter x:Key="TimeSpanConverter" />
     </Page.Resources>
     <!--  Main Content  -->
     <Grid>
@@ -213,7 +213,7 @@
                                                                 </TextBlock>
                                                                 <TextBlock>
                                                                     <Run Text="{x:Static Ressources:Strings.TransfertTime}" />
-                                                                    CryptoSoft :<Run Text="{Binding EncryptTime.TotalMilliseconds, Mode=OneWay, Converter={StaticResource SecondConverter}}" />
+                                                                    CryptoSoft :<Run Text="{Binding EncryptTime, Mode=OneWay, Converter={StaticResource TimeSpanConverter}}" />
                                                                 </TextBlock>
                                                             </StackPanel>
                                                         </DataTemplate>

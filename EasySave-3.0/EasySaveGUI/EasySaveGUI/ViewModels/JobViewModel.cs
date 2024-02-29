@@ -148,7 +148,7 @@ namespace EasySaveGUI.ViewModels
 
                     lJob.SauveJobs = _SauveJobs;
 
-                    lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalMilliseconds;
+                    lJob.SauveJobs.LogState.Elapsed = lStopWatch.Elapsed;
                     lJob.SauveJobs.LogState.Name = lIndex + ' ' + _SauveJobs.LogState.Name;
                     lJob.SauveJobs.LogState.TotalTransferedFile = 0;
                     lJob.SauveJobs.LogState.BytesCopied = 0;
@@ -192,7 +192,7 @@ namespace EasySaveGUI.ViewModels
 
                     lJob.SauveJobs.LogState.Date = DateTime.Now;
                     lIndex++;
-                    lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalSeconds;
+                    lJob.SauveJobs.LogState.Elapsed = lStopWatch.Elapsed;
                 });
             }
             catch (Exception ex)
@@ -299,7 +299,7 @@ namespace EasySaveGUI.ViewModels
                 pLogState.TargetDirectory = pTargetFilePath;
                 pLogState.RemainingFiles = pLogState.EligibleFileCount - pLogState.TotalTransferedFile;
                 pLogState.Progress = pLogState.BytesCopied / pLogState.TotalSize * 100;
-                pLogState.ElapsedMilisecond = (long)pSw.Elapsed.TotalSeconds;
+                pLogState.Elapsed = pSw.Elapsed;
                 pLogState.Date = DateTime.Now;
 
                 CLogDaily lLogFilesDaily = new CLogDaily();

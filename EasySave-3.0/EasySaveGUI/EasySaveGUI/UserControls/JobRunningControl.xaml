@@ -15,14 +15,20 @@
     <UserControl.Resources>
         <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
         <Converter:BytesValueConverter x:Key="BytesValueConverter" />
-        <Converter:SecondConverter x:Key="SecondConverter" />
+        <Converter:TimeSpanConverter x:Key="TimeSpanConverter" />
     </UserControl.Resources>
     <StackPanel>
-        <StackPanel Orientation="Horizontal"  MaxHeight="20" DockPanel.Dock="Top" >
+        <StackPanel
+            MaxHeight="20"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
 
-            <Button Click="SelectAllMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
+            <Button
+                Padding="10,0,10,0"
+                Background="{DynamicResource ButtonBackground}"
+                Click="SelectAllMenuItem_Click">
                 <WrapPanel>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}"   Kind="SelectAll" />
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}" Kind="SelectAll" />
                     <TextBlock Text="{x:Static Ressources:Strings.SelectAll}" />
                 </WrapPanel>
 
@@ -30,26 +36,36 @@
 
             <Separator Width="10" Height="10" />
 
-            <Button x:Name="StartButton" Click="StartMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
+            <Button
+                x:Name="StartButton"
+                Padding="10,0,10,0"
+                Background="{DynamicResource ButtonBackground}"
+                Click="StartMenuItem_Click">
                 <WrapPanel Orientation="Horizontal">
                     <MaterialIcon:MaterialIcon Foreground="{DynamicResource LightGreenColor}" Kind="Play" />
-                    <TextBlock Text="{x:Static Ressources:Strings.Start}"/>
+                    <TextBlock Text="{x:Static Ressources:Strings.Start}" />
                 </WrapPanel>
 
             </Button>
 
-            <Button Click="PauseMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
+            <Button
+                Padding="10,0,10,0"
+                Background="{DynamicResource ButtonBackground}"
+                Click="PauseMenuItem_Click">
                 <WrapPanel>
                     <MaterialIcon:MaterialIcon Foreground="{DynamicResource YellowHoverButtonColor}" Kind="Pause" />
-                    <TextBlock Text="{x:Static Ressources:Strings.Pause}"/>
+                    <TextBlock Text="{x:Static Ressources:Strings.Pause}" />
                 </WrapPanel>
-  
+
             </Button>
 
-            <Button Click="StopMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
+            <Button
+                Padding="10,0,10,0"
+                Background="{DynamicResource ButtonBackground}"
+                Click="StopMenuItem_Click">
                 <WrapPanel>
                     <MaterialIcon:MaterialIcon Foreground="{DynamicResource RedHoverButtonColor}" Kind="Stop" />
-                    <TextBlock Text="{x:Static Ressources:Strings.Stop}"/>
+                    <TextBlock Text="{x:Static Ressources:Strings.Stop}" />
                 </WrapPanel>
 
             </Button>
@@ -91,7 +107,7 @@
                                     <TextBlock
                                         Margin="0,0,10,5"
                                         Foreground="Black"
-                                        Text="{Binding Path=SauveJobs.LogState.ElapsedMilisecond, Mode=OneWay, Converter={StaticResource SecondConverter}}" />
+                                        Text="{Binding Path=SauveJobs.LogState.Elapsed, Mode=OneWay, Converter={StaticResource TimeSpanConverter}}" />
                                 </WrapPanel>
                             </Grid>
 

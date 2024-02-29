@@ -128,7 +128,6 @@ namespace EasySaveGUI.ViewModels
                     {
                         _Clients[lIndex] = lClientVmDistant;
                     }
-
                 }
                 else
                 {

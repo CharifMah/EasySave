@@ -135,7 +135,7 @@ namespace Models.Backup
             catch (Exception ex)
             {
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
-               Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
             }
         }
 

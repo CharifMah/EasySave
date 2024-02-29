@@ -113,7 +113,7 @@ namespace Stockage.Save
         /// <param name="differential"></param>
         /// <param name="priorityFileExtensions"></param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public void CopyDirectoryAsync(DirectoryInfo sourceDir, DirectoryInfo targetDir, UpdateLogDelegate updateLog, bool recursive, bool differential, List<string>? priorityFileExtensions)
+        public override void CopyDirectoryAsync(DirectoryInfo sourceDir, DirectoryInfo targetDir, UpdateLogDelegate updateLog, bool recursive, bool differential, List<string>? priorityFileExtensions)
         {
 
             if (!sourceDir.Exists)
@@ -145,44 +145,73 @@ namespace Stockage.Save
         /// <param name="pPriorityExtensions"></param>
         /// <param name="pParallelOptions"></param>
         /// <param name="pOptions"></param>
-        private void EnqueueFiles(DirectoryInfo pSourceDir, List<string>? pPriorityExtensions)
+        private void EnqueueFiles(DirectoryInfo sourceDir, List<string>? priorityExtensions)
         {
             ParallelOptions parallelOptions = new ParallelOptions
             {
-                MaxDegreeOfParallelism = 20, // Limite de nombre de threads en parallèles
-                CancellationToken = _CancelationTokenSource.Token // Annulation de l'opération
+                MaxDegreeOfParallelism = 20,
+                CancellationToken = _CancelationTokenSource.Token
             };
 
-            EnumerationOptions options = new EnumerationOptions { RecurseSubdirectories = true };
+            
+            List<string> allFiles = new List<string>();
+
+            CollectFilesRecursively(sourceDir, allFiles);
 
             try
             {
-                Parallel.ForEach(pSourceDir.EnumerateFiles("*", SearchOption.AllDirectories), parallelOptions, file =>
+                Parallel.ForEach(allFiles, parallelOptions, filePath =>
                 {
-                    // Check for cancellation before doing work
-                    if (_CancelationTokenSource.Token.IsCancellationRequested)
-                        _CancelationTokenSource.Token.ThrowIfCancellationRequested();
-                    else
+                    try
                     {
-                        _PauseEvent.Wait(_CancelationTokenSource.Token);
+                        FileInfo file = new FileInfo(filePath);
+
+                        if (_CancelationTokenSource.Token.IsCancellationRequested)
+                            _CancelationTokenSource.Token.ThrowIfCancellationRequested();
+                        else
+                        {
+                            _PauseEvent.Wait(_CancelationTokenSource.Token);
+                        }
+
+                        bool isPriority = IsPriorityExtension(file.Extension, priorityExtensions);
+                        BlockingCollection<FileInfo> targetQueue = isPriority ? _priorityFilesQueue : _nonPriorityFilesQueue;
+                        targetQueue.Add(file);
                     }
-
-                    bool isPriority = IsPriorityExtension(file.Extension, pPriorityExtensions);
-                    BlockingCollection<FileInfo> targetQueue = isPriority ? _priorityFilesQueue : _nonPriorityFilesQueue;
-                    targetQueue.Add(file);
+                    catch (Exception ex)
+                    {
+                        _Errors += "\n" + ex.Message;
+                    }
                 });
-
-                _priorityFilesQueue.CompleteAdding();
-                _nonPriorityFilesQueue.CompleteAdding();
             }
-            catch (Exception ex)
+            finally
             {
-                _Errors += "\n" + ex.Message;
-
                 _priorityFilesQueue.CompleteAdding();
                 _nonPriorityFilesQueue.CompleteAdding();
             }
         }
+
+        private void CollectFilesRecursively(DirectoryInfo dir, List<string> allFiles)
+        {
+            try
+            {
+                foreach (FileInfo file in dir.GetFiles())
+                {
+                    allFiles.Add(file.FullName);
+                }
+
+                DirectoryInfo[] subDirs = dir.GetDirectories();
+                foreach (DirectoryInfo subDir in subDirs)
+                {
+                    CollectFilesRecursively(subDir, allFiles);
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Gérer ou enregistrer l'exception
+                // Par exemple, en ajoutant un message d'erreur à une liste ou un journal
+            }
+        }
+
 
 
         /// <summary>
@@ -196,14 +225,14 @@ namespace Stockage.Save
         /// <param name="pDifferential"></param>
         private void ProcessFiles(BlockingCollection<FileInfo> pFilesQueue, DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, CLogState pLogState, UpdateLogDelegate pUpdateLog, bool pDifferential)
         {
+            ParallelOptions parallelOptions = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = 20,
+                CancellationToken = _CancelationTokenSource.Token
+            };
+
             try
             {
-                ParallelOptions parallelOptions = new ParallelOptions
-                {
-                    MaxDegreeOfParallelism = 20,
-                    CancellationToken = _CancelationTokenSource.Token
-                };
-
                 Parallel.ForEach(pFilesQueue, parallelOptions, file =>
                 {
                     string lRelativePath = Path.GetRelativePath(pSourceDir.FullName, file.FullName);
@@ -311,7 +340,7 @@ namespace Stockage.Save
         //public override void CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false, List<string>? pPriorityFileExtensions = null)
         //{
 
-        //    FileInfo[] lFiles = pSourceDir.GetFiles();
+        //   FileInfo[] lFiles = pSourceDir.GetFiles();
 
         //    try
         //    {

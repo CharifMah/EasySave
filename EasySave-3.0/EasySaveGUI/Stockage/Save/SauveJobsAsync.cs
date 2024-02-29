@@ -113,7 +113,7 @@ namespace Stockage.Save
         /// <param name="differential"></param>
         /// <param name="priorityFileExtensions"></param>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        public override void CopyDirectoryAsync(DirectoryInfo sourceDir, DirectoryInfo targetDir, UpdateLogDelegate updateLog, bool recursive, bool differential, List<string>? priorityFileExtensions)
+        public void CopyDirectoryAsync(DirectoryInfo sourceDir, DirectoryInfo targetDir, UpdateLogDelegate updateLog, bool recursive, bool differential, List<string>? priorityFileExtensions)
         {
 
             if (!sourceDir.Exists)
@@ -200,7 +200,7 @@ namespace Stockage.Save
                     CancellationToken = _CancelationTokenSource.Token
                 };
 
-                Parallel.ForEach(pFilesQueue.GetConsumingEnumerable(), parallelOptions, file =>
+                Parallel.ForEach(pFilesQueue, parallelOptions, file =>
                 {
                     string lRelativePath = Path.GetRelativePath(pSourceDir.FullName, file.FullName);
                     string lTargetFilePath = Path.Combine(pTargetDir.FullName, lRelativePath);
@@ -226,7 +226,7 @@ namespace Stockage.Save
                         Directory.CreateDirectory(lTargetDirectoryPath);
                     }
 
-                    CopyFileAsync(file, lTargetFilePath, pLogState, pUpdateLog, pDifferential);
+                    CopyFileAsync(file, lTargetFilePath, pLogState, pDifferential);
 
                     lock (_lock)
                     {
@@ -248,7 +248,7 @@ namespace Stockage.Save
         /// <param name="pLogState"></param>
         /// <param name="pUpdateLog"></param>
         /// <param name="pDifferential"></param>
-        private void CopyFileAsync(FileInfo pSourceFile, string pTargetFilePath, CLogState pLogState, UpdateLogDelegate pUpdateLog, bool pDifferential)
+        public override void CopyFileAsync(FileInfo pSourceFile, string pTargetFilePath, CLogState pLogState, bool pDifferential)
         {
             try
             {

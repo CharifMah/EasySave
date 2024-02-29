@@ -124,8 +124,6 @@ namespace EasySaveGUI.ViewModels
                     return;
                 }
 
-
-
                 Task lMonitoringBusinessSoftware = Task.Run(async () =>
                 {
                     await MonitorBusinessSoftware(_CancellationTokenSource.Token);
@@ -136,7 +134,6 @@ namespace EasySaveGUI.ViewModels
                     MaxDegreeOfParallelism = 20,
                     CancellationToken = _CancellationTokenSource.Token
                 };
-
 
                 // cm - parcours les jobs
                 await Parallel.ForEachAsync(pJobs, async (lJob, lCancellationTokenSource) =>

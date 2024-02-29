@@ -19,19 +19,17 @@ namespace EasySaveGUI.Converters
 
             string formatted = "";
 
-            if (milliseconds > 0)
+            if (milliseconds > 0 && milliseconds < 300)
             {
-                formatted += milliseconds + " ms ";
+                formatted = milliseconds + " ms ";
             }
-
-            if (seconds > 0)
+            else if (seconds > 0 && seconds < 60)
             {
-                formatted += seconds + " sec ";
+                formatted = seconds + " sec ";
             }
-
             if (minutes > 0)
             {
-                formatted += minutes + " min";
+                formatted = minutes + " min" + seconds + " sec ";
             }
 
             return formatted.Trim();

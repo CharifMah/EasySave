@@ -41,6 +41,8 @@ namespace Stockage.Save
         public Stopwatch StopWatch { get => _StopWatch; set => _StopWatch = value; }
         public string Errors { get => _Errors; set => _Errors = value; }
         public ManualResetEventSlim PauseEvent { get => _PauseEvent; set => _PauseEvent = value; }
+        public BlockingCollection<FileInfo> PriorityFilesQueue { get => _priorityFilesQueue; set => _priorityFilesQueue = value; }
+        public BlockingCollection<FileInfo> NonPriorityFilesQueue { get => _nonPriorityFilesQueue; set => _nonPriorityFilesQueue = value; }
 
         #endregion
 

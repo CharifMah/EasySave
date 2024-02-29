@@ -165,7 +165,6 @@ namespace EasySaveGUI.ViewModels
 
                         // cm - Lance le job
                         lJob.Run(UpdateLog);
-
                         lStopWatch.Stop();
 
                     });

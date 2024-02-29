@@ -52,7 +52,28 @@ namespace EasySaveGUI.ViewModels
             _UserSignalRService.OnDisconnected += _UserSignalRService_OnDisconnected;
             _UserSignalRService.ClientViewModelUpdated += _UserSignalRService_ClientViewModelUpdated;
             _UserSignalRService.OnSyncConnectionId += _UserSignalRService_OnSyncConnectionId;
+            _UserSignalRService.OnStart += _UserSignalRService_OnStart;
+            _UserSignalRService.OnPause += _UserSignalRService_OnPause;
+            _UserSignalRService.OnStop += _UserSignalRService_OnStop;
             _IsConnectedToLobby = false;
+        }
+
+        private void _UserSignalRService_OnStop(string arg1, string arg2, string arg3)
+        {
+            ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(arg1);
+            this.ClientVm.JobVm.Stop(lClientVmDistant.JobVm.JobsRunning.ToList());
+        }
+
+        private void _UserSignalRService_OnPause(string arg1, string arg2, string arg3)
+        {
+            ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(arg1);
+            this.ClientVm.JobVm.Pause(lClientVmDistant.JobVm.JobsRunning.ToList());
+        }
+
+        private async void _UserSignalRService_OnStart(string pClientVmJson, string pConnectionId, string pTargetConnectionId)
+        {
+            ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(pClientVmJson);
+            await this.ClientVm.JobVm.RunJobs(lClientVmDistant.JobVm.JobsRunning.ToList());
         }
 
         private void _UserSignalRService_OnSyncConnectionId(string pConnectionId, string pOldConnectionId)

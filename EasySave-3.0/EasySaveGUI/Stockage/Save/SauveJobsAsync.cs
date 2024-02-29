@@ -167,10 +167,16 @@ namespace Stockage.Save
                     BlockingCollection<FileInfo> targetQueue = isPriority ? _priorityFilesQueue : _nonPriorityFilesQueue;
                     targetQueue.Add(file);
                 });
+
+                _priorityFilesQueue.CompleteAdding();
+                _nonPriorityFilesQueue.CompleteAdding();
             }
             catch (Exception ex)
             {
                 _Errors += "\n" + ex.Message;
+
+                _priorityFilesQueue.CompleteAdding();
+                _nonPriorityFilesQueue.CompleteAdding();
             }
         }
 
@@ -178,47 +184,53 @@ namespace Stockage.Save
         /// <summary>
         ///  Consommateur: Traite la sauvegarde des fichiers dans la file d'attente en utilisant Parallel.ForEach pour le parallélisme
         /// </summary>
-        /// <param name="filesQueue"></param>
-        /// <param name="sourceDir"></param>
-        /// <param name="targetDir"></param>
-        /// <param name="logState"></param>
-        /// <param name="updateLog"></param>
-        /// <param name="differential"></param>
-        private void ProcessFiles(BlockingCollection<FileInfo> filesQueue, DirectoryInfo sourceDir, DirectoryInfo targetDir, CLogState logState, UpdateLogDelegate updateLog, bool differential)
+        /// <param name="pFilesQueue"></param>
+        /// <param name="pSourceDir"></param>
+        /// <param name="pTargetDir"></param>
+        /// <param name="pLogState"></param>
+        /// <param name="pUpdateLog"></param>
+        /// <param name="pDifferential"></param>
+        private void ProcessFiles(BlockingCollection<FileInfo> pFilesQueue, DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, CLogState pLogState, UpdateLogDelegate pUpdateLog, bool pDifferential)
         {
             try
             {
-
                 ParallelOptions parallelOptions = new ParallelOptions
                 {
                     MaxDegreeOfParallelism = 20,
                     CancellationToken = _CancelationTokenSource.Token
                 };
 
-                Parallel.ForEach(filesQueue, parallelOptions, file =>
+                Parallel.ForEach(pFilesQueue.GetConsumingEnumerable(), parallelOptions, file =>
                 {
-                    string relativePath = Path.GetRelativePath(sourceDir.FullName, file.FullName);
-                    string targetFilePath = Path.Combine(targetDir.FullName, relativePath);
-
-                    // Check for cancellation before doing work
-                    if (_CancelationTokenSource.Token.IsCancellationRequested)
-                        _CancelationTokenSource.Token.ThrowIfCancellationRequested();
-                    else
+                    string lRelativePath = Path.GetRelativePath(pSourceDir.FullName, file.FullName);
+                    string lTargetFilePath = Path.Combine(pTargetDir.FullName, lRelativePath);
+                    
+                    try
                     {
-                        _PauseEvent.Wait(_CancelationTokenSource.Token);
+                        // Check for cancellation before doing work
+                        if (_CancelationTokenSource.Token.IsCancellationRequested)
+                            _CancelationTokenSource.Token.ThrowIfCancellationRequested();
+                        else
+                        {
+                            _PauseEvent.Wait(_CancelationTokenSource.Token);
+                        }
+                    } catch (Exception ex)
+                    {
+                        return;
+                    }
+                    
+
+                    string? lTargetDirectoryPath = Path.GetDirectoryName(lTargetFilePath);
+                    if (lTargetDirectoryPath != null && !Directory.Exists(lTargetDirectoryPath))
+                    {
+                        Directory.CreateDirectory(lTargetDirectoryPath);
                     }
 
-                    string? targetDirectoryPath = Path.GetDirectoryName(targetFilePath);
-                    if (targetDirectoryPath != null && !Directory.Exists(targetDirectoryPath))
-                    {
-                        Directory.CreateDirectory(targetDirectoryPath);
-                    }
-
-                    CopyFileAsync(file, targetFilePath, logState, updateLog, differential);
+                    CopyFileAsync(file, lTargetFilePath, pLogState, pUpdateLog, pDifferential);
 
                     lock (_lock)
                     {
-                        updateLog(_LogState, _FormatLog, file, targetFilePath, _StopWatch);
+                        pUpdateLog(_LogState, _FormatLog, file, lTargetFilePath, _StopWatch);
                     }
                 });
             }
@@ -231,30 +243,31 @@ namespace Stockage.Save
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sourceFile"></param>
-        /// <param name="targetFilePath"></param>
-        /// <param name="logState"></param>
-        /// <param name="updateLog"></param>
-        /// <param name="differential"></param>
-        private void CopyFileAsync(FileInfo sourceFile, string targetFilePath, CLogState logState, UpdateLogDelegate updateLog, bool differential)
+        /// <param name="pSourceFile"></param>
+        /// <param name="pTargetFilePath"></param>
+        /// <param name="pLogState"></param>
+        /// <param name="pUpdateLog"></param>
+        /// <param name="pDifferential"></param>
+        private void CopyFileAsync(FileInfo pSourceFile, string pTargetFilePath, CLogState pLogState, UpdateLogDelegate pUpdateLog, bool pDifferential)
         {
             try
             {
                 // Vérification différentielle: copier seulement si le fichier de destination n'existe pas ou si le fichier source est plus récent
-                FileInfo destinationFileInfo = new FileInfo(targetFilePath);
-                if (!differential || !destinationFileInfo.Exists || sourceFile.LastWriteTime > destinationFileInfo.LastWriteTime)
+                FileInfo lDestinationFileInfo = new FileInfo(pTargetFilePath);
+
+                if (!pDifferential || !lDestinationFileInfo.Exists || pSourceFile.LastWriteTime > lDestinationFileInfo.LastWriteTime)
                 {
-                    using (Stream sourceStream = File.OpenRead(sourceFile.FullName))
+                    using (Stream lSourceStream = File.OpenRead(pSourceFile.FullName))
                     {
-                        using (Stream destinationStream = File.Create(targetFilePath))
+                        using (Stream lDestinationStream = File.Create(pTargetFilePath))
                         {
-                            // Vérifie si le fichier est sur la liste noire pour le cryptage
-                            if (_BlackList.Any(blacklisted => sourceFile.Extension.EndsWith(blacklisted, StringComparison.OrdinalIgnoreCase)))
+                            // Vérifie si le fichier est sur la backlist pour le cryptage
+                            if (_BlackList.Any(blacklisted => pSourceFile.Extension.EndsWith(blacklisted, StringComparison.OrdinalIgnoreCase)))
                             {
-                                // Le fichier est sur la liste noire, appliquez le cryptage
+                                // Le fichier est sur la blacklist, appliquez le cryptage
                                 using (MemoryStream memoryStream = new MemoryStream())
                                 {
-                                    sourceStream.CopyTo(memoryStream);
+                                    lSourceStream.CopyTo(memoryStream);
                                     byte[] fileBytes = memoryStream.ToArray();
 
                                     // Cryptage
@@ -262,14 +275,14 @@ namespace Stockage.Save
                                     byte[] key = Encoding.UTF8.GetBytes("secret"); // La clé de cryptage
                                     byte[] encryptedBytes = xorEncryptor.Encrypt(fileBytes, key);
 
-                                    logState.EncryptTime = xorEncryptor.EncryptTime; // Mettez à jour le temps de cryptage
-                                    destinationStream.Write(encryptedBytes, 0, encryptedBytes.Length);
+                                    pLogState.EncryptTime = xorEncryptor.EncryptTime; // Mettez à jour le temps de cryptage
+                                    lDestinationStream.Write(encryptedBytes, 0, encryptedBytes.Length);
                                 }
                             }
                             else
                             {
                                 // Le fichier n'est pas sur la liste noire, copiez sans cryptage
-                                sourceStream.CopyTo(destinationStream);
+                                lSourceStream.CopyTo(lDestinationStream);
                             }
                         }
                     }
@@ -277,7 +290,7 @@ namespace Stockage.Save
             }
             catch (Exception ex)
             {
-                _Errors += $"\nError copying file '{sourceFile.Name}': {ex.Message}";
+                _Errors += $"\nError copying file '{pSourceFile.Name}': {ex.Message}";
 
             }
         }

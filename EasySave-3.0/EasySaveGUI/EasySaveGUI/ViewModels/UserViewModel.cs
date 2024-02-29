@@ -26,7 +26,7 @@ namespace EasySaveGUI.ViewModels
         #region Property
         public UserSignalRService UserSignalRService { get => _UserSignalRService; set => _UserSignalRService = value; }
         public ClientViewModel ClientVm { get => _ClientViewModel; set => _ClientViewModel = value; }
-        public ObservableCollection<ClientViewModel> Clients { get => _Clients; set => _Clients = value; } 
+        public ObservableCollection<ClientViewModel> Clients { get => _Clients; set => _Clients = value; }
         #endregion
 
         #region CTOR
@@ -70,7 +70,8 @@ namespace EasySaveGUI.ViewModels
         /// <summary>
         /// Connecte le lobby a la connection
         /// </summary>
-        /// <returns></returns>
+        /// <param name="pJobViewModel">Current job view model</param>
+        /// <returns>Task</returns>
         public async Task ConnectLobby(JobViewModel pJobViewModel)
         {
             if (_Connection.State == HubConnectionState.Connected)
@@ -125,9 +126,7 @@ namespace EasySaveGUI.ViewModels
                     _Clients.Add(lClientVmDistant);
 
                     MainWindow lMainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
-
-                    if (lMainWindow.MainVm.LayoutVm.ElementsContent.Content is ConnectionMenuControl)
-                        (lMainWindow.MainVm.LayoutVm.ElementsContent.Content as ConnectionMenuControl).UpdateListClients(_Clients);
+                    lMainWindow.MainVm.ConnectionMenuControl.UpdateListClients(_Clients);
                 }
             });
 

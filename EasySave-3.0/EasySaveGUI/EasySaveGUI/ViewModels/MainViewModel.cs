@@ -1,4 +1,5 @@
-﻿using Models.Settings;
+﻿using EasySaveGUI.UserControls;
+using Models.Settings;
 using Stockage.Load;
 using System.IO;
 
@@ -10,6 +11,7 @@ namespace EasySaveGUI.ViewModels
     public class MainViewModel : BaseViewModel
     {
         #region Attributes
+        private ConnectionMenuControl _ConnectionMenuControl;
         private LangueViewModel _LangueVm;
         private FormatLogViewModel _FormatLogVm;
         private JobViewModel _JobVm;
@@ -51,6 +53,7 @@ namespace EasySaveGUI.ViewModels
             get => _FileExtensionVm;
             set => _FileExtensionVm = value;
         }
+        public ConnectionMenuControl ConnectionMenuControl { get => _ConnectionMenuControl; set => _ConnectionMenuControl = value; }
 
         #endregion
 
@@ -79,6 +82,7 @@ namespace EasySaveGUI.ViewModels
             _LayoutVm = new LayoutViewModel();
             _BusinessSoftwareVm = new BusinessSoftwareViewModel();
             _FileExtensionVm = new FileExtensionViewModel();
+            _ConnectionMenuControl = new ConnectionMenuControl();
         }
 
         #endregion

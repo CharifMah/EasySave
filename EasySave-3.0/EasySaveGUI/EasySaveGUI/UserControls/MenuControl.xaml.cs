@@ -53,11 +53,10 @@ namespace EasySaveGUI.UserControls
 
         private async void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
-            ConnectionMenuControl lConnectionMenuControl = new ConnectionMenuControl();
-            _MainVm.LayoutVm.ElementsContent.Content = lConnectionMenuControl;
+            _MainVm.LayoutVm.ElementsContent.Content = _MainVm.ConnectionMenuControl;
 
             await UserViewModel.Instance.ConnectLobby(_MainVm.JobVm);
-            lConnectionMenuControl.UpdateListClients(UserViewModel.Instance.Clients);
+            _MainVm.ConnectionMenuControl.UpdateListClients(UserViewModel.Instance.Clients);
 
             _MainWindow.MenuPage.ListElements.Show();
             _MainWindow.MenuPage.ListElements.IsActive = true;

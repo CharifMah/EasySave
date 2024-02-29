@@ -27,7 +27,7 @@ namespace EasySaveGUI
 
             if (!estPremiereInstance)
             {
-                // Nettoyez les ressources si nécessaire et quittez.
+                // On arrête complètement la deuxième instance de l'application pour éviter son exécution en arrière plan.
                 Environment.Exit(0);
             }
 

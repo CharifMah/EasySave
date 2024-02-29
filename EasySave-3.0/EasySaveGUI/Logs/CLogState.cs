@@ -19,7 +19,12 @@ namespace LogsModels
         private double _BytesCopied;
         [DataMember]
         private int _TotalTransfered;
-
+        [DataMember]
+        private bool _IsPaused;
+        [DataMember]
+        private bool _IsStopped;
+        [DataMember]
+        private bool _IsStarted;
 
         public override string Name
         {
@@ -29,8 +34,6 @@ namespace LogsModels
                 base.Name = value;
             }
         }
-
-
 
         /// <summary>
         /// Nombre de fichier restant
@@ -70,6 +73,13 @@ namespace LogsModels
         /// </summary>
         public int TotalTransferedFile { get => _TotalTransfered; set { _TotalTransfered = value; NotifyPropertyChanged(); } }
 
+        public bool IsPaused
+        {
+            get => _IsPaused; set { _IsPaused = value; NotifyPropertyChanged(); }
+        }
+        public bool IsStopped { get => _IsStopped; set { _IsStopped = value; NotifyPropertyChanged(); } }
+        public bool IsStarted { get => _IsStarted; set { _IsStarted = value; NotifyPropertyChanged(); } }
+
 
 
         /// <summary>
@@ -78,6 +88,35 @@ namespace LogsModels
         public CLogState()
         {
             Name = "EasySaveLogState - " + Name;
+        }
+
+        /// <summary>
+        /// Reprend les jobs selectionnée en cours
+        /// </summary>
+        public void Resume()
+        {
+            _IsStarted = false;
+            if (_IsPaused)
+            {
+                _IsStarted = true;
+            }
+        }
+        /// <summary>
+        /// Met en pause les jobs
+        /// </summary>
+        public void Pause()
+        {
+            _IsPaused = true;
+        }
+
+        /// <summary>
+        /// Arrete definitivement les jobs
+        /// </summary>
+        public void Stop()
+        {
+            _IsStopped = true;
+            _IsPaused = false;
+            _IsStarted = false;
         }
     }
 }

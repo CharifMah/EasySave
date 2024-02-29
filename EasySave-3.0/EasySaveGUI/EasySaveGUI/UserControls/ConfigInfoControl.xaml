@@ -27,12 +27,12 @@
                 <StackPanel>
                     <GroupBox Header="JobManager Configuration">
                         <StackPanel>
-                            <TextBlock Grid.Row="0" ToolTip="{x:Static Ressources:Strings.DefaultFile}">
+                            <TextBlock ToolTip="{x:Static Ressources:Strings.DefaultFile}">
                                 <Run Text="{x:Static Ressources:Strings.DefaultFile}" />
                                 <Run Text=" : " />
                             </TextBlock>
                             <TextBox Text="{Binding SettingsVm.Settings.JobDefaultConfigPath, Mode=OneWay}" TextWrapping="WrapWithOverflow" />
-                            <TextBlock Grid.Row="0" ToolTip="{x:Static Ressources:Strings.EnterFolderPath}">
+                            <TextBlock ToolTip="{x:Static Ressources:Strings.EnterFolderPath}">
                                 <Run Text="{x:Static Ressources:Strings.EnterFolderPath}" />
                             </TextBlock>
                             <TextBox Text="{Binding SettingsVm.Settings.JobConfigFolderPath, Mode=OneWay}" TextWrapping="WrapWithOverflow" />

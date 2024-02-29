@@ -62,10 +62,6 @@ namespace Models.Backup
             get => _SauveJobs; set { _SauveJobs = value; NotifyPropertyChanged(); }
         }
 
-
-
-
-
         #endregion
 
         #region CTOR
@@ -161,6 +157,38 @@ namespace Models.Backup
             // and prevent finalization code for this object
             // from executing a second time.
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Reprend les jobs selectionnée en cours
+        /// </summary>
+        public void Resume()
+        {
+            _SauveJobs.PauseEvent.Set();
+            _SauveJobs.LogState.IsStarted = false;
+            if (_SauveJobs.LogState.IsPaused)
+            {
+                _SauveJobs.LogState.IsStarted = true;
+            }
+        }
+        /// <summary>
+        /// Met en pause les jobs
+        /// </summary>
+        public void Pause()
+        {
+            _SauveJobs.PauseEvent.Reset();
+            _SauveJobs.LogState.IsPaused = true;
+        }
+
+        /// <summary>
+        /// Arrete definitivement les jobs
+        /// </summary>
+        public void Stop()
+        {
+            _SauveJobs.CancelationTokenSource.Cancel();
+            _SauveJobs.LogState.IsStopped = true;
+            _SauveJobs.LogState.IsPaused = false;
+            _SauveJobs.LogState.IsStarted = false;
         }
 
         #endregion

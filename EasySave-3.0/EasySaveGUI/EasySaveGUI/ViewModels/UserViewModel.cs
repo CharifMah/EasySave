@@ -28,7 +28,7 @@ namespace EasySaveGUI.ViewModels
         public ClientViewModel ClientVm { get => _ClientViewModel; set => _ClientViewModel = value; }
         public ObservableCollection<ClientViewModel> Clients { get => _Clients; set => _Clients = value; }
         #endregion
-&
+
         #region CTOR
         private static UserViewModel _Instance;
         public static UserViewModel Instance

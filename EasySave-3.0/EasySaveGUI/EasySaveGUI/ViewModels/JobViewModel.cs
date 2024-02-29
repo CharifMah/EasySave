@@ -22,7 +22,7 @@ namespace EasySaveGUI.ViewModels
     {
         #region Attribute
 
-        private CancellationTokenSource _CancellationTokenSource;
+        private CancellationToken _CancellationToken;
         [DataMember]
         private List<CLogDaily> _LogDailyBuffer;
         [DataMember]
@@ -36,7 +36,7 @@ namespace EasySaveGUI.ViewModels
 
         private ISauve _SauveCollection;
 
-        private ObservableCollection<CJob> _PausedJobsByMonitor;
+        private List<CJob> _PausedJobsByMonitor;
 
         public event Action<string> OnBusinessSoftwareDetected;
 
@@ -76,8 +76,6 @@ namespace EasySaveGUI.ViewModels
         /// </summary>
         public ObservableCollection<CJob> JobsRunning { get => _jobsRunning; set { _jobsRunning = value; NotifyPropertyChanged(); } }
 
-        public ObservableCollection<CJob> PausedJobsByMonitor { get => _PausedJobsByMonitor; set => _PausedJobsByMonitor = value; }
-
 
         #endregion
 
@@ -92,8 +90,8 @@ namespace EasySaveGUI.ViewModels
             _LogDailyBuffer = new List<CLogDaily>();
             _Jobs = new ObservableCollection<CJob>();
             _jobsRunning = new ObservableCollection<CJob>();
-            _PausedJobsByMonitor = new ObservableCollection<CJob>();
-            _CancellationTokenSource = new CancellationTokenSource();
+            _PausedJobsByMonitor = new List<CJob>();
+            _CancellationToken = new CancellationTokenSource().Token;
             //Init la classe de sauvegarde avec le chemin definit par l'utilisateur ou celui par default
             if (string.IsNullOrEmpty(CSettings.Instance.JobConfigFolderPath))
                 _SauveCollection = new SauveCollection(new FileInfo(CSettings.Instance.JobDefaultConfigPath).DirectoryName);
@@ -126,13 +124,13 @@ namespace EasySaveGUI.ViewModels
 
                 Task lMonitoringBusinessSoftware = Task.Run(async () =>
                 {
-                    await MonitorBusinessSoftware(_CancellationTokenSource.Token);
+                    await MonitorBusinessSoftware(_CancellationToken);
                 });
 
                 ParallelOptions lParallelOptions = new ParallelOptions
                 {
                     MaxDegreeOfParallelism = 20,
-                    CancellationToken = _CancellationTokenSource.Token
+                    CancellationToken = _CancellationToken
                 };
 
                 // cm - parcours les jobs
@@ -190,6 +188,7 @@ namespace EasySaveGUI.ViewModels
                     lJob.SauveJobs.LogState.Date = DateTime.Now;
                     lIndex++;
                     lJob.SauveJobs.LogState.Elapsed = lStopWatch.Elapsed;
+                    lJob.SauveJobs.LogState.Stop();
                 });
             }
             catch (Exception ex)
@@ -205,7 +204,7 @@ namespace EasySaveGUI.ViewModels
         {
             foreach (CJob lJob in pJobs)
             {
-                lJob.SauveJobs.PauseEvent.Set();
+                lJob.Resume();
 
                 if (isResumeByMonitor)
                 {
@@ -221,7 +220,7 @@ namespace EasySaveGUI.ViewModels
         {
             foreach (CJob lJob in pJobs)
             {
-                lJob.SauveJobs.PauseEvent.Reset();
+                lJob.Pause();
 
                 // Si le job est mis en pause par le moniteur et qu'il n'est pas déjà dans la collection des jobs en pause du monitor
                 if (isPausedByMonitor && !_PausedJobsByMonitor.Contains(lJob))
@@ -238,7 +237,7 @@ namespace EasySaveGUI.ViewModels
         {
             foreach (CJob lJob in pJobs)
             {
-                lJob.SauveJobs.CancelationTokenSource.Cancel();
+                lJob.Stop();
             }
         }
 
@@ -308,14 +307,13 @@ namespace EasySaveGUI.ViewModels
                 lLogFilesDaily.FormatLog = pFormatLog;
                 lLogFilesDaily.Progress = pLogState.Progress;
                 lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
-
+                lLogFilesDaily.EncryptTimeMs = pLogState.EncryptTimeMs;
                 CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
+
                 _LogDailyBuffer.Add(lLogFilesDaily);
 
                 if (UserViewModel.Instance.ClientVm != null)
                 {
-                    UserViewModel.Instance.ClientVm.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
-
                     Task.Run(async () =>
                     {
                         UserViewModel.Instance.ClientVm.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;

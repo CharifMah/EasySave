@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -102,8 +103,29 @@ namespace EasySaveGUI.UserControls
                 if (lLayoutDocument != null)
                 {
                     StackPanel stackPanel = (lLayoutDocument.Content as StackPanel);
-                    (stackPanel.Children[0] as JobRunningControl).DataContext = UserViewModel.Instance.Clients.First(c => c.Client.ConnectionId == pConnectionId);
-                    (stackPanel.Children[1] as JobListControl).DataContext = UserViewModel.Instance.Clients.First(c => c.Client.ConnectionId == pConnectionId);
+                    ClientViewModel lClientVm = UserViewModel.Instance.Clients.First(c => c.Client.ConnectionId == pConnectionId);
+                    foreach (var item in lClientVm.JobVm.JobsRunning)
+                    {
+                        item.SauveJobs.CancelationTokenSource = new CancellationTokenSource();
+                        item.SauveJobs.PauseEvent = new ManualResetEventSlim(false);
+                        if (item.SauveJobs.LogState.IsStopped)
+                        {
+                            item.Stop();
+                        }
+                        if (item.SauveJobs.LogState.IsPaused)
+                        {
+                            item.Pause();
+                        }
+                        if (item.SauveJobs.LogState.IsStarted)
+                        {
+                            item.Resume();
+                        }
+                    }
+                    JobRunningControl lJobLlistCtrl = (stackPanel.Children[0] as JobRunningControl);
+
+                    JobListControl lJobListCtrl = (stackPanel.Children[1] as JobListControl);
+                    lJobLlistCtrl.DataContext = lClientVm;
+                    lJobListCtrl.DataContext = lClientVm;
                     lLayoutDocument.IsActive = true;
                     lLayoutDocument.IsSelected = true;
                 }

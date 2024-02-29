@@ -2,6 +2,7 @@
 using Models.Settings;
 using Stockage.Logs;
 using Stockage.Save;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using static Stockage.Logs.ILogger<uint>;
 namespace Models.Backup
@@ -124,7 +125,7 @@ namespace Models.Backup
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, pUpdateLog, true, pDifferentiel);
+                    _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, pUpdateLog, true, pDifferentiel, CSettings.Instance.PriorityFileExtensions);
                 }
                 else
                 {
@@ -134,6 +135,7 @@ namespace Models.Backup
             catch (Exception ex)
             {
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+                Debug.WriteLine(ex.Message);
             }
         }
 

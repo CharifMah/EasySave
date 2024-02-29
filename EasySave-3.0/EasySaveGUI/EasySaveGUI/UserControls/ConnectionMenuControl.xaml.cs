@@ -1,4 +1,5 @@
-﻿using AvalonDock.Layout;
+﻿using AvalonDock.Controls;
+using AvalonDock.Layout;
 using EasySaveGUI.ViewModels;
 using EasySaveGUI.Views;
 using Gtk;
@@ -32,14 +33,18 @@ namespace EasySaveGUI.UserControls
     /// </summary>
     public partial class ConnectionMenuControl : UserControl
     {
+        private readonly object _lock = new object();
+        private List<LayoutDocument> _Documents;
         private MainWindow? _MainWindow;
         private MainViewModel _MainVm;
+
         public ConnectionMenuControl()
         {
             InitializeComponent();
 
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
+            _Documents = new List<LayoutDocument>();
         }
 
         public void UpdateListClients(ObservableCollection<ClientViewModel> pClients)
@@ -59,16 +64,14 @@ namespace EasySaveGUI.UserControls
                 lButtonHorizontal.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 Grid.SetColumn(lButtonHorizontal, i);
                 lButtonHorizontal.Content = pClients[i].Client.ConnectionId;
-      
 
                 Button lButton = new Button();
                 lButton.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 lButton.Content = pClients[i].Client.ConnectionId;
-     
+
                 Grid.SetRow(lButton, i);
 
-
-                if (UserViewModel.Instance.ClientViewModel.Client.ConnectionId == pClients[i].Client.ConnectionId)
+                if (UserViewModel.Instance.Connection.ConnectionId == pClients[i].Client.ConnectionId)
                 {
                     lButton.Background = (Brush)_MainWindow.MenuPage.Resources["LightGreenColor"];
                     lButtonHorizontal.Background = (Brush)_MainWindow.MenuPage.Resources["LightGreenColor"];
@@ -87,23 +90,66 @@ namespace EasySaveGUI.UserControls
         private void UpdateJobViewModelButton_Click(object sender, RoutedEventArgs e)
         {
             Button? button = sender as Button;
-            ClientViewModel lClientViewModel = UserViewModel.Instance.Clients.First(cl => cl.Client.ConnectionId == button.Content.ToString());
+            OpenClientDocument(button.Content.ToString());
+        }
+
+        public void UpdateClientViewModel(string pConnectionId)
+        {
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                LayoutDocument? lLayoutDocument = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutDocument>().FirstOrDefault(l => l.ContentId.Contains(pConnectionId));
+
+                if (lLayoutDocument != null)
+                {
+                    StackPanel stackPanel = (lLayoutDocument.Content as StackPanel);
+                    (stackPanel.Children[0] as JobRunningControl).DataContext = UserViewModel.Instance.Clients.First(c => c.Client.ConnectionId == pConnectionId);
+                    (stackPanel.Children[1] as JobListControl).DataContext = UserViewModel.Instance.Clients.First(c => c.Client.ConnectionId == pConnectionId);
+                    lLayoutDocument.IsActive = true;
+                    lLayoutDocument.IsSelected = true;
+                }
+            });
+        }
+
+        private void OpenClientDocument(string pButtonContent)
+        {
+            LayoutDocumentPane? lLayoutDocumentPane = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
+            lock (_lock)
+            {
+                if (_Documents.Count > 0)
+                {
+                    for (int i = 0; i < _Documents.Count; i++)
+                    {
+                        _Documents[i].Close();
+                    }
+                }
+            }
+
+            ClientViewModel lClientViewModel = UserViewModel.Instance.Clients.First(cl => cl.Client.ConnectionId == pButtonContent);
 
             // Crée un LayoutDocument
-            LayoutDocument layoutDocument = new LayoutDocument
+            LayoutDocument lLayoutDocument = new LayoutDocument
             {
-                Title = "Jobs for " + button.Content.ToString()
+                Title = "Jobs for " + pButtonContent,
+                ContentId = pButtonContent
             };
 
             StackPanel stackPanel = new StackPanel();
-            stackPanel.Children.Add(new JobRunningControl { DataContext = lClientViewModel });
-            stackPanel.Children.Add(new JobListControl { DataContext = lClientViewModel });
+            stackPanel.Children.Add(new JobRunningControl(lClientViewModel));
+            stackPanel.Children.Add(new JobListControl(lClientViewModel));
             // Affecte le content
-            layoutDocument.Content = stackPanel;
+            lLayoutDocument.Content = stackPanel;
+            lLayoutDocument.IsActive = true;
+            lLayoutDocument.IsSelected = true;
+            lLayoutDocumentPane.Children.Add(lLayoutDocument);
+            lLayoutDocument.Closed += LLayoutDocument_Closed;
+            _Documents.Add(lLayoutDocument);
+            lLayoutDocument.Float();
 
-            LayoutDocumentPane lLayoutDocumentPane = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
+        }
 
-            lLayoutDocumentPane.Children.Add(layoutDocument);
+        private void LLayoutDocument_Closed(object? sender, EventArgs e)
+        {
+            _Documents.Remove(sender as LayoutDocument);
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

@@ -148,7 +148,7 @@ namespace EasySaveGUI.ViewModels
 
                     lJob.SauveJobs = _SauveJobs;
 
-                    lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalMilliseconds;
+                    lJob.SauveJobs.LogState.Elapsed = lStopWatch.Elapsed;
                     lJob.SauveJobs.LogState.Name = lIndex + ' ' + _SauveJobs.LogState.Name;
                     lJob.SauveJobs.LogState.TotalTransferedFile = 0;
                     lJob.SauveJobs.LogState.BytesCopied = 0;
@@ -192,7 +192,7 @@ namespace EasySaveGUI.ViewModels
 
                     lJob.SauveJobs.LogState.Date = DateTime.Now;
                     lIndex++;
-                    lJob.SauveJobs.LogState.ElapsedMilisecond = (long)lStopWatch.Elapsed.TotalSeconds;
+                    lJob.SauveJobs.LogState.Elapsed = lStopWatch.Elapsed;
                 });
             }
             catch (Exception ex)
@@ -210,7 +210,7 @@ namespace EasySaveGUI.ViewModels
             {
                 lJob.SauveJobs.PauseEvent.Set();
 
-                if(isResumeByMonitor)
+                if (isResumeByMonitor)
                 {
                     App.Current.Dispatcher.Invoke(() => _PausedJobsByMonitor.Remove(lJob));
                 }
@@ -299,7 +299,7 @@ namespace EasySaveGUI.ViewModels
                 pLogState.TargetDirectory = pTargetFilePath;
                 pLogState.RemainingFiles = pLogState.EligibleFileCount - pLogState.TotalTransferedFile;
                 pLogState.Progress = pLogState.BytesCopied / pLogState.TotalSize * 100;
-                pLogState.ElapsedMilisecond = (long)pSw.Elapsed.TotalSeconds;
+                pLogState.Elapsed = pSw.Elapsed;
                 pLogState.Date = DateTime.Now;
 
                 CLogDaily lLogFilesDaily = new CLogDaily();
@@ -315,11 +315,20 @@ namespace EasySaveGUI.ViewModels
                 CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
                 _LogDailyBuffer.Add(lLogFilesDaily);
 
-                if (UserViewModel.Instance.ClientViewModel != null)
+                if (UserViewModel.Instance.ClientVm != null)
                 {
-                    UserViewModel.Instance.ClientViewModel.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
+                    UserViewModel.Instance.ClientVm.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
 
-                    Task.Run(async () => { await UserViewModel.Instance.UserSignalRService.SendClientViewModel(UserViewModel.Instance.ClientViewModel.ToJson());  }); 
+                    Task.Run(async () =>
+                    {
+                        UserViewModel.Instance.ClientVm.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
+                        await UserViewModel.Instance.UserSignalRService
+                        .SendClientViewModel
+                        (
+                            UserViewModel.Instance.ClientVm.ToJson(),
+                            UserViewModel.Instance.ClientVm.Client.ConnectionId
+                        );
+                    });
                 }
             });
         }
@@ -349,7 +358,7 @@ namespace EasySaveGUI.ViewModels
                     if (this._PausedJobsByMonitor.Count > 0)
                     {
                         Resume(this._PausedJobsByMonitor.ToList(), true);
-                    
+
                         if (!this._PausedJobsByMonitor.Any())
                         {
                             previousCount = 0;

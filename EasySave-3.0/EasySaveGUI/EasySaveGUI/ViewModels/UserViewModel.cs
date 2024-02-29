@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,12 +20,14 @@ namespace EasySaveGUI.ViewModels
         private UserSignalRService _UserSignalRService;
         private ClientViewModel _ClientViewModel;
         private ObservableCollection<ClientViewModel> _Clients;
-
+        private JobViewModel _TempJobViemModel;
         #endregion
-        public UserSignalRService UserSignalRService { get => _UserSignalRService; set => _UserSignalRService = value; }
 
-        public ClientViewModel ClientViewModel { get => _ClientViewModel; set => _ClientViewModel = value; }
+        #region Property
+        public UserSignalRService UserSignalRService { get => _UserSignalRService; set => _UserSignalRService = value; }
+        public ClientViewModel ClientVm { get => _ClientViewModel; set => _ClientViewModel = value; }
         public ObservableCollection<ClientViewModel> Clients { get => _Clients; set => _Clients = value; }
+        #endregion
 
         #region CTOR
         private static UserViewModel _Instance;
@@ -45,68 +48,115 @@ namespace EasySaveGUI.ViewModels
             _Clients = new ObservableCollection<ClientViewModel>();
             _Connection = new HubConnectionBuilder().WithUrl($"wss://localhost:7215/UserHub").WithAutomaticReconnect().Build();
             _UserSignalRService = new UserSignalRService(_Connection);
-            _UserSignalRService.ClientsUpdated += _UserSignalRService_ClientsUpdated;
+            _UserSignalRService.OnConnected += _UserSignalRService_OnConnected; ;
+            _UserSignalRService.OnDisconnected += _UserSignalRService_OnDisconnected;
+            _UserSignalRService.ClientViewModelUpdated += _UserSignalRService_ClientViewModelUpdated;
+            _UserSignalRService.OnSyncConnectionId += _UserSignalRService_OnSyncConnectionId;
             _IsConnectedToLobby = false;
-
         }
+
+        private void _UserSignalRService_OnSyncConnectionId(string pConnectionId, string pOldConnectionId)
+        {
+            _ClientViewModel.Client.ConnectionId = _Connection.ConnectionId;
+            if (_Clients.Count > 0)
+            {
+                ClientViewModel? lClientVm = _Clients.FirstOrDefault(c => c.Client.ConnectionId == pOldConnectionId);
+                if (lClientVm != null) lClientVm.Client.ConnectionId = pConnectionId;
+            }
+        }
+
         #endregion
 
         /// <summary>
         /// Connecte le lobby a la connection
         /// </summary>
-        /// <returns></returns>
+        /// <param name="pJobViewModel">Current job view model</param>
+        /// <returns>Task</returns>
         public async Task ConnectLobby(JobViewModel pJobViewModel)
         {
             if (_Connection.State == HubConnectionState.Connected)
                 _IsConnectedToLobby = true;
             else
             {
-                await _Connection.StartAsync().ContinueWith(async task =>
+                await _Connection.StartAsync().ContinueWith(task =>
                 {
                     if (task.Exception != null)
                         _IsConnectedToLobby = false;
                     else
                     {
                         _IsConnectedToLobby = true;
-                        CClient lClient = new CClient();
-                        lClient.ConnectionId = _Connection.ConnectionId;
-                        _ClientViewModel = new ClientViewModel(lClient, pJobViewModel);
-
-                        await _UserSignalRService.SendClientViewModel(_ClientViewModel.ToJson());
+                        _TempJobViemModel = pJobViewModel;
                     }
                 });
             }
         }
 
-        private void _UserSignalRService_ClientsUpdated(string obj)
+        private async void _UserSignalRService_OnConnected(string pClientJson)
         {
-            HashSet<string>? lClients = JsonConvert.DeserializeObject<HashSet<string>>(obj);
-            ObservableCollection<ClientViewModel> lClientViewModels = new ObservableCollection<ClientViewModel>();
-            foreach (string lClient in lClients)
+            CClient? lClient = JsonConvert.DeserializeObject<CClient>(pClientJson);
+            if (lClient != null)
             {
-                ClientViewModel? lClientVm = JsonConvert.DeserializeObject<ClientViewModel>(lClient);
-                lClientViewModels.Add(lClientVm);
+                while (_Connection.State == HubConnectionState.Connecting)
+                {
+                    await Task.Delay(500);
+                }
+                if (_Connection.State == HubConnectionState.Connected)
+                {
+                    _ClientViewModel = new ClientViewModel(lClient, _TempJobViemModel);
+                    _ClientViewModel.Client.ConnectionId = _Connection.ConnectionId;
+                    await _UserSignalRService.SendClientViewModel(_ClientViewModel.ToJson(), _ClientViewModel.Client.ConnectionId);
+                }
             }
-            if (lClients != null && lClients.Count > 0)
+            else
             {
-                _Clients = lClientViewModels;
-
-                NotifyPropertyChanged("Clients");
+                throw new System.Exception("Client non reçu");
             }
 
-            App.Current.Dispatcher.Invoke(() =>
+        }
+
+        private void UpdateClientViewModel(string pClientVm, string pSenderConnectionId)
+        {
+            ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(pClientVm);
+            ClientViewModel? lClientLocal = _Clients.FirstOrDefault(c => c.Client.ConnectionId == pSenderConnectionId);
+            App.Current.Dispatcher.BeginInvoke(() =>
             {
                 MainWindow lMainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
 
-                if (lMainWindow.MainVm.LayoutVm.ElementsContent.Content is ConnectionMenuControl)
-                    (lMainWindow.MainVm.LayoutVm.ElementsContent.Content as ConnectionMenuControl).UpdateListClients(_Clients);
-
-                ClientViewModel? lCurrentClientVm = _Clients.FirstOrDefault(l => l.Client.ConnectionId == UserViewModel.Instance.ClientViewModel.Client.ConnectionId);
-                if (lCurrentClientVm != null)
+                if (lClientVmDistant != null && lClientLocal != null && lClientLocal.Client.ConnectionId == pSenderConnectionId)
                 {
-                    lMainWindow.MainVm.JobVm.JobsRunning = lCurrentClientVm.JobVm.JobsRunning;
-                    this._ClientViewModel.JobVm.JobsRunning = lCurrentClientVm.JobVm.JobsRunning;
+                    int lIndex = _Clients.IndexOf(lClientLocal);
+
+                    if (lIndex != -1)
+                    {
+                        _Clients[lIndex] = lClientVmDistant;
+                    }
+                    lMainWindow.MainVm.ConnectionMenuControl.UpdateClientViewModel(pSenderConnectionId);
                 }
+                else
+                {
+                    _Clients.Add(lClientVmDistant);
+
+            
+                    lMainWindow.MainVm.ConnectionMenuControl.UpdateListClients(_Clients);
+                }
+
+               
+            });
+
+            NotifyPropertyChanged("Clients");
+
+        }
+
+        private void _UserSignalRService_ClientViewModelUpdated(string pClientVm, string pConnectionId)
+        {
+            UpdateClientViewModel(pClientVm, pConnectionId);
+        }
+
+        private void _UserSignalRService_OnDisconnected(string pConnectionId)
+        {
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                _Clients.Remove(_Clients.FirstOrDefault(c => c.Client.ConnectionId == pConnectionId));
             });
         }
 

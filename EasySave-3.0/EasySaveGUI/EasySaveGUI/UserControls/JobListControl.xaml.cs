@@ -16,6 +16,16 @@ namespace EasySaveGUI.UserControls
     {
         private MainViewModel _MainVm;
         private MainWindow _MainWindow;
+        public JobListControl(ClientViewModel pClientVm = null)
+        {
+            InitializeComponent();
+            _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
+            _MainVm = _MainWindow.MainVm;
+            if (pClientVm != null)
+                DataContext = pClientVm;
+            else
+                DataContext = _MainVm;
+        }
         public JobListControl()
         {
             InitializeComponent();

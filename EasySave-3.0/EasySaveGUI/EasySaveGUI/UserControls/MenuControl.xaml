@@ -45,7 +45,7 @@
                 Grid.Column="3"
                 Click="ConnectButton_Click"
                 Content="Connect"
-                Style="{StaticResource CustomButtonSettings}"
+                Style="{StaticResource CustomButtonConnect}"
                 ToolTip="{x:Static Ressources:Strings.Name}" />
 
         </Grid>

@@ -2,23 +2,40 @@
 
 namespace Services
 {
+    /// <summary>
+    /// Service pour l'utilsateur permettant d'envoyer et recevoir des donnée au serveur
+    /// </summary>
     public class UserSignalRService
     {
         private readonly HubConnection _Connection;
 
-        public event Action<string> ClientsUpdated;
+        public event Action<string> OnDisconnected;
+        public event Action<string, string> ClientViewModelUpdated;
+        public event Action<string> OnConnected;
+        public event Action<string, string> OnSyncConnectionId;
 
-
+        /// <summary>
+        /// Enregistre les Handlers qui seront invoker lors de l'appel du serveur
+        /// </summary>
+        /// <param name="pConnection"></param>
         public UserSignalRService(HubConnection pConnection)
         {
             _Connection = pConnection;
-            _Connection.On<string>("UpdateClients",(lClients) => ClientsUpdated?.Invoke(lClients));
+            _Connection.On<string>("OnDisconnected", (pConnectionId) => OnDisconnected?.Invoke(pConnectionId));
+            _Connection.On<string, string>("UpdateClientViewModel", (lClients, pConnectionId) => ClientViewModelUpdated?.Invoke(lClients, pConnectionId));
+            _Connection.On<string>("OnConnected", (pConnectionId) => OnConnected?.Invoke(pConnectionId));
+            _Connection.On<string, string>("SyncConnectionId", (pConnectionId,pOldConnectionId) => OnSyncConnectionId?.Invoke(pConnectionId, pOldConnectionId));
 
         }
-
-        public async Task SendClientViewModel(string pClientViewModel)
+        /// <summary>
+        /// Envoie le view model au serveur
+        /// </summary>
+        /// <param name="pClientViewModel">le view model a envoyer en json</param>
+        /// <param name="pConnectionId">le connection id du client view model</param>
+        /// <returns>Task</returns>
+        public async Task SendClientViewModel(string pClientViewModel,string pConnectionId)
         {
-            await _Connection.SendAsync("ReceiveClientViewModel", pClientViewModel);
+            await _Connection.SendAsync("ReceiveClientViewModel", pClientViewModel, pConnectionId);
         }
     }
 }

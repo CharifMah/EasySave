@@ -167,6 +167,50 @@
         </Setter>
     </Style>
 
+    <Style x:Key="CustomButtonConnect" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+        <Setter Property="Foreground" Value="#4D4D4D" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="10" />
+        <Setter Property="MinWidth" Value="10" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="3*" />
+                            </Grid.RowDefinitions>
+                            <materialIcons:MaterialIcon
+                                Grid.Row="1"
+                                MaxWidth="35"
+                                Foreground="{DynamicResource LightDark}"
+                                Kind="Connection" />
+
+                            <TextBlock
+                                Grid.Row="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{TemplateBinding Content}"
+                                TextAlignment="Center"
+                                TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource LightGreenColor}" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="CustomButtonDelete" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
         <Setter Property="Foreground" Value="#4D4D4D" />
@@ -634,45 +678,53 @@
     </Style>
 
     <Style x:Key="CustomButtonRemove" TargetType="Button">
-        <Setter Property="Width" Value="35"/>
-        <Setter Property="Height" Value="35"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Width" Value="35" />
+        <Setter Property="Height" Value="35" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}" Cursor="Hand">
-                        <materialIcons:MaterialIcon Kind="Delete" Foreground="Red" Width="30" Height="30"/>
+                        <materialIcons:MaterialIcon
+                            Width="30"
+                            Height="30"
+                            Foreground="Red"
+                            Kind="Delete" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource HoverColor}"/>
+                            <Setter Property="Background" Value="{DynamicResource HoverColor}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="ToolTip" Value="Supprimer"/>
+        <Setter Property="ToolTip" Value="Supprimer" />
     </Style>
 
     <Style x:Key="CustomButtonAdd" TargetType="Button">
-        <Setter Property="Width" Value="35"/>
-        <Setter Property="Height" Value="35"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Width" Value="35" />
+        <Setter Property="Height" Value="35" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}" Cursor="Hand">
-                        <materialIcons:MaterialIcon Kind="AddBox" Foreground="Green" Width="30" Height="30"/>
+                        <materialIcons:MaterialIcon
+                            Width="30"
+                            Height="30"
+                            Foreground="Green"
+                            Kind="AddBox" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource HoverColor}"/>
+                            <Setter Property="Background" Value="{DynamicResource HoverColor}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="ToolTip" Value="Ajouter"/>
+        <Setter Property="ToolTip" Value="Ajouter" />
     </Style>
 
 </ResourceDictionary>

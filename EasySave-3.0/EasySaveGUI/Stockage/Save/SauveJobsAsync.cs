@@ -2,8 +2,8 @@
 using LogsModels;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 using System.Text;
-using System.Threading;
 using static Stockage.Logs.ILogger<uint>;
 
 namespace Stockage.Save
@@ -11,20 +11,27 @@ namespace Stockage.Save
     /// <summary>
     /// Classe permettant de sauvegarder des jobs et de les logger
     /// </summary>
+    [DataContract]
     public class SauveJobsAsync : BaseSave, IDisposable
     {
         #region Attributes
         private readonly object _lock = new object();
+        [DataMember]
         private CLogState _LogState;
         private string _FormatLog;
+        [DataMember]
         private Stopwatch _StopWatch;
+        [DataMember]
         private string _Errors;
+        [DataMember]
         private string[] _BlackList;
+
         private CancellationTokenSource _CancelationTokenSource;
+
         private ManualResetEventSlim _PauseEvent;
+
         private BlockingCollection<FileInfo> _priorityFilesQueue = new BlockingCollection<FileInfo>(new ConcurrentQueue<FileInfo>());
         private BlockingCollection<FileInfo> _nonPriorityFilesQueue = new BlockingCollection<FileInfo>(new ConcurrentQueue<FileInfo>());
-        private ConcurrentBag<string> _ErrorMessages = new ConcurrentBag<string>();
         #endregion
 
         #region Property
@@ -40,7 +47,10 @@ namespace Stockage.Save
         /// <summary>
         /// Constructeur de SauveJobs
         /// </summary>
-        /// <param name="pPath">Le chemin du dossier</param>
+        /// <param name="pBlackList"></param>
+        /// <param name="pPath"></param>
+        /// <param name="pFormatLog"></param>
+        /// <param name="pStopwatch"></param>
         public SauveJobsAsync(List<string> pBlackList, string? pPath = null, string pFormatLog = "json", Stopwatch? pStopwatch = null) : base(pPath)
         {
             _LogState = new CLogState();
@@ -51,6 +61,8 @@ namespace Stockage.Save
             else
                 _StopWatch = Stopwatch.StartNew();
             _Errors = String.Empty;
+            if (pBlackList == null)
+                pBlackList = new List<string>();
 
             _BlackList = pBlackList.ToArray();
             _CancelationTokenSource = new CancellationTokenSource();
@@ -64,14 +76,43 @@ namespace Stockage.Save
 
         #region Methods
 
+        public void Dispose()
+        {
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SuppressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            _CancelationTokenSource.Dispose();
+            _PauseEvent.Dispose();
+
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Renvoi un état booléen sur le fichier pour déterminier 
+        /// selon des extensions définis, si il est prioritaire ou non.
+        /// </summary>
+        /// <param name="fileExtension"></param>
+        /// <param name="priorityExtensions"></param>
+        /// <returns></returns>
         private bool IsPriorityExtension(string fileExtension, List<string>? priorityExtensions)
         {
             return priorityExtensions?.Any(ext => string.Equals(ext, fileExtension, StringComparison.OrdinalIgnoreCase)) ?? false;
         }
 
         /// <summary>
-        ///  parcourt récursivement le répertoire source, plaçant les fichiers dans les files d'attente appropriées.
+        /// Copie de manière asynchrone le contenu d'un répertoire source vers un répertoire cible,
+        /// en prenant en compte la possibilité d'une copie récursive et différentielle,
+        /// et en appliquant une priorité de copie basée sur les extensions de fichier spécifiées.
         /// </summary>
+        /// <param name="sourceDir"></param>
+        /// <param name="targetDir"></param>
+        /// <param name="updateLog"></param>
+        /// <param name="recursive"></param>
+        /// <param name="differential"></param>
+        /// <param name="priorityFileExtensions"></param>
+        /// <exception cref="DirectoryNotFoundException"></exception>
         public override void CopyDirectoryAsync(DirectoryInfo sourceDir, DirectoryInfo targetDir, UpdateLogDelegate updateLog, bool recursive, bool differential, List<string>? priorityFileExtensions)
         {
 
@@ -80,87 +121,69 @@ namespace Stockage.Save
                 throw new DirectoryNotFoundException($"Source directory not found: {sourceDir.FullName}");
             }
 
-          
+            Directory.CreateDirectory(targetDir.FullName);
+            CLogState logState = new CLogState();
 
-                Directory.CreateDirectory(targetDir.FullName);
-                CLogState logState = new CLogState(); // Ou utilisez une instance existante si approprié
+            // Producteur: enregistrement des fichiers dans les files d'attente avec priorité
+            EnqueueFiles(sourceDir, priorityFileExtensions);
 
-                // Producteur: enregistrement des fichiers dans les files d'attente avec priorité
-                EnqueueFiles(sourceDir, priorityFileExtensions, recursive);
+            // Consommateur: traitement des fichiers prioritaires
+            ProcessFiles(_priorityFilesQueue, sourceDir, targetDir, logState, updateLog, differential);
 
-                // Consommateur: traitement des fichiers prioritaires
-                ProcessFiles(_priorityFilesQueue, sourceDir, targetDir, logState, updateLog, differential); // Ajout du logState et differential ici
-
-                // Consommateur: traitement des fichiers non prioritaires
-                ProcessFiles(_nonPriorityFilesQueue, sourceDir, targetDir, logState, updateLog, differential); ; // De même ici
-            
-            
+            // Consommateur: traitement des fichiers non prioritaires
+            ProcessFiles(_nonPriorityFilesQueue, sourceDir, targetDir, logState, updateLog, differential);
         }
-
-
 
         /// <summary>
         /// Trie les fichiers entre prioritaires et non prioritaires basé sur les extensions de fichiers.
         /// </summary>
-        private void EnqueueFiles(DirectoryInfo directory, List<string>? priorityExtensions, bool recursive)
+        /// <param name="pSourceDir"></param>
+        /// <param name="pPriorityExtensions"></param>
+        /// <param name="pParallelOptions"></param>
+        /// <param name="pOptions"></param>
+        private void EnqueueFiles(DirectoryInfo pSourceDir, List<string>? pPriorityExtensions)
         {
             ParallelOptions parallelOptions = new ParallelOptions
             {
-                MaxDegreeOfParallelism = 20, // Limite le nombre de threads parallèles
-                CancellationToken = _CancelationTokenSource.Token // Permet l'annulation de l'opération
+                MaxDegreeOfParallelism = 20, // Limite de nombre de threads en parallèles
+                CancellationToken = _CancelationTokenSource.Token // Annulation de l'opération
             };
 
-            Debug.WriteLine("Debut enqueu files");
+            EnumerationOptions options = new EnumerationOptions { IgnoreInaccessible = true, RecurseSubdirectories = true };
 
             try
             {
-                var options = new EnumerationOptions { IgnoreInaccessible = true, RecurseSubdirectories = recursive };
-        
-
-                // Pour chaque dossier, traitez les fichiers en parallèle
-
-                foreach (var dirPath in Directory.EnumerateDirectories(directory.FullName, "*", options))
+                Parallel.ForEach(pSourceDir.EnumerateFiles("*", options), parallelOptions, file =>
                 {
-                    DirectoryInfo dir = new DirectoryInfo(dirPath);
-                    Parallel.ForEach(dir.EnumerateFiles("*", options), parallelOptions, file =>
-                        {
-                            try
-                            {
-                                bool isPriority = IsPriorityExtension(file.Extension, priorityExtensions);
-                                var targetQueue = isPriority ? _priorityFilesQueue : _nonPriorityFilesQueue;
-                                targetQueue.Add(file);
-                            }
-                            catch (UnauthorizedAccessException ex)
-                            {
-                                Debug.WriteLine($"Accès refusé à {file.FullName}: {ex.Message}");
-                               
-                                // Ici, vous pouvez choisir de logger l'exception ou de la stocker pour un traitement ultérieur.
-                            }
-                        });
-
-                }
-                
-            }
-            catch (AggregateException ae)
-            {
-                ae.Handle(ex =>
-                {
-                    if (ex is UnauthorizedAccessException)
+                    // Check for cancellation before doing work
+                    if (_CancelationTokenSource.Token.IsCancellationRequested)
+                        _CancelationTokenSource.Token.ThrowIfCancellationRequested();
+                    else
                     {
-                        // Gérer ou logger l'exception.
-                        Debug.WriteLine($"Accès refusé : {ex.Message}");
-                        return true; // Indique que l'exception a été gérée.
+                        _PauseEvent.Wait(_CancelationTokenSource.Token);
                     }
-                    return false; // Indique que l'exception n'a pas été gérée.
+
+                    bool isPriority = IsPriorityExtension(file.Extension, pPriorityExtensions);
+                    BlockingCollection<FileInfo> targetQueue = isPriority ? _priorityFilesQueue : _nonPriorityFilesQueue;
+                    targetQueue.Add(file);
                 });
             }
-
-            Debug.WriteLine("Fin enqueu files");
+            catch (Exception ex)
+            {
+                _Errors += "\n" + ex.Message;
+            }
         }
 
 
-
-        // Consommateur: Traite les fichiers dans la file d'attente en utilisant Parallel.ForEach pour le parallélisme.
+        /// <summary>
+        ///  Consommateur: Traite la sauvegarde des fichiers dans la file d'attente en utilisant Parallel.ForEach pour le parallélisme
+        /// </summary>
+        /// <param name="filesQueue"></param>
+        /// <param name="sourceDir"></param>
+        /// <param name="targetDir"></param>
+        /// <param name="logState"></param>
+        /// <param name="updateLog"></param>
+        /// <param name="differential"></param>
         private void ProcessFiles(BlockingCollection<FileInfo> filesQueue, DirectoryInfo sourceDir, DirectoryInfo targetDir, CLogState logState, UpdateLogDelegate updateLog, bool differential)
         {
             try
@@ -174,34 +197,88 @@ namespace Stockage.Save
 
                 Parallel.ForEach(filesQueue, parallelOptions, file =>
                 {
-               
-                        // Calcul du chemin relatif
-                        string relativePath = Path.GetRelativePath(sourceDir.FullName, file.FullName);
-                        string targetFilePath = Path.Combine(targetDir.FullName, relativePath);
+                    string relativePath = Path.GetRelativePath(sourceDir.FullName, file.FullName);
+                    string targetFilePath = Path.Combine(targetDir.FullName, relativePath);
 
-                        // Check for cancellation before doing work
-                        //if (_cancelationtokensource.token.iscancellationrequested)
-                        //    _cancelationtokensource.token.throwifcancellationrequested();
-                        //else
-                        //{
-                        //    _pauseevent.wait(_cancelationtokensource.token);
-                        //}
+                    // Check for cancellation before doing work
+                    if (_CancelationTokenSource.Token.IsCancellationRequested)
+                        _CancelationTokenSource.Token.ThrowIfCancellationRequested();
+                    else
+                    {
+                        _PauseEvent.Wait(_CancelationTokenSource.Token);
+                    }
 
+                    string? targetDirectoryPath = Path.GetDirectoryName(targetFilePath);
+                    if (targetDirectoryPath != null && !Directory.Exists(targetDirectoryPath))
+                    {
+                        Directory.CreateDirectory(targetDirectoryPath);
+                    }
 
-                        // Assurer que le dossier cible existe
-                        string? targetDirectoryPath = Path.GetDirectoryName(targetFilePath);
-                        if (targetDirectoryPath != null && !Directory.Exists(targetDirectoryPath))
-                        {
-                            Directory.CreateDirectory(targetDirectoryPath);
-                        }
+                    CopyFileAsync(file, targetFilePath, logState, updateLog, differential);
 
-                        CopyFileAsync(file, targetFilePath, logState, updateLog, differential);
-
+                    lock (_lock)
+                    {
+                        updateLog(_LogState, _FormatLog, file, targetFilePath, _StopWatch);
+                    }
                 });
             }
             catch (Exception ex)
             {
                 _Errors += "\n" + ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceFile"></param>
+        /// <param name="targetFilePath"></param>
+        /// <param name="logState"></param>
+        /// <param name="updateLog"></param>
+        /// <param name="differential"></param>
+        private void CopyFileAsync(FileInfo sourceFile, string targetFilePath, CLogState logState, UpdateLogDelegate updateLog, bool differential)
+        {
+            try
+            {
+                // Vérification différentielle: copier seulement si le fichier de destination n'existe pas ou si le fichier source est plus récent
+                FileInfo destinationFileInfo = new FileInfo(targetFilePath);
+                if (!differential || !destinationFileInfo.Exists || sourceFile.LastWriteTime > destinationFileInfo.LastWriteTime)
+                {
+                    using (Stream sourceStream = File.OpenRead(sourceFile.FullName))
+                    {
+                        using (Stream destinationStream = File.Create(targetFilePath))
+                        {
+                            // Vérifie si le fichier est sur la liste noire pour le cryptage
+                            if (_BlackList.Any(blacklisted => sourceFile.Extension.EndsWith(blacklisted, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                // Le fichier est sur la liste noire, appliquez le cryptage
+                                using (MemoryStream memoryStream = new MemoryStream())
+                                {
+                                    sourceStream.CopyTo(memoryStream);
+                                    byte[] fileBytes = memoryStream.ToArray();
+
+                                    // Cryptage
+                                    CXorChiffrement xorEncryptor = new CXorChiffrement();
+                                    byte[] key = Encoding.UTF8.GetBytes("secret"); // La clé de cryptage
+                                    byte[] encryptedBytes = xorEncryptor.Encrypt(fileBytes, key);
+
+                                    logState.EncryptTime = xorEncryptor.EncryptTime; // Mettez à jour le temps de cryptage
+                                    destinationStream.Write(encryptedBytes, 0, encryptedBytes.Length);
+                                }
+                            }
+                            else
+                            {
+                                // Le fichier n'est pas sur la liste noire, copiez sans cryptage
+                                sourceStream.CopyTo(destinationStream);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _Errors += $"\nError copying file '{sourceFile.Name}': {ex.Message}";
+
             }
         }
 
@@ -293,60 +370,6 @@ namespace Stockage.Save
         //    }
         //}
 
-        private void CopyFileAsync(FileInfo sourceFile, string targetFilePath, CLogState logState, UpdateLogDelegate updateLog, bool differential)
-        {
-            try
-            {
-                // Vérification différentielle: copier seulement si le fichier de destination n'existe pas ou si le fichier source est plus récent
-                FileInfo destinationFileInfo = new FileInfo(targetFilePath);
-                if (!differential || !destinationFileInfo.Exists || sourceFile.LastWriteTime > destinationFileInfo.LastWriteTime)
-                {
-                    using (Stream sourceStream = File.OpenRead(sourceFile.FullName))
-                    {
-                        using (Stream destinationStream = File.Create(targetFilePath))
-                        {
-                            // Vérifie si le fichier est sur la liste noire pour le cryptage
-                            if (_BlackList.Any(blacklisted => sourceFile.Extension.EndsWith(blacklisted, StringComparison.OrdinalIgnoreCase)))
-                            {
-                                // Le fichier est sur la liste noire, appliquez le cryptage
-                                using (MemoryStream memoryStream = new MemoryStream())
-                                {
-                                    sourceStream.CopyTo(memoryStream);
-                                    byte[] fileBytes = memoryStream.ToArray();
-
-                                    // Appliquez ici la logique de cryptage
-                                    CXorChiffrement xorEncryptor = new CXorChiffrement();
-                                    byte[] key = Encoding.UTF8.GetBytes("secret"); // La clé de cryptage
-                                    byte[] encryptedBytes = xorEncryptor.Encrypt(fileBytes, key);
-
-                                    logState.EncryptTime = xorEncryptor.EncryptTime; // Mettez à jour le temps de cryptage
-                                    destinationStream.Write(encryptedBytes, 0, encryptedBytes.Length);
-                                }
-                            }
-                            else
-                            {
-                                // Le fichier n'est pas sur la liste noire, copiez sans cryptage
-                                sourceStream.CopyTo(destinationStream);
-                            }
-                        }
-                    }
-
-                    // Mise à jour du log après la copie du fichier
-                    lock (_lock)
-                    {
-                        updateLog(logState, _FormatLog, sourceFile, targetFilePath, _StopWatch);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-               
-              
-                 _Errors += $"\nError copying file '{sourceFile.Name}': {ex.Message}";
-               
-            }
-        }
-
 
         /// <summary>
         /// Copie une fichier de maniere asychrone et chiffre le fichier si il sont blacklister
@@ -394,18 +417,6 @@ namespace Stockage.Save
         //        _Errors += "\n" + ex.Message;
         //    }
         //}
-
-        public void Dispose()
-        {
-            // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SuppressFinalize to
-            // take this object off the finalization queue
-            // and prevent finalization code for this object
-            // from executing a second time.
-            _CancelationTokenSource.Dispose();
-            _PauseEvent.Dispose();
-            GC.SuppressFinalize(this);
-        }
         #endregion
     }
 }

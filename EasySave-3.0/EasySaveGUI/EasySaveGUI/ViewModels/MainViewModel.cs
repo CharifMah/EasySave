@@ -9,6 +9,7 @@ namespace EasySaveGUI.ViewModels
     /// </summary>
     public class MainViewModel : BaseViewModel
     {
+        #region Attributes
         private LangueViewModel _LangueVm;
         private FormatLogViewModel _FormatLogVm;
         private JobViewModel _JobVm;
@@ -17,6 +18,9 @@ namespace EasySaveGUI.ViewModels
         private LayoutViewModel _LayoutVm;
         private BusinessSoftwareViewModel _BusinessSoftwareVm;
         private FileExtensionViewModel _FileExtensionVm;
+        #endregion
+
+        #region Property
         /// <summary>
         /// View Model de la langue
         /// </summary>
@@ -28,7 +32,7 @@ namespace EasySaveGUI.ViewModels
         /// <summary>
         /// View model des jobs
         /// </summary>
-        public JobViewModel JobVm { get => _JobVm; set => _JobVm = value; }
+        public JobViewModel JobVm { get => _JobVm; set { _JobVm = value; NotifyPropertyChanged(); } }
         public PopupViewModel PopupVm { get => _PopupVm; set => _PopupVm = value; }
         public SettingsViewModel SettingsVm { get => _SettingsVm; set => _SettingsVm = value; }
         public LayoutViewModel LayoutVm { get => _LayoutVm; set => _LayoutVm = value; }
@@ -48,6 +52,9 @@ namespace EasySaveGUI.ViewModels
             set => _FileExtensionVm = value;
         }
 
+        #endregion
+
+        #region CTOR
         /// <summary>
         /// Le constructeur MainViewModel initialise les modèles de vue et charge les paramètres de l'utilisateur
         /// </summary>
@@ -74,6 +81,9 @@ namespace EasySaveGUI.ViewModels
             _FileExtensionVm = new FileExtensionViewModel();
         }
 
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Charge la liste des jobs depuis un fichier
         /// </summary>
@@ -118,5 +128,7 @@ namespace EasySaveGUI.ViewModels
 
             NotifyPropertyChanged("JobVm");
         }
+
+        #endregion
     }
 }

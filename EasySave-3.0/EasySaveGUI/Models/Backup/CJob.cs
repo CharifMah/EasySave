@@ -4,7 +4,6 @@ using Stockage.Logs;
 using Stockage.Save;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using System.Threading;
 using static Stockage.Logs.ILogger<uint>;
 namespace Models.Backup
 {
@@ -23,6 +22,7 @@ namespace Models.Backup
         private string _TargetDirectory;
         [DataMember]
         private ETypeBackup _BackupType;
+        [DataMember]
         private SauveJobsAsync _SauveJobs;
 
 
@@ -84,7 +84,7 @@ namespace Models.Backup
             _TargetDirectory = pTargetDirectory;
             _BackupType = pTypeBackup;
             _SauveJobs = new SauveJobsAsync(CSettings.Instance.EncryptionExtensions);
-   
+
         }
         ~CJob()
         {
@@ -118,8 +118,8 @@ namespace Models.Backup
         /// <param name="pSauveJobs">Objet de sauvegarde des jobs</param>
         private void Backup(UpdateLogDelegate pUpdateLog, bool pDifferentiel = false)
         {
-            //try
-            //{
+            try
+            {
                 DirectoryInfo lSourceDir = new DirectoryInfo(_SourceDirectory);
                 DirectoryInfo lTargetDir = new DirectoryInfo(_TargetDirectory);
 
@@ -131,12 +131,12 @@ namespace Models.Backup
                 {
                     CLogger<CLogBase>.Instance.StringLogger.Log("La chemin cible et le chemin source est identique");
                 }
-            //}
-            //catch (Exception ex)
-            //{
-            //   // CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
-            //    Debug.WriteLine(ex.Message);
-            //}
+            }
+            catch (Exception ex)
+            {
+                CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+               Debug.WriteLine(ex.Message);
+            }
         }
 
         public override bool Equals(object? obj)

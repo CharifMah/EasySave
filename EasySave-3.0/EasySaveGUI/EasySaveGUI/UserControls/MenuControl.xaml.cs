@@ -17,7 +17,10 @@ namespace EasySaveGUI.UserControls
             InitializeComponent();
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
+       
         }
+
+
 
         private void MenuButtons_MouseClick(object sender, RoutedEventArgs e)
         {
@@ -46,6 +49,18 @@ namespace EasySaveGUI.UserControls
                 VerticalMenu.Visibility = Visibility.Visible;
                 HorizontalMenu.Visibility = Visibility.Hidden;
             }
+        }
+
+        private async void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            ConnectionMenuControl lConnectionMenuControl = new ConnectionMenuControl();
+            _MainVm.LayoutVm.ElementsContent.Content = lConnectionMenuControl;
+
+            await UserViewModel.Instance.ConnectLobby(_MainVm.JobVm);
+            lConnectionMenuControl.UpdateListClients(UserViewModel.Instance.Clients);
+
+            _MainWindow.MenuPage.ListElements.Show();
+            _MainWindow.MenuPage.ListElements.IsActive = true;
         }
     }
 }

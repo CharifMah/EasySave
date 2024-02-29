@@ -1,4 +1,5 @@
-﻿using EasySaveGUI.ViewModels;
+﻿using AvalonDock.Layout;
+using EasySaveGUI.ViewModels;
 using Models.Backup;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace EasySaveGUI.UserControls
             InitializeComponent();
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
+            DataContext = _MainVm;
         }
 
         private void JobsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -47,7 +49,6 @@ namespace EasySaveGUI.UserControls
             {
                 await RunSelectJobs();
             }
-
         }
 
         public async Task RunSelectJobs(Button pButton = null)
@@ -61,9 +62,10 @@ namespace EasySaveGUI.UserControls
             List<CJob> lSelectedJobs = lJobs.Cast<CJob>().ToList();
             _MainWindow.MenuPage.ClearLists();
 
-            _MainWindow.MenuPage.JobsRunningDocument.IsActive = true;
+            LayoutAnchorable? lJobsRunningDocument = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutAnchorable>().FirstOrDefault(lc => lc.ContentId == "JobsRunningDocument");
+            if (lJobsRunningDocument != null)
+                lJobsRunningDocument.IsActive = true;
 
-            // S'abonne à l'événement pour la detection d'un logiciel métier
             _MainVm.JobVm.OnBusinessSoftwareDetected += ShowError;
 
             await _MainVm.JobVm.RunJobs(lSelectedJobs);
@@ -76,12 +78,16 @@ namespace EasySaveGUI.UserControls
             RunButton.IsEnabled = true;
 
             _MainWindow.MenuPage.ShowValidation();
+            await Task.Delay(2000);
         }
 
         private void ShowError(string pMessage)
         {
-            _MainVm.PopupVm.Message = pMessage;
-            _MainWindow.MenuPage.PopupError.Show();
+            App.Current.Dispatcher.BeginInvoke(() =>
+            {
+                _MainVm.PopupVm.Message = pMessage;
+                _MainWindow.MenuPage.PopupError.Show();
+            });
         }
     }
 }

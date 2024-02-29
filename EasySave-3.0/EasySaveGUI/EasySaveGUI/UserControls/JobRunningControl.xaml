@@ -17,35 +17,43 @@
         <Converter:BytesValueConverter x:Key="BytesValueConverter" />
         <Converter:SecondConverter x:Key="SecondConverter" />
     </UserControl.Resources>
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Click="SelectAllMenuItem_Click" Header="{x:Static Ressources:Strings.SelectAll}">
-                <MenuItem.Icon>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}" Kind="SelectAll" />
-                </MenuItem.Icon>
-            </MenuItem>
-            <Separator />
-            <MenuItem
-                x:Name="StartButton"
-                Click="StartMenuItem_Click"
-                Header="{x:Static Ressources:Strings.Start}"
-                Visibility="Hidden">
-                <MenuItem.Icon>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource LightGreenColor}" Kind="Play" />
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem Click="PauseMenuItem_Click" Header="{x:Static Ressources:Strings.Pause}">
-                <MenuItem.Icon>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource YellowHoverButtonColor}" Kind="Pause" />
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem Click="StopMenuItem_Click" Header="{x:Static Ressources:Strings.Stop}">
-                <MenuItem.Icon>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource RedHoverButtonColor}" Kind="Stop" />
-                </MenuItem.Icon>
-            </MenuItem>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal"  MaxHeight="20" DockPanel.Dock="Top" >
 
-        </Menu>
+            <Button Click="SelectAllMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
+                <WrapPanel>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}"   Kind="SelectAll" />
+                    <TextBlock Text="{x:Static Ressources:Strings.SelectAll}" />
+                </WrapPanel>
+
+            </Button>
+
+            <Separator Width="10" Height="10" />
+
+            <Button x:Name="StartButton" Click="StartMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
+                <WrapPanel Orientation="Horizontal">
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource LightGreenColor}" Kind="Play" />
+                    <TextBlock Text="{x:Static Ressources:Strings.Start}"/>
+                </WrapPanel>
+
+            </Button>
+
+            <Button Click="PauseMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
+                <WrapPanel>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource YellowHoverButtonColor}" Kind="Pause" />
+                    <TextBlock Text="{x:Static Ressources:Strings.Pause}"/>
+                </WrapPanel>
+  
+            </Button>
+
+            <Button Click="StopMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
+                <WrapPanel>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource RedHoverButtonColor}" Kind="Stop" />
+                    <TextBlock Text="{x:Static Ressources:Strings.Stop}"/>
+                </WrapPanel>
+
+            </Button>
+        </StackPanel>
         <DataGrid
             x:Name="DataGrid"
             AutoGenerateColumns="False"
@@ -164,5 +172,5 @@
             </DataGrid.Columns>
 
         </DataGrid>
-    </DockPanel>
+    </StackPanel>
 </UserControl>

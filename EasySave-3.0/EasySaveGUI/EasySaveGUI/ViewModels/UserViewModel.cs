@@ -94,17 +94,24 @@ namespace EasySaveGUI.ViewModels
         private async void _UserSignalRService_OnConnected(string pClientJson)
         {
             CClient? lClient = JsonConvert.DeserializeObject<CClient>(pClientJson);
+            if (lClient != null)
+            {
+                while (_Connection.State == HubConnectionState.Connecting)
+                {
+                    await Task.Delay(500);
+                }
+                if (_Connection.State == HubConnectionState.Connected)
+                {
+                    _ClientViewModel = new ClientViewModel(lClient, _TempJobViemModel);
+                    _ClientViewModel.Client.ConnectionId = _Connection.ConnectionId;
+                    await _UserSignalRService.SendClientViewModel(_ClientViewModel.ToJson(), _ClientViewModel.Client.ConnectionId);
+                }
+            }
+            else
+            {
+                throw new System.Exception("Client non reçu");
+            }
 
-            while (_Connection.State == HubConnectionState.Connecting)
-            {
-                await Task.Delay(500);
-            }
-            if (_Connection.State == HubConnectionState.Connected)
-            {
-                _ClientViewModel = new ClientViewModel(lClient, _TempJobViemModel);
-                _ClientViewModel.Client.ConnectionId = _Connection.ConnectionId;
-                await _UserSignalRService.SendClientViewModel(_ClientViewModel.ToJson(), _ClientViewModel.Client.ConnectionId);
-            }
         }
 
         private void UpdateClientViewModel(string pClientVm, string pSenderConnectionId)
@@ -116,10 +123,12 @@ namespace EasySaveGUI.ViewModels
                 if (lClientVmDistant != null && lClientLocal != null && lClientLocal.Client.ConnectionId == pSenderConnectionId)
                 {
                     int lIndex = _Clients.IndexOf(lClientLocal);
+
                     if (lIndex != -1)
                     {
                         _Clients[lIndex] = lClientVmDistant;
                     }
+
                 }
                 else
                 {

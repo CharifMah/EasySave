@@ -33,9 +33,11 @@ namespace EasySaveGUI.UserControls
     /// </summary>
     public partial class ConnectionMenuControl : UserControl
     {
+        private readonly object _lock = new object();
         private List<LayoutDocument> _Documents;
         private MainWindow? _MainWindow;
         private MainViewModel _MainVm;
+
         public ConnectionMenuControl()
         {
             InitializeComponent();
@@ -66,10 +68,10 @@ namespace EasySaveGUI.UserControls
                 Button lButton = new Button();
                 lButton.Style = (Style)Application.Current.FindResource("CustomButtonJobs");
                 lButton.Content = pClients[i].Client.ConnectionId;
-     
+
                 Grid.SetRow(lButton, i);
 
-                if (UserViewModel.Instance.ClientVm.Client.ConnectionId == pClients[i].Client.ConnectionId)
+                if (UserViewModel.Instance.Connection.ConnectionId == pClients[i].Client.ConnectionId)
                 {
                     lButton.Background = (Brush)_MainWindow.MenuPage.Resources["LightGreenColor"];
                     lButtonHorizontal.Background = (Brush)_MainWindow.MenuPage.Resources["LightGreenColor"];
@@ -94,12 +96,14 @@ namespace EasySaveGUI.UserControls
         private void OpenClientDocument(string pButtonContent)
         {
             LayoutDocumentPane? lLayoutDocumentPane = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
-
-            if (_Documents.Count > 0)
+            lock (_lock)
             {
-                foreach (LayoutDocument lDocument in _Documents)
+                if (_Documents.Count > 0)
                 {
-                    lDocument.Close();
+                    for (int i = 0; i < _Documents.Count; i++)
+                    {
+                        _Documents[i].Close();
+                    }
                 }
             }
 
@@ -120,8 +124,15 @@ namespace EasySaveGUI.UserControls
             lLayoutDocument.IsActive = true;
             lLayoutDocument.IsSelected = true;
             lLayoutDocumentPane.Children.Add(lLayoutDocument);
+            lLayoutDocument.Closed += LLayoutDocument_Closed; ;
             _Documents.Add(lLayoutDocument);
             lLayoutDocument.Float();
+
+        }
+
+        private void LLayoutDocument_Closed(object? sender, EventArgs e)
+        {
+            _Documents.Remove(sender as LayoutDocument);
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)

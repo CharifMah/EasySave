@@ -98,7 +98,7 @@ namespace Stockage.Save
         /// <returns></returns>
         private bool IsPriorityExtension(string fileExtension, List<string>? priorityExtensions)
         {
-            return priorityExtensions?.Any(ext => string.Equals(ext, fileExtension, StringComparison.OrdinalIgnoreCase)) ?? false;
+            return priorityExtensions?.Any(ext => fileExtension.EndsWith(ext)) == true;
         }
 
         /// <summary>
@@ -127,11 +127,15 @@ namespace Stockage.Save
             // Producteur: enregistrement des fichiers dans les files d'attente avec priorité
             EnqueueFiles(sourceDir, priorityFileExtensions);
 
+            Debug.WriteLine("Fin oioooooooooooooooooooooooooooooooo 1");
             // Consommateur: traitement des fichiers prioritaires
             ProcessFiles(_priorityFilesQueue, sourceDir, targetDir, logState, updateLog, differential);
 
+            Debug.WriteLine("Fin oioooooooooooooooooooooooooooooooo 1");
             // Consommateur: traitement des fichiers non prioritaires
             ProcessFiles(_nonPriorityFilesQueue, sourceDir, targetDir, logState, updateLog, differential);
+
+            Debug.WriteLine("Fin oioooooooooooooooooooooooooooooooo 2");
         }
 
         /// <summary>
@@ -149,11 +153,11 @@ namespace Stockage.Save
                 CancellationToken = _CancelationTokenSource.Token // Annulation de l'opération
             };
 
-            EnumerationOptions options = new EnumerationOptions { IgnoreInaccessible = true, RecurseSubdirectories = true };
+            EnumerationOptions options = new EnumerationOptions { RecurseSubdirectories = true };
 
             try
             {
-                Parallel.ForEach(pSourceDir.EnumerateFiles("*", options), parallelOptions, file =>
+                Parallel.ForEach(pSourceDir.EnumerateFiles("*", SearchOption.AllDirectories), parallelOptions, file =>
                 {
                     // Check for cancellation before doing work
                     if (_CancelationTokenSource.Token.IsCancellationRequested)
@@ -244,7 +248,7 @@ namespace Stockage.Save
         /// 
         /// </summary>
         /// <param name="pSourceFile"></param>
-        /// <param name="pTargetFilePath"></param>
+        /// <param name="pTargetFilePath"></param>mp
         /// <param name="pLogState"></param>
         /// <param name="pUpdateLog"></param>
         /// <param name="pDifferential"></param>

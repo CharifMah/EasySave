@@ -127,15 +127,11 @@ namespace Stockage.Save
             // Producteur: enregistrement des fichiers dans les files d'attente avec priorité
             EnqueueFiles(sourceDir, priorityFileExtensions);
 
-            Debug.WriteLine("Fin oioooooooooooooooooooooooooooooooo 1");
             // Consommateur: traitement des fichiers prioritaires
             ProcessFiles(_priorityFilesQueue, sourceDir, targetDir, logState, updateLog, differential);
 
-            Debug.WriteLine("Fin oioooooooooooooooooooooooooooooooo 1");
             // Consommateur: traitement des fichiers non prioritaires
             ProcessFiles(_nonPriorityFilesQueue, sourceDir, targetDir, logState, updateLog, differential);
-
-            Debug.WriteLine("Fin oioooooooooooooooooooooooooooooooo 2");
         }
 
         /// <summary>
@@ -205,14 +201,11 @@ namespace Stockage.Save
                     CollectFilesRecursively(subDir, allFiles);
                 }
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException e)
             {
-                // Gérer ou enregistrer l'exception
-                // Par exemple, en ajoutant un message d'erreur à une liste ou un journal
+                _Errors += "\n" + e.Message;
             }
         }
-
-
 
         /// <summary>
         ///  Consommateur: Traite la sauvegarde des fichiers dans la file d'attente en utilisant Parallel.ForEach pour le parallélisme

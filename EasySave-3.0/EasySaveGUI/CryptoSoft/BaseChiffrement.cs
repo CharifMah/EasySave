@@ -11,24 +11,18 @@
         public virtual TimeSpan EncryptTime { get => _EncryptTime; set => _EncryptTime = value; }
         public virtual TimeSpan DecryptTime { get => _DecryptTime; set => _DecryptTime = value; }
 
-        protected BaseChiffrement()
-        {
-            _EncryptTime = TimeSpan.Zero;
-            _DecryptTime = TimeSpan.Zero;
-        }
-
         /// <summary>
         /// Chiffre les données
         /// </summary>
-        /// <param name="data">donnée a chiffrer</param>
-        /// <param name="key">clé pour le chiffrement</param>
+        /// <param name="pData">donnée a chiffrer</param>
+        /// <param name="pKey">clé pour le chiffrement</param>
         /// <returns>tableau d'octet</returns>
         public abstract byte[] Encrypt(byte[] pData, byte[] pKey);
         /// <summary>
         /// Déchiffre les données
         /// </summary>
-        /// <param name="data">donnée a déchiffrer</param>
-        /// <param name="key">clé pour le déchiffrement</param>
+        /// <param name="pData">donnée a déchiffrer</param>
+        /// <param name="pKey">clé pour le déchiffrement</param>
         /// <returns>tableau d'octet</returns>
         public abstract byte[] Decrypt(byte[] pData, byte[] pKey);
     }

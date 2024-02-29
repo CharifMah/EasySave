@@ -6,12 +6,7 @@ namespace SignalRServer.Hubs
 {
     public class UserHub : Hub
     {
-        private async Task OnDisconnected(string pConnectionId)
-        {
-            await Clients.Others.SendAsync("OnDisconnected", pConnectionId);
-            ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} OnDisconnected | Sender : {pConnectionId}");
-        }
-
+        #region UpdateClientVm
         public async Task UpdateClientViewModel(string pClientVmJson, string pConnectionId)
         {
             CheckConnectionId(pClientVmJson, pConnectionId);
@@ -30,8 +25,11 @@ namespace SignalRServer.Hubs
             else
                 ConsoleExtention.WriteLineError($"{ConsoleExtention.GetDate()} Client null");
         }
+        #endregion
 
-        private async Task<bool> CheckConnectionId(string pJson,string pConnectionId)
+        #region Connection
+
+        private async Task<bool> CheckConnectionId(string pJson, string pConnectionId)
         {
             bool lResult = true;
             if (pConnectionId != Context.ConnectionId)
@@ -73,6 +71,14 @@ namespace SignalRServer.Hubs
 
             return base.OnDisconnectedAsync(exception);
         }
+
+        private async Task OnDisconnected(string pConnectionId)
+        {
+            await Clients.Others.SendAsync("OnDisconnected", pConnectionId);
+            ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} OnDisconnected | Sender : {pConnectionId}");
+        }
+
+        #endregion
 
         protected override void Dispose(bool disposing)
         {

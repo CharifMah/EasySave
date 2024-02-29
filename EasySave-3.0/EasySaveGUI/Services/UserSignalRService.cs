@@ -25,7 +25,6 @@ namespace Services
             _Connection.On<string, string>("UpdateClientViewModel", (lClients, pConnectionId) => ClientViewModelUpdated?.Invoke(lClients, pConnectionId));
             _Connection.On<string>("OnConnected", (pConnectionId) => OnConnected?.Invoke(pConnectionId));
             _Connection.On<string, string>("SyncConnectionId", (pConnectionId,pOldConnectionId) => OnSyncConnectionId?.Invoke(pConnectionId, pOldConnectionId));
-
         }
         /// <summary>
         /// Envoie le view model au serveur

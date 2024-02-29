@@ -31,7 +31,6 @@ namespace EasySaveGUI.UserControls
                 lLayoutAnchorable.IsSelected = true;
                 lLayoutAnchorable.IsActive = true;
             }
-
             if (lButton.Content == Strings.Preference)
                 _MainVm.LayoutVm.ElementsContent.Content = new OptionsMenuControl();
             if (lButton.Content == Strings.Jobs)

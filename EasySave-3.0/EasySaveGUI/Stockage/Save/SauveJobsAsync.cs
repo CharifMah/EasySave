@@ -25,6 +25,7 @@ namespace Stockage.Save
         private string _Errors;
         [DataMember]
         private string[] _BlackList;
+        CXorChiffrement _XorEncryptor;
 
         private CancellationTokenSource _CancelationTokenSource;
 
@@ -67,6 +68,8 @@ namespace Stockage.Save
             _BlackList = pBlackList.ToArray();
             _CancelationTokenSource = new CancellationTokenSource();
             _PauseEvent = new ManualResetEventSlim(true);
+
+            _XorEncryptor = new CXorChiffrement();
         }
         ~SauveJobsAsync()
         {
@@ -149,7 +152,7 @@ namespace Stockage.Save
                 CancellationToken = _CancelationTokenSource.Token
             };
 
-            
+
             List<string> allFiles = new List<string>();
 
             CollectFilesRecursively(sourceDir, allFiles);
@@ -230,7 +233,7 @@ namespace Stockage.Save
                 {
                     string lRelativePath = Path.GetRelativePath(pSourceDir.FullName, file.FullName);
                     string lTargetFilePath = Path.Combine(pTargetDir.FullName, lRelativePath);
-                    
+
                     try
                     {
                         // Check for cancellation before doing work
@@ -240,11 +243,12 @@ namespace Stockage.Save
                         {
                             _PauseEvent.Wait(_CancelationTokenSource.Token);
                         }
-                    } catch (Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         return;
                     }
-                    
+
 
                     string? lTargetDirectoryPath = Path.GetDirectoryName(lTargetFilePath);
                     if (lTargetDirectoryPath != null && !Directory.Exists(lTargetDirectoryPath))
@@ -252,7 +256,7 @@ namespace Stockage.Save
                         Directory.CreateDirectory(lTargetDirectoryPath);
                     }
 
-                    CopyFileAsync(file, lTargetFilePath, pLogState, pDifferential);
+                    CopyFileAsync(file, lTargetFilePath, pDifferential);
 
                     lock (_lock)
                     {
@@ -274,7 +278,7 @@ namespace Stockage.Save
         /// <param name="pLogState"></param>
         /// <param name="pUpdateLog"></param>
         /// <param name="pDifferential"></param>
-        public override void CopyFileAsync(FileInfo pSourceFile, string pTargetFilePath, CLogState pLogState, bool pDifferential)
+        public override void CopyFileAsync(FileInfo pSourceFile, string pTargetFilePath, bool pDifferential)
         {
             try
             {
@@ -287,27 +291,25 @@ namespace Stockage.Save
                     {
                         using (Stream lDestinationStream = File.Create(pTargetFilePath))
                         {
-                            // Vérifie si le fichier est sur la backlist pour le cryptage
+                            // Vérifie si le fichier est sur la backlist pour le chiffrement
                             if (_BlackList.Any(blacklisted => pSourceFile.Extension.EndsWith(blacklisted, StringComparison.OrdinalIgnoreCase)))
                             {
-                                // Le fichier est sur la blacklist, appliquez le cryptage
+                                // Le fichier est sur la blacklist, appliquez le chiffrement
                                 using (MemoryStream memoryStream = new MemoryStream())
                                 {
                                     lSourceStream.CopyTo(memoryStream);
                                     byte[] fileBytes = memoryStream.ToArray();
 
-                                    // Cryptage
-                                    CXorChiffrement xorEncryptor = new CXorChiffrement();
-                                    byte[] key = Encoding.UTF8.GetBytes("secret"); // La clé de cryptage
-                                    byte[] encryptedBytes = xorEncryptor.Encrypt(fileBytes, key);
+                                    byte[] key = Encoding.UTF8.GetBytes("secret"); // La clé de chiffrement
+                                    byte[] encryptedBytes = _XorEncryptor.Encrypt(fileBytes, key);
 
-                                    pLogState.EncryptTime = xorEncryptor.EncryptTime; // Mettez à jour le temps de cryptage
+                                    _LogState.EncryptTime = _XorEncryptor.EncryptTime; // Mettez à jour le temps de chiffrement
                                     lDestinationStream.Write(encryptedBytes, 0, encryptedBytes.Length);
                                 }
                             }
                             else
                             {
-                                // Le fichier n'est pas sur la liste noire, copiez sans cryptage
+                                // Le fichier n'est pas sur la liste noire, copiez sans chiffrement
                                 lSourceStream.CopyTo(lDestinationStream);
                             }
                         }
@@ -317,145 +319,9 @@ namespace Stockage.Save
             catch (Exception ex)
             {
                 _Errors += $"\nError copying file '{pSourceFile.Name}': {ex.Message}";
-
             }
         }
 
-
-        /// <summary>
-        /// Copy files and directory from the source path to the destinationPath
-        /// </summary>
-        /// <param name="pSourceDir">Path of the directory you want tot copy</param>
-        /// <param name="pTargetDir">Path of the target directory</param>
-        /// <param name="pRecursive">True if recursive</param>
-        /// <param name="pDiffertielle">true if the backup is differential</param>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        //public override void CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false, List<string>? pPriorityFileExtensions = null)
-        //{
-
-        //   FileInfo[] lFiles = pSourceDir.GetFiles();
-
-        //    try
-        //    {
-        //        // cm - Check if the source directory exists
-        //        if (!pSourceDir.Exists)
-        //            throw new DirectoryNotFoundException($"Source directory not found: {pSourceDir.FullName}");
-
-        //        Directory.CreateDirectory(pTargetDir.FullName);
-
-        //        ParallelOptions lParallelOptions = new ParallelOptions
-        //        {
-        //            MaxDegreeOfParallelism = 20,
-        //            CancellationToken = _CancelationTokenSource.Token
-        //        };
-
-        //        // cm - Get files in the source directory and copy to the destination directory
-        //        Parallel.For(0, lFiles.Length, lParallelOptions, i =>
-        //        {
-        //            string lTargetFilePath = Path.Combine(pTargetDir.FullName, lFiles[i].Name);
-        //            // Check for cancellation before doing work
-        //            if (_CancelationTokenSource.Token.IsCancellationRequested)
-        //                _CancelationTokenSource.Token.ThrowIfCancellationRequested();
-        //            else
-        //            {
-        //                _PauseEvent.Wait(_CancelationTokenSource.Token);
-        //            }
-
-
-        //            // Vérifie si le fichier existe déjà  
-        //            if (lFiles[i].Exists && pDiffertielle)
-        //            {
-        //                // Compare les dates  
-        //                FileInfo ldestInfo = new FileInfo(lTargetFilePath);
-
-        //                if (lFiles[i].LastWriteTime > ldestInfo.LastWriteTime)
-        //                {
-        //                    // cm -  Copy the file async if the target file is newer
-        //                    CopyFileAsync(lFiles[i], lTargetFilePath, _LogState);
-        //                    lock (_lock)
-        //                    {
-        //                        pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
-        //                    }
-        //                }
-        //            }
-        //            else
-        //            {
-        //                // cm -  Copy the file async
-        //                CopyFileAsync(lFiles[i], lTargetFilePath, _LogState);
-        //                lock (_lock)
-        //                {
-        //                    pUpdateLog(_LogState, _FormatLog, lFiles[i], lTargetFilePath, _StopWatch);
-        //                }
-        //            }
-        //        });
-
-        //        // cm - If recursive and copying subdirectories, recursively call this method
-        //        if (pRecursive)
-        //        {
-        //            if (_CancelationTokenSource.Token.IsCancellationRequested)
-        //                return;
-        //            _PauseEvent.Wait(_CancelationTokenSource.Token);
-
-        //            foreach (DirectoryInfo lSubDir in pSourceDir.GetDirectories())
-        //            {
-        //                DirectoryInfo lNewDestinationDir = pTargetDir.CreateSubdirectory(lSubDir.Name);
-        //                CopyDirectoryAsync(lSubDir, lNewDestinationDir, pUpdateLog, true, pDiffertielle);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _Errors += "\n" + ex.Message;
-        //    }
-        //}
-
-
-        /// <summary>
-        /// Copie une fichier de maniere asychrone et chiffre le fichier si il sont blacklister
-        /// </summary>
-        /// <param name="pSourcePath">chemin source</param>
-        /// <param name="pDestinationPath">chemin cible</param>
-        /// <returns></returns>
-        //public void CopyFileAsync(FileInfo pSourcePath, string pDestinationPath, CLogState pLogState)
-        //{
-        //    try
-        //    {
-        //        using (Stream lSource = File.OpenRead(pSourcePath.FullName))
-        //        {
-        //            using (Stream lDestination = File.Create(pDestinationPath))
-        //            {
-        //                // cm - Check if the sourcePath is blacklisted
-        //                if (!_BlackList.Any(lPath => pSourcePath.Extension.EndsWith(lPath, StringComparison.OrdinalIgnoreCase)))
-        //                {
-        //                    // cm - If the file is blacklisted, we copy without encryption
-        //                    lSource.CopyTo(lDestination);
-        //                }
-        //                else
-        //                {
-        //                    // cm - If the file is not blacklisted, encrypt and then copy
-        //                    using (MemoryStream lMemoryStream = new MemoryStream())
-        //                    {
-        //                        // cm - Copy the content of the file to a memory buffer
-        //                        lSource.CopyTo(lMemoryStream);
-        //                        byte[] lFileBytes = lMemoryStream.ToArray();
-
-        //                        // cm - Encrypt the buffer with the XOR encryption
-        //                        CXorChiffrement lXorEncryptor = new CXorChiffrement();
-        //                        byte[] lKey = Encoding.UTF8.GetBytes("secret"); // Convert the string key to byte array
-        //                        byte[] lEncryptedBytes = lXorEncryptor.Encrypt(lFileBytes, lKey);
-        //                        pLogState.EncryptTime = lXorEncryptor.EncryptTime;
-        //                        // cm - Write the encrypted data to the destination file
-        //                        lDestination.Write(lEncryptedBytes, 0, lEncryptedBytes.Length);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _Errors += "\n" + ex.Message;
-        //    }
-        //}
         #endregion
     }
 }

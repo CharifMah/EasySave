@@ -105,7 +105,7 @@ namespace Stockage.Save
         {
             throw new NotImplementedException();
         }
-        public virtual void CopyFileAsync(FileInfo pSourceFile, string pTargetFilePath, CLogState pLogState, bool pDifferential)
+        public virtual void CopyFileAsync(FileInfo pSourceFile, string pTargetFilePath, bool pDifferential)
         {
             throw new NotImplementedException();
         }

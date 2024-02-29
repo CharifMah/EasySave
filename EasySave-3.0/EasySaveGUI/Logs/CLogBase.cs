@@ -22,6 +22,8 @@ namespace LogsModels
         [DataMember]
         private TimeSpan _EncryptTime;
         [DataMember]
+        private double _EncryptTimeMs;
+        [DataMember]
         private double _Progress;
 
         private string _FormatLog;
@@ -85,8 +87,10 @@ namespace LogsModels
         /// </summary>
         public TimeSpan EncryptTime
         {
-            get => _EncryptTime; set { _EncryptTime = value; NotifyPropertyChanged(); }
+            get => _EncryptTime; set { _EncryptTime = value; _EncryptTimeMs = _EncryptTime.TotalMilliseconds; NotifyPropertyChanged();  }
         }
+
+        public double EncryptTimeMs { get => _EncryptTimeMs; set => _EncryptTimeMs = value; }
 
 
         #endregion

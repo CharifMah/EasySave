@@ -101,7 +101,7 @@
                                                 CanAutoHide="False"
                                                 CanClose="False"
                                                 CanHide="False"
-                                                ContentId="JobsListDocument">
+                                                ContentId="{x:Static Ressources:Strings.Jobs}">
                                                 <Usr:JobListControl x:Name="JobUsr" />
                                             </LayoutAnchorable>
 
@@ -123,7 +123,7 @@
                                                 CanAutoHide="False"
                                                 CanClose="False"
                                                 CanHide="False"
-                                                ContentId="ConfigInfoDocument">
+                                                ContentId="{x:Static Ressources:Strings.Config}">
                                                 <Usr:ConfigInfoControl />
 
                                             </LayoutAnchorable>

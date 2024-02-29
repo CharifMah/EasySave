@@ -1,5 +1,7 @@
-﻿using EasySaveGUI.ViewModels;
+﻿using AvalonDock.Layout;
+using EasySaveGUI.ViewModels;
 using Ressources;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -17,20 +19,30 @@ namespace EasySaveGUI.UserControls
             InitializeComponent();
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
-       
         }
-
-
 
         private void MenuButtons_MouseClick(object sender, RoutedEventArgs e)
         {
             Button lButton = sender as Button;
             if (lButton.Content == Strings.Settings)
+            {
                 _MainVm.LayoutVm.ElementsContent.Content = new ConfigMenuControl();
+                LayoutAnchorable? lLayoutAnchorable = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutAnchorable>().FirstOrDefault(l => l.ContentId.Contains(Strings.Config));
+                lLayoutAnchorable.IsSelected = true;
+                lLayoutAnchorable.IsActive = true;
+            }
+
             if (lButton.Content == Strings.Preference)
                 _MainVm.LayoutVm.ElementsContent.Content = new OptionsMenuControl();
             if (lButton.Content == Strings.Jobs)
+            {
                 _MainVm.LayoutVm.ElementsContent.Content = new JobMenuControl();
+                LayoutAnchorable? lLayoutAnchorable = _MainWindow.MenuPage.Dock.Layout.Descendents().OfType<LayoutAnchorable>().FirstOrDefault(l => l.ContentId.Contains(Strings.Jobs));
+                lLayoutAnchorable.IsSelected = true;
+                lLayoutAnchorable.IsActive = true;
+
+            }
+
             _MainWindow.MenuPage.ListElements.Show();
             _MainWindow.MenuPage.ListElements.IsActive = true;
         }

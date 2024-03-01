@@ -24,6 +24,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <GroupBox Grid.ColumnSpan="2">
+
                 <StackPanel>
                     <GroupBox Header="JobManager Configuration">
                         <StackPanel>

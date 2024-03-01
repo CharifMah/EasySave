@@ -42,5 +42,38 @@ namespace Services
         {
             await _Connection.SendAsync("ReceiveClientViewModel", pClientViewModel, pConnectionId);
         }
+
+        /// <summary>
+        /// Envoie le view model au serveur
+        /// </summary>
+        /// <param name="pClientViewModel">le view model a envoyer en json</param>
+        /// <param name="pConnectionId">le connection id du client view model</param>
+        /// <returns>Task</returns>
+        public async Task Start(string pClientViewModel, string pConnectionId,string pTargetConnectionId)
+        {
+            await _Connection.SendAsync("Start", pClientViewModel, pConnectionId, pTargetConnectionId);
+        }
+
+        /// <summary>
+        /// Envoie le view model au serveur
+        /// </summary>
+        /// <param name="pClientViewModel">le view model a envoyer en json</param>
+        /// <param name="pConnectionId">le connection id du client view model</param>
+        /// <returns>Task</returns>
+        public async Task Pause(string pClientViewModel, string pConnectionId, string pTargetConnectionId)
+        {
+            await _Connection.SendAsync("Pause", pClientViewModel, pConnectionId, pTargetConnectionId);
+        }
+        /// <summary>
+        /// Envoie le view model au serveur
+        /// </summary>
+        /// <param name="pClientViewModel">le view model a envoyer en json</param>
+        /// <param name="pConnectionId">le connection id du client view model</param>
+        /// <returns>Task</returns>
+        public async Task Stop(string pClientViewModel, string pConnectionId, string pTargetConnectionId)
+        {
+            await _Connection.SendAsync("Stop", pClientViewModel, pConnectionId, pTargetConnectionId);
+        }
+
     }
 }

@@ -17,21 +17,21 @@ namespace SignalRServer.Hubs
         public async Task Start(string pClientVmJson, string pConnectionId,string pTargetConnectionId)
         {
             await CheckConnectionId(pClientVmJson, pConnectionId);
-            await Clients.User(pTargetConnectionId).SendAsync("Start", pClientVmJson, pConnectionId);
+            await Clients.Client(pTargetConnectionId).SendAsync("Start", pClientVmJson, pConnectionId, pTargetConnectionId);
             ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} Start | Sender : {pConnectionId} Target : {pTargetConnectionId}");
         }
 
         public async Task Pause(string pClientVmJson, string pConnectionId, string pTargetConnectionId)
         {
             await CheckConnectionId(pClientVmJson, pConnectionId);
-            await Clients.User(pTargetConnectionId).SendAsync("Pause", pClientVmJson, pConnectionId);
+            await Clients.Client(pTargetConnectionId).SendAsync("Pause", pClientVmJson, pConnectionId, pTargetConnectionId);
             ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} Pause | Sender : {pConnectionId} Target : {pTargetConnectionId}");
         }
 
         public async Task Stop(string pClientVmJson, string pConnectionId, string pTargetConnectionId)
         {
             await CheckConnectionId(pClientVmJson, pConnectionId);
-            await Clients.User(pTargetConnectionId).SendAsync("Stop", pClientVmJson, pConnectionId);
+            await Clients.Client(pTargetConnectionId).SendAsync("Stop", pClientVmJson, pConnectionId, pTargetConnectionId);
             ConsoleExtention.WriteLineSucces($"{ConsoleExtention.GetDate()} Stop | Sender : {pConnectionId} Target : {pTargetConnectionId}");
         }
 

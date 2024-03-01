@@ -58,22 +58,22 @@ namespace EasySaveGUI.ViewModels
             _IsConnectedToLobby = false;
         }
 
-        private void _UserSignalRService_OnStop(string arg1, string arg2, string arg3)
+        private void _UserSignalRService_OnStop(string pClientVmJson, string pConnectionId, string pTargetConnectionId)
         {
-            ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(arg1);
-            this.ClientVm.JobVm.Stop(lClientVmDistant.JobVm.JobsRunning.ToList());
+            ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(pClientVmJson);
+            this.ClientVm.JobVm.Stop(this.ClientVm.JobVm.JobsRunning.ToList());
         }
 
-        private void _UserSignalRService_OnPause(string arg1, string arg2, string arg3)
+        private void _UserSignalRService_OnPause(string pClientVmJson, string pConnectionId, string pTargetConnectionId)
         {
-            ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(arg1);
-            this.ClientVm.JobVm.Pause(lClientVmDistant.JobVm.JobsRunning.ToList());
+            ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(pClientVmJson);
+            this.ClientVm.JobVm.Pause(this.ClientVm.JobVm.JobsRunning.ToList());
         }
 
         private async void _UserSignalRService_OnStart(string pClientVmJson, string pConnectionId, string pTargetConnectionId)
         {
             ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(pClientVmJson);
-            await this.ClientVm.JobVm.RunJobs(lClientVmDistant.JobVm.JobsRunning.ToList());
+            this.ClientVm.JobVm.RunJobs(this.ClientVm.JobVm.JobsRunning.ToList());
         }
 
         private void _UserSignalRService_OnSyncConnectionId(string pConnectionId, string pOldConnectionId)
@@ -137,10 +137,11 @@ namespace EasySaveGUI.ViewModels
 
         private void UpdateClientViewModel(string pClientVm, string pSenderConnectionId)
         {
-            ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(pClientVm);
-            ClientViewModel? lClientLocal = _Clients.FirstOrDefault(c => c.Client.ConnectionId == pSenderConnectionId);
+
             App.Current.Dispatcher.BeginInvoke(() =>
             {
+                ClientViewModel? lClientVmDistant = JsonConvert.DeserializeObject<ClientViewModel>(pClientVm);
+                ClientViewModel? lClientLocal = _Clients.FirstOrDefault(c => c.Client.ConnectionId == pSenderConnectionId);
                 MainWindow lMainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
 
                 if (lClientVmDistant != null && lClientLocal != null && lClientLocal.Client.ConnectionId == pSenderConnectionId)
@@ -179,6 +180,22 @@ namespace EasySaveGUI.ViewModels
             {
                 _Clients.Remove(_Clients.FirstOrDefault(c => c.Client.ConnectionId == pConnectionId));
             });
+        }
+
+        public async Task Start(ClientViewModel pClientViewModel)
+        {
+            await _UserSignalRService.Start(pClientViewModel.ToJson(),_Connection.ConnectionId, pClientViewModel.Client.ConnectionId);
+        }
+
+        public async Task Stop(ClientViewModel pClientViewModel)
+        {
+            await _UserSignalRService.Stop(pClientViewModel.ToJson(), _Connection.ConnectionId, pClientViewModel.Client.ConnectionId);
+
+        }
+
+        public async Task Pause(ClientViewModel pClientViewModel)
+        {
+            await _UserSignalRService.Pause(pClientViewModel.ToJson(), _Connection.ConnectionId, pClientViewModel.Client.ConnectionId);
         }
 
         /// <summary>

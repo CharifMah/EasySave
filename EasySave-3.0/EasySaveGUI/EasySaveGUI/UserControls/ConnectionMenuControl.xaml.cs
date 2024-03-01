@@ -110,7 +110,7 @@ namespace EasySaveGUI.UserControls
                    
                     JobRunningControl lJobLlistCtrl = (stackPanel.Children[0] as JobRunningControl);
                     JobListControl lJobListCtrl = (stackPanel.Children[1] as JobListControl);
-
+                    lJobLlistCtrl.DataGrid.Uid = pConnectionId;
                     lJobLlistCtrl.DataContext = lClientVm;
                     lJobListCtrl.DataContext = lClientVm;
 

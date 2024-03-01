@@ -12,12 +12,6 @@ namespace EasySaveGUI
         private string mutexId = "EasySaveID";
         private Mutex mutex;
 
-        protected override void OnExit(ExitEventArgs e)
-        {
-            //On libère le Mutex lorsque l'on a terminé.
-            mutex.ReleaseMutex();
-            base.OnExit(e);
-        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -32,6 +26,13 @@ namespace EasySaveGUI
             }
 
             base.OnStartup(e);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            //On libère le Mutex lorsque l'on a terminé.
+            mutex.ReleaseMutex();
+            base.OnExit(e);
         }
     }
 }

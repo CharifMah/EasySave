@@ -19,7 +19,7 @@ name: Release-3.0.$(Build.BuildId)
 steps:
 - task: UseDotNet@2
   inputs:
-    version: '6.x'
+    version: '8.0.x'
     includePreviewVersions: false
 
 # Restauration pour CLI et GUI

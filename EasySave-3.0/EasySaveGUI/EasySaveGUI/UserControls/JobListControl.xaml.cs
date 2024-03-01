@@ -88,7 +88,6 @@ namespace EasySaveGUI.UserControls
             RunButton.IsEnabled = true;
 
             _MainWindow.MenuPage.ShowValidation();
-            await Task.Delay(2000);
         }
 
         private void ShowError(string pMessage)

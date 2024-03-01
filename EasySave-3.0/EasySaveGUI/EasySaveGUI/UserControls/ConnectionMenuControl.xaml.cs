@@ -93,7 +93,10 @@ namespace EasySaveGUI.UserControls
             Button? button = sender as Button;
             OpenClientDocument(button.Content.ToString());
         }
-
+        /// <summary>
+        /// Mise a jour des ClientView model
+        /// </summary>
+        /// <param name="pConnectionId">connection id du sender</param>
         public void UpdateClientViewModel(string pConnectionId)
         {
             App.Current.Dispatcher.BeginInvoke(() =>
@@ -104,28 +107,13 @@ namespace EasySaveGUI.UserControls
                 {
                     StackPanel stackPanel = (lLayoutDocument.Content as StackPanel);
                     ClientViewModel lClientVm = UserViewModel.Instance.Clients.First(c => c.Client.ConnectionId == pConnectionId);
-                    foreach (var item in lClientVm.JobVm.JobsRunning)
-                    {
-                        item.SauveJobs.CancelationTokenSource = new CancellationTokenSource();
-                        item.SauveJobs.PauseEvent = new ManualResetEventSlim(false);
-                        if (item.SauveJobs.LogState.IsStopped)
-                        {
-                            item.Stop();
-                        }
-                        if (item.SauveJobs.LogState.IsPaused)
-                        {
-                            item.Pause();
-                        }
-                        if (item.SauveJobs.LogState.IsStarted)
-                        {
-                            item.Resume();
-                        }
-                    }
+                   
                     JobRunningControl lJobLlistCtrl = (stackPanel.Children[0] as JobRunningControl);
-
                     JobListControl lJobListCtrl = (stackPanel.Children[1] as JobListControl);
+                    lJobLlistCtrl.DataGrid.Uid = pConnectionId;
                     lJobLlistCtrl.DataContext = lClientVm;
                     lJobListCtrl.DataContext = lClientVm;
+
                     lLayoutDocument.IsActive = true;
                     lLayoutDocument.IsSelected = true;
                 }

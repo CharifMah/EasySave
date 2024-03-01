@@ -56,7 +56,7 @@ namespace EasySaveGUI.UserControls
             _MainWindow.MenuPage.ShowValidation();
         }
 
-        private void StartMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void StartMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (DataGrid.SelectedItems.Count > 0)
             {
@@ -64,7 +64,15 @@ namespace EasySaveGUI.UserControls
                 lButton.IsEnabled = false;
                 IList lItems = DataGrid.SelectedItems;
                 List<CJob> lSelectedJobs = lItems.Cast<CJob>().ToList();
-                _MainVm.JobVm.Resume(lSelectedJobs);
+
+                if (DataContext is ClientViewModel)
+                {
+                    await UserViewModel.Instance.Start(DataContext as ClientViewModel);
+                }
+                else
+                {
+                    _MainVm.JobVm.Resume(lSelectedJobs);
+                }  
 
                 lButton.IsEnabled = true;
                 _MainWindow.MenuPage.ShowValidation();
@@ -76,8 +84,17 @@ namespace EasySaveGUI.UserControls
         {
             IList lItems = DataGrid.SelectedItems;
             List<CJob> lSelectedJobs = lItems.Cast<CJob>().ToList();
-            _MainVm.JobVm.Stop(lSelectedJobs);
 
+            if (DataContext is ClientViewModel)
+            {
+                UserViewModel.Instance.Stop(DataContext as ClientViewModel);
+            }
+            else
+            {
+                _MainVm.JobVm.Stop(lSelectedJobs);
+            }
+          
+            
             ClearSelectedJobRunningList(lSelectedJobs);
             _MainWindow.MenuPage.ShowValidation();
         }
@@ -96,7 +113,16 @@ namespace EasySaveGUI.UserControls
 
             IList lItems = DataGrid.SelectedItems;
             List<CJob> lSelectedJobs = lItems.Cast<CJob>().ToList();
-            _MainVm.JobVm.Pause(lSelectedJobs);
+            if (DataContext is ClientViewModel)
+            {
+                UserViewModel.Instance.Pause(DataContext as ClientViewModel);
+            }
+            else
+            {
+                _MainVm.JobVm.Pause(lSelectedJobs);
+            }
+
+
             _MainWindow.MenuPage.ShowValidation();
         }
     }

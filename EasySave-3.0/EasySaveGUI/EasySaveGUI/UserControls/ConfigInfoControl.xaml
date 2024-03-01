@@ -24,6 +24,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <GroupBox Grid.ColumnSpan="2">
+
                 <StackPanel>
                     <GroupBox Header="JobManager Configuration">
                         <StackPanel>
@@ -47,7 +48,7 @@
                                 <TextBox Text="{Binding SettingsVm.Settings.LogDefaultFolderPath, Mode=OneWay}" />
                             </StackPanel>
                             <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                <TextBlock Margin="5,5,5,0" Foreground="Black">
+                                <TextBlock Margin="5,5,5,0">
                                     <Run Text="{x:Static Ressources:Strings.FormatLogs}" />
                                     <Run Text=":" />
                                 </TextBlock>

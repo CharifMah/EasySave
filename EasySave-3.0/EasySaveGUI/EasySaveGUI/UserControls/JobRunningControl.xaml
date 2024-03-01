@@ -49,6 +49,7 @@
             </Button>
 
             <Button
+                x:Name="PauseButton"
                 Padding="10,0,10,0"
                 Background="{DynamicResource ButtonBackground}"
                 Click="PauseMenuItem_Click">

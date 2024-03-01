@@ -165,7 +165,6 @@ namespace EasySaveGUI.ViewModels
 
                         // cm - Lance le job
                         lJob.Run(UpdateLog);
-
                         lStopWatch.Stop();
 
                     });
@@ -196,6 +195,7 @@ namespace EasySaveGUI.ViewModels
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
             }
         }
+
         /// <summary>
         /// Reprend les jobs selectionnée en cours
         /// </summary>
@@ -289,42 +289,52 @@ namespace EasySaveGUI.ViewModels
         {
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
-                pLogState.TotalTransferedFile++;
-                pLogState.SourceDirectory = pFileInfo.FullName;
-                pLogState.BytesCopied += pFileInfo.Length;
-                pLogState.TargetDirectory = pTargetFilePath;
-                pLogState.RemainingFiles = pLogState.EligibleFileCount - pLogState.TotalTransferedFile;
-                pLogState.Progress = pLogState.BytesCopied / pLogState.TotalSize * 100;
-                pLogState.Elapsed = pSw.Elapsed;
-                pLogState.Date = DateTime.Now;
-
-                CLogDaily lLogFilesDaily = new CLogDaily();
-                lLogFilesDaily.Name = pFileInfo.Name;
-                lLogFilesDaily.SourceDirectory = pFileInfo.FullName;
-                lLogFilesDaily.TotalSize = pFileInfo.Length;
-                lLogFilesDaily.TargetDirectory = pTargetFilePath;
-                lLogFilesDaily.Date = DateTime.Now;
-                lLogFilesDaily.FormatLog = pFormatLog;
-                lLogFilesDaily.Progress = pLogState.Progress;
-                lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
-                lLogFilesDaily.EncryptTimeMs = pLogState.EncryptTimeMs;
-                CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
-
-                _LogDailyBuffer.Add(lLogFilesDaily);
-
-                if (UserViewModel.Instance.ClientVm != null)
+                try
                 {
-                    Task.Run(async () =>
+                    pLogState.TotalTransferedFile++;
+                    pLogState.SourceDirectory = pFileInfo.FullName;
+                    pLogState.BytesCopied += pFileInfo.Length;
+                    pLogState.TargetDirectory = pTargetFilePath;
+                    pLogState.RemainingFiles = pLogState.EligibleFileCount - pLogState.TotalTransferedFile;
+                    pLogState.Progress = pLogState.BytesCopied / pLogState.TotalSize * 100;
+                    pLogState.Elapsed = pSw.Elapsed;
+                    pLogState.Date = DateTime.Now;
+
+                    CLogDaily lLogFilesDaily = new CLogDaily();
+                    lLogFilesDaily.Name = pFileInfo.Name;
+                    lLogFilesDaily.SourceDirectory = pFileInfo.FullName;
+                    lLogFilesDaily.TotalSize = pFileInfo.Length;
+                    lLogFilesDaily.TargetDirectory = pTargetFilePath;
+                    lLogFilesDaily.Date = DateTime.Now;
+                    lLogFilesDaily.FormatLog = pFormatLog;
+                    lLogFilesDaily.Progress = pLogState.Progress;
+                    lLogFilesDaily.TransfertTime = pSw.Elapsed.TotalMilliseconds;
+                    lLogFilesDaily.EncryptTimeMs = pLogState.EncryptTimeMs;
+                    CLogger<List<CLogState>>.Instance.GenericLogger.Log(_jobsRunning.Select(lJob => lJob.SauveJobs.LogState).ToList(), true, false, "Logs", "", pFormatLog);
+
+                    _LogDailyBuffer.Add(lLogFilesDaily);
+
+                    if (UserViewModel.Instance.ClientVm != null)
                     {
-                        UserViewModel.Instance.ClientVm.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
-                        await UserViewModel.Instance.UserSignalRService
-                        .SendClientViewModel
-                        (
-                            UserViewModel.Instance.ClientVm.ToJson(),
-                            UserViewModel.Instance.ClientVm.Client.ConnectionId
-                        );
-                    });
+                        Task.Run(async () =>
+                        {
+                            UserViewModel.Instance.ClientVm.Client.ConnectionId = UserViewModel.Instance.Connection.ConnectionId;
+                            await UserViewModel.Instance.UserSignalRService
+                            .SendClientViewModel
+                            (
+                                UserViewModel.Instance.ClientVm.ToJson(),
+                                UserViewModel.Instance.ClientVm.Client.ConnectionId
+                            );
+                        });
+                    }
                 }
+                catch (Exception ex)
+                {
+
+                    CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+
+                }
+
             });
         }
 

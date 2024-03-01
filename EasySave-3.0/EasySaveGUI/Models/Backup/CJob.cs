@@ -2,8 +2,8 @@
 using Models.Settings;
 using Stockage.Logs;
 using Stockage.Save;
+using System.Diagnostics;
 using System.Runtime.Serialization;
-using System.Threading;
 using static Stockage.Logs.ILogger<uint>;
 namespace Models.Backup
 {
@@ -22,6 +22,7 @@ namespace Models.Backup
         private string _TargetDirectory;
         [DataMember]
         private ETypeBackup _BackupType;
+        [DataMember]
         private SauveJobsAsync _SauveJobs;
 
 
@@ -61,10 +62,6 @@ namespace Models.Backup
             get => _SauveJobs; set { _SauveJobs = value; NotifyPropertyChanged(); }
         }
 
-
-
-
-
         #endregion
 
         #region CTOR
@@ -83,7 +80,7 @@ namespace Models.Backup
             _TargetDirectory = pTargetDirectory;
             _BackupType = pTypeBackup;
             _SauveJobs = new SauveJobsAsync(CSettings.Instance.EncryptionExtensions);
-   
+
         }
         ~CJob()
         {
@@ -124,7 +121,7 @@ namespace Models.Backup
 
                 if (_SourceDirectory != _TargetDirectory)
                 {
-                    _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, pUpdateLog, true, pDifferentiel);
+                    _SauveJobs.CopyDirectoryAsync(lSourceDir, lTargetDir, pUpdateLog, true, pDifferentiel, CSettings.Instance.PriorityFileExtensions);
                 }
                 else
                 {
@@ -134,6 +131,7 @@ namespace Models.Backup
             catch (Exception ex)
             {
                 CLogger<CLogBase>.Instance.StringLogger.Log(ex.Message, false);
+                Debug.WriteLine(ex.Message);
             }
         }
 
@@ -159,6 +157,38 @@ namespace Models.Backup
             // and prevent finalization code for this object
             // from executing a second time.
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Reprend les jobs selectionnée en cours
+        /// </summary>
+        public void Resume()
+        {
+            _SauveJobs.PauseEvent.Set();
+            _SauveJobs.LogState.IsStarted = false;
+            if (_SauveJobs.LogState.IsPaused)
+            {
+                _SauveJobs.LogState.IsStarted = true;
+            }
+        }
+        /// <summary>
+        /// Met en pause les jobs
+        /// </summary>
+        public void Pause()
+        {
+            _SauveJobs.PauseEvent.Reset();
+            _SauveJobs.LogState.IsPaused = true;
+        }
+
+        /// <summary>
+        /// Arrete definitivement les jobs
+        /// </summary>
+        public void Stop()
+        {
+            _SauveJobs.CancelationTokenSource.Cancel();
+            _SauveJobs.LogState.IsStopped = true;
+            _SauveJobs.LogState.IsPaused = false;
+            _SauveJobs.LogState.IsStarted = false;
         }
 
         #endregion

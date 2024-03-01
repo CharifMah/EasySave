@@ -22,12 +22,22 @@ namespace EasySaveGUI.UserControls
     {
         private MainViewModel _MainVm;
         private MainWindow _MainWindow;
+        public JobRunningControl(ClientViewModel pCLientVm = null)
+        {
+            InitializeComponent();
+            _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
+            _MainVm = _MainWindow.MainVm;
+            if (pCLientVm != null)
+                DataContext = pCLientVm;
+        }
         public JobRunningControl()
         {
             InitializeComponent();
             _MainWindow = Window.GetWindow(App.Current.MainWindow) as MainWindow;
             _MainVm = _MainWindow.MainVm;
+            DataContext = _MainVm;
         }
+
 
         private void OpenTargetFolderButton_Click(object sender, RoutedEventArgs e)
         {
@@ -46,17 +56,25 @@ namespace EasySaveGUI.UserControls
             _MainWindow.MenuPage.ShowValidation();
         }
 
-        private void StartMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void StartMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (DataGrid.SelectedItems.Count > 0)
             {
-                MenuItem? lMenuItem = sender as MenuItem;
-                lMenuItem.IsEnabled = false;
+                Button? lButton = sender as Button;
+                lButton.IsEnabled = false;
                 IList lItems = DataGrid.SelectedItems;
                 List<CJob> lSelectedJobs = lItems.Cast<CJob>().ToList();
-                _MainVm.JobVm.Resume(lSelectedJobs);
-                
-                lMenuItem.IsEnabled = true;
+
+                if (DataContext is ClientViewModel)
+                {
+                    await UserViewModel.Instance.Start(DataContext as ClientViewModel);
+                }
+                else
+                {
+                    _MainVm.JobVm.Resume(lSelectedJobs);
+                }  
+
+                lButton.IsEnabled = true;
                 _MainWindow.MenuPage.ShowValidation();
                 StartButton.Visibility = Visibility.Visible;
             }
@@ -66,8 +84,17 @@ namespace EasySaveGUI.UserControls
         {
             IList lItems = DataGrid.SelectedItems;
             List<CJob> lSelectedJobs = lItems.Cast<CJob>().ToList();
-            _MainVm.JobVm.Stop(lSelectedJobs);
-  
+
+            if (DataContext is ClientViewModel)
+            {
+                UserViewModel.Instance.Stop(DataContext as ClientViewModel);
+            }
+            else
+            {
+                _MainVm.JobVm.Stop(lSelectedJobs);
+            }
+          
+            
             ClearSelectedJobRunningList(lSelectedJobs);
             _MainWindow.MenuPage.ShowValidation();
         }
@@ -86,7 +113,16 @@ namespace EasySaveGUI.UserControls
 
             IList lItems = DataGrid.SelectedItems;
             List<CJob> lSelectedJobs = lItems.Cast<CJob>().ToList();
-            _MainVm.JobVm.Pause(lSelectedJobs);
+            if (DataContext is ClientViewModel)
+            {
+                UserViewModel.Instance.Pause(DataContext as ClientViewModel);
+            }
+            else
+            {
+                _MainVm.JobVm.Pause(lSelectedJobs);
+            }
+
+
             _MainWindow.MenuPage.ShowValidation();
         }
     }

@@ -280,6 +280,7 @@ namespace EasySaveGUI
                 _MenuPage.Resources["PinkColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C76F9D"));
                 _MenuPage.Resources["LightBlue"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#245889"));
                 _MenuPage.Resources["LightGreenColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#248955"));
+
                 CSettings.Instance.SaveSettings();
             }
             catch (Exception ex)

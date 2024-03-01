@@ -15,24 +15,28 @@
     <UserControl.Resources>
         <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
     </UserControl.Resources>
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Click="SelectAllMenuItem_Click" Header="{x:Static Ressources:Strings.SelectAll}">
-                <MenuItem.Icon>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}" Kind="SelectAll" />
-                </MenuItem.Icon>
-            </MenuItem>
+    <StackPanel>
+            <StackPanel Orientation="Horizontal"  MaxHeight="20" DockPanel.Dock="Top" >
 
-            <MenuItem
-                x:Name="RunButton"
-                Click="RunJobsMenuItem_Click"
-                Header="{x:Static Ressources:Strings.RunJobs}">
-                <MenuItem.Icon>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource LightGreenColor}" Kind="Run" />
-                </MenuItem.Icon>
-            </MenuItem>
-        </Menu>
-        <ListBox
+                <Button Click="SelectAllMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
+                    <WrapPanel>
+                        <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}"   Kind="SelectAll" />
+                        <TextBlock Text="{x:Static Ressources:Strings.SelectAll}" />
+                    </WrapPanel>
+
+                </Button>
+
+                <Separator Width="10" Height="10" />
+
+                <Button x:Name="RunButton" Click="RunJobsMenuItem_Click" Background="{DynamicResource ButtonBackground}" Padding="10,0,10,0">
+                    <WrapPanel Orientation="Horizontal">
+                        <MaterialIcon:MaterialIcon Foreground="{DynamicResource LightGreenColor}" Kind="Run" />
+                        <TextBlock Text="{x:Static Ressources:Strings.RunJobs}"/>
+                    </WrapPanel>
+
+                </Button>
+            </StackPanel>
+            <ListBox
             x:Name="JobsList"
             ItemsSource="{Binding JobVm.Jobs, Mode=OneWay}"
             ScrollViewer.CanContentScroll="False"
@@ -65,6 +69,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-    </DockPanel>
+    </StackPanel>
 
 </UserControl>

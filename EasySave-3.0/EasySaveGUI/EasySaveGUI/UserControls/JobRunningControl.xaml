@@ -15,37 +15,62 @@
     <UserControl.Resources>
         <Converter:ETypeBackupConverter x:Key="ETypeBackupConverter" />
         <Converter:BytesValueConverter x:Key="BytesValueConverter" />
-        <Converter:SecondConverter x:Key="SecondConverter" />
+        <Converter:TimeSpanConverter x:Key="TimeSpanConverter" />
     </UserControl.Resources>
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Click="SelectAllMenuItem_Click" Header="{x:Static Ressources:Strings.SelectAll}">
-                <MenuItem.Icon>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}" Kind="SelectAll" />
-                </MenuItem.Icon>
-            </MenuItem>
-            <Separator />
-            <MenuItem
-                x:Name="StartButton"
-                Click="StartMenuItem_Click"
-                Header="{x:Static Ressources:Strings.Start}"
-                Visibility="Hidden">
-                <MenuItem.Icon>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource LightGreenColor}" Kind="Play" />
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem Click="PauseMenuItem_Click" Header="{x:Static Ressources:Strings.Pause}">
-                <MenuItem.Icon>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource YellowHoverButtonColor}" Kind="Pause" />
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem Click="StopMenuItem_Click" Header="{x:Static Ressources:Strings.Stop}">
-                <MenuItem.Icon>
-                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource RedHoverButtonColor}" Kind="Stop" />
-                </MenuItem.Icon>
-            </MenuItem>
+    <StackPanel>
+        <StackPanel
+            MaxHeight="20"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
 
-        </Menu>
+            <Button
+                Padding="10,0,10,0"
+                Background="{DynamicResource ButtonBackground}"
+                Click="SelectAllMenuItem_Click">
+                <WrapPanel>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource TextColor}" Kind="SelectAll" />
+                    <TextBlock Text="{x:Static Ressources:Strings.SelectAll}" />
+                </WrapPanel>
+
+            </Button>
+
+            <Separator Width="10" Height="10" />
+
+            <Button
+                x:Name="StartButton"
+                Padding="10,0,10,0"
+                Background="{DynamicResource ButtonBackground}"
+                Click="StartMenuItem_Click">
+                <WrapPanel Orientation="Horizontal">
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource LightGreenColor}" Kind="Play" />
+                    <TextBlock Text="{x:Static Ressources:Strings.Start}" />
+                </WrapPanel>
+
+            </Button>
+
+            <Button
+                x:Name="PauseButton"
+                Padding="10,0,10,0"
+                Background="{DynamicResource ButtonBackground}"
+                Click="PauseMenuItem_Click">
+                <WrapPanel>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource YellowHoverButtonColor}" Kind="Pause" />
+                    <TextBlock Text="{x:Static Ressources:Strings.Pause}" />
+                </WrapPanel>
+
+            </Button>
+
+            <Button
+                Padding="10,0,10,0"
+                Background="{DynamicResource ButtonBackground}"
+                Click="StopMenuItem_Click">
+                <WrapPanel>
+                    <MaterialIcon:MaterialIcon Foreground="{DynamicResource RedHoverButtonColor}" Kind="Stop" />
+                    <TextBlock Text="{x:Static Ressources:Strings.Stop}" />
+                </WrapPanel>
+
+            </Button>
+        </StackPanel>
         <DataGrid
             x:Name="DataGrid"
             AutoGenerateColumns="False"
@@ -83,7 +108,7 @@
                                     <TextBlock
                                         Margin="0,0,10,5"
                                         Foreground="Black"
-                                        Text="{Binding Path=SauveJobs.LogState.ElapsedMilisecond, Mode=OneWay, Converter={StaticResource SecondConverter}}" />
+                                        Text="{Binding Path=SauveJobs.LogState.Elapsed, Mode=OneWay, Converter={StaticResource TimeSpanConverter}}" />
                                 </WrapPanel>
                             </Grid>
 
@@ -164,5 +189,5 @@
             </DataGrid.Columns>
 
         </DataGrid>
-    </DockPanel>
+    </StackPanel>
 </UserControl>

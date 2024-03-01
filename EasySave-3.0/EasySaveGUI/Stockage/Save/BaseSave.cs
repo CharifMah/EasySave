@@ -1,7 +1,6 @@
 ﻿using LogsModels;
 using Newtonsoft.Json;
 using Stockage.Logs;
-using System.Threading;
 using System.Xml.Serialization;
 using static Stockage.Logs.ILogger<uint>;
 
@@ -101,7 +100,12 @@ namespace Stockage.Save
         {
             throw new NotImplementedException();
         }
-        public virtual void CopyDirectoryAsync(DirectoryInfo pSourceDir, DirectoryInfo pTargetDir, UpdateLogDelegate pUpdateLog, bool pRecursive, bool pDiffertielle = false)
+
+        public virtual void CopyDirectoryAsync(DirectoryInfo sourceDir, DirectoryInfo targetDir, UpdateLogDelegate updateLog, bool recursive, bool differential, List<string>? priorityFileExtensions)
+        {
+            throw new NotImplementedException();
+        }
+        public virtual void CopyFileAsync(FileInfo pSourceFile, string pTargetFilePath, bool pDifferential)
         {
             throw new NotImplementedException();
         }

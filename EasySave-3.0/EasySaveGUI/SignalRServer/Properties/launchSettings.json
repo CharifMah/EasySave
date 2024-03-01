@@ -1,0 +1,20 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "https://localhost:47342",
+      "sslPort": 44371
+    }
+  },
+  "profiles": {
+    "SignalRServer": {
+      "commandName": "Project",
+      "applicationUrl": "https://localhost:7215;https://localhost:5215",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

@@ -19,7 +19,14 @@ namespace EasySaveGUI.ViewModels
         private ContentControl _ElementsContent;
         private ObservableCollection<string> _LayoutNames;
         public ObservableCollection<string> LayoutNames { get => _LayoutNames; set => _LayoutNames = value; }
-        public ContentControl ElementsContent { get => _ElementsContent; set { _ElementsContent = value; NotifyPropertyChanged(); } }
+        public ContentControl ElementsContent 
+        { 
+            get => _ElementsContent; 
+            set 
+            { 
+                _ElementsContent = value; NotifyPropertyChanged(); 
+            } 
+        }
 
         /// <summary>
         /// Constructeur du layout view model charge les layout disponibles

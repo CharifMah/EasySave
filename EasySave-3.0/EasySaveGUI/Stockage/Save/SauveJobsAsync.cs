@@ -31,8 +31,8 @@ namespace Stockage.Save
 
         private ManualResetEventSlim _PauseEvent;
 
-        private BlockingCollection<FileInfo> _priorityFilesQueue = new BlockingCollection<FileInfo>(new ConcurrentQueue<FileInfo>());
-        private BlockingCollection<FileInfo> _nonPriorityFilesQueue = new BlockingCollection<FileInfo>(new ConcurrentQueue<FileInfo>());
+        private BlockingCollection<FileInfo> _priorityFilesQueue;
+        private BlockingCollection<FileInfo> _nonPriorityFilesQueue;
         #endregion
 
         #region Property
@@ -70,6 +70,9 @@ namespace Stockage.Save
             _BlackList = pBlackList.ToArray();
             _CancelationTokenSource = new CancellationTokenSource();
             _PauseEvent = new ManualResetEventSlim(true);
+
+            _priorityFilesQueue = new BlockingCollection<FileInfo>(new ConcurrentQueue<FileInfo>());
+            _nonPriorityFilesQueue = new BlockingCollection<FileInfo>(new ConcurrentQueue<FileInfo>());
 
             _XorEncryptor = new CXorChiffrement();
         }

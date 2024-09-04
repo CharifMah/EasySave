@@ -1,5 +1,7 @@
 https://charifmah.github.io/EasySaveWiki/index.html
 
+<video controls src="EasySave.mp4" title="Title"></video>
+
 # Introduction 
 
 La branche livrable-1 contient la première version fonctionnelle d'EasySave, conformément au cahier des charges de ProSoft. 

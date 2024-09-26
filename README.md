@@ -1,11 +1,12 @@
 https://charifmah.github.io/EasySaveWiki/index.html
 
+![EasySaveGUI](https://github.com/user-attachments/assets/3efef8e8-2276-430c-87f1-c2779d24028a)
+
 # Introduction 
 
 La branche livrable-1 contient la première version fonctionnelle d'EasySave, conformément au cahier des charges de ProSoft. 
 
 Cette version initie le développement d'une application console en .NET Core pour la gestion des travaux de sauvegarde.
-
 
 # Prérequis
 

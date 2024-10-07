@@ -1,4 +1,7 @@
 https://charifmah.github.io/EasySaveWiki/index.html
+https://charifmah.github.io/EasySaveWiki/releases/Releases-v1-0/en/release-notes-en-1.0.0.html
+https://charifmah.github.io/EasySaveWiki/TechnicalDocumentation/en/Technical%20Documentation.html
+https://charifmah.github.io/EasySaveWiki/User-Guide/en/user-guid.html
 
 ![EasySaveGUI](https://github.com/user-attachments/assets/3efef8e8-2276-430c-87f1-c2779d24028a)
 
